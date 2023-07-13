@@ -87,16 +87,15 @@ This document defines how an ACME server can issue X.509 certificates to organiz
 
 --- middle
 
-This specification harmonizes the capabilities and features of OpenID Connect Federation 1.0 and ACME, since:
-- It does not require the involvement of other resources than the `newOrder`, since the authentication and authorization of the requestor is asserted with OpenID Federation 1.0.
-- It extends the ACME `newOrder` resource, defining the payload identifier type `openid-federation`
-- It defines how the OpenID Federation Entity Statements are used for the publication of the X.509 certificates issued with ACME.
-
 # Introduction
 
 ACME in conjuction of OpenID Connect Federation 1.0 is able to issue X.509 certificates to one or more than a single organization without having pre-established any direct relationship of trust to them or stipulation of a contract. OpenID Connect Federation 1.0 enables trust building in multilateral federated contexts, where all participants adhere to the same rules or trust framework, giving the proof that an organization is part of the common regulatation, established by the federation. To assure this, the organization gives the proof of being in full control of the cryptographic material involved in the trust mechanisms, and the web services published within its domains.
 
-This allows the ACME server to issues X.509 certificates on a large scale using the level of assurance that OpenID Federation 1.0 offers.
+This specification harmonizes the capabilities and features of OpenID Connect Federation 1.0 and ACME, since:
+
+- It does not require the involvement of other resources than the `newOrder`, since the authentication and authorization of the requestor is asserted with OpenID Federation 1.0.
+- It extends the ACME `newOrder` resource, defining the payload identifier type `openid-federation`
+- It defines how the OpenID Federation Entity Statements are used for the publication of the X.509 certificates issued with ACME.
 
 # Conventions and Definitions
 
