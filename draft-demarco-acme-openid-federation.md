@@ -19,37 +19,58 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
-category: info
+title: "Automatic Certificate Management Environment (ACME) for OpenID Connect Federation 1.0"
+abbrev: "ACME OIDC Federation"
+category: std
 
-docname: draft-todo-yourname-protocol-latest
+docname: draft-demarco-acme-openid-federation
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
 consensus: true
 v: 3
-area: AREA
-workgroup: WG Working Group
+area: "Security"
+workgroup: ACME Working Group
 keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+ - OpenID Connect Federation
+ - ACME
 venue:
-  group: WG
-  type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+  group: "Automatic Certificate Management Environment"
+  type: "Working Group"
+  mail: "acme@ietf.org"
+  arch: "https://mailarchive.ietf.org/arch/browse/acme/"
+  github: "peppelinux/draft-demarco-acme-openid-federation"
 
 author:
  -
-    fullname: Your Name Here
-    organization: Your Organization Here
-    email: your.email@example.com
+    fullname: Giuseppe De Marco
+    organization: independent
+    email: demarcog83@gmail.com
 
 normative:
+  RFC8555: RFC8555
+
+  OIDC-FED:
+    title: "OpenID Connect Federation 1.0"
+    author:
+      -
+        ins: R. Hedberg
+        name: Roland Hedberg
+      -
+        ins: M.B. Jones
+        name: Michael Jones
+      -
+        ins: A.Å. Solberg
+        name: Andreas Solberg
+      -
+        ins: J. Bradley
+        name: John Bradley
+      -
+        ins: G. De Marco
+        name: Giuseppe De Marco
+      -
+        ins: V. Dzhuvinov
+        name: Vladimir Dzhuvinov
 
 informative:
 
