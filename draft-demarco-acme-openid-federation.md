@@ -48,6 +48,8 @@ author:
     email: demarcog83@gmail.com
 
 normative:
+  RFC2818: RFC2818
+  RFC3696: RFC3696
   RFC8555: RFC8555
 
   OIDC-FED:
@@ -77,14 +79,22 @@ informative:
 
 --- abstract
 
-TODO Abstract
+The Automatic Certificate Management Environment (ACME) is the standard [RFC8555] that allows obtaining certificates for websites (HTTPS [RFC2818]) by verifing the "fully-qualified" domain names [RFC3696] and the web servers that publishes contents within them.
 
+OpenID Connect Federation 1.0 [OIDC-FED] is a general purpose trust evaluation mechanism that allow to attests the public keys and several administrative and protocol specific information related to a specific organization, with the involvement of a trusted third party and the signed material published in their web services.
+
+This document defines how an ACME server can issue X.509 certificates to organizations at a large scale thanks to the OpenID Connect Federation 1.0 trust evaluation mechanisms, where domains, web service and cryptographic materials are attested under the sole control of an entity and this latter attested as trusted and reliable.
 
 --- middle
 
 # Introduction
 
-TODO Introduction
+
+In order to certify trust in an applicant, an ACME server requires an authorization process, which makes use of a proof signed and published within the web service of a specific domain. To achieve this, the ACME server hosts several resources in the form of an web endpoint, needed for the authorization and the verification operations.
+
+ACME in conjuction of OpenID Connect Federation 1.0 is able to issue X.509 certificates to one or more than a single organization without having pre-established any direct relationship of trust to them or any stipulation of a contract. OpenID Connect Federation 1.0 enables trust building in multilateral federated contexts, where all participants adhere to the same rules or trust framework and give proof to be in full control of the cryptographic material involved in the trust mechanisms, and of the web services published within its domains.
+
+This allows the ACME server to issues X.509 certificates on a large scale using the level of assurance that OpenID Federation 1.0 offers.
 
 
 # Conventions and Definitions
