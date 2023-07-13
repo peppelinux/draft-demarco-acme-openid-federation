@@ -69,7 +69,7 @@ This document defines how an ACME server can issue X.509 certificates to organiz
 
 # Introduction
 
-ACME in conjuction of OpenID Connect Federation 1.0 is able to issue X.509 certificates to one or more than a single organization without having pre-established any direct relationship of trust or stipulation of a contract between the parties. OpenID Connect Federation 1.0 enables trust building in multilateral federated contexts, where all participants adhere to the same regulation or trust framework. The OpenID Connect Federation 1.0 trust evaluation mechanisms guarranties that an organization is part of the common regulation, established by the federation. 
+ACME in conjuction of OpenID Connect Federation 1.0 is able to issue X.509 certificates to one or more than a single organization without having pre-established any direct relationship of trust or stipulation of a contract between the parties. OpenID Connect Federation 1.0 enables trust building in multilateral federated contexts, where all participants adhere to the same regulation or trust framework. The OpenID Connect Federation 1.0 trust evaluation mechanisms guarranties that an organization is part of the common regulation, established by the federation.
 
 This specification integrates ACME with OpenID Connect Federation 1.0, allowing the issuance of X.509 using an authorization pattern that identifies the requesting organization and attests to it the reliability and the right to request a certificate, since:
 
