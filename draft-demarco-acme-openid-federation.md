@@ -81,6 +81,13 @@ This specification harmonizes the capabilities and features of OpenID Connect Fe
 
 {::boilerplate bcp14-tagged}
 
+# Audience Target audience/Usage
+
+The audience of the document are the multilateral federations that require automatic issuance oif X.509 certificates using an infrastructure of trust based on OpenID Connect Federation 1.0.
+
+# Scope
+
+This specification defines how a [OIDC-FED] Federation API is used by ACME in the authorization phase for the issuance of the certificates.
 
 # Security Considerations
 
