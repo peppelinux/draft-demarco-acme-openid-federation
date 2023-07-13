@@ -83,7 +83,7 @@ The Automatic Certificate Management Environment (ACME) is the standard [RFC8555
 
 OpenID Connect Federation 1.0 [OIDC-FED] is a general purpose trust evaluation mechanism that allow to attests the public keys and several administrative and protocol specific information related to a specific organization, with the involvement of a trusted third party and the signed material published in their web services.
 
-This document defines how an ACME server can issue X.509 certificates to organizations at a large scale thanks to the OpenID Connect Federation 1.0 trust evaluation mechanism, where domains, web service and cryptographic materials are attested under the sole control of an entity and this latter attested as trusted and reliable. 
+This document defines how an ACME server can issue X.509 certificates to organizations at a large scale thanks to the OpenID Connect Federation 1.0 trust evaluation mechanism, where domains, web service and cryptographic materials are attested under the sole control of an entity and this latter attested as trusted and reliable.
 
 --- middle
 
