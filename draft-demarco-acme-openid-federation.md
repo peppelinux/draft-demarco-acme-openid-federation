@@ -1,5 +1,5 @@
 ---
-title: "Automatic Certificate Management Environment (ACME) for OpenID Connect Federation 1.0"
+title: "Automatic Certificate Management Environment (ACME) with OpenID Connect Federation 1.0"
 abbrev: "ACME OIDC Federation"
 category: std
 
@@ -61,17 +61,17 @@ informative:
 
 The Automatic Certificate Management Environment (ACME) is the standard [RFC8555] that allows obtaining certificates for websites (HTTPS [RFC2818]) by verifing the "fully-qualified" domain names [RFC3696] and the web servers that publishes contents within them.
 
-OpenID Connect Federation 1.0 [OIDC-FED] is a general purpose trust evaluation mechanism that allow to attests the public keys and several administrative and protocol specific information related to a specific organization, with the involvement of a trusted third party and the signed material published in their web services.
+OpenID Connect Federation 1.0 [OIDC-FED] is a general purpose trust evaluation mechanism that allow to attests the public keys and several administrative and protocol specific information related to a specific entity belongin to an organization, with the involvement of a trusted third party and the signed material published in their web services.
 
-This document defines how an ACME server can issue X.509 certificates to organizations at a large scale thanks to the OpenID Connect Federation 1.0 trust evaluation mechanism, where domains, web service and cryptographic materials are attested under the sole control of an entity and this latter attested as trusted and reliable.
+This document defines how an ACME server can issue X.509 certificates to organizations at a large scale thanks to the OpenID Connect Federation 1.0 trust evaluation mechanism, where domains, web service and cryptographic materials are attested under the sole control of a trusted entity.
 
 --- middle
 
 # Introduction
 
-ACME in conjuction of OpenID Connect Federation 1.0 is able to issue X.509 certificates to one or more than a single organization without having pre-established any direct relationship of trust to them or stipulation of a contract. OpenID Connect Federation 1.0 enables trust building in multilateral federated contexts, where all participants adhere to the same rules or trust framework, giving the proof that an organization is part of the common regulation, established by the federation. To assure this, the organization gives the proof of being in full control of the cryptographic material involved in the trust mechanisms, and the web services published within its domains.
+ACME in conjuction of OpenID Connect Federation 1.0 is able to issue X.509 certificates to one or more than a single organization without having pre-established any direct relationship of trust or stipulation of a contract between the parties. OpenID Connect Federation 1.0 enables trust building in multilateral federated contexts, where all participants adhere to the same regulation or trust framework. The OpenID Connect Federation 1.0 trust evaluation mechanisms guarranties that an organization is part of the common regulation, established by the federation. 
 
-This specification harmonizes the capabilities and features of OpenID Connect Federation 1.0 and ACME, since:
+This specification integrates ACME with OpenID Connect Federation 1.0, allowing the issuance of X.509 using an authorization pattern that identifies the requesting organization and attests to it the reliability and the right to request a certificate, since:
 
 - It does not require the involvement of other resources than the `newOrder`, since the authentication and authorization of the requestor is asserted with OpenID Federation 1.0.
 - It extends the ACME `newOrder` resource, defining the payload identifier type `openid-federation`
