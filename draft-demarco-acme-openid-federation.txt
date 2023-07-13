@@ -99,7 +99,7 @@ Table of Contents
    stipulation of a contract.  OpenID Connect Federation 1.0 enables
    trust building in multilateral federated contexts, where all
    participants adhere to the same rules or trust framework, giving the
-   proof that an organization is part of the common regulatation,
+   proof that an organization is part of the common regulation,
    established by the federation.  To assure this, the organization
    gives the proof of being in full control of the cryptographic
    material involved in the trust mechanisms, and the web services
