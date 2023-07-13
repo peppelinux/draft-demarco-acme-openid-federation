@@ -23,7 +23,7 @@ title: "Automatic Certificate Management Environment (ACME) for OpenID Connect F
 abbrev: "ACME OIDC Federation"
 category: std
 
-docname: draft-demarco-acme-openid-federation
+docname: draft-demarco-acme-openid-federation-latest
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
