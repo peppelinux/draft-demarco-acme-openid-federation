@@ -94,9 +94,9 @@ Table of Contents
 
 1.  Introduction
 
-   ACME in conjuction of OpenID Connect Federation 1.0 is able to issue
-   X.509 certificates to one or more than a single organization without
-   having pre-established any direct relationship of trust or
+   ACME in conjuction with OpenID Connect Federation 1.0 is able to
+   issue X.509 certificates to one or more than a single organization
+   without having pre-established any direct relationship of trust or
    stipulation of a contract between the parties.  OpenID Connect
    Federation 1.0 enables trust building in multilateral federated
    contexts, where all participants adhere to the same regulation or
