@@ -10,12 +10,12 @@ date:
 consensus: true
 v: 3
 area: "Security"
-workgroup: ACME Working Group
+workgroup: "Automated Certificate Management Environment"
 keyword:
  - OpenID Connect Federation
  - ACME
 venue:
-  group: "Automatic Certificate Management Environment"
+  group: "Automated Certificate Management Environment"
   type: "Working Group"
   mail: "acme@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/acme/"
