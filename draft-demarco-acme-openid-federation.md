@@ -75,7 +75,7 @@ This specification integrates ACME with OpenID Connect Federation 1.0, allowing 
 
 - It does not require the involvement of other resources than the `newOrder`, since the authentication and authorization of the requestor is asserted with OpenID Federation 1.0.
 - Instead of the `/.well-known/acme-challenge/{token}` endpoint it defines how to use and validate the basic OpenID Connect Federation component, called Entity Configuration, that is a signed JWT published in a well-known resource (.well-known/openid-federation).
-- It removes any requirement for authentication and provisioning of tokens, since the authorization mechanisms is built on top of the trust evaluation meachanisms in use with OpenID Connect Federation 1.0.
+- It removes the requirement for the authentication of an entity and the provisioning of acme-challenge tokens, since the authorization mechanisms is built on top of the trust evaluation meachanisms already in use with OpenID Connect Federation 1.0.
 - It extends the ACME `newOrder` resource, defining the payload identifier type `openid-federation`.
 - It defines how the OpenID Federation Entity Statements are used for the publication of the X.509 certificates automatically issued with ACME.
 
