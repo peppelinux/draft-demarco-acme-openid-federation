@@ -117,10 +117,10 @@ Table of Contents
       signed JWT published in a well-known resource (.well-known/openid-
       federation).
 
-   *  It removes any requirement for authentication and provisioning of
-      tokens, since the authorization mechanisms is built on top of the
-      trust evaluation meachanisms in use with OpenID Connect Federation
-      1.0.
+   *  It removes the requirement for the authentication of an entity and
+      the provisioning of acme-challenge tokens, since the authorization
+      mechanisms is built on top of the trust evaluation meachanisms
+      already in use with OpenID Connect Federation 1.0.
 
    *  It extends the ACME newOrder resource, defining the payload
       identifier type openid-federation.

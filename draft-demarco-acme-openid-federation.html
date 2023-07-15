@@ -1195,7 +1195,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </li>
         <li class="normal" id="section-1-3.2">Instead of the <code>/.well-known/acme-challenge/{token}</code> endpoint it defines how to use and validate the basic OpenID Connect Federation component, called Entity Configuration, that is a signed JWT published in a well-known resource (.well-known/openid-federation).<a href="#section-1-3.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-3.3">It removes any requirement for authentication and provisioning of tokens, since the authorization mechanisms is built on top of the trust evaluation meachanisms in use with OpenID Connect Federation 1.0.<a href="#section-1-3.3" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-3.3">It removes the requirement for the authentication of an entity and the provisioning of acme-challenge tokens, since the authorization mechanisms is built on top of the trust evaluation meachanisms already in use with OpenID Connect Federation 1.0.<a href="#section-1-3.3" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-1-3.4">It extends the ACME <code>newOrder</code> resource, defining the payload identifier type <code>openid-federation</code>.<a href="#section-1-3.4" class="pilcrow">¶</a>
 </li>
