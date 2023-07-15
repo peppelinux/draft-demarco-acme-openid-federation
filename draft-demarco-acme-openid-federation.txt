@@ -103,10 +103,13 @@ Table of Contents
    the other participant using a trust evaluation mechanism, using
    RESTful services and cryptographic materials.
 
-   This specification defines how ACME and OpenID Connect Federation 1.0
-   can be integrated allowing an efficient issuance of X.509 to a
-   requestor, reducing both the bureaucratic and the implementative
-   costs, since:
+   Considering that a requestor is an entity requesting the issuance of
+   a X.509 certificate to a server and the issuer is the ACME server
+   that validates the entitlements of the requestor before issuing the
+   X.509 certificate, this specification defines how ACME and OpenID
+   Connect Federation 1.0 can be integrated allowing an efficient
+   issuance of X.509 to a requestor, reducing both the bureaucratic and
+   the implementative costs, since:
 
    *  It does not require the involvement of other resources than the
       ACME newOrder endpoint, since the authentication and authorization
