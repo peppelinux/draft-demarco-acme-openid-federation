@@ -93,7 +93,7 @@ Table of Contents
    and tecnical information in the form of trust marks, related to a
    specific entity belonging to an organization.
 
-   OpenID Connect Federation 1.0 allow an ACME server to issue X.509
+   OpenID Connect Federation 1.0 allows an ACME server to issue X.509
    certificates to one or more than a single organization without having
    pre-established any direct relationship or any stipulation of a
    contract to the requestor.  In a multilateral federation, composed by
