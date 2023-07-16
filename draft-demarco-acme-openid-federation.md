@@ -175,9 +175,9 @@ The Issuer MUST publish its Entity Configuration including the `acme_provider` m
 
 This section describe how to use the parameters defined in the [Section 7.1.1](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1) of [RFC8555] in the federation Entity Configuration of the Issuer.
 
-````
-  {
-   "metadata":
+```json
+{
+  "metadata":
     "acme_provider": {
      "newNonce": "https://issuer.example.com/acme/new-nonce",
      "newOrder": "https://issuer.example.com/acme/new-order",
@@ -188,9 +188,9 @@ This section describe how to use the parameters defined in the [Section 7.1.1](h
        "website": "https://www.issuer.example.com/",
        "caaIdentities": \["issuer.example.com"\],
        "externalAccountRequired": false
-     }
    }
-````
+ }
+```
 
 ## newNonce request
 
