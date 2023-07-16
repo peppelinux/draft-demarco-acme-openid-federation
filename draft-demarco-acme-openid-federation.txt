@@ -122,7 +122,7 @@ Table of Contents
       defines how to use and validate a basic OpenID Connect Federation
       component, called Entity Configuration, that is a signed JWT
       published in a well-known resource (/.well-known/openid-
-      federation) published by the requestor.
+      federation) by the requestor.
 
    *  It removes the requirement for the authentication of an entity and
       the provisioning of the _acme-challenge token_, since the
