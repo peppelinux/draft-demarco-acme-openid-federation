@@ -327,7 +327,7 @@ Table of Contents
    7.1.1) of [RFC8555] in the federation Entity Configuration of the
    Issuer.
 
-   json { "metadata": "acme_provider": { "newNonce":
+   { "metadata": "acme_provider": { "newNonce":
    "https://issuer.example.com/acme/new-nonce", "newOrder":
    "https://issuer.example.com/acme/new-order", "revokeCert":
    "https://issuer.example.com/acme/revoke-cert", "keyChange":
