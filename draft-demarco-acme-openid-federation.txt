@@ -402,9 +402,7 @@ Table of Contents
    "payload": base64url({ "identifiers": [{ "type": "openid-federation",
    "value": "requestor.example.org" }], "notBefore":
    "2024-01-01T00:04:00+04:00", "notAfter": "2024-01-08T00:04:00+04:00"
-   }), "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g" }
-
-   ````
+   }), "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g" } ````
 
 6.  Federation Identifiers Types
 
