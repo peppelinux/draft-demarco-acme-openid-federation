@@ -130,18 +130,18 @@ The protocol assumes the following discovery preconditions are met, where for di
 4. The Issuer MUST publish in its Entity Configuration, within the metadata parameter as defined in the [Section 4](https://openid.net/specs/openid-connect-federation-1_0.html#name-metadata-type-identifiers) of [OIDC-FED], the metadata type `acme_provider` according to the [Metadata](#metadata) of this specification.
 5. The Issuer MAY be a Leaf, in these cases a specific Trust Mark SHOULD be issued by the Trust Anchor, or on behalf of it by an allowed Trust Mark issuer as configured in the federation, and. the Trust Mark MUST then be published within the Leaf Entity Configuration.
 
-Where the precondition number 4 and number 5 are not met, there MAY be some cases where the Requestor known a priori which are the Issuers in one or more federations, in this case the requestor directly requests the issuance of the X.509 certificate to the trusted Issuer.
+Where the precondition number 4 and number 5 are not met, there MAY be some cases where the Requestor known a priori which are the Issuers in one or more federations, in these cases the Requestor directly requests the issuance of the X.509 certificate to the trusted Issuer.
 
 ## Overview
 
 TBD: high level design and ascii sequence diagram.
 
 1. The Requestor checks if its superior Federation Entity supports the ACME protocol for OpenID Connect Federation 1.0. If not, the Requestor starts the discovery process to find which are the Issuers within the federation.
-2. The Requestor obtains a new nonce from the Issuer, by sending a HTTP HEAD request to the Issuer's `newNonce` resource;
-3. The Issuer evaluates the trust to the Requestor by checking if it is part of the federation. If not the request MUST be rejected (**TBD** the error to return). There are two ways the Issuer is able to check if a Requestor is part of the federation, these are listed below:
+2. The Requestor requests and obtains a new nonce from the Issuer, by sending a HTTP HEAD request to the Issuer's `newNonce` resource;
+3. The Issuer evaluates the trust to the Requestor by checking if it is part of the federation. If not the `newNonce` request MUST be rejected (**TBD** the error to return). There are two ways the Issuer is able to check if a Requestor is part of the federation, these are listed below:
     - The Requestor adds the Trust Chain JWS header parameter related to itself, this option is RECOMMENDED since it reduces the effort of the Issuer in evaluating the trust to the Requestor;
-    - The Requestor doesn't add the Trust Chain in the request, then the Issuer MUST start a Federation Entity Discovery to obtain the Trust Chain related to the Requestor.
-3. The Requestor begins the certificate issuance process by sending a POST request to the Issuer's `newOrder` resource.
+    - The Requestor doesn't add the Trust Chain in the request, then the Issuer MUST start a [Federation Entity Discovery](https://openid.net/specs/openid-connect-federation-1_0.html#section-8) to obtain the Trust Chain related to the Requestor.
+4. The Requestor begins the certificate issuance process by sending a HTTP POST request to the Issuer's `newOrder` resource.
 
 Below is represented the summary of all the actions supported by the protocol defined in this document.
 
@@ -173,9 +173,9 @@ Below is represented the summary of all the actions supported by the protocol de
 
 The Issuer MUST publish its Entity Configuration including the `acme_provider` metadata within it.
 
-This section describe how to use the parameters defined in the [Section 7.1.1](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1) of [RFC8555] in the federation Entity Configuration of an Issuer.
+This section describe how to use the parameters defined in the [Section 7.1.1](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1) of [RFC8555] in the federation Entity Configuration of the Issuer.
 
-````json
+````
   {
    "metadata":
     "acme_provider": {
