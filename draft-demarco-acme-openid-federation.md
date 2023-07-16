@@ -220,8 +220,7 @@ When OpenID Connect Federation 1.0 is used by the Issuer to attest the reliabiab
 - the maximum length of the JSON Array contained in the `identifiers` parameter MUST be 1, since there cannot be more than a single FQDN corresponding to a single Federation Entity. If other identifiers  are present in the request and different from the type `openid-federation`, these SHOULD be ignored.
 
 
-```
-
+````
    POST /acme/new-order HTTP/1.1
    Host: issuer.example.com
    Content-Type: application/jose+json
@@ -242,7 +241,7 @@ When OpenID Connect Federation 1.0 is used by the Issuer to attest the reliabiab
      "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
    }
 
-```
+````
 
 # Federation Identifiers Types
 
