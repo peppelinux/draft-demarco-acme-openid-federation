@@ -137,12 +137,13 @@ Where the precondition number 4 and number 5 are not met, there MAY be some case
 TBD: high level design and ascii sequence diagram.
 
 1. The Requestor checks if its superior Federation Entity supports the ACME protocol for OpenID Connect Federation 1.0. If not, the Requestor starts the discovery process to find which are the Issuers within the federation.
-2. The Requestor obtains a new nonce from the Issuer, by senting a HTTP HEAD request to the `newNonce` resource of the Issuer;
-3. The Issuer evaluate the trust to the Requestor, by checking if it is part of the federation. If not the request MUST be rejected (**TBD** the error to return). There are two ways the Issuer has to check if a Requestor is part of the federation, these are listed below:
-    - The Requestor adds the Trust Chain JWS header parameter related to itself, this is RECOMMENDED;
-    - The Requestor doesn't add the Trust Chain in the request, then the Issuer MUST start a Federation Discovery to obtain the Trust Chain related to the Requestor.
+2. The Requestor obtains a new nonce from the Issuer, by sending a HTTP HEAD request to the Issuer's `newNonce` resource;
+3. The Issuer evaluates the trust to the Requestor by checking if it is part of the federation. If not the request MUST be rejected (**TBD** the error to return). There are two ways the Issuer is able to check if a Requestor is part of the federation, these are listed below:
+    - The Requestor adds the Trust Chain JWS header parameter related to itself, this option is RECOMMENDED since it reduces the effort of the Issuer in evaluating the trust to the Requestor;
+    - The Requestor doesn't add the Trust Chain in the request, then the Issuer MUST start a Federation Entity Discovery to obtain the Trust Chain related to the Requestor.
 3. The Requestor begins the certificate issuance process by sending a POST request to the Issuer's `newOrder` resource.
 
+Below is represented the summary of all the actions supported by the protocol defined in this document.
 
 | Action                | Request                                | Succesful Response |
 |-----------------------|----------------------------------------|--------------------|
