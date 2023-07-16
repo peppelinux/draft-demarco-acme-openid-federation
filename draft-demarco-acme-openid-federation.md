@@ -118,9 +118,9 @@ The protocol assumes the following discovery preconditions are met, where for di
 2. The Requestor and the Issuer MUST be able to establish the trust to each other obtaining the Trust Chain of each other, as defined in ... OIDC FED ref here.
 3. The Trust Anchor and its Intermediate SHOULD implement an ACME server with at least the `newOrder` endpoint as extended in this specification.
 4. The Issuer MUST publish in its Entity Configuration, within the metadata parameter (JSON Object), the metadata type `acme_provider` according to the Section ... of this specification, **TBD**.
-5. The Issuer MAY be a Leaf, in these cases a specific Trust Mark SHOULD be issued for it by the Trust Anchor, or on behalf of it through the allowed federation Trust Mark issuers, and then published withing the Leaf Entity Configuration.
+5. The Issuer MAY be a Leaf, in these cases a specific Trust Mark SHOULD be issued by the Trust Anchor, or on behalf of this latter through the allowed Trust Mark issuers configured in the federation, and then published within the Leaf Entity Configuration.
 
-Where the precondition number 4 and number 5 are not met, there MAY be some cases where the Requestor known a priori which are the Issuers in one or more federations, in this case the requestor directly request the issuance of the X.509 certificate to the issuer It trusts, without any discovery phase.
+Where the precondition number 4 and number 5 are not met, there MAY be some cases where the Requestor known a priori which are the Issuers in one or more federations, in this case the requestor directly requests the issuance of the X.509 certificate to the trusted issuer.
 
 ## Overview
 
