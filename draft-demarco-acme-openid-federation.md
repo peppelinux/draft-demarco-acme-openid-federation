@@ -97,7 +97,7 @@ This specification can be implemented by:
 
    **TA**,      OpenID Connect Federation Trust Anchor, see CA
 
-   **CA**,      Certification Authority, also known as Trust Anchor or Intermediate, specifically one that implements the ACME protocol though an ACME server.
+   **CA**,      Certification Authority, also known as Trust Anchor or Intermediate, specifically one that implements the ACME protocol by serving an ACME server.
 
    **CSR**,     Certificate Signing Request, specifically a PKCS#10 [RFC2986] as supported by ACME.
 
@@ -105,9 +105,9 @@ This specification can be implemented by:
 
    **Requestor**, Federation Entity that requests a X.509 certificate to a CA.
 
-   **Issuer**,  Trust Anchor or Intermediate, a CA.
+   **Issuer**,  Federation Entity that serves an ACME Server. The Federation Entity is then a CA.
 
-The terms "Federation Entity", "Trust Anchor", "Intermediate", "Entity Configuration", "Entity Statement", "Trust Mark" and "Trust Chain" used in this document are defined in the Section 1.2 of [OIDC-FED].
+The terms "Federation Entity", "Trust Anchor", "Intermediate", "Entity Configuration", "Entity Statement", "Trust Mark" and "Trust Chain" used in this document are defined in the [Section 1.2](https://openid.net/specs/openid-connect-federation-1_0.html#name-terminology) of [OIDC-FED].
 
 # Conventions and Definitions
 
