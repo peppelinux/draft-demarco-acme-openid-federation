@@ -1302,7 +1302,7 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
 </li>
           <li id="section-5.1-2.4">The Issuer <span class="bcp14">MUST</span> publish in its Entity Configuration, within the metadata parameter as defined in the <a href="https://openid.net/specs/openid-connect-federation-1_0.html#name-metadata-type-identifiers">Section 4</a> of <span>[<a href="#OIDC-FED" class="cite xref">OIDC-FED</a>]</span>, the metadata type <code>acme_provider</code> according to the <a href="#metadata" class="auto internal xref">Section 5.3</a> of this specification.<a href="#section-5.1-2.4" class="pilcrow">¶</a>
 </li>
-          <li id="section-5.1-2.5">The Issuer <span class="bcp14">MAY</span> be a Leaf, in these cases a specific Trust Mark <span class="bcp14">SHOULD</span> be issued by the Trust Anchor, or on behalf of it by an allowed Trust Mark issuer as configured in the federation, and then published within the Leaf Entity Configuration.<a href="#section-5.1-2.5" class="pilcrow">¶</a>
+          <li id="section-5.1-2.5">The Issuer <span class="bcp14">MAY</span> be a Leaf, in these cases a specific Trust Mark <span class="bcp14">SHOULD</span> be issued by the Trust Anchor, or on behalf of it by an allowed Trust Mark issuer as configured in the federation, and. the Trust Mark <span class="bcp14">MUST</span> then be published within the Leaf Entity Configuration.<a href="#section-5.1-2.5" class="pilcrow">¶</a>
 </li>
         </ol>
 <p id="section-5.1-3">Where the precondition number 4 and number 5 are not met, there <span class="bcp14">MAY</span> be some cases where the Requestor known a priori which are the Issuers in one or more federations, in this case the requestor directly requests the issuance of the X.509 certificate to the trusted Issuer.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
@@ -1315,13 +1315,18 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
         </h3>
 <p id="section-5.2-1">TBD: high level design and ascii sequence diagram.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-5.2-2">
-<li id="section-5.2-2.1">The Requestor looks to its superiors entities, Trust Anchor or Intermediates, if they support the ACME protocol for OpenID Connect Federation 1.0. If not, the Requestor starts the discovery process to find which are the Issuers within the federation.<a href="#section-5.2-2.1" class="pilcrow">¶</a>
+<li id="section-5.2-2.1">The Requestor checks if its superior Federation Entity supports the ACME protocol for OpenID Connect Federation 1.0. If not, the Requestor starts the discovery process to find which are the Issuers within the federation.<a href="#section-5.2-2.1" class="pilcrow">¶</a>
 </li>
           <li id="section-5.2-2.2">The Requestor obtains a new nonce from the Issuer, by senting a HTTP HEAD request to the <code>newNonce</code> resource of the Issuer;<a href="#section-5.2-2.2" class="pilcrow">¶</a>
 </li>
-          <li id="section-5.2-2.3">The Issuer evaluiate the trust to the Requestor, by checking if it is part of the federation. If not the request <span class="bcp14">MUST</span> be rejected (<strong>TBD</strong> the error to return). There are two ways the Issuer has to check if a Requestor is part of the federation, these are the followings:
-  - The Requestor adds the Trust Chain JWS header parameter related to itself, this is <span class="bcp14">RECOMMENDED</span>;
-  - The Requestor doesn't add the Trust Chain in the request, then the Issuer <span class="bcp14">MUST</span> start a Federation Discovery to obtain the Trust Chain related to the Requestor.<a href="#section-5.2-2.3" class="pilcrow">¶</a>
+          <li id="section-5.2-2.3">
+            <p id="section-5.2-2.3.1">The Issuer evaluate the trust to the Requestor, by checking if it is part of the federation. If not the request <span class="bcp14">MUST</span> be rejected (<strong>TBD</strong> the error to return). There are two ways the Issuer has to check if a Requestor is part of the federation, these are listed below:<a href="#section-5.2-2.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.2-2.3.2.1">The Requestor adds the Trust Chain JWS header parameter related to itself, this is <span class="bcp14">RECOMMENDED</span>;<a href="#section-5.2-2.3.2.1" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-5.2-2.3.2.2">The Requestor doesn't add the Trust Chain in the request, then the Issuer <span class="bcp14">MUST</span> start a Federation Discovery to obtain the Trust Chain related to the Requestor.<a href="#section-5.2-2.3.2.2" class="pilcrow">¶</a>
+</li>
+            </ul>
 </li>
           <li id="section-5.2-2.4">The Requestor begins the certificate issuance process by sending a POST request to the Issuer's <code>newOrder</code> resource.<a href="#section-5.2-2.4" class="pilcrow">¶</a>
 </li>
