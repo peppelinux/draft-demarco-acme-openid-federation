@@ -1317,20 +1317,21 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
 <ol start="1" type="1" class="normal type-1" id="section-5.2-2">
 <li id="section-5.2-2.1">The Requestor checks if its superior Federation Entity supports the ACME protocol for OpenID Connect Federation 1.0. If not, the Requestor starts the discovery process to find which are the Issuers within the federation.<a href="#section-5.2-2.1" class="pilcrow">¶</a>
 </li>
-          <li id="section-5.2-2.2">The Requestor obtains a new nonce from the Issuer, by senting a HTTP HEAD request to the <code>newNonce</code> resource of the Issuer;<a href="#section-5.2-2.2" class="pilcrow">¶</a>
+          <li id="section-5.2-2.2">The Requestor obtains a new nonce from the Issuer, by sending a HTTP HEAD request to the Issuer's <code>newNonce</code> resource;<a href="#section-5.2-2.2" class="pilcrow">¶</a>
 </li>
           <li id="section-5.2-2.3">
-            <p id="section-5.2-2.3.1">The Issuer evaluate the trust to the Requestor, by checking if it is part of the federation. If not the request <span class="bcp14">MUST</span> be rejected (<strong>TBD</strong> the error to return). There are two ways the Issuer has to check if a Requestor is part of the federation, these are listed below:<a href="#section-5.2-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-5.2-2.3.1">The Issuer evaluates the trust to the Requestor by checking if it is part of the federation. If not the request <span class="bcp14">MUST</span> be rejected (<strong>TBD</strong> the error to return). There are two ways the Issuer is able to check if a Requestor is part of the federation, these are listed below:<a href="#section-5.2-2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.2-2.3.2.1">The Requestor adds the Trust Chain JWS header parameter related to itself, this is <span class="bcp14">RECOMMENDED</span>;<a href="#section-5.2-2.3.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-5.2-2.3.2.1">The Requestor adds the Trust Chain JWS header parameter related to itself, this option is <span class="bcp14">RECOMMENDED</span> since it reduces the effort of the Issuer in evaluating the trust to the Requestor;<a href="#section-5.2-2.3.2.1" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-5.2-2.3.2.2">The Requestor doesn't add the Trust Chain in the request, then the Issuer <span class="bcp14">MUST</span> start a Federation Discovery to obtain the Trust Chain related to the Requestor.<a href="#section-5.2-2.3.2.2" class="pilcrow">¶</a>
+              <li class="normal" id="section-5.2-2.3.2.2">The Requestor doesn't add the Trust Chain in the request, then the Issuer <span class="bcp14">MUST</span> start a Federation Entity Discovery to obtain the Trust Chain related to the Requestor.<a href="#section-5.2-2.3.2.2" class="pilcrow">¶</a>
 </li>
             </ul>
 </li>
           <li id="section-5.2-2.4">The Requestor begins the certificate issuance process by sending a POST request to the Issuer's <code>newOrder</code> resource.<a href="#section-5.2-2.4" class="pilcrow">¶</a>
 </li>
         </ol>
+<p id="section-5.2-3">Below is represented the summary of all the actions supported by the protocol defined in this document.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
 <table class="center" id="table-1">
           <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>
