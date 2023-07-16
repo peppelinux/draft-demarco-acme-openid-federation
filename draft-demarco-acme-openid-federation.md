@@ -161,7 +161,6 @@ Below is represented the summary of all the actions supported by the protocol de
 |                       |                                        |                    |
 
 
-
 ## Metadata
 
 
@@ -186,6 +185,20 @@ This section describe how to use the parameters defined in the [Section 7.1.1](h
 }
 ````
 
+## Certificates issued using OIDC Federation
+
+The Federation Entity Keys are used for requesting X.509 certificates.
+
+The Issuer establishes the authorization of a Federation Entity to obtain certificates for the identifier configured in the Requestor's Entity Configuration.
+
+the Issuer MUST be sure that the following proofs are checked and satisfied:
+
+1.  The Requestor controls the private key related to the public part published in the Entity Configuration, attested by the superior Entity Statement, and that this key is used for the generation of the CSR.
+
+2.  The Requestor controls the identifier in question, having published the Entity Configuration signed with the private key used for the generation of the CSR.
+
+This process may be repeated to request multiple certificates related to the Federation Entity Keys and linked to a single identifier, that's the Federation Entity FQDN.
+
 ## newNonce request
 
 The Requestor MUST obtain a new nonce from the Issuer, according to the [Section 7.2](https://datatracker.ietf.org/doc/html/rfc8555#section-7.2) of [RFC8555].
@@ -204,40 +217,6 @@ Cache-Control: no-store
 Differences with [RFC8555]:
 
 - The HTTP header `Link: <https://issuer.example.com/acme/directory>;rel="index"` is not required.
-
-## ACME newOrder request within a Federation
-
-This section contains the details for requesting a certificate.
-
-### Certificates issued using OIDC Federation
-
-The Federation Entity Keys are used for requesting X.509 certificates.
-
-The Issuer establishes the authorization of a Federation Entity to obtain certificates for the identifier configured in the Requestor's Entity Configuration.
-
-the Issuer MUST be sure that the following proofs are checked and satisfied:
-
-1.  The Requestor controls the private key related to the public part published in the Entity Configuration, attested by the superior Entity Statement, and that this key is used for the generation of the CSR.
-
-2.  The Requestor controls the identifier in question, having published the Entity Configuration signed with the private key used for the generation of the CSR.
-
-This process may be repeated to request multiple certificates related to the Federation Entity Keys and linked to a single identifier, that's the Federation Entity FQDN.
-
-
-### Order Object Extensions and Constraints
-
-To the *ACME order object* properties already defined in the [Section 7.1.3](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.3) of [RFC8555] are added those defined by this document and listed below, to be intended as extensions to [RFC8555].
-
-| place             | parameter     | type              | presence | reference                 |
-|-------------------|---------------|-------------------|----------|---------------------------|
-| protected headers | `trust_chain` | JSON Array of JWS | OPTIONAL | [OIDC-FED], Section 3.2.1 |
-
-
-When OpenID Connect Federation 1.0 is used by the Issuer to attest the reliabiability of a Requestor, the following constraints to the `payload.identifiers` JSON Array MUST be respected:
-
-- `type` MUST be set to `openid-federation`;
-- `value` MUST correspond to the FQDN contained within the `iss` parameter of the Requestor's Entity Configuration. Since the Federation Entity ID is a HTTP URL, the corresponding FQDN MUST be extracted from it. For example, if the `iss` parameter withing the Entity Configuration contains the value `https://requestor.example.org/oidc/rp`, the extracted FQDN is then `requestor.example.org` and it MUST correspond to the value of the identifier contained in the order object;
-- the maximum length of the JSON Array contained in the `identifiers` parameter MUST be 1, since there cannot be more than a single FQDN corresponding to a single Federation Entity. If other identifiers  are present in the request and different from the type `openid-federation`, these SHOULD be ignored.
 
 ## newOrder request
 
@@ -266,6 +245,22 @@ Content-Type: application/jose+json
  "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
 }
 ````
+
+## Order Object Extensions and Constraints
+
+To the *ACME order object* properties already defined in the [Section 7.1.3](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.3) of [RFC8555] are added those defined by this document and listed below, to be intended as extensions to [RFC8555].
+
+| place             | parameter     | type              | presence | reference                 |
+|-------------------|---------------|-------------------|----------|---------------------------|
+| protected headers | `trust_chain` | JSON Array of JWS | OPTIONAL | [OIDC-FED], Section 3.2.1 |
+
+
+When OpenID Connect Federation 1.0 is used by the Issuer to attest the reliabiability of a Requestor, the following constraints to the `payload.identifiers` JSON Array MUST be respected:
+
+- `type` MUST be set to `openid-federation`;
+- `value` MUST correspond to the FQDN contained within the `iss` parameter of the Requestor's Entity Configuration. Since the Federation Entity ID is a HTTP URL, the corresponding FQDN MUST be extracted from it. For example, if the `iss` parameter withing the Entity Configuration contains the value `https://requestor.example.org/oidc/rp`, the extracted FQDN is then `requestor.example.org` and it MUST correspond to the value of the identifier contained in the order object;
+- the maximum length of the JSON Array contained in the `identifiers` parameter MUST be 1, since there cannot be more than a single FQDN corresponding to a single Federation Entity. If other identifiers  are present in the request and different from the type `openid-federation`, these SHOULD be ignored.
+
 
 ## newOrder Response
 
