@@ -6,9 +6,11 @@
 <meta content="initial-scale=1.0" name="viewport">
 <title>Automatic Certificate Management Environment (ACME) with OpenID Connect Federation 1.0</title>
 <meta content="Giuseppe De Marco" name="author">
-<meta content="
+<meta content='
+       The Automatic Certificate Management Environment (ACME) is the standard   that allows obtaining certificates for websites (HTTPS  ) by verifing the "fully-qualified" domain names   and the web servers within these. 
+       OpenID Connect Federation 1.0   is the standard that allows building multilateral federations through a trust evaluation mechanism attesting the possession of public keys, signature capabilities, protocol specific metadata and several administrative and tecnical information in the form of trust marks, related to a specific entity belonging to an organization. 
        This document defines how the X.509 certificates can be issued by a trust anchor and its intermediates through the ACME protocol to all the organizations that are part of a federation built on top of OpenID Connect Federation 1.0. 
-    " name="description">
+    ' name="description">
 <meta content="xml2rfc 3.17.4" name="generator">
 <meta content="OpenID Connect Federation" name="keyword">
 <meta content="ACME" name="keyword">
@@ -1083,7 +1085,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">Automatic Certificate Management Environment (ACME) with OpenID Connect Federation 1.0</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines how the X.509 certificates can be issued by a trust anchor and its intermediates through the ACME protocol to all the organizations that are part of a federation built on top of OpenID Connect Federation 1.0.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">The Automatic Certificate Management Environment (ACME) is the standard <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> that allows obtaining certificates for websites (HTTPS <span>[<a href="#RFC2818" class="cite xref">RFC2818</a>]</span>) by verifing the "fully-qualified" domain names <span>[<a href="#RFC3696" class="cite xref">RFC3696</a>]</span> and the web servers within these.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">OpenID Connect Federation 1.0 <span>[<a href="#OIDC-FED" class="cite xref">OIDC-FED</a>]</span> is the standard that allows building multilateral federations through a trust evaluation mechanism attesting the possession of public keys, signature capabilities, protocol specific metadata and several administrative and tecnical information in the form of trust marks, related to a specific entity belonging to an organization.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">This document defines how the X.509 certificates can be issued by a trust anchor and its intermediates through the ACME protocol to all the organizations that are part of a federation built on top of OpenID Connect Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1195,20 +1199,18 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The Automatic Certificate Management Environment (ACME) is the standard <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> that allows obtaining certificates for websites (HTTPS <span>[<a href="#RFC2818" class="cite xref">RFC2818</a>]</span>) by verifing the "fully-qualified" domain names <span>[<a href="#RFC3696" class="cite xref">RFC3696</a>]</span> and the web servers within these.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">OpenID Connect Federation 1.0 <span>[<a href="#OIDC-FED" class="cite xref">OIDC-FED</a>]</span> is the standard that allows building multilateral federations through a trust evaluation mechanism attesting the possession of public keys, signature capabilities, protocol specific metadata and several administrative and tecnical information in the form of trust marks, related to a specific entity belonging to an organization.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">OpenID Connect Federation 1.0 allows an ACME server to issue X.509 certificates to one or more than a single organization without having pre-established any direct relationship or any stipulation of a contract to the requestor. In a multilateral federation, composed by thousands of entities belonging to different organizations, all the participants adhere to the same regulation or trust framework. OpenID Connect Federation 1.0 allows each participant to recognize the other participant using a trust evaluation mechanism, with RESTful services and cryptographic materials.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">Considering that a requestor is an entity requesting the issuance of a X.509 certificate to a server and the issuer is the ACME server that validates the entitlements of the requestor before issuing the X.509 certificate, this specification defines how ACME and OpenID Connect Federation 1.0 can be integrated allowing an efficient issuance of X.509 to a requestor, reducing both the bureaucratic and the implementative costs, since:<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-1">OpenID Connect Federation 1.0 allows an ACME server to issue X.509 certificates to one or more than a single organization without having pre-established any direct relationship or any stipulation of a contract to the requestor. In a multilateral federation, composed by thousands of entities belonging to different organizations, all the participants adhere to the same regulation or trust framework. OpenID Connect Federation 1.0 allows each participant to recognize the other participant using a trust evaluation mechanism, with RESTful services and cryptographic materials.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Considering that a requestor is an entity requesting the issuance of a X.509 certificate to a server and the issuer is the ACME server that validates the entitlements of the requestor before issuing the X.509 certificate, this specification defines how ACME and OpenID Connect Federation 1.0 can be integrated allowing an efficient issuance of X.509 to a requestor, reducing both the bureaucratic and the implementative costs, since:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1-5.1">It does not require the involvement of other resources than the ACME <code>newOrder</code> endpoint, since the authentication and authorization of the requestor is asserted with OpenID Federation 1.0.<a href="#section-1-5.1" class="pilcrow">¶</a>
+<li class="normal" id="section-1-3.1">It does not require the involvement of other resources than the ACME <code>newOrder</code> endpoint, since the authentication and authorization of the requestor is asserted with OpenID Federation 1.0.<a href="#section-1-3.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-5.2">Instead of the <code>/.well-known/acme-challenge/{token}</code> endpoint it defines how to use and validate a basic OpenID Connect Federation component, called Entity Configuration, that is a signed JWT published in a well-known resource (<code>/.well-known/openid-federation</code>) by the requestor.<a href="#section-1-5.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-3.2">Instead of the <code>/.well-known/acme-challenge/{token}</code> endpoint it defines how to use and validate a basic OpenID Connect Federation component, called Entity Configuration, that is a signed JWT published in a well-known resource (<code>/.well-known/openid-federation</code>).<a href="#section-1-3.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-5.3">It removes the requirement for the authentication of an entity and the provisioning of the <em>acme-challenge token</em>, since the authorization mechanisms is built on top of the trust evaluation model as defined in OpenID Connect Federation 1.0.<a href="#section-1-5.3" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-3.3">It removes the requirement for the authentication of an entity and the provisioning of the <em>acme-challenge token</em>, since the authorization mechanisms is built on top of the trust evaluation model as defined in OpenID Connect Federation 1.0.<a href="#section-1-3.3" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-5.4">It extends the ACME <code>newOrder</code> endpoint, defining a new payload identifier type called <code>openid-federation</code>.<a href="#section-1-5.4" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-3.4">It extends the ACME <code>newOrder</code> endpoint, defining a new payload identifier type called <code>openid-federation</code>.<a href="#section-1-3.4" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-5.5">It defines how the OpenID Federation Entity Statements can be used for the publication of the X.509 certificates, by a trust anchor or intermediate, that was previously issued with ACME.<a href="#section-1-5.5" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-3.5">It defines how the OpenID Federation Entity Statements can be used for the publication of the X.509 certificates, by a trust anchor or intermediate, that was previously issued with ACME.<a href="#section-1-3.5" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>
@@ -1258,20 +1260,20 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
         <h3 id="name-discovery-preconditions">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-discovery-preconditions" class="section-name selfRef">Discovery Preconditions</a>
         </h3>
-<p id="section-5.1-1">The protocol assumes the following discovery preconditions are met, where for discovery is intended the phase where a Requestor search an Issuer to requests an X.509 certificate.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">The protocol assumes the following discovery preconditions are met, where for discovery is intended the phase where a Requestor searches an Issuer to requests an X.509 certificate.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-5.1-2">
-<li id="section-5.1-2.1">The Requestor and the Issuer <span class="bcp14">MUST</span> publish their Entity Configuration as defined in ... OIDC FED ref here.<a href="#section-5.1-2.1" class="pilcrow">¶</a>
+<li id="section-5.1-2.1">The Requestor and the Issuer <span class="bcp14">MUST</span> publish their Entity Configuration as defined in the Section 6 of [OIDC FED].<a href="#section-5.1-2.1" class="pilcrow">¶</a>
 </li>
-          <li id="section-5.1-2.2">The Requestor and the Issuer <span class="bcp14">MUST</span> be able to establish the trust to each other obtaining the Trust Chain of each other, as defined in ... OIDC FED ref here.<a href="#section-5.1-2.2" class="pilcrow">¶</a>
+          <li id="section-5.1-2.2">The Requestor and the Issuer <span class="bcp14">MUST</span> be able to establish the trust to each other obtaining the Trust Chain of each other, as defined in the Section 3.2 of [OIDC FED].<a href="#section-5.1-2.2" class="pilcrow">¶</a>
 </li>
-          <li id="section-5.1-2.3">The Trust Anchor and its Intermediate <span class="bcp14">SHOULD</span> implement an ACME server with at least the <code>newOrder</code> endpoint as extended in this specification.<a href="#section-5.1-2.3" class="pilcrow">¶</a>
+          <li id="section-5.1-2.3">The Trust Anchor and its Intermediates <span class="bcp14">SHOULD</span> implement an ACME server with at least the <code>newOrder</code> endpoint as extended in this specification.<a href="#section-5.1-2.3" class="pilcrow">¶</a>
 </li>
-          <li id="section-5.1-2.4">The Issuer <span class="bcp14">MUST</span> publish in its Entity Configuration, within the metadata parameter (JSON Object), the metadata type <code>acme_provider</code> according to the Section ... of this specification, <strong>TBD</strong>.<a href="#section-5.1-2.4" class="pilcrow">¶</a>
+          <li id="section-5.1-2.4">The Issuer <span class="bcp14">MUST</span> publish in its Entity Configuration, within the metadata parameter as defined in the Section 4 of <span>[<a href="#OIDC-FED" class="cite xref">OIDC-FED</a>]</span>, the metadata type <code>acme_provider</code> according to the Section ... of this specification, <strong>TBD</strong>.<a href="#section-5.1-2.4" class="pilcrow">¶</a>
 </li>
-          <li id="section-5.1-2.5">The Issuer <span class="bcp14">MAY</span> be a Leaf, in these cases a specific Trust Mark <span class="bcp14">SHOULD</span> be issued by the Trust Anchor, or on behalf of this latter through the allowed Trust Mark issuers configured in the federation, and then published within the Leaf Entity Configuration.<a href="#section-5.1-2.5" class="pilcrow">¶</a>
+          <li id="section-5.1-2.5">The Issuer <span class="bcp14">MAY</span> be a Leaf, in these cases a specific Trust Mark <span class="bcp14">SHOULD</span> be issued by the Trust Anchor, or on behalf of it through by the allowed Trust Mark issuers configured in the federation, and then published within the Leaf Entity Configuration.<a href="#section-5.1-2.5" class="pilcrow">¶</a>
 </li>
         </ol>
-<p id="section-5.1-3">Where the precondition number 4 and number 5 are not met, there <span class="bcp14">MAY</span> be some cases where the Requestor known a priori which are the Issuers in one or more federations, in this case the requestor directly requests the issuance of the X.509 certificate to the trusted issuer.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">Where the precondition number 4 and number 5 are not met, there <span class="bcp14">MAY</span> be some cases where the Requestor known a priori which are the Issuers in one or more federations, in this case the requestor directly requests the issuance of the X.509 certificate to the trusted Issuer.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="overview">
