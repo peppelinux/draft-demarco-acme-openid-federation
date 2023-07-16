@@ -191,7 +191,6 @@ This section describe how to use the parameters defined in the [Section 7.1.1](h
       "newNonce": "https://issuer.example.com/acme/new-nonce",
       "newOrder": "https://issuer.example.com/acme/new-order",
       "revokeCert": "https://issuer.example.com/acme/revoke-cert",
-      "keyChange": "https://issuer.example.com/acme/key-change",
       "meta": {
         "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
         "website": "https://www.issuer.example.com/",
@@ -235,7 +234,7 @@ Content-Type: application/jose+json
  "protected": base64url({
    "alg": "ES256",
    "kid": "1",
-   "nonce": "5XJ1L3lEkMG7tR6pA00clA",
+   "nonce": "oFvnlFP1wIhRlYS2jTaXbA",
    "url": "https://issuer.example.com/acme/new-order",
    "trust_chain": ["eyJhbGciOiJFU ...", "eyJhbGci ..."]
  }),
@@ -292,7 +291,7 @@ Location: https://issuer.example.com/acme/order/TOlocE8rfgo
 
  "identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],
 
- "finalize": "https://example.com/acme/order/TOlocE8rfgo/finalize"
+ "finalize": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize"
 }
 ~~~~
 
@@ -321,7 +320,7 @@ Content-Type: application/jose+json
  "protected": base64url({
    "alg": "ES256",
    "kid": "1",
-   "nonce": "MSF2j2nawWHPxxkE3ZJtKQ",
+   "nonce": "MYAuvOpaoIiywTezizk5vw",
    "url": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize"
 
  }),
@@ -377,15 +376,15 @@ Below a non-normative example of a request:
 
 ~~~~ http
 POST /acme/cert/mAt3xBGaobw HTTP/1.1
-Host: example.com
+Host: issuer.example.com
 Content-Type: application/jose+json
 Accept: application/pem-certificate-chain
 
 {
  "protected": base64url({
    "alg": "ES256",
-   "kid": "https://example.com/acme/acct/evOfKhNU60wg",
-   "nonce": "uQpSjlRb4vQVCjVYAyyUWg",
+   "kid": "1",
+   "nonce": "CGf81JWBsq8QyIgPCi9Q9X",
    "url": "https://example.com/acme/cert/mAt3xBGaobw"
  }),
  "payload": "",
