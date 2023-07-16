@@ -241,7 +241,7 @@ Table of Contents
 
    Where the precondition number 4 and number 5 are not met, there MAY
    be some cases where the Requestor known a priori which are the
-   Issuers in one or more federations, in this case the requestor
+   Issuers in one or more federations, in these cases the Requestor
    directly requests the issuance of the X.509 certificate to the
    trusted Issuer.
 
@@ -254,14 +254,14 @@ Table of Contents
        Requestor starts the discovery process to find which are the
        Issuers within the federation.
 
-   2.  The Requestor obtains a new nonce from the Issuer, by sending a
-       HTTP HEAD request to the Issuer's newNonce resource;
+   2.  The Requestor requests and obtains a new nonce from the Issuer,
+       by sending a HTTP HEAD request to the Issuer's newNonce resource;
 
    3.  The Issuer evaluates the trust to the Requestor by checking if it
-       is part of the federation.  If not the request MUST be rejected
-       (*TBD* the error to return).  There are two ways the Issuer is
-       able to check if a Requestor is part of the federation, these are
-       listed below:
+       is part of the federation.  If not the newNonce request MUST be
+       rejected (*TBD* the error to return).  There are two ways the
+       Issuer is able to check if a Requestor is part of the federation,
+       these are listed below:
 
        *  The Requestor adds the Trust Chain JWS header parameter
           related to itself, this option is RECOMMENDED since it reduces
@@ -269,11 +269,13 @@ Table of Contents
           Requestor;
 
        *  The Requestor doesn't add the Trust Chain in the request, then
-          the Issuer MUST start a Federation Entity Discovery to obtain
-          the Trust Chain related to the Requestor.
+          the Issuer MUST start a Federation Entity Discovery
+          (https://openid.net/specs/openid-connect-federation-
+          1_0.html#section-8) to obtain the Trust Chain related to the
+          Requestor.
 
    4.  The Requestor begins the certificate issuance process by sending
-       a POST request to the Issuer's newOrder resource.
+       a HTTP POST request to the Issuer's newOrder resource.
 
    Below is represented the summary of all the actions supported by the
    protocol defined in this document.
@@ -322,10 +324,10 @@ Table of Contents
 
    This section describe how to use the parameters defined in the
    Section 7.1.1 (https://datatracker.ietf.org/doc/html/rfc8555#section-
-   7.1.1) of [RFC8555] in the federation Entity Configuration of an
+   7.1.1) of [RFC8555] in the federation Entity Configuration of the
    Issuer.
 
-   json { "metadata": "acme_provider": { "newNonce":
+   { "metadata": "acme_provider": { "newNonce":
    "https://issuer.example.com/acme/new-nonce", "newOrder":
    "https://issuer.example.com/acme/new-order", "revokeCert":
    "https://issuer.example.com/acme/revoke-cert", "keyChange":
