@@ -1443,9 +1443,9 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
         </h3>
 <p id="section-5.3-1">The Issuer <span class="bcp14">MUST</span> publish its Entity Configuration including the <code>acme_provider</code> metadata within it.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 <p id="section-5.3-2">This section describe how to use the parameters defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1">Section 7.1.1</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> in the federation Entity Configuration of the Issuer.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
-<p id="section-5.3-3"><code>
-  {
-   "metadata":
+<p id="section-5.3-3"><code>json
+{
+  "metadata":
     "acme_provider": {
      "newNonce": "https://issuer.example.com/acme/new-nonce",
      "newOrder": "https://issuer.example.com/acme/new-order",
@@ -1456,8 +1456,8 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
        "website": "https://www.issuer.example.com/",
        "caaIdentities": \["issuer.example.com"\],
        "externalAccountRequired": false
-     }
    }
+ }
 </code><a href="#section-5.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
