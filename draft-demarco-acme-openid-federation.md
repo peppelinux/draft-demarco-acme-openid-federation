@@ -139,7 +139,6 @@ TBD: high level design and ascii sequence diagram.
   - The Requestor adds the Trust Chain JWS header parameter related to itself, this is RECOMMENDED;
   - The Requestor doesn't add the Trust Chain in the request, then the Issuer MUST start a Federation Discovery to obtain the Trust Chain related to the Requestor.
 3. The Requestor begins the certificate issuance process by sending a POST request to the Issuer's `newOrder` resource.
-4. 
 
 
 | Action                | Request                                | Succesful Response |
