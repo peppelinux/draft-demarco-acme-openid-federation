@@ -121,8 +121,8 @@ This section presents the protocol flow.
 
 The protocol assumes the following discovery preconditions are met, where for discovery is intended the phase where a Requestor searches an Issuer to requests an X.509 certificate.
 
-1. The Requestor and the Issuer MUST publish their Entity Configuration as defined in the Section 6 of [OIDC FED].
-2. The Requestor and the Issuer MUST be able to establish the trust to each other obtaining the Trust Chain of each other, as defined in the Section 3.2 of [OIDC FED].
+1. The Requestor and the Issuer MUST publish their Entity Configuration as defined in the Section 6 of [OIDC-FED].
+2. The Requestor and the Issuer MUST be able to establish the trust to each other obtaining the Trust Chain of each other, as defined in the Section 3.2 of [OIDC-FED].
 3. The Trust Anchor and its Intermediates SHOULD implement an ACME server with at least the `newNonce` and`newOrder` endpoints as extended in this specification.
 4. The Issuer MUST publish in its Entity Configuration, within the metadata parameter as defined in the Section 4 of [OIDC-FED], the metadata type `acme_provider` according to the Section ... of this specification, **TBD**.
 5. The Issuer MAY be a Leaf, in these cases a specific Trust Mark SHOULD be issued by the Trust Anchor, or on behalf of it through by the allowed Trust Mark issuers configured in the federation, and then published within the Leaf Entity Configuration.
@@ -173,7 +173,6 @@ The Issuer MUST publish its Entity Configuration including the `acme_provider` m
 This section describe how to use the parameters defined in the [Section 7.1.1](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1) of [RFC8555] in the federation Entity Configuration of an Issuer.
 
 ````json
-
   {
    "metadata":
     "acme_provider": {
@@ -184,7 +183,7 @@ This section describe how to use the parameters defined in the [Section 7.1.1](h
      "meta": {
        "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
        "website": "https://www.issuer.example.com/",
-       "caaIdentities": ["issuer.example.com"],
+       "caaIdentities": [!"issuer.example.com"],
        "externalAccountRequired": false
      }
    }
@@ -230,12 +229,10 @@ When OpenID Connect Federation 1.0 is used by the Issuer to attest the reliabiab
        "kid": "1",
        "nonce": "5XJ1L3lEkMG7tR6pA00clA",
        "url": "https://issuer.example.com/acme/new-order",
-       "trust_chain": [ ... ]
+       "trust_chain": \["eyJhbGciOiJFU ...", "eyJhbGci ..."\]
      }),
      "payload": base64url({
-       "identifiers": [
-         { "type": "openid-federation", "value": "requestor.example.org" }
-       ],
+       "identifiers": \[{ "type": "openid-federation", "value": "requestor.example.org" }\],
        "notBefore": "2024-01-01T00:04:00+04:00",
        "notAfter": "2024-01-08T00:04:00+04:00"
      }),
