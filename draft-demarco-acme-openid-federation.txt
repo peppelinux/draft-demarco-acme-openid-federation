@@ -103,7 +103,7 @@ Table of Contents
    thousands of entities belonging to different organizations, all the
    participants adhere to the same regulation or trust framework.
    OpenID Connect Federation 1.0 allows each participant to recognize
-   the other participant using a trust evaluation mechanism, using
+   the other participant using a trust evaluation mechanism, with
    RESTful services and cryptographic materials.
 
    Considering that a requestor is an entity requesting the issuance of
