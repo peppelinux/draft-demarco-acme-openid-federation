@@ -85,23 +85,23 @@ Table of Contents
    2.  Audience Target and Use Cases
    3.  Terminology
    4.  Conventions and Definitions
-   5.  Protocol Flow
-     5.1.  Discovery Preconditions
-     5.2.  Overview
-     5.3.  Metadata
-     5.4.  Certificates issued using OIDC Federation
-     5.5.  newNonce request
-     5.6.  newOrder request
-     5.7.  Order Object Extensions and Constraints
-     5.8.  newOrder Response
-     5.9.  Finalize Request
-     5.10. Finalize Response
-     5.11. Downloading the Certificate
-   6.  Federation Identifiers Types
-   7.  Certificate Lifecycle and Revocation
-   8.  Security Considerations
-   9.  IANA Considerations
-   10. Normative References
+   5.  Certificates issued using OIDC Federation
+   6.  Protocol Flow
+     6.1.  Discovery Preconditions
+     6.2.  Overview
+     6.3.  Metadata
+     6.4.  newNonce request
+     6.5.  newOrder request
+     6.6.  Order Object Extensions and Constraints
+     6.7.  newOrder Response
+     6.8.  Finalize Request
+     6.9.  Finalize Response
+     6.10. Downloading the Certificate
+   7.  Federation Identifiers Types
+   8.  Certificate Lifecycle and Revocation
+   9.  Security Considerations
+   10. IANA Considerations
+   11. Normative References
    Acknowledgments
    Author's Address
 
@@ -201,7 +201,31 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-5.  Protocol Flow
+5.  Certificates issued using OIDC Federation
+
+   The Federation Entity Keys are used for requesting X.509
+   certificates.
+
+   The Issuer establishes the authorization of a Federation Entity to
+   obtain certificates for the identifier configured in the Requestor's
+   Entity Configuration.
+
+   The protocol assumes the following discovery preconditions are met,
+   the Issuer MUST then have the guarranty that:
+
+   1.  The Requestor controls the private key related to the public part
+       published in its Entity Configuration, attested by the superior
+       Entity Statement.
+
+   2.  The Requestor controls the identifier in question, having
+       published the Entity Configuration and having signed it using the
+       private key related to the public one related to the CSR.
+
+   This process may be repeated to request multiple certificates related
+   to the Federation Entity Keys and linked to a single identifier,
+   that's the Federation Entity FQDN.
+
+6.  Protocol Flow
 
    This section presents the protocol flow.  The protocol flow is
    subdivided in the following phases:
@@ -212,7 +236,7 @@ Table of Contents
    *  *Order request*, the Requestor requests a X.509 certificate to a
       CA.
 
-5.1.  Discovery Preconditions
+6.1.  Discovery Preconditions
 
    The protocol assumes the following discovery preconditions are met,
    where for discovery is intended the phase where a Requestor searches
@@ -236,7 +260,7 @@ Table of Contents
        metadata parameter as defined in the Section 4
        (https://openid.net/specs/openid-connect-federation-
        1_0.html#name-metadata-type-identifiers) of [OIDC-FED], the
-       metadata type acme_provider according to the Section 5.3 of this
+       metadata type acme_provider according to the Section 6.3 of this
        specification.
 
    5.  The Issuer MAY be a Leaf, in these cases a specific Trust Mark
@@ -251,7 +275,7 @@ Table of Contents
    directly requests the issuance of the X.509 certificate to the
    trusted Issuer.
 
-5.2.  Overview
+6.2.  Overview
 
    TBD: high level design and ascii sequence diagram.
 
@@ -311,7 +335,7 @@ Table of Contents
 
                                  Table 1
 
-5.3.  Metadata
+6.3.  Metadata
 
    The Issuer MUST publish its Entity Configuration including the
    acme_provider metadata within it.
@@ -330,32 +354,7 @@ Table of Contents
    "website": "https://www.issuer.example.com/", "caaIdentities":
    ["issuer.example.com"], "externalAccountRequired": false } }
 
-5.4.  Certificates issued using OIDC Federation
-
-   The Federation Entity Keys are used for requesting X.509
-   certificates.
-
-   The Issuer establishes the authorization of a Federation Entity to
-   obtain certificates for the identifier configured in the Requestor's
-   Entity Configuration.
-
-   the Issuer MUST be sure that the following proofs are checked and
-   satisfied:
-
-   1.  The Requestor controls the private key related to the public part
-       published in the Entity Configuration, attested by the superior
-       Entity Statement, and that this key is used for the generation of
-       the CSR.
-
-   2.  The Requestor controls the identifier in question, having
-       published the Entity Configuration signed with the private key
-       used for the generation of the CSR.
-
-   This process may be repeated to request multiple certificates related
-   to the Federation Entity Keys and linked to a single identifier,
-   that's the Federation Entity FQDN.
-
-5.5.  newNonce request
+6.4.  newNonce request
 
    The Requestor MUST obtain a new nonce from the Issuer, according to
    the Section 7.2 (https://datatracker.ietf.org/doc/html/
@@ -373,7 +372,7 @@ Table of Contents
    *  The HTTP header Link: <https://issuer.example.com/acme/
       directory>;rel="index" is not required.
 
-5.6.  newOrder request
+6.5.  newOrder request
 
    The certificate issuance request is made by sending a HTTP POST to
    the Issuer newOrder resource, where the body of the POST is a JWS
@@ -398,7 +397,7 @@ Table of Contents
    "2024-01-01T00:04:00+04:00", "notAfter": "2024-01-08T00:04:00+04:00"
    }), "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g" } ````
 
-5.7.  Order Object Extensions and Constraints
+6.6.  Order Object Extensions and Constraints
 
    To the _ACME order object_ properties already defined in the
    Section 7.1.3 (https://datatracker.ietf.org/doc/html/rfc8555#section-
@@ -435,7 +434,7 @@ Table of Contents
       are present in the request and different from the type openid-
       federation, these SHOULD be ignored.
 
-5.8.  newOrder Response
+6.7.  newOrder Response
 
    The server MUST return an error if it cannot fulfill the request as
    specified, and it MUST NOT issue a certificate with contents other
@@ -470,7 +469,7 @@ Table of Contents
    *  The authorizations arrays is not required an MUST be omitted from
       the order object.
 
-5.9.  Finalize Request
+6.8.  Finalize Request
 
    Once the client believes it has fulfilled the server's requirements,
    it should send a POST request to the order resource's finalize URL.
@@ -501,7 +500,7 @@ Table of Contents
    portion of the requested subject name or in an extensionRequest
    attribute [RFC2985] requesting a subjectAltName extension, or both.
 
-5.10.  Finalize Response
+6.9.  Finalize Response
 
    If a request to finalize an order is successful, the server will
    return a 200 (OK) with an updated order object.  The status of the
@@ -531,7 +530,7 @@ Table of Contents
 
    *  The HTTP Header Link is not required
 
-5.11.  Downloading the Certificate
+6.10.  Downloading the Certificate
 
    The request and the response are fully compliant to the Section 7.4.2
    (https://datatracker.ietf.org/doc/html/rfc8555#section-7.4.2) defined
@@ -556,7 +555,7 @@ Table of Contents
    -----END CERTIFICATE----- -----BEGIN CERTIFICATE----- [Issuer
    certificate contents] -----END CERTIFICATE----- ````
 
-6.  Federation Identifiers Types
+7.  Federation Identifiers Types
 
    The "ACME Identifier Types" registry defined in the Section 9.7.7
    (https://datatracker.ietf.org/doc/html/rfc8555#section-9.7.7) of
@@ -580,7 +579,7 @@ Table of Contents
 
                                  Table 3
 
-7.  Certificate Lifecycle and Revocation
+8.  Certificate Lifecycle and Revocation
 
    *TBD*.
 
@@ -601,15 +600,15 @@ Table of Contents
    (https://datatracker.ietf.org/doc/html/rfc8555#section-7.6) of
    [RFC8555].
 
-8.  Security Considerations
+9.  Security Considerations
 
    TBD.
 
-9.  IANA Considerations
+10.  IANA Considerations
 
    This document has no IANA actions.
 
-10.  Normative References
+11.  Normative References
 
    [OIDC-FED] Hedberg, R., Jones, M. B., Solberg, A. Å., Bradley, J., De
               Marco, G., and V. Dzhuvinov, "OpenID Connect Federation
