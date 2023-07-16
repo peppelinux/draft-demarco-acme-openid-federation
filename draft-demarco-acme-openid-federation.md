@@ -186,7 +186,7 @@ This section describe how to use the parameters defined in the [Section 7.1.1](h
      "meta": {
        "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
        "website": "https://www.issuer.example.com/",
-       "caaIdentities": [!"issuer.example.com"],
+       "caaIdentities": \["issuer.example.com"\],
        "externalAccountRequired": false
      }
    }
@@ -204,7 +204,7 @@ The certificate issuance request is made by sending a HTTP POST to the Issuer `n
 The *ACME order object* represents the request for a certificate issuance and is used to track the progress of that order through to issuance (see the [Section 7.1.6](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.6) of [RFC8555] for any further information about the statuses).
 
 
-### Federation Extensions and Constraints
+### Order Object Extensions and Constraints
 
 To the *ACME order object* properties already defined in the [Section 7.1.3](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.3) of [RFC8555] are added those defined by this document and listed below, to be intended as extensions to [RFC8555].
 
@@ -213,14 +213,14 @@ To the *ACME order object* properties already defined in the [Section 7.1.3](htt
 | protected headers | `trust_chain` | JSON Array of JWS | OPTIONAL | [OIDC-FED], Section 3.2.1 |
 
 
-When OpenID Connect Federation 1.0 is used by the Issuer to attest the reliabiability of a Requestor and then authorize its request, this specification adds the following constraints to the `payload.identifiers` JSON Array:
+When OpenID Connect Federation 1.0 is used by the Issuer to attest the reliabiability of a Requestor, the following constraints to the `payload.identifiers` JSON Array MUST be respected:
 
 - `type` MUST be set to `openid-federation`;
-- `value` MUST correspond to the FQDN contained within the `iss` parameter of the Requestor's Entity Configuration. Since the Federation Entity ID is a HTTP URL, the corresponding FQDN MUST be extracted it. For example, if the Entity Configuration `iss` parameter contains the value `https://requestor.example.org/oidc/rp`, then the extracted FQDN is `requestor.example.org` and MUST correspond to the value of the identifier contained in the order object;
+- `value` MUST correspond to the FQDN contained within the `iss` parameter of the Requestor's Entity Configuration. Since the Federation Entity ID is a HTTP URL, the corresponding FQDN MUST be extracted from it. For example, if the `iss` parameter withing the Entity Configuration contains the value `https://requestor.example.org/oidc/rp`, the extracted FQDN is then `requestor.example.org` and it MUST correspond to the value of the identifier contained in the order object;
 - the maximum length of the JSON Array contained in the `identifiers` parameter MUST be 1, since there cannot be more than a single FQDN corresponding to a single Federation Entity. If other identifiers  are present in the request and different from the type `openid-federation`, these SHOULD be ignored.
 
 
-```http
+```
 
    POST /acme/new-order HTTP/1.1
    Host: issuer.example.com
