@@ -1446,7 +1446,8 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
         </h3>
 <p id="section-6.3-1">The Issuer <span class="bcp14">MUST</span> publish its Entity Configuration including the <code>acme_provider</code> metadata within it.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
 <p id="section-6.3-2">This section describe how to use the parameters defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1">Section 7.1.1</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> in the federation Entity Configuration of the Issuer.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
-<p id="section-6.3-3"><code>
+<div class="lang-json sourcecode" id="section-6.3-3">
+<pre>
 {
   "metadata":
     "acme_provider": {
@@ -1461,7 +1462,8 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
         "externalAccountRequired": false
    }
 }
-</code><a href="#section-6.3-3" class="pilcrow">¶</a></p>
+</pre><a href="#section-6.3-3" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 <div id="newnonce-request">
@@ -1471,16 +1473,19 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
         </h3>
 <p id="section-6.4-1">The Requestor <span class="bcp14">MUST</span> obtain a new nonce from the Issuer, according to the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.2">Section 7.2</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.4-1" class="pilcrow">¶</a></p>
 <p id="section-6.4-2">Below a non-normative example of the request:<a href="#section-6.4-2" class="pilcrow">¶</a></p>
-<p id="section-6.4-3">````
+<div class="lang-http sourcecode" id="section-6.4-3">
+<pre>
 HEAD /acme/new-nonce HTTP/1.1
-Host: issuer.example.com<a href="#section-6.4-3" class="pilcrow">¶</a></p>
-<p id="section-6.4-4">HTTP/1.1 200 OK
+Host: issuer.example.com
+
+HTTP/1.1 200 OK
 Replay-Nonce: oFvnlFP1wIhRlYS2jTaXbA
 Cache-Control: no-store
-````<a href="#section-6.4-4" class="pilcrow">¶</a></p>
-<p id="section-6.4-5">Differences with <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>:<a href="#section-6.4-5" class="pilcrow">¶</a></p>
+</pre><a href="#section-6.4-3" class="pilcrow">¶</a>
+</div>
+<p id="section-6.4-4">Differences with <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>:<a href="#section-6.4-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.4-6.1">The HTTP header <code>Link: &lt;https://issuer.example.com/acme/directory&gt;;rel="index"</code> is not required.<a href="#section-6.4-6.1" class="pilcrow">¶</a>
+<li class="normal" id="section-6.4-5.1">The HTTP header <code>Link: &lt;https://issuer.example.com/acme/directory&gt;;rel="index"</code> is not required.<a href="#section-6.4-5.1" class="pilcrow">¶</a>
 </li>
         </ul>
 </section>
@@ -1492,11 +1497,13 @@ Cache-Control: no-store
         </h3>
 <p id="section-6.5-1">The certificate issuance request is made by sending a HTTP POST to the Issuer <code>newOrder</code> resource, where the body of the POST is a JWS object whose JSON payload is a subset of the <em>ACME order object</em>, as defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.4">Section 7.4</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.5-1" class="pilcrow">¶</a></p>
 <p id="section-6.5-2">The <em>ACME order object</em> represents the request for a certificate issuance and is used to track the progress of that order through to issuance (see the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.6">Section 7.1.6</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> for any further information about the statuses).<a href="#section-6.5-2" class="pilcrow">¶</a></p>
-<p id="section-6.5-3">````
+<div class="lang-http sourcecode" id="section-6.5-3">
+<pre>
 POST /acme/new-order HTTP/1.1
 Host: issuer.example.com
-Content-Type: application/jose+json<a href="#section-6.5-3" class="pilcrow">¶</a></p>
-<p id="section-6.5-4">{
+Content-Type: application/jose+json
+
+{
  "protected": base64url({
    "alg": "ES256",
    "kid": "1",
@@ -1511,7 +1518,8 @@ Content-Type: application/jose+json<a href="#section-6.5-3" class="pilcrow">¶</
  }),
  "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
 }
-````<a href="#section-6.5-4" class="pilcrow">¶</a></p>
+</pre><a href="#section-6.5-3" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 <div id="order-object-extensions-and-constraints">
@@ -1574,24 +1582,30 @@ responds with a 201 (Created) response.  The body of this response is
 an order object reflecting the client's request and any
 authorizations the client must complete before the certificate will
 be issued.<a href="#section-6.7-2" class="pilcrow">¶</a></p>
-<p id="section-6.7-3">````
+<div class="lang-http sourcecode" id="section-6.7-3">
+<pre>
 HTTP/1.1 201 Created
 Replay-Nonce: MYAuvOpaoIiywTezizk5vw
-Location: https://issuer.example.com/acme/order/TOlocE8rfgo<a href="#section-6.7-3" class="pilcrow">¶</a></p>
-<p id="section-6.7-4">{
+Location: https://issuer.example.com/acme/order/TOlocE8rfgo
+
+{
  "status": "pending",
- "expires": "2016-01-05T14:09:07.99Z",<a href="#section-6.7-4" class="pilcrow">¶</a></p>
-<p id="section-6.7-5">"notBefore": "2016-01-01T00:00:00Z",
- "notAfter": "2016-01-08T00:00:00Z",<a href="#section-6.7-5" class="pilcrow">¶</a></p>
-<p id="section-6.7-6">"identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],<a href="#section-6.7-6" class="pilcrow">¶</a></p>
-<p id="section-6.7-7">"finalize": "https://example.com/acme/order/TOlocE8rfgo/finalize"
+ "expires": "2016-01-05T14:09:07.99Z",
+
+ "notBefore": "2016-01-01T00:00:00Z",
+ "notAfter": "2016-01-08T00:00:00Z",
+
+ "identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],
+
+ "finalize": "https://example.com/acme/order/TOlocE8rfgo/finalize"
 }
-````<a href="#section-6.7-7" class="pilcrow">¶</a></p>
-<p id="section-6.7-8">Differences with <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>:<a href="#section-6.7-8" class="pilcrow">¶</a></p>
+</pre><a href="#section-6.7-3" class="pilcrow">¶</a>
+</div>
+<p id="section-6.7-4">Differences with <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>:<a href="#section-6.7-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.7-9.1">The HTTP Header Link is not required<a href="#section-6.7-9.1" class="pilcrow">¶</a>
+<li class="normal" id="section-6.7-5.1">The HTTP Header Link is not required<a href="#section-6.7-5.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-6.7-9.2">The <code>authorizations</code> arrays is not required an <span class="bcp14">MUST</span> be omitted from the order object.<a href="#section-6.7-9.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-6.7-5.2">The <code>authorizations</code> arrays is not required an <span class="bcp14">MUST</span> be omitted from the order object.<a href="#section-6.7-5.2" class="pilcrow">¶</a>
 </li>
         </ul>
 </section>
@@ -1606,29 +1620,33 @@ it should send a POST request to the order resource's finalize URL.
 The POST body <span class="bcp14">MUST</span> include a CSR in the form of a string.<a href="#section-6.8-1" class="pilcrow">¶</a></p>
 <p id="section-6.8-2">The CSR encodes the parameters for the certificate being requested <span>[<a href="#RFC2986" class="cite xref">RFC2986</a>]</span>. The CSR is sent in the base64url-encoded version of the DER format. Please note that the value is encoded in base64url and does not include headers, then it is different from PEM.<a href="#section-6.8-2" class="pilcrow">¶</a></p>
 <p id="section-6.8-3">Below a non-normative example of the <code>finalize</code> made via HTTP POST:<a href="#section-6.8-3" class="pilcrow">¶</a></p>
-<p id="section-6.8-4">````
+<div class="lang-http sourcecode" id="section-6.8-4">
+<pre>
 POST /acme/order/TOlocE8rfgo/finalize HTTP/1.1
 Host: issuer.example.com
-Content-Type: application/jose+json<a href="#section-6.8-4" class="pilcrow">¶</a></p>
-<p id="section-6.8-5">{
+Content-Type: application/jose+json
+
+{
  "protected": base64url({
    "alg": "ES256",
    "kid": "1",
    "nonce": "MSF2j2nawWHPxxkE3ZJtKQ",
-   "url": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize"<a href="#section-6.8-5" class="pilcrow">¶</a></p>
-<p id="section-6.8-6">}),
+   "url": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize"
+
+ }),
  "payload": base64url({
    "csr": "MIIBPTCBxAIBADBFMQ...FS6aKdZeGsysoCo4H9P",
  }),
  "signature": "uOrUfIIk5RyQ...nw62Ay1cl6AB"
 }
-````<a href="#section-6.8-6" class="pilcrow">¶</a></p>
-<p id="section-6.8-7">The CSR encodes the client's requests with regard to the content of
+</pre><a href="#section-6.8-4" class="pilcrow">¶</a>
+</div>
+<p id="section-6.8-5">The CSR encodes the client's requests with regard to the content of
 the certificate to be issued.  The CSR <span class="bcp14">MUST</span> indicate the exact same
 set of requested identifiers as the initial newOrder request.
 Identifiers of type "dns" <span class="bcp14">MUST</span> appear either in the commonName
 portion of the requested subject name or in an extensionRequest
-attribute [RFC2985] requesting a subjectAltName extension, or both.<a href="#section-6.8-7" class="pilcrow">¶</a></p>
+attribute [RFC2985] requesting a subjectAltName extension, or both.<a href="#section-6.8-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="finalize-response">
@@ -1639,23 +1657,30 @@ attribute [RFC2985] requesting a subjectAltName extension, or both.<a href="#sec
 <p id="section-6.9-1">If a request to finalize an order is successful, the server will
 return a 200 (OK) with an updated order object.  The status of the
 order will indicate what action the client should take, these action values are defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.4">Section 7.4</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.9-1" class="pilcrow">¶</a></p>
-<p id="section-6.9-2">````
+<div class="lang-http sourcecode" id="section-6.9-2">
+<pre>
 HTTP/1.1 200 OK
 Replay-Nonce: CGf81JWBsq8QyIgPCi9Q9X
-Location: https://issuer.example.com/acme/order/TOlocE8rfgo<a href="#section-6.9-2" class="pilcrow">¶</a></p>
-<p id="section-6.9-3">{
+Location: https://issuer.example.com/acme/order/TOlocE8rfgo
+
+{
  "status": "valid",
- "expires": "2016-01-20T14:09:07.99Z",<a href="#section-6.9-3" class="pilcrow">¶</a></p>
-<p id="section-6.9-4">"notBefore": "2016-01-01T00:00:00Z",
- "notAfter": "2016-01-08T00:00:00Z",<a href="#section-6.9-4" class="pilcrow">¶</a></p>
-<p id="section-6.9-5">"identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],<a href="#section-6.9-5" class="pilcrow">¶</a></p>
-<p id="section-6.9-6">"finalize": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize",<a href="#section-6.9-6" class="pilcrow">¶</a></p>
-<p id="section-6.9-7">"certificate": "https://issuer.example.com/acme/cert/mAt3xBGaobw"
+ "expires": "2016-01-20T14:09:07.99Z",
+
+ "notBefore": "2016-01-01T00:00:00Z",
+ "notAfter": "2016-01-08T00:00:00Z",
+
+ "identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],
+
+ "finalize": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize",
+
+ "certificate": "https://issuer.example.com/acme/cert/mAt3xBGaobw"
 }
-````<a href="#section-6.9-7" class="pilcrow">¶</a></p>
-<p id="section-6.9-8">Differences with <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>:<a href="#section-6.9-8" class="pilcrow">¶</a></p>
+</pre><a href="#section-6.9-2" class="pilcrow">¶</a>
+</div>
+<p id="section-6.9-3">Differences with <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>:<a href="#section-6.9-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.9-9.1">The HTTP Header Link is not required<a href="#section-6.9-9.1" class="pilcrow">¶</a>
+<li class="normal" id="section-6.9-4.1">The HTTP Header Link is not required<a href="#section-6.9-4.1" class="pilcrow">¶</a>
 </li>
         </ul>
 </section>
@@ -1667,12 +1692,14 @@ Location: https://issuer.example.com/acme/order/TOlocE8rfgo<a href="#section-6.9
         </h3>
 <p id="section-6.10-1">The request and the response are fully compliant to the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.4.2">Section 7.4.2</a> defined in <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.10-1" class="pilcrow">¶</a></p>
 <p id="section-6.10-2">Below a non-normative example of a request:<a href="#section-6.10-2" class="pilcrow">¶</a></p>
-<p id="section-6.10-3">````
+<div class="lang-http sourcecode" id="section-6.10-3">
+<pre>
 POST /acme/cert/mAt3xBGaobw HTTP/1.1
 Host: example.com
 Content-Type: application/jose+json
-Accept: application/pem-certificate-chain<a href="#section-6.10-3" class="pilcrow">¶</a></p>
-<p id="section-6.10-4">{
+Accept: application/pem-certificate-chain
+
+{
  "protected": base64url({
    "alg": "ES256",
    "kid": "https://example.com/acme/acct/evOfKhNU60wg",
@@ -1682,18 +1709,22 @@ Accept: application/pem-certificate-chain<a href="#section-6.10-3" class="pilcro
  "payload": "",
  "signature": "nuSDISbWG8mMgE7H...QyVUL68yzf3Zawps"
 }
-````<a href="#section-6.10-4" class="pilcrow">¶</a></p>
-<p id="section-6.10-5">Here follows a non-normative example of a response:<a href="#section-6.10-5" class="pilcrow">¶</a></p>
-<p id="section-6.10-6">````
+</pre><a href="#section-6.10-3" class="pilcrow">¶</a>
+</div>
+<p id="section-6.10-4">Here follows a non-normative example of a response:<a href="#section-6.10-4" class="pilcrow">¶</a></p>
+<div class="lang-http sourcecode" id="section-6.10-5">
+<pre>
 HTTP/1.1 200 OK
-Content-Type: application/pem-certificate-chain<a href="#section-6.10-6" class="pilcrow">¶</a></p>
-<p id="section-6.10-7">-----BEGIN CERTIFICATE-----
+Content-Type: application/pem-certificate-chain
+
+-----BEGIN CERTIFICATE-----
 [End-entity certificate contents]
 -----END CERTIFICATE-----
 -----BEGIN CERTIFICATE-----
 [Issuer certificate contents]
 -----END CERTIFICATE-----
-````<a href="#section-6.10-7" class="pilcrow">¶</a></p>
+</pre><a href="#section-6.10-5" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 </section>

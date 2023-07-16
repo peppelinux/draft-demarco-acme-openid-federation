@@ -345,14 +345,20 @@ Table of Contents
    7.1.1) of [RFC8555] in the federation Entity Configuration of the
    Issuer.
 
-   { "metadata": "acme_provider": { "newNonce":
-   "https://issuer.example.com/acme/new-nonce", "newOrder":
-   "https://issuer.example.com/acme/new-order", "revokeCert":
-   "https://issuer.example.com/acme/revoke-cert", "keyChange":
-   "https://issuer.example.com/acme/key-change", "meta": {
-   "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
-   "website": "https://www.issuer.example.com/", "caaIdentities":
-   ["issuer.example.com"], "externalAccountRequired": false } }
+   {
+     "metadata":
+       "acme_provider": {
+         "newNonce": "https://issuer.example.com/acme/new-nonce",
+         "newOrder": "https://issuer.example.com/acme/new-order",
+         "revokeCert": "https://issuer.example.com/acme/revoke-cert",
+         "keyChange": "https://issuer.example.com/acme/key-change",
+         "meta": {
+           "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
+           "website": "https://www.issuer.example.com/",
+           "caaIdentities": ["issuer.example.com"],
+           "externalAccountRequired": false
+      }
+   }
 
 6.4.  newNonce request
 
@@ -362,10 +368,12 @@ Table of Contents
 
    Below a non-normative example of the request:
 
-   ```` HEAD /acme/new-nonce HTTP/1.1 Host: issuer.example.com
+   HEAD /acme/new-nonce HTTP/1.1
+   Host: issuer.example.com
 
-   HTTP/1.1 200 OK Replay-Nonce: oFvnlFP1wIhRlYS2jTaXbA Cache-Control:
-   no-store ````
+   HTTP/1.1 200 OK
+   Replay-Nonce: oFvnlFP1wIhRlYS2jTaXbA
+   Cache-Control: no-store
 
    Differences with [RFC8555]:
 
@@ -386,16 +394,25 @@ Table of Contents
    (https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.6) of
    [RFC8555] for any further information about the statuses).
 
-   ```` POST /acme/new-order HTTP/1.1 Host: issuer.example.com Content-
-   Type: application/jose+json
+   POST /acme/new-order HTTP/1.1
+   Host: issuer.example.com
+   Content-Type: application/jose+json
 
-   { "protected": base64url({ "alg": "ES256", "kid": "1", "nonce":
-   "5XJ1L3lEkMG7tR6pA00clA", "url": "https://issuer.example.com/acme/
-   new-order", "trust_chain": ["eyJhbGciOiJFU ...", "eyJhbGci ..."] }),
-   "payload": base64url({ "identifiers": [{ "type": "openid-federation",
-   "value": "requestor.example.org" }], "notBefore":
-   "2024-01-01T00:04:00+04:00", "notAfter": "2024-01-08T00:04:00+04:00"
-   }), "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g" } ````
+   {
+    "protected": base64url({
+      "alg": "ES256",
+      "kid": "1",
+      "nonce": "5XJ1L3lEkMG7tR6pA00clA",
+      "url": "https://issuer.example.com/acme/new-order",
+      "trust_chain": ["eyJhbGciOiJFU ...", "eyJhbGci ..."]
+    }),
+    "payload": base64url({
+      "identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],
+      "notBefore": "2024-01-01T00:04:00+04:00",
+      "notAfter": "2024-01-08T00:04:00+04:00"
+    }),
+    "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
+   }
 
 6.6.  Order Object Extensions and Constraints
 
@@ -448,19 +465,21 @@ Table of Contents
    authorizations the client must complete before the certificate will
    be issued.
 
-   ```` HTTP/1.1 201 Created Replay-Nonce: MYAuvOpaoIiywTezizk5vw
+   HTTP/1.1 201 Created
+   Replay-Nonce: MYAuvOpaoIiywTezizk5vw
    Location: https://issuer.example.com/acme/order/TOlocE8rfgo
 
-   { "status": "pending", "expires": "2016-01-05T14:09:07.99Z",
+   {
+    "status": "pending",
+    "expires": "2016-01-05T14:09:07.99Z",
 
-   "notBefore": "2016-01-01T00:00:00Z", "notAfter":
-   "2016-01-08T00:00:00Z",
+    "notBefore": "2016-01-01T00:00:00Z",
+    "notAfter": "2016-01-08T00:00:00Z",
 
-   "identifiers": [{ "type": "openid-federation", "value":
-   "requestor.example.org" }],
+    "identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],
 
-   "finalize": "https://example.com/acme/order/TOlocE8rfgo/finalize" }
-   ````
+    "finalize": "https://example.com/acme/order/TOlocE8rfgo/finalize"
+   }
 
    Differences with [RFC8555]:
 
@@ -482,16 +501,23 @@ Table of Contents
 
    Below a non-normative example of the finalize made via HTTP POST:
 
-   ```` POST /acme/order/TOlocE8rfgo/finalize HTTP/1.1 Host:
-   issuer.example.com Content-Type: application/jose+json
+   POST /acme/order/TOlocE8rfgo/finalize HTTP/1.1
+   Host: issuer.example.com
+   Content-Type: application/jose+json
 
-   { "protected": base64url({ "alg": "ES256", "kid": "1", "nonce":
-   "MSF2j2nawWHPxxkE3ZJtKQ", "url":
-   "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize"
+   {
+    "protected": base64url({
+      "alg": "ES256",
+      "kid": "1",
+      "nonce": "MSF2j2nawWHPxxkE3ZJtKQ",
+      "url": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize"
 
-   }), "payload": base64url({ "csr":
-   "MIIBPTCBxAIBADBFMQ...FS6aKdZeGsysoCo4H9P", }), "signature":
-   "uOrUfIIk5RyQ...nw62Ay1cl6AB" } ````
+    }),
+    "payload": base64url({
+      "csr": "MIIBPTCBxAIBADBFMQ...FS6aKdZeGsysoCo4H9P",
+    }),
+    "signature": "uOrUfIIk5RyQ...nw62Ay1cl6AB"
+   }
 
    The CSR encodes the client's requests with regard to the content of
    the certificate to be issued.  The CSR MUST indicate the exact same
@@ -509,22 +535,23 @@ Table of Contents
    (https://datatracker.ietf.org/doc/html/rfc8555#section-7.4) of
    [RFC8555].
 
-   ```` HTTP/1.1 200 OK Replay-Nonce: CGf81JWBsq8QyIgPCi9Q9X Location:
-   https://issuer.example.com/acme/order/TOlocE8rfgo
+   HTTP/1.1 200 OK
+   Replay-Nonce: CGf81JWBsq8QyIgPCi9Q9X
+   Location: https://issuer.example.com/acme/order/TOlocE8rfgo
 
-   { "status": "valid", "expires": "2016-01-20T14:09:07.99Z",
+   {
+    "status": "valid",
+    "expires": "2016-01-20T14:09:07.99Z",
 
-   "notBefore": "2016-01-01T00:00:00Z", "notAfter":
-   "2016-01-08T00:00:00Z",
+    "notBefore": "2016-01-01T00:00:00Z",
+    "notAfter": "2016-01-08T00:00:00Z",
 
-   "identifiers": [{ "type": "openid-federation", "value":
-   "requestor.example.org" }],
+    "identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],
 
-   "finalize": "https://issuer.example.com/acme/order/TOlocE8rfgo/
-   finalize",
+    "finalize": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize",
 
-   "certificate": "https://issuer.example.com/acme/cert/mAt3xBGaobw" }
-   ````
+    "certificate": "https://issuer.example.com/acme/cert/mAt3xBGaobw"
+   }
 
    Differences with [RFC8555]:
 
@@ -538,22 +565,33 @@ Table of Contents
 
    Below a non-normative example of a request:
 
-   ```` POST /acme/cert/mAt3xBGaobw HTTP/1.1 Host: example.com Content-
-   Type: application/jose+json Accept: application/pem-certificate-chain
+   POST /acme/cert/mAt3xBGaobw HTTP/1.1
+   Host: example.com
+   Content-Type: application/jose+json
+   Accept: application/pem-certificate-chain
 
-   { "protected": base64url({ "alg": "ES256", "kid":
-   "https://example.com/acme/acct/evOfKhNU60wg", "nonce":
-   "uQpSjlRb4vQVCjVYAyyUWg", "url": "https://example.com/acme/cert/
-   mAt3xBGaobw" }), "payload": "", "signature":
-   "nuSDISbWG8mMgE7H...QyVUL68yzf3Zawps" } ````
+   {
+    "protected": base64url({
+      "alg": "ES256",
+      "kid": "https://example.com/acme/acct/evOfKhNU60wg",
+      "nonce": "uQpSjlRb4vQVCjVYAyyUWg",
+      "url": "https://example.com/acme/cert/mAt3xBGaobw"
+    }),
+    "payload": "",
+    "signature": "nuSDISbWG8mMgE7H...QyVUL68yzf3Zawps"
+   }
 
    Here follows a non-normative example of a response:
 
-   ```` HTTP/1.1 200 OK Content-Type: application/pem-certificate-chain
+   HTTP/1.1 200 OK
+   Content-Type: application/pem-certificate-chain
 
-   -----BEGIN CERTIFICATE----- [End-entity certificate contents]
-   -----END CERTIFICATE----- -----BEGIN CERTIFICATE----- [Issuer
-   certificate contents] -----END CERTIFICATE----- ````
+   -----BEGIN CERTIFICATE-----
+   [End-entity certificate contents]
+   -----END CERTIFICATE-----
+   -----BEGIN CERTIFICATE-----
+   [Issuer certificate contents]
+   -----END CERTIFICATE-----
 
 7.  Federation Identifiers Types
 
