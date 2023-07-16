@@ -113,6 +113,20 @@ The terms "Federation Entity", "Trust Anchor", "Intermediate", "Entity Configura
 
 {::boilerplate bcp14-tagged}
 
+# Certificates issued using OIDC Federation
+
+The Federation Entity Keys are used for requesting X.509 certificates.
+
+The Issuer establishes the authorization of a Federation Entity to obtain certificates for the identifier configured in the Requestor's Entity Configuration.
+
+The protocol assumes the following discovery preconditions are met, the Issuer MUST then have the guarranty that:
+
+1.  The Requestor controls the private key related to the public part published in its Entity Configuration, attested by the superior Entity Statement.
+
+3.  The Requestor controls the identifier in question, having published the Entity Configuration and having signed it using the private key related to the public one related to the CSR.
+
+This process may be repeated to request multiple certificates related to the Federation Entity Keys and linked to a single identifier, that's the Federation Entity FQDN.
+
 # Protocol Flow
 
 This section presents the protocol flow. The protocol flow is subdivided in the following phases:
@@ -184,20 +198,6 @@ This section describe how to use the parameters defined in the [Section 7.1.1](h
    }
 }
 ````
-
-## Certificates issued using OIDC Federation
-
-The Federation Entity Keys are used for requesting X.509 certificates.
-
-The Issuer establishes the authorization of a Federation Entity to obtain certificates for the identifier configured in the Requestor's Entity Configuration.
-
-the Issuer MUST be sure that the following proofs are checked and satisfied:
-
-1.  The Requestor controls the private key related to the public part published in the Entity Configuration, attested by the superior Entity Statement, and that this key is used for the generation of the CSR.
-
-2.  The Requestor controls the identifier in question, having published the Entity Configuration signed with the private key used for the generation of the CSR.
-
-This process may be repeated to request multiple certificates related to the Federation Entity Keys and linked to a single identifier, that's the Federation Entity FQDN.
 
 ## newNonce request
 
