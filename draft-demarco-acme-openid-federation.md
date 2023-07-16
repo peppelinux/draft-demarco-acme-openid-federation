@@ -186,7 +186,7 @@ This section describe how to use the parameters defined in the [Section 7.1.1](h
      "meta": {
        "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
        "website": "https://www.issuer.example.com/",
-       "caaIdentities": \["issuer.example.com"\],
+       "caaIdentities": ["issuer.example.com"],
        "externalAccountRequired": false
    }
  }
