@@ -87,7 +87,7 @@ The audience of the document are the multilateral federations that require autom
 
 # Terminology
 
-   ACME    Automated Certificate Management Environment, a certificate management protocol [RFC8555.
+   ACME    Automated Certificate Management Environment, a certificate management protocol [RFC8555].
 
    TA      OpenID Connect Federation Trust Anchor, see CA
 
