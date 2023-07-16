@@ -98,10 +98,11 @@ Table of Contents
      6.9.  Finalize Response
      6.10. Downloading the Certificate
    7.  Federation Identifiers Types
-   8.  Certificate Lifecycle and Revocation
-   9.  Security Considerations
-   10. IANA Considerations
-   11. Normative References
+   8.  Publication of the Certificates within the Federation
+   9.  Certificate Lifecycle and Revocation
+   10. Security Considerations
+   11. IANA Considerations
+   12. Normative References
    Acknowledgments
    Author's Address
 
@@ -125,16 +126,15 @@ Table of Contents
    issuance of X.509 to a requestor, reducing both the bureaucratic and
    the implementative costs, since:
 
-   *  It does not require the involvement of other resources than the
-      ACME newNonce and newOrder endpoints, since the authentication and
-      authorization of the requestor is asserted with OpenID Federation
-      1.0.
+   *  It does not require the involvement of other authorizative
+      resources since the authentication and authorization of the
+      requestor is asserted with OpenID Connect Federation 1.0.
 
-   *  Instead of the /.well-known/acme-challenge/{token} endpoint it
-      defines how to use and validate a basic OpenID Connect Federation
-      component, called Entity Configuration, that is a signed JWT
-      published in a well-known resource (/.well-known/openid-
-      federation).
+   *  It defines how to use and validate a basic OpenID Connect
+      Federation component, called Entity Configuration, that is a
+      signed JWT published in a well-known resource (/.well-known/
+      openid-federation) without requiring the /.well-known/acme-
+      challenge/{token} endpoint.
 
    *  It removes the requirement for the authentication of an entity and
       the provisioning of the _acme-challenge token_, since the
@@ -617,7 +617,14 @@ Table of Contents
 
                                  Table 3
 
-8.  Certificate Lifecycle and Revocation
+8.  Publication of the Certificates within the Federation
+
+   *TBD*, when the Issuer is the Trust Anchor or Intermediate, the X.509
+   certificate linked to Federation Entity Key represented in JWK in the
+   Entity Statement related to the Requestor, SHOULD be extended with
+   the claim x5c, containing the issued certificate.
+
+9.  Certificate Lifecycle and Revocation
 
    *TBD*.
 
@@ -638,15 +645,15 @@ Table of Contents
    (https://datatracker.ietf.org/doc/html/rfc8555#section-7.6) of
    [RFC8555].
 
-9.  Security Considerations
+10.  Security Considerations
 
    TBD.
 
-10.  IANA Considerations
+11.  IANA Considerations
 
    This document has no IANA actions.
 
-11.  Normative References
+12.  Normative References
 
    [OIDC-FED] Hedberg, R., Jones, M. B., Solberg, A. Å., Bradley, J., De
               Marco, G., and V. Dzhuvinov, "OpenID Connect Federation

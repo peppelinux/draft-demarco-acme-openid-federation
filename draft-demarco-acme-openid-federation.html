@@ -1206,22 +1206,25 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-federation-identifiers-type" class="internal xref">Federation Identifiers Types</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-certificate-lifecycle-and-r" class="internal xref">Certificate Lifecycle and Revocation</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-publication-of-the-certific" class="internal xref">Publication of the Certificates within the Federation</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-certificate-lifecycle-and-r" class="internal xref">Certificate Lifecycle and Revocation</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#section-12" class="auto internal xref">12</a>. <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1235,9 +1238,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <p id="section-1-1">OpenID Connect Federation 1.0 allows an ACME server to issue X.509 certificates to one or more than a single organization without having pre-established any direct relationship or any stipulation of a contract. In a multilateral federation, composed by thousands of entities belonging to different organizations, all the participants adhere to the same regulation or trust framework. OpenID Connect Federation 1.0 allows each participant to recognize the other participant using a trust evaluation mechanism, with RESTful services and cryptographic materials.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">Considering that a requestor is an entity requesting the issuance of a X.509 certificate to a server and the issuer is the ACME server that validates the entitlements of the requestor before issuing the X.509 certificate, this specification defines how ACME and OpenID Connect Federation 1.0 can be integrated allowing an efficient issuance of X.509 to a requestor, reducing both the bureaucratic and the implementative costs, since:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1-3.1">It does not require the involvement of other resources than the ACME <code>newNonce</code> and <code>newOrder</code> endpoints, since the authentication and authorization of the requestor is asserted with OpenID Federation 1.0.<a href="#section-1-3.1" class="pilcrow">¶</a>
+<li class="normal" id="section-1-3.1">It does not require the involvement of other authorizative resources since the authentication and authorization of the requestor is asserted with OpenID Connect Federation 1.0.<a href="#section-1-3.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-3.2">Instead of the <code>/.well-known/acme-challenge/{token}</code> endpoint it defines how to use and validate a basic OpenID Connect Federation component, called Entity Configuration, that is a signed JWT published in a well-known resource (<code>/.well-known/openid-federation</code>).<a href="#section-1-3.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-3.2">It defines how to use and validate a basic OpenID Connect Federation component, called Entity Configuration, that is a signed JWT published in a well-known resource (<code>/.well-known/openid-federation</code>) without requiring the <code>/.well-known/acme-challenge/{token}</code> endpoint.<a href="#section-1-3.2" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-1-3.3">It removes the requirement for the authentication of an entity and the provisioning of the <em>acme-challenge token</em>, since the authorization mechanisms is built on top of the trust evaluation model as defined in OpenID Connect Federation 1.0.<a href="#section-1-3.3" class="pilcrow">¶</a>
 </li>
@@ -1764,37 +1767,45 @@ Content-Type: application/pem-certificate-chain
       </table>
 </section>
 </div>
-<div id="certificate-lifecycle-and-revocation">
+<div id="publication-of-the-certificates-within-the-federation">
 <section id="section-8">
-      <h2 id="name-certificate-lifecycle-and-r">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-certificate-lifecycle-and-r" class="section-name selfRef">Certificate Lifecycle and Revocation</a>
+      <h2 id="name-publication-of-the-certific">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-publication-of-the-certific" class="section-name selfRef">Publication of the Certificates within the Federation</a>
       </h2>
-<p id="section-8-1"><strong>TBD</strong>.<a href="#section-8-1" class="pilcrow">¶</a></p>
-<p id="section-8-2">The issued Certificates are related to the Federation Key attested within a Trust Chain, their expiration time <span class="bcp14">MUST</span> be equal to the expiration of the Trust Chain.<a href="#section-8-2" class="pilcrow">¶</a></p>
-<p id="section-8-3">When a Federation Key is removed from the Entity Statement that attests it, and then it cannot be attested though a Trust Chain, the certificate related to it <span class="bcp14">MUST</span> be revoked by its Issuer, if not expired.<a href="#section-8-3" class="pilcrow">¶</a></p>
-<p id="section-8-4">A Requestor <span class="bcp14">SHOULD</span> request the revocation of its Certificate when the related Federation Entity Key is revoked and published in the Federation Historical Key Registry.<a href="#section-8-4" class="pilcrow">¶</a></p>
-<p id="section-8-5">The certficate revocation request is defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.6">Section 7.6</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-8-5" class="pilcrow">¶</a></p>
+<p id="section-8-1"><strong>TBD</strong>, when the Issuer is the Trust Anchor or Intermediate, the X.509 certificate linked to Federation Entity Key represented in JWK in the Entity Statement related to the Requestor, <span class="bcp14">SHOULD</span> be extended with the claim <code>x5c</code>, containing the issued certificate.<a href="#section-8-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="certificate-lifecycle-and-revocation">
+<section id="section-9">
+      <h2 id="name-certificate-lifecycle-and-r">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-certificate-lifecycle-and-r" class="section-name selfRef">Certificate Lifecycle and Revocation</a>
+      </h2>
+<p id="section-9-1"><strong>TBD</strong>.<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-9-2">The issued Certificates are related to the Federation Key attested within a Trust Chain, their expiration time <span class="bcp14">MUST</span> be equal to the expiration of the Trust Chain.<a href="#section-9-2" class="pilcrow">¶</a></p>
+<p id="section-9-3">When a Federation Key is removed from the Entity Statement that attests it, and then it cannot be attested though a Trust Chain, the certificate related to it <span class="bcp14">MUST</span> be revoked by its Issuer, if not expired.<a href="#section-9-3" class="pilcrow">¶</a></p>
+<p id="section-9-4">A Requestor <span class="bcp14">SHOULD</span> request the revocation of its Certificate when the related Federation Entity Key is revoked and published in the Federation Historical Key Registry.<a href="#section-9-4" class="pilcrow">¶</a></p>
+<p id="section-9-5">The certficate revocation request is defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.6">Section 7.6</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-9-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-9">
+<section id="section-10">
       <h2 id="name-security-considerations">
-<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-9-1">TBD.<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-10-1">TBD.<a href="#section-10-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-10">
+<section id="section-11">
       <h2 id="name-iana-considerations">
-<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-10-1">This document has no IANA actions.<a href="#section-10-1" class="pilcrow">¶</a></p>
+<p id="section-11-1">This document has no IANA actions.<a href="#section-11-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<section id="section-11">
+<section id="section-12">
       <h2 id="name-normative-references">
-<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-12" class="section-number selfRef">12. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
 <dl class="references">
 <dt id="OIDC-FED">[OIDC-FED]</dt>
