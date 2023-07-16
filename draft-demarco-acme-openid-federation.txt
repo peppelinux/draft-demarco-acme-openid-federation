@@ -145,7 +145,7 @@ Table of Contents
 3.  Terminology
 
    ACME Automated Certificate Management Environment, a certificate
-   management protocol [RFC8555.
+   management protocol [RFC8555].
 
    TA OpenID Connect Federation Trust Anchor, see CA
 
