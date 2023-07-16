@@ -182,7 +182,7 @@ The Issuer MUST publish its Entity Configuration including the `acme_provider` m
 
 This section describe how to use the parameters defined in the [Section 7.1.1](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1) of [RFC8555] in the federation Entity Configuration of the Issuer.
 
-````
+~~~~ json
 {
   "metadata":
     "acme_provider": {
@@ -197,7 +197,7 @@ This section describe how to use the parameters defined in the [Section 7.1.1](h
         "externalAccountRequired": false
    }
 }
-````
+~~~~
 
 ## newNonce request
 
@@ -205,14 +205,14 @@ The Requestor MUST obtain a new nonce from the Issuer, according to the [Section
 
 Below a non-normative example of the request:
 
-````
+~~~~ http
 HEAD /acme/new-nonce HTTP/1.1
 Host: issuer.example.com
 
 HTTP/1.1 200 OK
 Replay-Nonce: oFvnlFP1wIhRlYS2jTaXbA
 Cache-Control: no-store
-````
+~~~~
 
 Differences with [RFC8555]:
 
@@ -224,7 +224,7 @@ The certificate issuance request is made by sending a HTTP POST to the Issuer `n
 
 The *ACME order object* represents the request for a certificate issuance and is used to track the progress of that order through to issuance (see the [Section 7.1.6](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.6) of [RFC8555] for any further information about the statuses).
 
-````
+~~~~ http
 POST /acme/new-order HTTP/1.1
 Host: issuer.example.com
 Content-Type: application/jose+json
@@ -244,7 +244,7 @@ Content-Type: application/jose+json
  }),
  "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
 }
-````
+~~~~
 
 ## Order Object Extensions and Constraints
 
@@ -276,7 +276,7 @@ an order object reflecting the client's request and any
 authorizations the client must complete before the certificate will
 be issued.
 
-````
+~~~~ http
 HTTP/1.1 201 Created
 Replay-Nonce: MYAuvOpaoIiywTezizk5vw
 Location: https://issuer.example.com/acme/order/TOlocE8rfgo
@@ -292,7 +292,7 @@ Location: https://issuer.example.com/acme/order/TOlocE8rfgo
 
  "finalize": "https://example.com/acme/order/TOlocE8rfgo/finalize"
 }
-````
+~~~~
 
 Differences with [RFC8555]:
 
@@ -310,7 +310,7 @@ The CSR encodes the parameters for the certificate being requested [RFC2986]. Th
 
 Below a non-normative example of the `finalize` made via HTTP POST:
 
-````
+~~~~ http
 POST /acme/order/TOlocE8rfgo/finalize HTTP/1.1
 Host: issuer.example.com
 Content-Type: application/jose+json
@@ -328,7 +328,7 @@ Content-Type: application/jose+json
  }),
  "signature": "uOrUfIIk5RyQ...nw62Ay1cl6AB"
 }
-````
+~~~~
 
 The CSR encodes the client's requests with regard to the content of
 the certificate to be issued.  The CSR MUST indicate the exact same
@@ -343,7 +343,7 @@ If a request to finalize an order is successful, the server will
 return a 200 (OK) with an updated order object.  The status of the
 order will indicate what action the client should take, these action values are defined in the [Section 7.4](https://datatracker.ietf.org/doc/html/rfc8555#section-7.4) of [RFC8555].
 
-````
+~~~~ http
 HTTP/1.1 200 OK
 Replay-Nonce: CGf81JWBsq8QyIgPCi9Q9X
 Location: https://issuer.example.com/acme/order/TOlocE8rfgo
@@ -361,7 +361,7 @@ Location: https://issuer.example.com/acme/order/TOlocE8rfgo
 
  "certificate": "https://issuer.example.com/acme/cert/mAt3xBGaobw"
 }
-````
+~~~~
 
 Differences with [RFC8555]:
 
@@ -373,7 +373,7 @@ The request and the response are fully compliant to the [Section 7.4.2](https://
 
 Below a non-normative example of a request:
 
-````
+~~~~ http
 POST /acme/cert/mAt3xBGaobw HTTP/1.1
 Host: example.com
 Content-Type: application/jose+json
@@ -389,11 +389,11 @@ Accept: application/pem-certificate-chain
  "payload": "",
  "signature": "nuSDISbWG8mMgE7H...QyVUL68yzf3Zawps"
 }
-````
+~~~~
 
 Here follows a non-normative example of a response:
 
-````
+~~~~ http
 HTTP/1.1 200 OK
 Content-Type: application/pem-certificate-chain
 
@@ -403,7 +403,7 @@ Content-Type: application/pem-certificate-chain
 -----BEGIN CERTIFICATE-----
 [Issuer certificate contents]
 -----END CERTIFICATE-----
-````
+~~~~
 
 # Federation Identifiers Types
 
