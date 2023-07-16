@@ -87,21 +87,21 @@ The audience of the document are the multilateral federations that require autom
 
 # Terminology
 
-   ACME    Automated Certificate Management Environment, a certificate management protocol [RFC8555].
+   **ACME**,    Automated Certificate Management Environment, a certificate management protocol [RFC8555].
 
-   TA      OpenID Connect Federation Trust Anchor, see CA
+   **TA**,      OpenID Connect Federation Trust Anchor, see CA
 
-   CA      Certification Authority, also known as Trust Anchor or Intermediate, specifically one that implements the ACME protocol though an ACME server.
+   **CA**,      Certification Authority, also known as Trust Anchor or Intermediate, specifically one that implements the ACME protocol though an ACME server.
 
-   CSR     Certificate Signing Request, specifically a PKCS#10 [RFC2986] as supported by ACME.
+   **CSR**,     Certificate Signing Request, specifically a PKCS#10 [RFC2986] as supported by ACME.
 
-   FQDN    Fully Qualified Domain Name.
+   **FQDN**,    Fully Qualified Domain Name.
 
-   Requestor ...
+   **Requestor**, ...
 
-   Issuer ...
+   **Issuer**, ...
 
-The terms "Trust Anchor", "Intermediate", "Entity Configuration", "Entity Statement", "Trust Mark" and "Trust Chain" used in this document are defined in [OIDC-FED].
+The terms "Trust Anchor", "Intermediate", "Entity Configuration", "Entity Statement", "Trust Mark" and "Trust Chain" used in this document are defined in the Section 1.2 of [OIDC-FED].
 
 # Conventions and Definitions
 
