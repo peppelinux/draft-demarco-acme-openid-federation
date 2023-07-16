@@ -1183,7 +1183,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-acme-neworder-request-withi" class="internal xref">ACME newOrder request within a Federation</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5.2.1">
-                    <p id="section-toc.1-1.5.2.5.2.1.1"><a href="#section-5.5.1" class="auto internal xref">5.5.1</a>.  <a href="#name-federation-extensions-and-c" class="internal xref">Federation Extensions and Constraints</a></p>
+                    <p id="section-toc.1-1.5.2.5.2.1.1"><a href="#section-5.5.1" class="auto internal xref">5.5.1</a>.  <a href="#name-order-object-extensions-and" class="internal xref">Order Object Extensions and Constraints</a></p>
 </li>
                 </ul>
 </li>
@@ -1454,7 +1454,7 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
      "meta": {
        "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
        "website": "https://www.issuer.example.com/",
-       "caaIdentities": [!"issuer.example.com"],
+       "caaIdentities": \["issuer.example.com"\],
        "externalAccountRequired": false
      }
    }
@@ -1476,10 +1476,10 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
         </h3>
 <p id="section-5.5-1">The certificate issuance request is made by sending a HTTP POST to the Issuer <code>newOrder</code> resource, where the body of the POST is a JWS object whose JSON payload is a subset of the <em>ACME order object</em>, as defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.4">Section 7.4</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
 <p id="section-5.5-2">The <em>ACME order object</em> represents the request for a certificate issuance and is used to track the progress of that order through to issuance (see the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.6">Section 7.1.6</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> for any further information about the statuses).<a href="#section-5.5-2" class="pilcrow">¶</a></p>
-<div id="federation-extensions-and-constraints">
+<div id="order-object-extensions-and-constraints">
 <section id="section-5.5.1">
-          <h4 id="name-federation-extensions-and-c">
-<a href="#section-5.5.1" class="section-number selfRef">5.5.1. </a><a href="#name-federation-extensions-and-c" class="section-name selfRef">Federation Extensions and Constraints</a>
+          <h4 id="name-order-object-extensions-and">
+<a href="#section-5.5.1" class="section-number selfRef">5.5.1. </a><a href="#name-order-object-extensions-and" class="section-name selfRef">Order Object Extensions and Constraints</a>
           </h4>
 <p id="section-5.5.1-1">To the <em>ACME order object</em> properties already defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.3">Section 7.1.3</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> are added those defined by this document and listed below, to be intended as extensions to <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-5.5.1-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-2">
@@ -1508,18 +1508,18 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
               </tr>
             </tbody>
           </table>
-<p id="section-5.5.1-3">When OpenID Connect Federation 1.0 is used by the Issuer to attest the reliabiability of a Requestor and then authorize its request, this specification adds the following constraints to the <code>payload.identifiers</code> JSON Array:<a href="#section-5.5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.5.1-3">When OpenID Connect Federation 1.0 is used by the Issuer to attest the reliabiability of a Requestor, the following constraints to the <code>payload.identifiers</code> JSON Array <span class="bcp14">MUST</span> be respected:<a href="#section-5.5.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5.5.1-4.1">
               <code>type</code> <span class="bcp14">MUST</span> be set to <code>openid-federation</code>;<a href="#section-5.5.1-4.1" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-5.5.1-4.2">
-              <code>value</code> <span class="bcp14">MUST</span> correspond to the FQDN contained within the <code>iss</code> parameter of the Requestor's Entity Configuration. Since the Federation Entity ID is a HTTP URL, the corresponding FQDN <span class="bcp14">MUST</span> be extracted it. For example, if the Entity Configuration <code>iss</code> parameter contains the value <code>https://requestor.example.org/oidc/rp</code>, then the extracted FQDN is <code>requestor.example.org</code> and <span class="bcp14">MUST</span> correspond to the value of the identifier contained in the order object;<a href="#section-5.5.1-4.2" class="pilcrow">¶</a>
+              <code>value</code> <span class="bcp14">MUST</span> correspond to the FQDN contained within the <code>iss</code> parameter of the Requestor's Entity Configuration. Since the Federation Entity ID is a HTTP URL, the corresponding FQDN <span class="bcp14">MUST</span> be extracted from it. For example, if the <code>iss</code> parameter withing the Entity Configuration contains the value <code>https://requestor.example.org/oidc/rp</code>, the extracted FQDN is then <code>requestor.example.org</code> and it <span class="bcp14">MUST</span> correspond to the value of the identifier contained in the order object;<a href="#section-5.5.1-4.2" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-5.5.1-4.3">the maximum length of the JSON Array contained in the <code>identifiers</code> parameter <span class="bcp14">MUST</span> be 1, since there cannot be more than a single FQDN corresponding to a single Federation Entity. If other identifiers  are present in the request and different from the type <code>openid-federation</code>, these <span class="bcp14">SHOULD</span> be ignored.<a href="#section-5.5.1-4.3" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-5.5.1-5">```http<a href="#section-5.5.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.5.1-5">```<a href="#section-5.5.1-5" class="pilcrow">¶</a></p>
 <p id="section-5.5.1-6">POST /acme/new-order HTTP/1.1
    Host: issuer.example.com
    Content-Type: application/jose+json<a href="#section-5.5.1-6" class="pilcrow">¶</a></p>

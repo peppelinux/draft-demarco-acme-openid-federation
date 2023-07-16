@@ -91,7 +91,7 @@ Table of Contents
      5.3.  Metadata
      5.4.  newNonce request
      5.5.  ACME newOrder request within a Federation
-       5.5.1.  Federation Extensions and Constraints
+       5.5.1.  Order Object Extensions and Constraints
    6.  Federation Identifiers Types
    7.  Security Considerations
    8.  IANA Considerations
@@ -334,7 +334,7 @@ Table of Contents
    "https://issuer.example.com/acme/key-change", "meta": {
    "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
    "website": "https://www.issuer.example.com/", "caaIdentities":
-   [!"issuer.example.com"], "externalAccountRequired": false } }
+   \["issuer.example.com"\], "externalAccountRequired": false } }
 
 5.4.  newNonce request
 
@@ -356,7 +356,7 @@ Table of Contents
    (https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.6) of
    [RFC8555] for any further information about the statuses).
 
-5.5.1.  Federation Extensions and Constraints
+5.5.1.  Order Object Extensions and Constraints
 
    To the _ACME order object_ properties already defined in the
    Section 7.1.3 (https://datatracker.ietf.org/doc/html/rfc8555#section-
@@ -373,20 +373,19 @@ Table of Contents
                                   Table 2
 
    When OpenID Connect Federation 1.0 is used by the Issuer to attest
-   the reliabiability of a Requestor and then authorize its request,
-   this specification adds the following constraints to the
-   payload.identifiers JSON Array:
+   the reliabiability of a Requestor, the following constraints to the
+   payload.identifiers JSON Array MUST be respected:
 
    *  type MUST be set to openid-federation;
 
    *  value MUST correspond to the FQDN contained within the iss
       parameter of the Requestor's Entity Configuration.  Since the
       Federation Entity ID is a HTTP URL, the corresponding FQDN MUST be
-      extracted it.  For example, if the Entity Configuration iss
-      parameter contains the value https://requestor.example.org/oidc/
-      rp, then the extracted FQDN is requestor.example.org and MUST
-      correspond to the value of the identifier contained in the order
-      object;
+      extracted from it.  For example, if the iss parameter withing the
+      Entity Configuration contains the value
+      https://requestor.example.org/oidc/rp, the extracted FQDN is then
+      requestor.example.org and it MUST correspond to the value of the
+      identifier contained in the order object;
 
    *  the maximum length of the JSON Array contained in the identifiers
       parameter MUST be 1, since there cannot be more than a single FQDN
@@ -394,7 +393,7 @@ Table of Contents
       are present in the request and different from the type openid-
       federation, these SHOULD be ignored.
 
-   ```http
+   ```
 
    POST /acme/new-order HTTP/1.1 Host: issuer.example.com Content-Type:
    application/jose+json
