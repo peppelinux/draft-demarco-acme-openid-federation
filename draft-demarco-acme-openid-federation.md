@@ -80,7 +80,7 @@ Considering that a requestor is an entity requesting the issuance of a X.509 cer
 - It reduces the number of resources required by the ACME server, since the authentication and authorization of the requestor is asserted with OpenID Connect Federation 1.0.
 - It defines how to use and validate a basic OpenID Connect Federation component, called Entity Configuration, that is a signed JWT published in a well-known resource (`/.well-known/openid-federation`) without requiring the `/.well-known/acme-challenge/{token}` endpoint.
 - It removes the requirement for the authentication of an entity and the provisioning of the *acme-challenge token*, since the authorization mechanisms is built on top of the trust evaluation model as defined in OpenID Connect Federation 1.0.
-- It extends the ACME `newOrder` endpoint, defining a new payload identifier type called `openid-federation`.
+- It extends the ACME `newOrder` resource, defining a new payload identifier type called `openid-federation`.
 - It defines how the OpenID Federation Entity Statements can be used for the publication of the X.509 certificates, by a trust anchor or intermediate, that was previously issued with ACME.
 
 # Audience Target and Use Cases
@@ -142,7 +142,7 @@ The protocol assumes the following discovery preconditions are met, where for di
 
 1. The Requestor and the Issuer MUST publish their Entity Configuration as defined in the [Section 6](https://openid.net/specs/openid-connect-federation-1_0.html#name-obtaining-federation-entity) of [OIDC-FED].
 2. The Requestor and the Issuer MUST be able to establish the trust to each other obtaining the Trust Chain of each other, as defined in the [Section 3.2](https://openid.net/specs/openid-connect-federation-1_0.html#name-trust-chain) of [OIDC-FED].
-3. The Trust Anchor and its Intermediates SHOULD implement an ACME server with at least the `newNonce` and the `newOrder` endpoints, as extended accordingly by this document.
+3. The Trust Anchor and its Intermediates SHOULD implement an ACME server with at least the `newNonce` and the `newOrder` resources, as extended accordingly by this document.
 4. The Issuer MUST publish in its Entity Configuration, within the metadata parameter as defined in the [Section 4](https://openid.net/specs/openid-connect-federation-1_0.html#name-metadata-type-identifiers) of [OIDC-FED], the metadata type `acme_provider` according to the [Metadata](#metadata) of this specification.
 5. The Issuer MAY be a Leaf, in these cases a specific Trust Mark SHOULD be issued by the Trust Anchor, or on behalf of it by an allowed Trust Mark issuer as configured in the federation, and. the Trust Mark MUST then be published within the Leaf Entity Configuration.
 
