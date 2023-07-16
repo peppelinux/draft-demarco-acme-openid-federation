@@ -1245,7 +1245,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </li>
         <li class="normal" id="section-1-4.3">It removes the requirement for the authentication of an entity and the provisioning of the <em>acme-challenge token</em>, since the authorization mechanisms is built on top of the trust evaluation model as defined in OpenID Connect Federation 1.0.<a href="#section-1-4.3" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-4.4">It extends the ACME <code>newOrder</code> endpoint, defining a new payload identifier type called <code>openid-federation</code>.<a href="#section-1-4.4" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-4.4">It extends the ACME <code>newOrder</code> resource, defining a new payload identifier type called <code>openid-federation</code>.<a href="#section-1-4.4" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-1-4.5">It defines how the OpenID Federation Entity Statements can be used for the publication of the X.509 certificates, by a trust anchor or intermediate, that was previously issued with ACME.<a href="#section-1-4.5" class="pilcrow">¶</a>
 </li>
@@ -1335,7 +1335,7 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
 </li>
           <li id="section-6.1-2.2">The Requestor and the Issuer <span class="bcp14">MUST</span> be able to establish the trust to each other obtaining the Trust Chain of each other, as defined in the <a href="https://openid.net/specs/openid-connect-federation-1_0.html#name-trust-chain">Section 3.2</a> of <span>[<a href="#OIDC-FED" class="cite xref">OIDC-FED</a>]</span>.<a href="#section-6.1-2.2" class="pilcrow">¶</a>
 </li>
-          <li id="section-6.1-2.3">The Trust Anchor and its Intermediates <span class="bcp14">SHOULD</span> implement an ACME server with at least the <code>newNonce</code> and the <code>newOrder</code> endpoints, as extended accordingly by this document.<a href="#section-6.1-2.3" class="pilcrow">¶</a>
+          <li id="section-6.1-2.3">The Trust Anchor and its Intermediates <span class="bcp14">SHOULD</span> implement an ACME server with at least the <code>newNonce</code> and the <code>newOrder</code> resources, as extended accordingly by this document.<a href="#section-6.1-2.3" class="pilcrow">¶</a>
 </li>
           <li id="section-6.1-2.4">The Issuer <span class="bcp14">MUST</span> publish in its Entity Configuration, within the metadata parameter as defined in the <a href="https://openid.net/specs/openid-connect-federation-1_0.html#name-metadata-type-identifiers">Section 4</a> of <span>[<a href="#OIDC-FED" class="cite xref">OIDC-FED</a>]</span>, the metadata type <code>acme_provider</code> according to the <a href="#metadata" class="auto internal xref">Section 6.3</a> of this specification.<a href="#section-6.1-2.4" class="pilcrow">¶</a>
 </li>

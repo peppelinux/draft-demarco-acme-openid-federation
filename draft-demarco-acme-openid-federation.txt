@@ -143,7 +143,7 @@ Table of Contents
       authorization mechanisms is built on top of the trust evaluation
       model as defined in OpenID Connect Federation 1.0.
 
-   *  It extends the ACME newOrder endpoint, defining a new payload
+   *  It extends the ACME newOrder resource, defining a new payload
       identifier type called openid-federation.
 
    *  It defines how the OpenID Federation Entity Statements can be used
@@ -255,7 +255,7 @@ Table of Contents
        federation-1_0.html#name-trust-chain) of [OIDC-FED].
 
    3.  The Trust Anchor and its Intermediates SHOULD implement an ACME
-       server with at least the newNonce and the newOrder endpoints, as
+       server with at least the newNonce and the newOrder resources, as
        extended accordingly by this document.
 
    4.  The Issuer MUST publish in its Entity Configuration, within the
