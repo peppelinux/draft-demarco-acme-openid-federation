@@ -75,8 +75,8 @@ OpenID Connect Federation 1.0 allows an ACME server to issue X.509 certificates 
 
 Considering that a requestor is an entity requesting the issuance of a X.509 certificate to a server and the issuer is the ACME server that validates the entitlements of the requestor before issuing the X.509 certificate, this specification defines how ACME and OpenID Connect Federation 1.0 can be integrated allowing an efficient issuance of X.509 to a requestor, reducing both the bureaucratic and the implementative costs, since:
 
-- It does not require the involvement of other resources than the ACME `newNonce` and `newOrder` endpoints, since the authentication and authorization of the requestor is asserted with OpenID Federation 1.0.
-- Instead of the `/.well-known/acme-challenge/{token}` endpoint it defines how to use and validate a basic OpenID Connect Federation component, called Entity Configuration, that is a signed JWT published in a well-known resource (`/.well-known/openid-federation`).
+- It does not require the involvement of other authorizative resources since the authentication and authorization of the requestor is asserted with OpenID Connect Federation 1.0.
+- It defines how to use and validate a basic OpenID Connect Federation component, called Entity Configuration, that is a signed JWT published in a well-known resource (`/.well-known/openid-federation`) without requiring the `/.well-known/acme-challenge/{token}` endpoint.
 - It removes the requirement for the authentication of an entity and the provisioning of the *acme-challenge token*, since the authorization mechanisms is built on top of the trust evaluation model as defined in OpenID Connect Federation 1.0.
 - It extends the ACME `newOrder` endpoint, defining a new payload identifier type called `openid-federation`.
 - It defines how the OpenID Federation Entity Statements can be used for the publication of the X.509 certificates, by a trust anchor or intermediate, that was previously issued with ACME.
@@ -421,6 +421,9 @@ Contents:
 | openid-federation | draft-demarco-acme-openid-federation |
 |                   |                                      |
 
+# Publication of the Certificates within the Federation
+
+**TBD**, when the Issuer is the Trust Anchor or Intermediate, the X.509 certificate linked to Federation Entity Key represented in JWK in the Entity Statement related to the Requestor, SHOULD be extended with the claim `x5c`, containing the issued certificate.
 
 # Certificate Lifecycle and Revocation
 
