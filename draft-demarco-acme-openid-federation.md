@@ -110,17 +110,17 @@ The terms "Trust Anchor", "Intermediate", "Entity Configuration", "Entity Statem
 
 This section presents the protocol flow.
 
-## Preconditions
+## Discovery Preconditions
 
-The protocol assumes the following preconditions are met:
+The protocol assumes the following discovery preconditions are met, where for discovery is intended the phase where a Requestor search an Issuer to requests an X.509 certificate.
 
 1. The Requestor and the Issuer MUST publish their Entity Configuration as defined in ... OIDC FED ref here.
 2. The Requestor and the Issuer MUST be able to establish the trust to each other obtaining the Trust Chain of each other, as defined in ... OIDC FED ref here.
 3. The Trust Anchor and its Intermediate SHOULD implement an ACME server with at least the `newOrder` endpoint as extended in this specification.
-4. The Issuer MUST publish in its Entity Configuration, within the metadata parameter (JSON Object), the metadata type `acme_issuer` according to the Section ... of this specification, **TBD**.
-5. In a federation an Issuer MAY be a Leaf if a specific Trust Mark is issued for it and published withing its Entity Configuration.
+4. The Issuer MUST publish in its Entity Configuration, within the metadata parameter (JSON Object), the metadata type `acme_provider` according to the Section ... of this specification, **TBD**.
+5. The Issuer MAY be a Leaf, in these cases a specific Trust Mark SHOULD be issued for it by the Trust Anchor, or on behalf of it through the allowed federation Trust Mark issuers, and then published withing the Leaf Entity Configuration.
 
-Where the precondition number 4 and number 5 are not met, there are cases where the Requestor known a priori which are the Issuers in one or more federations, in this case the requestor directly request the issuance of the X.509 certificate to the issuer it trusts, without any discovery phase.
+Where the precondition number 4 and number 5 are not met, there MAY be some cases where the Requestor known a priori which are the Issuers in one or more federations, in this case the requestor directly request the issuance of the X.509 certificate to the issuer It trusts, without any discovery phase.
 
 ## Overview
 
