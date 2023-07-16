@@ -1164,7 +1164,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-protocol-flow" class="internal xref">Protocol Flow</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-preconditions" class="internal xref">Preconditions</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-discovery-preconditions" class="internal xref">Discovery Preconditions</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
                 <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-overview" class="internal xref">Overview</a></p>
@@ -1253,12 +1253,12 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-protocol-flow" class="section-name selfRef">Protocol Flow</a>
       </h2>
 <p id="section-5-1">This section presents the protocol flow.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<div id="preconditions">
+<div id="discovery-preconditions">
 <section id="section-5.1">
-        <h3 id="name-preconditions">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-preconditions" class="section-name selfRef">Preconditions</a>
+        <h3 id="name-discovery-preconditions">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-discovery-preconditions" class="section-name selfRef">Discovery Preconditions</a>
         </h3>
-<p id="section-5.1-1">The protocol assumes the following preconditions are met:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">The protocol assumes the following discovery preconditions are met, where for discovery is intended the phase where a Requestor search an Issuer to requests an X.509 certificate.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-5.1-2">
 <li id="section-5.1-2.1">The Requestor and the Issuer <span class="bcp14">MUST</span> publish their Entity Configuration as defined in ... OIDC FED ref here.<a href="#section-5.1-2.1" class="pilcrow">¶</a>
 </li>
@@ -1266,12 +1266,12 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
 </li>
           <li id="section-5.1-2.3">The Trust Anchor and its Intermediate <span class="bcp14">SHOULD</span> implement an ACME server with at least the <code>newOrder</code> endpoint as extended in this specification.<a href="#section-5.1-2.3" class="pilcrow">¶</a>
 </li>
-          <li id="section-5.1-2.4">The Issuer <span class="bcp14">MUST</span> publish in its Entity Configuration, within the metadata parameter (JSON Object), the metadata type <code>acme_issuer</code> according to the Section ... of this specification, <strong>TBD</strong>.<a href="#section-5.1-2.4" class="pilcrow">¶</a>
+          <li id="section-5.1-2.4">The Issuer <span class="bcp14">MUST</span> publish in its Entity Configuration, within the metadata parameter (JSON Object), the metadata type <code>acme_provider</code> according to the Section ... of this specification, <strong>TBD</strong>.<a href="#section-5.1-2.4" class="pilcrow">¶</a>
 </li>
-          <li id="section-5.1-2.5">In a federation an Issuer <span class="bcp14">MAY</span> be a Leaf if a specific Trust Mark is issued for it and published withing its Entity Configuration.<a href="#section-5.1-2.5" class="pilcrow">¶</a>
+          <li id="section-5.1-2.5">The Issuer <span class="bcp14">MAY</span> be a Leaf, in these cases a specific Trust Mark <span class="bcp14">SHOULD</span> be issued for it by the Trust Anchor, or on behalf of it through the allowed federation Trust Mark issuers, and then published withing the Leaf Entity Configuration.<a href="#section-5.1-2.5" class="pilcrow">¶</a>
 </li>
         </ol>
-<p id="section-5.1-3">Where the precondition number 4 and number 5 are not met, there are cases where the Requestor known a priori which are the Issuers in one or more federations, in this case the requestor directly request the issuance of the X.509 certificate to the issuer it trusts, without any discovery phase.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">Where the precondition number 4 and number 5 are not met, there <span class="bcp14">MAY</span> be some cases where the Requestor known a priori which are the Issuers in one or more federations, in this case the requestor directly request the issuance of the X.509 certificate to the issuer It trusts, without any discovery phase.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="overview">
