@@ -126,8 +126,8 @@ The protocol assumes the following discovery preconditions are met, where for di
 
 1. The Requestor and the Issuer MUST publish their Entity Configuration as defined in the [Section 6](https://openid.net/specs/openid-connect-federation-1_0.html#name-obtaining-federation-entity) of [OIDC-FED].
 2. The Requestor and the Issuer MUST be able to establish the trust to each other obtaining the Trust Chain of each other, as defined in the [Section 3.2](https://openid.net/specs/openid-connect-federation-1_0.html#name-trust-chain) of [OIDC-FED].
-3. The Trust Anchor and its Intermediates SHOULD implement an ACME server with at least the `newNonce` and`newOrder` endpoints as extended in this specification.
-4. The Issuer MUST publish in its Entity Configuration, within the metadata parameter as defined in the [Section 4](https://openid.net/specs/openid-connect-federation-1_0.html#name-metadata-type-identifiers) of [OIDC-FED], the metadata type `acme_provider` according to the Section [Metadata](#metadata) of this specification, **TBD**.
+3. The Trust Anchor and its Intermediates SHOULD implement an ACME server with at least the `newNonce` and the `newOrder` endpoints, as extended accordingly by this document.
+4. The Issuer MUST publish in its Entity Configuration, within the metadata parameter as defined in the [Section 4](https://openid.net/specs/openid-connect-federation-1_0.html#name-metadata-type-identifiers) of [OIDC-FED], the metadata type `acme_provider` according to the [Metadata](#metadata) of this specification.
 5. The Issuer MAY be a Leaf, in these cases a specific Trust Mark SHOULD be issued by the Trust Anchor, or on behalf of it through by the allowed Trust Mark issuers configured in the federation, and then published within the Leaf Entity Configuration.
 
 Where the precondition number 4 and number 5 are not met, there MAY be some cases where the Requestor known a priori which are the Issuers in one or more federations, in this case the requestor directly requests the issuance of the X.509 certificate to the trusted Issuer.
