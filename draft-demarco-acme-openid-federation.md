@@ -179,17 +179,17 @@ This section describe how to use the parameters defined in the [Section 7.1.1](h
 {
   "metadata":
     "acme_provider": {
-     "newNonce": "https://issuer.example.com/acme/new-nonce",
-     "newOrder": "https://issuer.example.com/acme/new-order",
-     "revokeCert": "https://issuer.example.com/acme/revoke-cert",
-     "keyChange": "https://issuer.example.com/acme/key-change",
-     "meta": {
-       "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
-       "website": "https://www.issuer.example.com/",
-       "caaIdentities": ["issuer.example.com"],
-       "externalAccountRequired": false
+      "newNonce": "https://issuer.example.com/acme/new-nonce",
+      "newOrder": "https://issuer.example.com/acme/new-order",
+      "revokeCert": "https://issuer.example.com/acme/revoke-cert",
+      "keyChange": "https://issuer.example.com/acme/key-change",
+      "meta": {
+        "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
+        "website": "https://www.issuer.example.com/",
+        "caaIdentities": ["issuer.example.com"],
+        "externalAccountRequired": false
    }
- }
+}
 ````
 
 ## newNonce request
@@ -221,26 +221,25 @@ When OpenID Connect Federation 1.0 is used by the Issuer to attest the reliabiab
 
 
 ````
-   POST /acme/new-order HTTP/1.1
-   Host: issuer.example.com
-   Content-Type: application/jose+json
+POST /acme/new-order HTTP/1.1
+Host: issuer.example.com
+Content-Type: application/jose+json
 
-   {
-     "protected": base64url({
-       "alg": "ES256",
-       "kid": "1",
-       "nonce": "5XJ1L3lEkMG7tR6pA00clA",
-       "url": "https://issuer.example.com/acme/new-order",
-       "trust_chain": \["eyJhbGciOiJFU ...", "eyJhbGci ..."\]
-     }),
-     "payload": base64url({
-       "identifiers": \[{ "type": "openid-federation", "value": "requestor.example.org" }\],
-       "notBefore": "2024-01-01T00:04:00+04:00",
-       "notAfter": "2024-01-08T00:04:00+04:00"
-     }),
-     "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
-   }
-
+{
+ "protected": base64url({
+   "alg": "ES256",
+   "kid": "1",
+   "nonce": "5XJ1L3lEkMG7tR6pA00clA",
+   "url": "https://issuer.example.com/acme/new-order",
+   "trust_chain": \["eyJhbGciOiJFU ...", "eyJhbGci ..."\]
+ }),
+ "payload": base64url({
+   "identifiers": \[{ "type": "openid-federation", "value": "requestor.example.org" }\],
+   "notBefore": "2024-01-01T00:04:00+04:00",
+   "notAfter": "2024-01-08T00:04:00+04:00"
+ }),
+ "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
+}
 ````
 
 # Federation Identifiers Types
