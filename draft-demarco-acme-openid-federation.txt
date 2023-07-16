@@ -91,11 +91,18 @@ Table of Contents
      5.3.  Metadata
      5.4.  newNonce request
      5.5.  ACME newOrder request within a Federation
-       5.5.1.  Order Object Extensions and Constraints
+       5.5.1.  Certificates issued using OIDC Federation
+       5.5.2.  Order Object Extensions and Constraints
+     5.6.  newOrder request
+     5.7.  newOrder Response
+     5.8.  Finalize Request
+     5.9.  Finalize Response
+     5.10. Downloading the Certificate
    6.  Federation Identifiers Types
-   7.  Security Considerations
-   8.  IANA Considerations
-   9.  Normative References
+   7.  Certificate Lifecycle and Revocation
+   8.  Security Considerations
+   9.  IANA Considerations
+   10. Normative References
    Acknowledgments
    Author's Address
 
@@ -280,40 +287,28 @@ Table of Contents
    Below is represented the summary of all the actions supported by the
    protocol defined in this document.
 
-   +==================+==========================+====================+
-   | Action           | Request                  | Succesful Response |
-   +==================+==========================+====================+
-   | Discovery        | GET Entity Configuration | 200                |
-   +------------------+--------------------------+--------------------+
-   +------------------+--------------------------+--------------------+
-   | Get nonce        | HEAD newNonce            | 200                |
-   +------------------+--------------------------+--------------------+
-   +------------------+--------------------------+--------------------+
-   | Submit order     | POST newOrder            | 201                |
-   +------------------+--------------------------+--------------------+
-   +------------------+--------------------------+--------------------+
-   | Fetch challenges | POST-as-GET order's      | 200                |
-   |                  | authorization urls       |                    |
-   +------------------+--------------------------+--------------------+
-   +------------------+--------------------------+--------------------+
-   | Respond to       | POST authorization       | 200                |
-   | challenges       | challenge urls           |                    |
-   +------------------+--------------------------+--------------------+
-   +------------------+--------------------------+--------------------+
-   | Poll for status  | POST-as-GET order        | 200                |
-   +------------------+--------------------------+--------------------+
-   +------------------+--------------------------+--------------------+
-   | Finalize order   | POST order's finalize    | 200                |
-   |                  | url                      |                    |
-   +------------------+--------------------------+--------------------+
-   +------------------+--------------------------+--------------------+
-   | Poll for status  | POST-as-GET order        | 200                |
-   +------------------+--------------------------+--------------------+
-   +------------------+--------------------------+--------------------+
-   | Download         | POST-as-GET order's      | 200                |
-   | certificate      | certificate url          |                    |
-   +------------------+--------------------------+--------------------+
-   +------------------+--------------------------+--------------------+
+   +=================+===========================+====================+
+   | Action          | Request                   | Succesful Response |
+   +=================+===========================+====================+
+   | Discovery       | GET Entity Configuration  | 200                |
+   +-----------------+---------------------------+--------------------+
+   +-----------------+---------------------------+--------------------+
+   | Get nonce       | HEAD newNonce             | 200                |
+   +-----------------+---------------------------+--------------------+
+   +-----------------+---------------------------+--------------------+
+   | Submit order    | POST newOrder             | 201                |
+   +-----------------+---------------------------+--------------------+
+   +-----------------+---------------------------+--------------------+
+   | Poll for status | POST-as-GET order         | 200                |
+   +-----------------+---------------------------+--------------------+
+   +-----------------+---------------------------+--------------------+
+   | Finalize order  | POST order's finalize url | 200                |
+   +-----------------+---------------------------+--------------------+
+   +-----------------+---------------------------+--------------------+
+   | Download        | POST-as-GET order's       | 200                |
+   | certificate     | certificate url           |                    |
+   +-----------------+---------------------------+--------------------+
+   +-----------------+---------------------------+--------------------+
 
                                  Table 1
 
@@ -342,21 +337,48 @@ Table of Contents
    the Section 7.2 (https://datatracker.ietf.org/doc/html/
    rfc8555#section-7.2) of [RFC8555].
 
+   Below a non-normative example of the request:
+
+   ```` HEAD /acme/new-nonce HTTP/1.1 Host: issuer.example.com
+
+   HTTP/1.1 200 OK Replay-Nonce: oFvnlFP1wIhRlYS2jTaXbA Cache-Control:
+   no-store ````
+
+   Differences with [RFC8555]:
+
+   *  The HTTP header Link: <https://issuer.example.com/acme/
+      directory>;rel="index" is not required.
+
 5.5.  ACME newOrder request within a Federation
 
-   The certificate issuance request is made by sending a HTTP POST to
-   the Issuer newOrder resource, where the body of the POST is a JWS
-   object whose JSON payload is a subset of the _ACME order object_, as
-   defined in the Section 7.4 (https://datatracker.ietf.org/doc/html/
-   rfc8555#section-7.4) of [RFC8555].
+   This section contains the details for requesting a certificate.
 
-   The _ACME order object_ represents the request for a certificate
-   issuance and is used to track the progress of that order through to
-   issuance (see the Section 7.1.6
-   (https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.6) of
-   [RFC8555] for any further information about the statuses).
+5.5.1.  Certificates issued using OIDC Federation
 
-5.5.1.  Order Object Extensions and Constraints
+   The Federation Entity Keys are used for requesting X.509
+   certificates.
+
+   The Issuer establishes the authorization of a Federation Entity to
+   obtain certificates for the identifier configured in the Requestor's
+   Entity Configuration.
+
+   the Issuer MUST be sure that the following proofs are checked and
+   satisfied:
+
+   1.  The Requestor controls the private key related to the public part
+       published in the Entity Configuration, attested by the superior
+       Entity Statement, and that this key is used for the generation of
+       the CSR.
+
+   2.  The Requestor controls the identifier in question, having
+       published the Entity Configuration signed with the private key
+       used for the generation of the CSR.
+
+   This process may be repeated to request multiple certificates related
+   to the Federation Entity Keys and linked to a single identifier,
+   that's the Federation Entity FQDN.
+
+5.5.2.  Order Object Extensions and Constraints
 
    To the _ACME order object_ properties already defined in the
    Section 7.1.3 (https://datatracker.ietf.org/doc/html/rfc8555#section-
@@ -393,6 +415,20 @@ Table of Contents
       are present in the request and different from the type openid-
       federation, these SHOULD be ignored.
 
+5.6.  newOrder request
+
+   The certificate issuance request is made by sending a HTTP POST to
+   the Issuer newOrder resource, where the body of the POST is a JWS
+   object whose JSON payload is a subset of the _ACME order object_, as
+   defined in the Section 7.4 (https://datatracker.ietf.org/doc/html/
+   rfc8555#section-7.4) of [RFC8555].
+
+   The _ACME order object_ represents the request for a certificate
+   issuance and is used to track the progress of that order through to
+   issuance (see the Section 7.1.6
+   (https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.6) of
+   [RFC8555] for any further information about the statuses).
+
    ```` POST /acme/new-order HTTP/1.1 Host: issuer.example.com Content-
    Type: application/jose+json
 
@@ -403,6 +439,127 @@ Table of Contents
    "value": "requestor.example.org" }], "notBefore":
    "2024-01-01T00:04:00+04:00", "notAfter": "2024-01-08T00:04:00+04:00"
    }), "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g" } ````
+
+5.7.  newOrder Response
+
+   The server MUST return an error if it cannot fulfill the request as
+   specified, and it MUST NOT issue a certificate with contents other
+   than those requested.  If the server requires the request to be
+   modified in a certain way, it should indicate the required changes
+   using an appropriate error type and description.
+
+   If the server is willing to issue the requested certificate, it
+   responds with a 201 (Created) response.  The body of this response is
+   an order object reflecting the client's request and any
+   authorizations the client must complete before the certificate will
+   be issued.
+
+   ```` HTTP/1.1 201 Created Replay-Nonce: MYAuvOpaoIiywTezizk5vw
+   Location: https://issuer.example.com/acme/order/TOlocE8rfgo
+
+   { "status": "pending", "expires": "2016-01-05T14:09:07.99Z",
+
+   "notBefore": "2016-01-01T00:00:00Z", "notAfter":
+   "2016-01-08T00:00:00Z",
+
+   "identifiers": [{ "type": "openid-federation", "value":
+   "requestor.example.org" }],
+
+   "finalize": "https://example.com/acme/order/TOlocE8rfgo/finalize" }
+   ````
+
+   Differences with [RFC8555]:
+
+   *  The HTTP Header Link is not required
+
+   *  The authorizations arrays is not required an MUST be omitted from
+      the order object.
+
+5.8.  Finalize Request
+
+   Once the client believes it has fulfilled the server's requirements,
+   it should send a POST request to the order resource's finalize URL.
+   The POST body MUST include a CSR in the form of a string.
+
+   The CSR encodes the parameters for the certificate being requested
+   [RFC2986].  The CSR is sent in the base64url-encoded version of the
+   DER format.  Please note that the value is encoded in base64url and
+   does not include headers, then it is different from PEM.
+
+   Below a non-normative example of the finalize made via HTTP POST:
+
+   ```` POST /acme/order/TOlocE8rfgo/finalize HTTP/1.1 Host:
+   issuer.example.com Content-Type: application/jose+json
+
+   { "protected": base64url({ "alg": "ES256", "kid": "1", "nonce":
+   "MSF2j2nawWHPxxkE3ZJtKQ", "url":
+   "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize"
+
+   }), "payload": base64url({ "csr":
+   "MIIBPTCBxAIBADBFMQ...FS6aKdZeGsysoCo4H9P", }), "signature":
+   "uOrUfIIk5RyQ...nw62Ay1cl6AB" } ````
+
+   The CSR encodes the client's requests with regard to the content of
+   the certificate to be issued.  The CSR MUST indicate the exact same
+   set of requested identifiers as the initial newOrder request.
+   Identifiers of type "dns" MUST appear either in the commonName
+   portion of the requested subject name or in an extensionRequest
+   attribute [RFC2985] requesting a subjectAltName extension, or both.
+
+5.9.  Finalize Response
+
+   If a request to finalize an order is successful, the server will
+   return a 200 (OK) with an updated order object.  The status of the
+   order will indicate what action the client should take, these action
+   values are defined in the Section 7.4
+   (https://datatracker.ietf.org/doc/html/rfc8555#section-7.4) of
+   [RFC8555].
+
+   ```` HTTP/1.1 200 OK Replay-Nonce: CGf81JWBsq8QyIgPCi9Q9X Location:
+   https://issuer.example.com/acme/order/TOlocE8rfgo
+
+   { "status": "valid", "expires": "2016-01-20T14:09:07.99Z",
+
+   "notBefore": "2016-01-01T00:00:00Z", "notAfter":
+   "2016-01-08T00:00:00Z",
+
+   "identifiers": [{ "type": "openid-federation", "value":
+   "requestor.example.org" }],
+
+   "finalize": "https://issuer.example.com/acme/order/TOlocE8rfgo/
+   finalize",
+
+   "certificate": "https://issuer.example.com/acme/cert/mAt3xBGaobw" }
+   ````
+
+   Differences with [RFC8555]:
+
+   *  The HTTP Header Link is not required
+
+5.10.  Downloading the Certificate
+
+   The request and the response are fully compliant to the Section 7.4.2
+   (https://datatracker.ietf.org/doc/html/rfc8555#section-7.4.2) defined
+   in [RFC8555].
+
+   Below a non-normative example of a request:
+
+   ```` POST /acme/cert/mAt3xBGaobw HTTP/1.1 Host: example.com Content-
+   Type: application/jose+json Accept: application/pem-certificate-chain
+
+   { "protected": base64url({ "alg": "ES256", "kid":
+   "https://example.com/acme/acct/evOfKhNU60wg", "nonce":
+   "uQpSjlRb4vQVCjVYAyyUWg", "url": "https://example.com/acme/cert/
+   mAt3xBGaobw" }), "payload": "", "signature":
+   "nuSDISbWG8mMgE7H...QyVUL68yzf3Zawps" } ````
+
+   Here follows a non-normative example of a response:
+
+   ```` HTTP/1.1 200 OK Content-Type: application/pem-certificate-chain
+
+   -----BEGIN CERTIFICATE----- [End-entity certificate contents]
+   -----END CERTIFICATE----- -----BEGIN CERTIFICATE----- [Issuer
+   certificate contents] -----END CERTIFICATE----- ````
 
 6.  Federation Identifiers Types
 
@@ -428,15 +585,36 @@ Table of Contents
 
                                  Table 3
 
-7.  Security Considerations
+7.  Certificate Lifecycle and Revocation
+
+   *TBD*.
+
+   The issued Certificates are related to the Federation Key attested
+   within a Trust Chain, their expiration time MUST be equal to the
+   expiration of the Trust Chain.
+
+   When a Federation Key is removed from the Entity Statement that
+   attests it, and then it cannot be attested though a Trust Chain, the
+   certificate related to it MUST be revoked by its Issuer, if not
+   expired.
+
+   A Requestor SHOULD request the revocation of its Certificate when the
+   related Federation Entity Key is revoked and published in the
+   Federation Historical Key Registry.
+
+   The certficate revocation request is defined in the Section 7.6
+   (https://datatracker.ietf.org/doc/html/rfc8555#section-7.6) of
+   [RFC8555].
+
+8.  Security Considerations
 
    TBD.
 
-8.  IANA Considerations
+9.  IANA Considerations
 
    This document has no IANA actions.
 
-9.  Normative References
+10.  Normative References
 
    [OIDC-FED] Hedberg, R., Jones, M. B., Solberg, A. Å., Bradley, J., De
               Marco, G., and V. Dzhuvinov, "OpenID Connect Federation
