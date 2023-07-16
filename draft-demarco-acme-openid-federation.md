@@ -86,10 +86,10 @@ The audience of the document are the multilateral federations that require autom
 
 # Terminology
 
-   ACME    Automated Certificate Management Environment, a certificate management protocol [RFC8555].
-   
-   TA      OpenID Connect Federation Trust Anchor, see CA.
-   
+   ACME    Automated Certificate Management Environment, a certificate management protocol [RFC8555.
+
+   TA      OpenID Connect Federation Trust Anchor, see CA
+
    CA      Certification Authority, also known as Trust Anchor or Intermediate, specifically one that implements the ACME protocol though an ACME server.
 
    CSR     Certificate Signing Request, specifically a PKCS#10 [RFC2986] as supported by ACME.
