@@ -115,7 +115,10 @@ The terms "Federation Entity", "Trust Anchor", "Intermediate", "Entity Configura
 
 # Protocol Flow
 
-This section presents the protocol flow.
+This section presents the protocol flow. The protocol flow is subdivided in the following phases:
+
+- **Discovery**, the Requestor obtains the available CAs within a federation.
+- **Order request**, the Requestor requests a X.509 certificate to a CA.
 
 ## Discovery Preconditions
 
