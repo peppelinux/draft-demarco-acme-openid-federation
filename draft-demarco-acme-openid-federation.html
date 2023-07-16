@@ -1156,7 +1156,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-audience-target-audience-us" class="internal xref">Audience Target audience/Usage</a></p>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-audience-target-and-use-cas" class="internal xref">Audience Target and Use Cases</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
@@ -1173,22 +1173,39 @@ svg :is([fill="white"], [fill^="#fff"]) {
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
                 <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-overview" class="internal xref">Overview</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-metadata" class="internal xref">Metadata</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-newnonce-request" class="internal xref">newNonce request</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5">
+                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-acme-neworder-request-withi" class="internal xref">ACME newOrder request within a Federation</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5.2.1">
+                    <p id="section-toc.1-1.5.2.5.2.1.1"><a href="#section-5.5.1" class="auto internal xref">5.5.1</a>.  <a href="#name-federation-extensions-and-c" class="internal xref">Federation Extensions and Constraints</a></p>
+</li>
+                </ul>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-federation-identifiers-type" class="internal xref">Federation Identifiers Types</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1202,7 +1219,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <p id="section-1-1">OpenID Connect Federation 1.0 allows an ACME server to issue X.509 certificates to one or more than a single organization without having pre-established any direct relationship or any stipulation of a contract. In a multilateral federation, composed by thousands of entities belonging to different organizations, all the participants adhere to the same regulation or trust framework. OpenID Connect Federation 1.0 allows each participant to recognize the other participant using a trust evaluation mechanism, with RESTful services and cryptographic materials.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">Considering that a requestor is an entity requesting the issuance of a X.509 certificate to a server and the issuer is the ACME server that validates the entitlements of the requestor before issuing the X.509 certificate, this specification defines how ACME and OpenID Connect Federation 1.0 can be integrated allowing an efficient issuance of X.509 to a requestor, reducing both the bureaucratic and the implementative costs, since:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1-3.1">It does not require the involvement of other resources than the ACME <code>newOrder</code> endpoint, since the authentication and authorization of the requestor is asserted with OpenID Federation 1.0.<a href="#section-1-3.1" class="pilcrow">¶</a>
+<li class="normal" id="section-1-3.1">It does not require the involvement of other resources than the ACME <code>newNonce</code> and <code>newOrder</code> endpoints, since the authentication and authorization of the requestor is asserted with OpenID Federation 1.0.<a href="#section-1-3.1" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-1-3.2">Instead of the <code>/.well-known/acme-challenge/{token}</code> endpoint it defines how to use and validate a basic OpenID Connect Federation component, called Entity Configuration, that is a signed JWT published in a well-known resource (<code>/.well-known/openid-federation</code>).<a href="#section-1-3.2" class="pilcrow">¶</a>
 </li>
@@ -1215,12 +1232,19 @@ svg :is([fill="white"], [fill^="#fff"]) {
       </ul>
 </section>
 </div>
-<div id="audience-target-audienceusage">
+<div id="audience-target-and-use-cases">
 <section id="section-2">
-      <h2 id="name-audience-target-audience-us">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-audience-target-audience-us" class="section-name selfRef">Audience Target audience/Usage</a>
+      <h2 id="name-audience-target-and-use-cas">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-audience-target-and-use-cas" class="section-name selfRef">Audience Target and Use Cases</a>
       </h2>
-<p id="section-2-1">The audience of the document are the multilateral federations that require automatic issuance oif X.509 certificates using an infrastructure of trust based on OpenID Connect Federation 1.0.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">The audience of the document are the multilateral federations that require automatic issuance of X.509 certificates using an infrastructure of trust based on OpenID Connect Federation 1.0.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">This specification can be implemented by:<a href="#section-2-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-3.1">Federation Entities that joins to a federation staging area using HTTP only transport to attests themselves as trustworhty, and then ask X.509 certificates for their official HTTPs Federation Entity ID.<a href="#section-2-3.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-2-3.2">Federation Entities that want to ask and obtain X.509 certificate for every Federation Key contained in their Entity Configuration, as made recognizable in a Federation Trust Chain.<a href="#section-2-3.2" class="pilcrow">¶</a>
+</li>
+      </ul>
 </section>
 </div>
 <div id="terminology">
@@ -1233,9 +1257,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <p id="section-3-3"><strong>CA</strong>,      Certification Authority, also known as Trust Anchor or Intermediate, specifically one that implements the ACME protocol though an ACME server.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <p id="section-3-4"><strong>CSR</strong>,     Certificate Signing Request, specifically a PKCS#10 <span>[<a href="#RFC2986" class="cite xref">RFC2986</a>]</span> as supported by ACME.<a href="#section-3-4" class="pilcrow">¶</a></p>
 <p id="section-3-5"><strong>FQDN</strong>,    Fully Qualified Domain Name.<a href="#section-3-5" class="pilcrow">¶</a></p>
-<p id="section-3-6"><strong>Requestor</strong>, ...<a href="#section-3-6" class="pilcrow">¶</a></p>
-<p id="section-3-7"><strong>Issuer</strong>, ...<a href="#section-3-7" class="pilcrow">¶</a></p>
-<p id="section-3-8">The terms "Trust Anchor", "Intermediate", "Entity Configuration", "Entity Statement", "Trust Mark" and "Trust Chain" used in this document are defined in the Section 1.2 of <span>[<a href="#OIDC-FED" class="cite xref">OIDC-FED</a>]</span>.<a href="#section-3-8" class="pilcrow">¶</a></p>
+<p id="section-3-6"><strong>Requestor</strong>, Federation Entity that requests a X.509 certificate to a CA.<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7"><strong>Issuer</strong>,  Trust Anchor or Intermediate, a CA.<a href="#section-3-7" class="pilcrow">¶</a></p>
+<p id="section-3-8">The terms "Federation Entity", "Trust Anchor", "Intermediate", "Entity Configuration", "Entity Statement", "Trust Mark" and "Trust Chain" used in this document are defined in the Section 1.2 of <span>[<a href="#OIDC-FED" class="cite xref">OIDC-FED</a>]</span>.<a href="#section-3-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1262,11 +1286,11 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
         </h3>
 <p id="section-5.1-1">The protocol assumes the following discovery preconditions are met, where for discovery is intended the phase where a Requestor searches an Issuer to requests an X.509 certificate.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-5.1-2">
-<li id="section-5.1-2.1">The Requestor and the Issuer <span class="bcp14">MUST</span> publish their Entity Configuration as defined in the Section 6 of [OIDC FED].<a href="#section-5.1-2.1" class="pilcrow">¶</a>
+<li id="section-5.1-2.1">The Requestor and the Issuer <span class="bcp14">MUST</span> publish their Entity Configuration as defined in the Section 6 of <span>[<a href="#OIDC-FED" class="cite xref">OIDC-FED</a>]</span>.<a href="#section-5.1-2.1" class="pilcrow">¶</a>
 </li>
-          <li id="section-5.1-2.2">The Requestor and the Issuer <span class="bcp14">MUST</span> be able to establish the trust to each other obtaining the Trust Chain of each other, as defined in the Section 3.2 of [OIDC FED].<a href="#section-5.1-2.2" class="pilcrow">¶</a>
+          <li id="section-5.1-2.2">The Requestor and the Issuer <span class="bcp14">MUST</span> be able to establish the trust to each other obtaining the Trust Chain of each other, as defined in the Section 3.2 of <span>[<a href="#OIDC-FED" class="cite xref">OIDC-FED</a>]</span>.<a href="#section-5.1-2.2" class="pilcrow">¶</a>
 </li>
-          <li id="section-5.1-2.3">The Trust Anchor and its Intermediates <span class="bcp14">SHOULD</span> implement an ACME server with at least the <code>newOrder</code> endpoint as extended in this specification.<a href="#section-5.1-2.3" class="pilcrow">¶</a>
+          <li id="section-5.1-2.3">The Trust Anchor and its Intermediates <span class="bcp14">SHOULD</span> implement an ACME server with at least the <code>newNonce</code> and<code>newOrder</code> endpoints as extended in this specification.<a href="#section-5.1-2.3" class="pilcrow">¶</a>
 </li>
           <li id="section-5.1-2.4">The Issuer <span class="bcp14">MUST</span> publish in its Entity Configuration, within the metadata parameter as defined in the Section 4 of <span>[<a href="#OIDC-FED" class="cite xref">OIDC-FED</a>]</span>, the metadata type <code>acme_provider</code> according to the Section ... of this specification, <strong>TBD</strong>.<a href="#section-5.1-2.4" class="pilcrow">¶</a>
 </li>
@@ -1282,29 +1306,285 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-overview" class="section-name selfRef">Overview</a>
         </h3>
 <p id="section-5.2-1">TBD: high level design and ascii sequence diagram.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-5.2-2">
+<li id="section-5.2-2.1">The Requestor looks to its superiors entities, Trust Anchor or Intermediates, if they support the ACME protocol for OpenID Connect Federation 1.0. If not, the Requestor starts the discovery process to find which are the Issuers within the federation.<a href="#section-5.2-2.1" class="pilcrow">¶</a>
+</li>
+          <li id="section-5.2-2.2">The Requestor obtains a new nonce from the Issuer, by senting a HTTP HEAD request to the <code>newNonce</code> resource of the Issuer;<a href="#section-5.2-2.2" class="pilcrow">¶</a>
+</li>
+          <li id="section-5.2-2.3">The Issuer evaluiate the trust to the Requestor, by checking if it is part of the federation. If not the request <span class="bcp14">MUST</span> be rejected (<strong>TBD</strong> the error to return). There are two ways the Issuer has to check if a Requestor is part of the federation, these are the followings:
+  - The Requestor adds the Trust Chain JWS header parameter related to itself, this is <span class="bcp14">RECOMMENDED</span>;
+  - The Requestor doesn't add the Trust Chain in the request, then the Issuer <span class="bcp14">MUST</span> start a Federation Discovery to obtain the Trust Chain related to the Requestor.<a href="#section-5.2-2.3" class="pilcrow">¶</a>
+</li>
+          <li id="section-5.2-2.4">The Requestor begins the certificate issuance process by sending a POST request to the Issuer's <code>newOrder</code> resource.<a href="#section-5.2-2.4" class="pilcrow">¶</a>
+</li>
+        </ol>
+<table class="center" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Action</th>
+              <th class="text-left" rowspan="1" colspan="1">Request</th>
+              <th class="text-left" rowspan="1" colspan="1">Succesful Response</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Discovery</td>
+              <td class="text-left" rowspan="1" colspan="1">GET Entity Configuration</td>
+              <td class="text-left" rowspan="1" colspan="1">200</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Get nonce</td>
+              <td class="text-left" rowspan="1" colspan="1">HEAD newNonce</td>
+              <td class="text-left" rowspan="1" colspan="1">200</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Submit order</td>
+              <td class="text-left" rowspan="1" colspan="1">POST newOrder</td>
+              <td class="text-left" rowspan="1" colspan="1">201</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Fetch challenges</td>
+              <td class="text-left" rowspan="1" colspan="1">POST-as-GET order's authorization urls</td>
+              <td class="text-left" rowspan="1" colspan="1">200</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Respond to challenges</td>
+              <td class="text-left" rowspan="1" colspan="1">POST authorization challenge urls</td>
+              <td class="text-left" rowspan="1" colspan="1">200</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Poll for status</td>
+              <td class="text-left" rowspan="1" colspan="1">POST-as-GET order</td>
+              <td class="text-left" rowspan="1" colspan="1">200</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Finalize order</td>
+              <td class="text-left" rowspan="1" colspan="1">POST order's finalize url</td>
+              <td class="text-left" rowspan="1" colspan="1">200</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Poll for status</td>
+              <td class="text-left" rowspan="1" colspan="1">POST-as-GET order</td>
+              <td class="text-left" rowspan="1" colspan="1">200</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Download certificate</td>
+              <td class="text-left" rowspan="1" colspan="1">POST-as-GET order's certificate url</td>
+              <td class="text-left" rowspan="1" colspan="1">200</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+          </tbody>
+        </table>
 </section>
 </div>
+<div id="metadata">
+<section id="section-5.3">
+        <h3 id="name-metadata">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-metadata" class="section-name selfRef">Metadata</a>
+        </h3>
+<p id="section-5.3-1">The Issuer <span class="bcp14">MUST</span> publish its Entity Configuration including the <code>acme_provider</code> metadata within it.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-2">This section describe how to use the parameters defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1">Section 7.1.1</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> in the federation Entity Configuration of an Issuer.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.3-3"><code>json
+  {
+   "metadata":
+    "acme_provider": {
+     "newNonce": "https://issuer.example.com/acme/new-nonce",
+     "newOrder": "https://issuer.example.com/acme/new-order",
+     "revokeCert": "https://issuer.example.com/acme/revoke-cert",
+     "keyChange": "https://issuer.example.com/acme/key-change",
+     "meta": {
+       "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
+       "website": "https://www.issuer.example.com/",
+       "caaIdentities": [!"issuer.example.com"],
+       "externalAccountRequired": false
+     }
+   }
+</code><a href="#section-5.3-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="newnonce-request">
+<section id="section-5.4">
+        <h3 id="name-newnonce-request">
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-newnonce-request" class="section-name selfRef">newNonce request</a>
+        </h3>
+<p id="section-5.4-1">The Requestor <span class="bcp14">MUST</span> obtain a new nonce from the Issuer, according to the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.2">Section 7.2</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="acme-neworder-request-within-a-federation">
+<section id="section-5.5">
+        <h3 id="name-acme-neworder-request-withi">
+<a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-acme-neworder-request-withi" class="section-name selfRef">ACME newOrder request within a Federation</a>
+        </h3>
+<p id="section-5.5-1">The certificate issuance request is made by sending a HTTP POST to the Issuer <code>newOrder</code> resource, where the body of the POST is a JWS object whose JSON payload is a subset of the <em>ACME order object</em>, as defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.4">Section 7.4</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
+<p id="section-5.5-2">The <em>ACME order object</em> represents the request for a certificate issuance and is used to track the progress of that order through to issuance (see the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.6">Section 7.1.6</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> for any further information about the statuses).<a href="#section-5.5-2" class="pilcrow">¶</a></p>
+<div id="federation-extensions-and-constraints">
+<section id="section-5.5.1">
+          <h4 id="name-federation-extensions-and-c">
+<a href="#section-5.5.1" class="section-number selfRef">5.5.1. </a><a href="#name-federation-extensions-and-c" class="section-name selfRef">Federation Extensions and Constraints</a>
+          </h4>
+<p id="section-5.5.1-1">To the <em>ACME order object</em> properties already defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.3">Section 7.1.3</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> are added those defined by this document and listed below, to be intended as extensions to <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-5.5.1-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-2">
+            <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">place</th>
+                <th class="text-left" rowspan="1" colspan="1">parameter</th>
+                <th class="text-left" rowspan="1" colspan="1">type</th>
+                <th class="text-left" rowspan="1" colspan="1">presence</th>
+                <th class="text-left" rowspan="1" colspan="1">reference</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">protected headers</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <code>trust_chain</code>
+</td>
+                <td class="text-left" rowspan="1" colspan="1">JSON Array of JWS</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <span class="bcp14">OPTIONAL</span>
+</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <span>[<a href="#OIDC-FED" class="cite xref">OIDC-FED</a>]</span>, Section 3.2.1</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-5.5.1-3">When OpenID Connect Federation 1.0 is used by the Issuer to attest the reliabiability of a Requestor and then authorize its request, this specification adds the following constraints to the <code>payload.identifiers</code> JSON Array:<a href="#section-5.5.1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.5.1-4.1">
+              <code>type</code> <span class="bcp14">MUST</span> be set to <code>openid-federation</code>;<a href="#section-5.5.1-4.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-5.5.1-4.2">
+              <code>value</code> <span class="bcp14">MUST</span> correspond to the FQDN contained within the <code>iss</code> parameter of the Requestor's Entity Configuration. Since the Federation Entity ID is a HTTP URL, the corresponding FQDN <span class="bcp14">MUST</span> be extracted it. For example, if the Entity Configuration <code>iss</code> parameter contains the value <code>https://requestor.example.org/oidc/rp</code>, then the extracted FQDN is <code>requestor.example.org</code> and <span class="bcp14">MUST</span> correspond to the value of the identifier contained in the order object;<a href="#section-5.5.1-4.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-5.5.1-4.3">the maximum length of the JSON Array contained in the <code>identifiers</code> parameter <span class="bcp14">MUST</span> be 1, since there cannot be more than a single FQDN corresponding to a single Federation Entity. If other identifiers  are present in the request and different from the type <code>openid-federation</code>, these <span class="bcp14">SHOULD</span> be ignored.<a href="#section-5.5.1-4.3" class="pilcrow">¶</a>
+</li>
+          </ul>
+<p id="section-5.5.1-5">```http<a href="#section-5.5.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.5.1-6">POST /acme/new-order HTTP/1.1
+   Host: issuer.example.com
+   Content-Type: application/jose+json<a href="#section-5.5.1-6" class="pilcrow">¶</a></p>
+<p id="section-5.5.1-7">{
+     "protected": base64url({
+       "alg": "ES256",
+       "kid": "1",
+       "nonce": "5XJ1L3lEkMG7tR6pA00clA",
+       "url": "https://issuer.example.com/acme/new-order",
+       "trust_chain": ["eyJhbGciOiJFU ...", "eyJhbGci ..."]
+     }),
+     "payload": base64url({
+       "identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],
+       "notBefore": "2024-01-01T00:04:00+04:00",
+       "notAfter": "2024-01-08T00:04:00+04:00"
+     }),
+     "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
+   }<a href="#section-5.5.1-7" class="pilcrow">¶</a></p>
+<p id="section-5.5.1-8">```<a href="#section-5.5.1-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="federation-identifiers-types">
+<section id="section-6">
+      <h2 id="name-federation-identifiers-type">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-federation-identifiers-type" class="section-name selfRef">Federation Identifiers Types</a>
+      </h2>
+<p id="section-6-1">The "ACME Identifier Types" registry defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-9.7.7">Section 9.7.7</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> is extended with the types of identifiers listed below.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">Template:<a href="#section-6-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6-3.1">Label: The value to be put in the "type" field of the identifier object.<a href="#section-6-3.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-3.2">Reference: Where the identifier type is defined.<a href="#section-6-3.2" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-6-4">Contents:<a href="#section-6-4" class="pilcrow">¶</a></p>
+<table class="center" id="table-3">
+        <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="1" colspan="1">Label</th>
+            <th class="text-left" rowspan="1" colspan="1">Reference</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">openid-federation</td>
+            <td class="text-left" rowspan="1" colspan="1">draft-demarco-acme-openid-federation</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1"> </td>
+            <td class="text-left" rowspan="1" colspan="1"> </td>
+          </tr>
+        </tbody>
+      </table>
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-6">
+<section id="section-7">
       <h2 id="name-security-considerations">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-6-1">TODO Security<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">TBD.<a href="#section-7-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-7">
+<section id="section-8">
       <h2 id="name-iana-considerations">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-7-1">This document has no IANA actions.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-8-1">This document has no IANA actions.<a href="#section-8-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<section id="section-8">
+<section id="section-9">
       <h2 id="name-normative-references">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
 <dl class="references">
 <dt id="OIDC-FED">[OIDC-FED]</dt>
