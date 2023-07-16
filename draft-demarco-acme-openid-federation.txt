@@ -4,8 +4,8 @@
 
 Automated Certificate Management Environment                 G. D. Marco
 Internet-Draft                                               independent
-Intended status: Standards Track                            15 July 2023
-Expires: 16 January 2024
+Intended status: Standards Track                            16 July 2023
+Expires: 17 January 2024
 
 
 Automatic Certificate Management Environment (ACME) with OpenID Connect
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 January 2024.
+   This Internet-Draft will expire on 17 January 2024.
 
 Copyright Notice
 
@@ -70,12 +70,15 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction
-   2.  Conventions and Definitions
-   3.  Audience Target audience/Usage
-   4.  Scope
-   5.  Security Considerations
-   6.  IANA Considerations
-   7.  Normative References
+   2.  Audience Target audience/Usage
+   3.  Terminology
+   4.  Conventions and Definitions
+   5.  Protocol Flow
+     5.1.  Preconditions
+     5.2.  Overview
+   6.  Security Considerations
+   7.  IANA Considerations
+   8.  Normative References
    Acknowledgments
    Author's Address
 
@@ -118,8 +121,8 @@ Table of Contents
    *  Instead of the /.well-known/acme-challenge/{token} endpoint it
       defines how to use and validate a basic OpenID Connect Federation
       component, called Entity Configuration, that is a signed JWT
-      published in a well-known resource (.well-known/openid-federation)
-      published by the requestor.
+      published in a well-known resource (/.well-known/openid-
+      federation) published by the requestor.
 
    *  It removes the requirement for the authentication of an entity and
       the provisioning of the _acme-challenge token_, since the
@@ -133,7 +136,29 @@ Table of Contents
       for the publication of the X.509 certificates, by a trust anchor
       or intermediate, that was previously issued with ACME.
 
-2.  Conventions and Definitions
+2.  Audience Target audience/Usage
+
+   The audience of the document are the multilateral federations that
+   require automatic issuance oif X.509 certificates using an
+   infrastructure of trust based on OpenID Connect Federation 1.0.
+
+3.  Terminology
+
+   ACME Automated Certificate Management Environment, a certificate
+   management protocol [RFC8555.
+
+   TA OpenID Connect Federation Trust Anchor, see CA
+
+   CA Certification Authority, also known as Trust Anchor or
+   Intermediate, specifically one that implements the ACME protocol
+   though an ACME server.
+
+   CSR Certificate Signing Request, specifically a PKCS#10 [RFC2986] as
+   supported by ACME.
+
+   FQDN Fully Qualified Domain Name.
+
+4.  Conventions and Definitions
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
@@ -141,26 +166,33 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-3.  Audience Target audience/Usage
+5.  Protocol Flow
 
-   The audience of the document are the multilateral federations that
-   require automatic issuance oif X.509 certificates using an
-   infrastructure of trust based on OpenID Connect Federation 1.0.
+   This section presents the protocol flow.
 
-4.  Scope
+5.1.  Preconditions
 
-   This specification defines how a [OIDC-FED] Federation API is used by
-   ACME in the authorization phase for the issuance of the certificates.
+   The protocol assumes the following preconditions are met:
 
-5.  Security Considerations
+   *  ...
+
+   *  ...
+
+   *  ...
+
+5.2.  Overview
+
+   TBD: high level design and ascii sequence diagram.
+
+6.  Security Considerations
 
    TODO Security
 
-6.  IANA Considerations
+7.  IANA Considerations
 
    This document has no IANA actions.
 
-7.  Normative References
+8.  Normative References
 
    [OIDC-FED] Hedberg, R., Jones, M. B., Solberg, A. Å., Bradley, J., De
               Marco, G., and V. Dzhuvinov, "OpenID Connect Federation
@@ -174,6 +206,11 @@ Table of Contents
    [RFC2818]  Rescorla, E., "HTTP Over TLS", RFC 2818,
               DOI 10.17487/RFC2818, May 2000,
               <https://www.rfc-editor.org/rfc/rfc2818>.
+
+   [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
+              Request Syntax Specification Version 1.7", RFC 2986,
+              DOI 10.17487/RFC2986, November 2000,
+              <https://www.rfc-editor.org/rfc/rfc2986>.
 
    [RFC3696]  Klensin, J., "Application Techniques for Checking and
               Transformation of Names", RFC 3696, DOI 10.17487/RFC3696,
