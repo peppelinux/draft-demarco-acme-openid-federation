@@ -123,7 +123,7 @@ The protocol assumes the following discovery preconditions are met, the Issuer M
 
 1.  The Requestor controls the private key related to the public part published in its Entity Configuration, attested by the superior Entity Statement.
 
-3.  The Requestor controls the identifier in question, having published the Entity Configuration and having signed it using the private key related to the public one related to the CSR.
+2.  The Requestor controls the identifier in question, having published the Entity Configuration and having signed it using the private key related to the public one related to the CSR.
 
 This process may be repeated to request multiple certificates related to the Federation Entity Keys and linked to a single identifier, that's the Federation Entity FQDN.
 
