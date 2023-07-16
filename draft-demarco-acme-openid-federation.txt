@@ -393,10 +393,8 @@ Table of Contents
       are present in the request and different from the type openid-
       federation, these SHOULD be ignored.
 
-   ```
-
-   POST /acme/new-order HTTP/1.1 Host: issuer.example.com Content-Type:
-   application/jose+json
+   ```` POST /acme/new-order HTTP/1.1 Host: issuer.example.com Content-
+   Type: application/jose+json
 
    { "protected": base64url({ "alg": "ES256", "kid": "1", "nonce":
    "5XJ1L3lEkMG7tR6pA00clA", "url": "https://issuer.example.com/acme/
@@ -406,7 +404,7 @@ Table of Contents
    "2024-01-01T00:04:00+04:00", "notAfter": "2024-01-08T00:04:00+04:00"
    }), "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g" }
 
-   ```
+   ````
 
 6.  Federation Identifiers Types
 

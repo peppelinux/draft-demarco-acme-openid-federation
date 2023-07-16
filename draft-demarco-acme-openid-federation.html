@@ -1519,11 +1519,11 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
             <li class="normal" id="section-5.5.1-4.3">the maximum length of the JSON Array contained in the <code>identifiers</code> parameter <span class="bcp14">MUST</span> be 1, since there cannot be more than a single FQDN corresponding to a single Federation Entity. If other identifiers  are present in the request and different from the type <code>openid-federation</code>, these <span class="bcp14">SHOULD</span> be ignored.<a href="#section-5.5.1-4.3" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-5.5.1-5">```<a href="#section-5.5.1-5" class="pilcrow">¶</a></p>
-<p id="section-5.5.1-6">POST /acme/new-order HTTP/1.1
+<p id="section-5.5.1-5">````
+   POST /acme/new-order HTTP/1.1
    Host: issuer.example.com
-   Content-Type: application/jose+json<a href="#section-5.5.1-6" class="pilcrow">¶</a></p>
-<p id="section-5.5.1-7">{
+   Content-Type: application/jose+json<a href="#section-5.5.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.5.1-6">{
      "protected": base64url({
        "alg": "ES256",
        "kid": "1",
@@ -1537,8 +1537,8 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
        "notAfter": "2024-01-08T00:04:00+04:00"
      }),
      "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
-   }<a href="#section-5.5.1-7" class="pilcrow">¶</a></p>
-<p id="section-5.5.1-8">```<a href="#section-5.5.1-8" class="pilcrow">¶</a></p>
+   }<a href="#section-5.5.1-6" class="pilcrow">¶</a></p>
+<p id="section-5.5.1-7">````<a href="#section-5.5.1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
