@@ -332,9 +332,9 @@ Content-Type: application/jose+json
 ~~~~
 
 The CSR encodes the client's requests with regard to the content of
-the certificate to be issued.  The CSR MUST indicate the exact same
-set of requested identifiers as the initial newOrder request.
-Identifiers of type "dns" MUST appear either in the commonName
+the certificate to be issued.  
+
+Identifiers value of type "openid-federation" MUST appear either in the commonName
 portion of the requested subject name or in an extensionRequest
 attribute [RFC2985] requesting a subjectAltName extension, or both.
 
