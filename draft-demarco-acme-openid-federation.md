@@ -334,7 +334,7 @@ Content-Type: application/jose+json
 ~~~~
 
 The CSR encodes the client's requests with regard to the content of
-the certificate to be issued.  
+the certificate to be issued.
 
 Identifiers value of type "openid-federation" MUST appear either in the commonName
 portion of the requested subject name or in an extensionRequest
