@@ -90,7 +90,7 @@ The audience of the document are the multilateral federations that require autom
 This specification can be implemented by:
 
 - Federation Entities that joins to a federation staging area using HTTP only transport to attests themselves as trustworhty, and then ask X.509 certificates for their official HTTPs Federation Entity ID.
-- Federation Entities that want to ask and obtain X.509 certificate for every Federation Key contained in their Entity Configuration, as made recognizable in a Federation Trust Chain.
+- Federation Entities that want to ask and obtain X.509 certificate for every Federation Key contained in their Entity Configuration, as made reliable in a Federation Trust Chain.
 
 
 # Terminology
@@ -125,7 +125,8 @@ The protocol assumes the following discovery preconditions are met, the Issuer M
 
 1.  The Requestor controls the private key related to the public part published in its Entity Configuration, attested by the superior Entity Statement.
 
-2.  The Requestor controls the identifier in question, having published the Entity Configuration and having signed it using the private key related to the public one related to the CSR.
+2.  The Requestor controls the identifier in question, having published the Entity Configuration.
+3. The newOrder request must be signed using a private key related to a public one published in the Requestor's Entity Configuration, the CSR MUST then be related to the public key, attested within the Trust Chain, used for verifying the signature of the request order.
 
 This process may be repeated to request multiple certificates related to the Federation Entity Keys and linked to a single identifier, that's the Federation Entity FQDN.
 
