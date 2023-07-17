@@ -4,8 +4,8 @@
 
 Automated Certificate Management Environment                 G. D. Marco
 Internet-Draft                                               independent
-Intended status: Standards Track                            16 July 2023
-Expires: 17 January 2024
+Intended status: Standards Track                            17 July 2023
+Expires: 18 January 2024
 
 
 Automatic Certificate Management Environment (ACME) with OpenID Connect
@@ -63,7 +63,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 January 2024.
+   This Internet-Draft will expire on 18 January 2024.
 
 Copyright Notice
 
@@ -165,7 +165,7 @@ Table of Contents
 
    *  Federation Entities that want to ask and obtain X.509 certificate
       for every Federation Key contained in their Entity Configuration,
-      as made recognizable in a Federation Trust Chain.
+      as made reliable in a Federation Trust Chain.
 
 3.  Terminology
 
@@ -220,8 +220,13 @@ Table of Contents
        Entity Statement.
 
    2.  The Requestor controls the identifier in question, having
-       published the Entity Configuration and having signed it using the
-       private key related to the public one related to the CSR.
+       published the Entity Configuration.
+
+   3.  The newOrder request must be signed using a private key related
+       to a public one published in the Requestor's Entity
+       Configuration, the CSR MUST then be related to the public key,
+       attested within the Trust Chain, used for verifying the signature
+       of the request order.
 
    This process may be repeated to request multiple certificates related
    to the Federation Entity Keys and linked to a single identifier,
@@ -347,19 +352,19 @@ Table of Contents
    7.1.1) of [RFC8555] in the federation Entity Configuration of the
    Issuer.
 
-   {
-     "metadata":
-       "acme_provider": {
-         "newNonce": "https://issuer.example.com/acme/new-nonce",
-         "newOrder": "https://issuer.example.com/acme/new-order",
-         "revokeCert": "https://issuer.example.com/acme/revoke-cert",
-         "meta": {
-           "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
-           "website": "https://www.issuer.example.com/",
-           "caaIdentities": ["issuer.example.com"],
-           "externalAccountRequired": false
-      }
+{
+  "metadata":
+    "acme_provider": {
+      "newNonce": "https://issuer.example.com/acme/new-nonce",
+      "newOrder": "https://issuer.example.com/acme/new-order",
+      "revokeCert": "https://issuer.example.com/acme/revoke-cert",
+      "meta": {
+        "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
+        "website": "https://www.issuer.example.com/",
+        "caaIdentities": ["issuer.example.com"],
+        "externalAccountRequired": false
    }
+}
 
 6.4.  newNonce request
 
@@ -521,11 +526,12 @@ Table of Contents
    }
 
    The CSR encodes the client's requests with regard to the content of
-   the certificate to be issued.  The CSR MUST indicate the exact same
-   set of requested identifiers as the initial newOrder request.
-   Identifiers of type "dns" MUST appear either in the commonName
-   portion of the requested subject name or in an extensionRequest
-   attribute [RFC2985] requesting a subjectAltName extension, or both.
+   the certificate to be issued.
+
+   Identifiers value of type "openid-federation" MUST appear either in
+   the commonName portion of the requested subject name or in an
+   extensionRequest attribute [RFC2985] requesting a subjectAltName
+   extension, or both.
 
 6.9.  Finalize Response
 
@@ -668,6 +674,11 @@ Table of Contents
    [RFC2818]  Rescorla, E., "HTTP Over TLS", RFC 2818,
               DOI 10.17487/RFC2818, May 2000,
               <https://www.rfc-editor.org/rfc/rfc2818>.
+
+   [RFC2985]  Nystrom, M. and B. Kaliski, "PKCS #9: Selected Object
+              Classes and Attribute Types Version 2.0", RFC 2985,
+              DOI 10.17487/RFC2985, November 2000,
+              <https://www.rfc-editor.org/rfc/rfc2985>.
 
    [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
               Request Syntax Specification Version 1.7", RFC 2986,

@@ -1054,7 +1054,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Marco</td>
-<td class="center">Expires 17 January 2024</td>
+<td class="center">Expires 18 January 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-demarco-acme-openid-federation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-07-16" class="published">16 July 2023</time>
+<time datetime="2023-07-17" class="published">17 July 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-01-17">17 January 2024</time></dd>
+<dd class="expires"><time datetime="2024-01-18">18 January 2024</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1123,7 +1123,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 17 January 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 18 January 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1262,7 +1262,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <ul class="normal">
 <li class="normal" id="section-2-3.1">Federation Entities that joins to a federation staging area using HTTP only transport to attests themselves as trustworhty, and then ask X.509 certificates for their official HTTPs Federation Entity ID.<a href="#section-2-3.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-2-3.2">Federation Entities that want to ask and obtain X.509 certificate for every Federation Key contained in their Entity Configuration, as made recognizable in a Federation Trust Chain.<a href="#section-2-3.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-2-3.2">Federation Entities that want to ask and obtain X.509 certificate for every Federation Key contained in their Entity Configuration, as made reliable in a Federation Trust Chain.<a href="#section-2-3.2" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>
@@ -1304,7 +1304,9 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
 <ol start="1" type="1" class="normal type-1" id="section-5-4">
 <li id="section-5-4.1">The Requestor controls the private key related to the public part published in its Entity Configuration, attested by the superior Entity Statement.<a href="#section-5-4.1" class="pilcrow">¶</a>
 </li>
-        <li id="section-5-4.2">The Requestor controls the identifier in question, having published the Entity Configuration and having signed it using the private key related to the public one related to the CSR.<a href="#section-5-4.2" class="pilcrow">¶</a>
+        <li id="section-5-4.2">The Requestor controls the identifier in question, having published the Entity Configuration.<a href="#section-5-4.2" class="pilcrow">¶</a>
+</li>
+        <li id="section-5-4.3">The newOrder request must be signed using a private key related to a public one published in the Requestor's Entity Configuration, the CSR <span class="bcp14">MUST</span> then be related to the public key, attested within the Trust Chain, used for verifying the signature of the request order.<a href="#section-5-4.3" class="pilcrow">¶</a>
 </li>
       </ol>
 <p id="section-5-5">This process may be repeated to request multiple certificates related to the Federation Entity Keys and linked to a single identifier, that's the Federation Entity FQDN.<a href="#section-5-5" class="pilcrow">¶</a></p>
@@ -1450,7 +1452,7 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
         </h3>
 <p id="section-6.3-1">The Issuer <span class="bcp14">MUST</span> publish its Entity Configuration including the <code>acme_provider</code> metadata within it.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
 <p id="section-6.3-2">This section describe how to use the parameters defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1">Section 7.1.1</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> in the federation Entity Configuration of the Issuer.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-6.3-3">
+<div class="alignLeft art-text artwork" id="section-6.3-3">
 <pre>
 {
   "metadata":
@@ -1645,11 +1647,10 @@ Content-Type: application/jose+json
 </pre><a href="#section-6.8-4" class="pilcrow">¶</a>
 </div>
 <p id="section-6.8-5">The CSR encodes the client's requests with regard to the content of
-the certificate to be issued.  The CSR <span class="bcp14">MUST</span> indicate the exact same
-set of requested identifiers as the initial newOrder request.
-Identifiers of type "dns" <span class="bcp14">MUST</span> appear either in the commonName
+the certificate to be issued.<a href="#section-6.8-5" class="pilcrow">¶</a></p>
+<p id="section-6.8-6">Identifiers value of type "openid-federation" <span class="bcp14">MUST</span> appear either in the commonName
 portion of the requested subject name or in an extensionRequest
-attribute [RFC2985] requesting a subjectAltName extension, or both.<a href="#section-6.8-5" class="pilcrow">¶</a></p>
+attribute <span>[<a href="#RFC2985" class="cite xref">RFC2985</a>]</span> requesting a subjectAltName extension, or both.<a href="#section-6.8-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="finalize-response">
@@ -1819,6 +1820,10 @@ Content-Type: application/pem-certificate-chain
 <dt id="RFC2818">[RFC2818]</dt>
       <dd>
 <span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"HTTP Over TLS"</span>, <span class="seriesInfo">RFC 2818</span>, <span class="seriesInfo">DOI 10.17487/RFC2818</span>, <time datetime="2000-05" class="refDate">May 2000</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2818">https://www.rfc-editor.org/rfc/rfc2818</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2985">[RFC2985]</dt>
+      <dd>
+<span class="refAuthor">Nystrom, M.</span> and <span class="refAuthor">B. Kaliski</span>, <span class="refTitle">"PKCS #9: Selected Object Classes and Attribute Types Version 2.0"</span>, <span class="seriesInfo">RFC 2985</span>, <span class="seriesInfo">DOI 10.17487/RFC2985</span>, <time datetime="2000-11" class="refDate">November 2000</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2985">https://www.rfc-editor.org/rfc/rfc2985</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2986">[RFC2986]</dt>
       <dd>
