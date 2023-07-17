@@ -29,6 +29,7 @@ author:
 
 normative:
   RFC2818: RFC2818
+  RFC2985: RFC2985
   RFC2986: RFC2986
   RFC3696: RFC3696
   RFC8555: RFC8555
@@ -185,7 +186,7 @@ The Issuer MUST publish its Entity Configuration including the `acme_provider` m
 
 This section describe how to use the parameters defined in the [Section 7.1.1](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1) of [RFC8555] in the federation Entity Configuration of the Issuer.
 
-~~~~ json
+~~~~
 {
   "metadata":
     "acme_provider": {
