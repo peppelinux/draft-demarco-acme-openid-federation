@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-30T00:24:54.827711+00:00",
+  "timestamp": "2024-02-01T00:26:21.047298+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -49,6 +49,23 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDOJ6_NW859ms0D",
+      "title": "specialized keys by scopes",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/1",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "we need a way (optional) to define the scope of the key where the issued certificate is related to",
+      "createdAt": "2024-01-30T09:07:23Z",
+      "updatedAt": "2024-01-30T09:07:23Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": []
 }
