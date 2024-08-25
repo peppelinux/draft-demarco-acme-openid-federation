@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-22T00:29:59.234850+00:00",
+  "timestamp": "2024-08-25T00:33:29.756614+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -63,6 +63,22 @@
       "body": "we need a way (optional) to define the scope of the key where the issued certificate is related to",
       "createdAt": "2024-01-30T09:07:23Z",
       "updatedAt": "2024-01-30T09:07:23Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 2,
+      "id": "I_kwDOJ6_NW86UD4xZ",
+      "title": "Questions regarding the specification",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/2",
+      "state": "OPEN",
+      "author": "branlwyd",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I gave the specification (as well as the ACME & OpenID Federation specs) a readthrough. I have a few initial questions:\r\n\r\n1) What kind of X.509 certificates are intended to be generated? For example, the original ACME specification domain-validated Web PKI certificates (RFC 8555). It has been extended to create S/MIME certificates (RFC 8823), VoIP certificates (RFC 9448), and probably others. The text in Section 6.8 suggests this may be a Web PKI certificate, but this is not totally clear.\r\n\r\n2) It looks like the ACME authorizations/challenges functionality is not used in this proposal (Section 6.7 says it `MUST` be omitted from the `newOrder` response). Instead, my understanding is that issuance is authorized by having the `newOrder` request signed by a private key controlled by the Requestor & published in its Entity Configuration (Section 5), which may be discovered by the Issuer or included in a new `trust_chain` request field. Is this accurate?\r\n\r\n[nit: Section 5 says the `newOrder` request is signed by the Requestor's private key, while Section 6.2 suggests that the `newNonce` request requires validation. Perhaps both should be?]\r\n\r\n3) Given that requests are expected to be signed with the Requestor's private key, how does this play with standard ACME account management? Standard ACME account management maintains that each client will maintain its own keypair, and each request is authorized by a signature over the request with the account's private key.\r\n\r\n\r\nAnd a final meta-question, wrapping up the previous three questions: why can't this method of authorizing issuance be phrased as a new challenge type, using ACME's existing authorization/challenge/response APIs? For example, the challenge would include a nonce, and the response would involve providing a signature over the nonce with the Entity Key. This would fit more closely to ACME as defined in RFC 8555 as well as existing extensions.",
+      "createdAt": "2024-08-23T23:43:26Z",
+      "updatedAt": "2024-08-24T00:13:13Z",
       "closedAt": null,
       "comments": []
     }
