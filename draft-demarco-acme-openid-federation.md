@@ -152,6 +152,7 @@ Where the precondition number 4 and number 5 are not met, there MAY be some case
 
 ## Overview
 
+
 TBD: high level design and ascii sequence diagram.
 
 1. The Requestor checks if its superior Federation Entity supports the ACME protocol for OpenID Connect Federation 1.0. If not, the Requestor starts the discovery process to find which are the Issuers within the federation.
@@ -202,227 +203,85 @@ This section describe how to use the parameters defined in the [Section 7.1.1](h
 }
 ~~~~
 
-## newNonce request
+TODO: update text above here
 
-The Requestor MUST obtain a new nonce from the Issuer, according to the [Section 7.2](https://datatracker.ietf.org/doc/html/rfc8555#section-7.2) of [RFC8555].
+## OpenID Federation challenge type
 
-Below a non-normative example of the request:
+The OpenID Federation challenge type allows a client to prove control of a
+domain via mutual trust in an OIDC Federation. The client demonstrates control
+of a key published in its OIDC Entity Configuration, which the ACME server uses
+to validate that the client is in control of the domain.
 
-~~~~ http
-HEAD /acme/new-nonce HTTP/1.1
-Host: issuer.example.com
+The openid-federation-01 ACME challenge object has the following format:
 
-HTTP/1.1 200 OK
-Replay-Nonce: oFvnlFP1wIhRlYS2jTaXbA
-Cache-Control: no-store
-~~~~
+type (required, string):  The string "openid-federation-01"
 
-Differences with [RFC8555]:
+token (required, string):  A random value that uniquely identifies the
+    challenge. This value MUST have at least 128 bits of entropy. It MUST NOT
+    contain any characters outside the base64url alphabet as described in
+    Section 5 of [RFC4648]. Trailing '=' padding characters MUST be stripped.
+    See [RFC4086] for additional information on randomness requirements.
 
-- The HTTP header `Link: <https://issuer.example.com/acme/directory>;rel="index"` is not required.
+```
+   {
+     "type": "openid-federation-01",
+     "url": "https://example.com/acme/chall/prV_B7yEyA4",
+     "status": "pending",
+     "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
+   }
+```
 
-## newOrder request
+The client responds with an object with the following format:
 
-The certificate issuance request is made by sending a HTTP POST to the Issuer `newOrder` resource, where the body of the POST is a JWS object whose JSON payload is a subset of the *ACME order object*, as defined in the [Section 7.4](https://datatracker.ietf.org/doc/html/rfc8555#section-7.4) of [RFC8555].
+sig (required, string):  a base64url encoding of a JWS, signing the token
+    encoded in UTF-8 with one of the keys published in the client's OIDC Entity
+    Configuration.
 
-The *ACME order object* represents the request for a certificate issuance and is used to track the progress of that order through to issuance (see the [Section 7.1.6](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.6) of [RFC8555] for any further information about the statuses).
+trust_chain (optional, array of string):  an array of base64url-encoded JWS,
+    representing the trust chain of the client in the OpenID Federation. See
+    section 4.3 of [OIDC-FED]. It is RECOMMENDED that the client include this
+    field; otherwise, the ACME server SHOULD start Federation Entity Discovery
+    to obtain the trust chain related to the client.
 
-~~~~ http
-POST /acme/new-order HTTP/1.1
-Host: issuer.example.com
-Content-Type: application/jose+json
+```
+   POST /acme/chall/prV_B7yEyA4
+   Host: example.com
+   Content-Type: application/jose+json
 
-{
- "protected": base64url({
-   "alg": "ES256",
-   "kid": "1",
-   "nonce": "oFvnlFP1wIhRlYS2jTaXbA",
-   "url": "https://issuer.example.com/acme/new-order",
-   "trust_chain": ["eyJhbGciOiJFU ...", "eyJhbGci ..."]
- }),
- "payload": base64url({
-   "identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],
-   "notBefore": "2024-01-01T00:04:00+04:00",
-   "notAfter": "2024-01-08T00:04:00+04:00"
- }),
- "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
-}
-~~~~
+   {
+     "protected": base64url({
+       "alg": "ES256",
+       "kid": "https://example.com/acme/acct/evOfKhNU60wg",
+       "nonce": "UQI1PoRi5OuXzxuX7V7wL0",
+       "url": "https://example.com/acme/chall/prV_B7yEyA4"
+     }),
+     "payload": base64url({
+      "sig": "wQAvHlPV1tVxRW0vZUa4BQ...",
+      "trust_chain": ["eyJhbGciOiJFU...", "eyJhbGci..."]
+     }),
+     "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
+   }
+```
 
-## Order Object Extensions and Constraints
+On receiving a response, the server retrieves the public keys associated with
+the given entity (possibly performing Federation Entity Discovery to do so),
+then:
 
-To the *ACME order object* properties already defined in the [Section 7.1.3](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.3) of [RFC8555] are added those defined by this document and listed below, to be intended as extensions to [RFC8555].
+* Verifies that the requested domain names match the FQDN contained within the
+  `iss` parameter of the client's Entity Configuration. For example, if the
+  `iss` parameter within the Entity Configuration contains the value
+  `https://requestor.example.org/oidc/rp`, the extracted FQDN is then
+  `requestor.example.org`. (Note: since the Entity Configuration can contain at
+  most one FQDN, this effectively means that this challenge type works with
+  requests for a single domain name only.)
 
-| place             | parameter     | type              | presence | reference                 |
-|-------------------|---------------|-------------------|----------|---------------------------|
-| protected headers | `trust_chain` | JSON Array of JWS | OPTIONAL | [OIDC-FED], Section 3.2.1 |
+* Verifies that the sig field of the payload includes a valid JWS, signed with
+  one of the keys published in the client's Entity Configuration.
 
+If all of the above verifications succeed, then the validation is successful.
+Otherwise, it has failed.
 
-When OpenID Connect Federation 1.0 is used by the Issuer to attest the reliabiability of a Requestor, the following constraints to the `payload.identifiers` JSON Array MUST be respected:
-
-- `type` MUST be set to `openid-federation`;
-- `value` MUST correspond to the FQDN contained within the `iss` parameter of the Requestor's Entity Configuration. Since the Federation Entity ID is a HTTP URL, the corresponding FQDN MUST be extracted from it. For example, if the `iss` parameter withing the Entity Configuration contains the value `https://requestor.example.org/oidc/rp`, the extracted FQDN is then `requestor.example.org` and it MUST correspond to the value of the identifier contained in the order object;
-- the maximum length of the JSON Array contained in the `identifiers` parameter MUST be 1, since there cannot be more than a single FQDN corresponding to a single Federation Entity. If other identifiers  are present in the request and different from the type `openid-federation`, these SHOULD be ignored.
-
-
-## newOrder Response
-
-The server MUST return an error if it cannot fulfill the request as
-specified, and it MUST NOT issue a certificate with contents other
-than those requested.  If the server requires the request to be
-modified in a certain way, it should indicate the required changes
-using an appropriate error type and description.
-
-If the server is willing to issue the requested certificate, it
-responds with a 201 (Created) response.  The body of this response is
-an order object reflecting the client's request and any
-authorizations the client must complete before the certificate will
-be issued.
-
-~~~~ http
-HTTP/1.1 201 Created
-Replay-Nonce: MYAuvOpaoIiywTezizk5vw
-Location: https://issuer.example.com/acme/order/TOlocE8rfgo
-
-{
- "status": "pending",
- "expires": "2016-01-05T14:09:07.99Z",
-
- "notBefore": "2016-01-01T00:00:00Z",
- "notAfter": "2016-01-08T00:00:00Z",
-
- "identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],
-
- "finalize": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize"
-}
-~~~~
-
-Differences with [RFC8555]:
-
-- The HTTP Header Link is not required
-- The `authorizations` arrays is not required an MUST be omitted from the order object.
-
-
-## Finalize Request
-
-Once the client believes it has fulfilled the server's requirements,
-it should send a POST request to the order resource's finalize URL.
-The POST body MUST include a CSR in the form of a string.
-
-The CSR encodes the parameters for the certificate being requested [RFC2986]. The CSR is sent in the base64url-encoded version of the DER format. Please note that the value is encoded in base64url and does not include headers, then it is different from PEM.
-
-Below a non-normative example of the `finalize` made via HTTP POST:
-
-~~~~ http
-POST /acme/order/TOlocE8rfgo/finalize HTTP/1.1
-Host: issuer.example.com
-Content-Type: application/jose+json
-
-{
- "protected": base64url({
-   "alg": "ES256",
-   "kid": "1",
-   "nonce": "MYAuvOpaoIiywTezizk5vw",
-   "url": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize"
-
- }),
- "payload": base64url({
-   "csr": "MIIBPTCBxAIBADBFMQ...FS6aKdZeGsysoCo4H9P",
- }),
- "signature": "uOrUfIIk5RyQ...nw62Ay1cl6AB"
-}
-~~~~
-
-The CSR encodes the client's requests with regard to the content of
-the certificate to be issued.
-
-Identifiers value of type "openid-federation" MUST appear either in the commonName
-portion of the requested subject name or in an extensionRequest
-attribute [RFC2985] requesting a subjectAltName extension, or both.
-
-## Finalize Response
-
-If a request to finalize an order is successful, the server will
-return a 200 (OK) with an updated order object.  The status of the
-order will indicate what action the client should take, these action values are defined in the [Section 7.4](https://datatracker.ietf.org/doc/html/rfc8555#section-7.4) of [RFC8555].
-
-~~~~ http
-HTTP/1.1 200 OK
-Replay-Nonce: CGf81JWBsq8QyIgPCi9Q9X
-Location: https://issuer.example.com/acme/order/TOlocE8rfgo
-
-{
- "status": "valid",
- "expires": "2016-01-20T14:09:07.99Z",
-
- "notBefore": "2016-01-01T00:00:00Z",
- "notAfter": "2016-01-08T00:00:00Z",
-
- "identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],
-
- "finalize": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize",
-
- "certificate": "https://issuer.example.com/acme/cert/mAt3xBGaobw"
-}
-~~~~
-
-Differences with [RFC8555]:
-
-- The HTTP Header Link is not required
-
-## Downloading the Certificate
-
-The request and the response are fully compliant to the [Section 7.4.2](https://datatracker.ietf.org/doc/html/rfc8555#section-7.4.2) defined in [RFC8555].
-
-Below a non-normative example of a request:
-
-~~~~ http
-POST /acme/cert/mAt3xBGaobw HTTP/1.1
-Host: issuer.example.com
-Content-Type: application/jose+json
-Accept: application/pem-certificate-chain
-
-{
- "protected": base64url({
-   "alg": "ES256",
-   "kid": "1",
-   "nonce": "CGf81JWBsq8QyIgPCi9Q9X",
-   "url": "https://example.com/acme/cert/mAt3xBGaobw"
- }),
- "payload": "",
- "signature": "nuSDISbWG8mMgE7H...QyVUL68yzf3Zawps"
-}
-~~~~
-
-Here follows a non-normative example of a response:
-
-~~~~ http
-HTTP/1.1 200 OK
-Content-Type: application/pem-certificate-chain
-
------BEGIN CERTIFICATE-----
-[End-entity certificate contents]
------END CERTIFICATE-----
------BEGIN CERTIFICATE-----
-[Issuer certificate contents]
------END CERTIFICATE-----
-~~~~
-
-# Federation Identifiers Types
-
-The "ACME Identifier Types" registry defined in the [Section 9.7.7](https://datatracker.ietf.org/doc/html/rfc8555#section-9.7.7) of [RFC8555] is extended with the types of identifiers listed below.
-
-Template:
-
--  Label: The value to be put in the "type" field of the identifier object.
--  Reference: Where the identifier type is defined.
-
-Contents:
-
-| Label             | Reference                            |
-|-------------------|--------------------------------------|
-| openid-federation | draft-demarco-acme-openid-federation |
-|                   |                                      |
+TODO: update text below here
 
 # Publication of the Certificates within the Federation
 
