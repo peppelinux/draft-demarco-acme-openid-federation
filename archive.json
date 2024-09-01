@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-29T00:31:05.192902+00:00",
+  "timestamp": "2024-09-01T00:38:08.912332+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -78,7 +78,7 @@
       "labels": [],
       "body": "I gave the specification (as well as the ACME & OpenID Federation specs) a readthrough. I have a few initial questions:\r\n\r\n1) What kind of X.509 certificates are intended to be generated? For example, the original ACME specification generates domain-validated Web PKI certificates (RFC 8555). It has been extended to create S/MIME certificates (RFC 8823), VoIP certificates (RFC 9448), and probably others. The text in Section 6.8 suggests this may be a Web PKI certificate, but this is not totally clear.\r\n\r\n2) It looks like the ACME authorizations/challenges functionality is not used in this proposal (Section 6.7 says it `MUST` be omitted from the `newOrder` response). Instead, my understanding is that issuance is authorized by having the `newOrder` request signed by a private key controlled by the Requestor & published in its Entity Configuration (Section 5), which may be discovered by the Issuer or included in a new `trust_chain` request field. Is this accurate?\r\n\r\n[nit: Section 5 says the `newOrder` request is signed by the Requestor's private key, while Section 6.2 suggests that the `newNonce` request requires validation. Perhaps both should be?]\r\n\r\n3) Given that requests are expected to be signed with the Requestor's private key, how does this play with standard ACME account management? Standard ACME account management maintains that each client will maintain its own keypair, and each request is authorized by a signature over the request with the account's private key.\r\n\r\n\r\nAnd a final meta-question, wrapping up the previous three questions: why can't this method of authorizing issuance be phrased as a new challenge type, using ACME's existing authorization/challenge/response APIs? For example, the challenge would include a nonce, and the response would involve providing a signature over the nonce with the Entity Key. This would fit more closely to ACME as defined in RFC 8555 as well as existing extensions.",
       "createdAt": "2024-08-23T23:43:26Z",
-      "updatedAt": "2024-08-28T20:44:35Z",
+      "updatedAt": "2024-08-30T23:36:16Z",
       "closedAt": null,
       "comments": [
         {
@@ -94,9 +94,43 @@
           "body": "1. Sounds good; I think we eventually need to think through what kind of CSRs are acceptable, but this doesn't need to be spelled out in the spec (RFC 8555 & RFC 8823 spell out CSR requirements in general terms; RFC 9448 provides more detail but still looks non-comprehensive).\r\n\r\nFinal: Sounds good, I will open a PR in the next few days -- it will likely phrase the authorization logic as a new challenge type.",
           "createdAt": "2024-08-28T20:44:34Z",
           "updatedAt": "2024-08-28T20:44:34Z"
+        },
+        {
+          "author": "branlwyd",
+          "authorAssociation": "NONE",
+          "body": "I sent https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/3 as a WIP example of my suggestion to phrase the validation as a new ACME challenge type. Feedback very welcome; I will clean it up and turn it into a proper PR if the approach is acceptable.",
+          "createdAt": "2024-08-30T23:36:15Z",
+          "updatedAt": "2024-08-30T23:36:15Z"
         }
       ]
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 3,
+      "id": "PR_kwDOJ6_NW856CIbm",
+      "title": "WIP: rephrase OpenID federation validation as a new challenge type.",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/3",
+      "state": "OPEN",
+      "author": "branlwyd",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-08-30T23:32:27Z",
+      "updatedAt": "2024-08-30T23:32:27Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "5f1e34bcb3bdd432f146773537c3cca10c9b6c8a",
+      "headRepository": "branlwyd/draft-demarco-acme-openid-federation",
+      "headRefName": "bran/challenge",
+      "headRefOid": "6d6606f07542c0ff8db29e77a496d801403483c3",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
 }
