@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-09-03T00:31:03.856603+00:00",
+  "timestamp": "2024-09-05T00:31:37.225932+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -78,7 +78,7 @@
       "labels": [],
       "body": "I gave the specification (as well as the ACME & OpenID Federation specs) a readthrough. I have a few initial questions:\r\n\r\n1) What kind of X.509 certificates are intended to be generated? For example, the original ACME specification generates domain-validated Web PKI certificates (RFC 8555). It has been extended to create S/MIME certificates (RFC 8823), VoIP certificates (RFC 9448), and probably others. The text in Section 6.8 suggests this may be a Web PKI certificate, but this is not totally clear.\r\n\r\n2) It looks like the ACME authorizations/challenges functionality is not used in this proposal (Section 6.7 says it `MUST` be omitted from the `newOrder` response). Instead, my understanding is that issuance is authorized by having the `newOrder` request signed by a private key controlled by the Requestor & published in its Entity Configuration (Section 5), which may be discovered by the Issuer or included in a new `trust_chain` request field. Is this accurate?\r\n\r\n[nit: Section 5 says the `newOrder` request is signed by the Requestor's private key, while Section 6.2 suggests that the `newNonce` request requires validation. Perhaps both should be?]\r\n\r\n3) Given that requests are expected to be signed with the Requestor's private key, how does this play with standard ACME account management? Standard ACME account management maintains that each client will maintain its own keypair, and each request is authorized by a signature over the request with the account's private key.\r\n\r\n\r\nAnd a final meta-question, wrapping up the previous three questions: why can't this method of authorizing issuance be phrased as a new challenge type, using ACME's existing authorization/challenge/response APIs? For example, the challenge would include a nonce, and the response would involve providing a signature over the nonce with the Entity Key. This would fit more closely to ACME as defined in RFC 8555 as well as existing extensions.",
       "createdAt": "2024-08-23T23:43:26Z",
-      "updatedAt": "2024-08-30T23:36:16Z",
+      "updatedAt": "2024-09-03T19:23:09Z",
       "closedAt": null,
       "comments": [
         {
@@ -101,6 +101,13 @@
           "body": "I sent https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/3 as a WIP example of my suggestion to phrase the validation as a new ACME challenge type. Feedback very welcome; I will clean it up and turn it into a proper PR if the approach is acceptable.",
           "createdAt": "2024-08-30T23:36:15Z",
           "updatedAt": "2024-08-30T23:36:15Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "Ok, I have added my first review with some suggestions",
+          "createdAt": "2024-09-03T19:23:09Z",
+          "updatedAt": "2024-09-03T19:23:09Z"
         }
       ]
     }
@@ -118,7 +125,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2024-08-30T23:32:27Z",
-      "updatedAt": "2024-08-30T23:32:27Z",
+      "updatedAt": "2024-09-03T19:22:28Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "5f1e34bcb3bdd432f146773537c3cca10c9b6c8a",
@@ -130,7 +137,248 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86Hy3vC",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-03T19:09:37Z",
+          "updatedAt": "2024-09-03T19:09:37Z",
+          "comments": [
+            {
+              "originalPosition": 115,
+              "body": "```suggestion\r\ndomain and its underlying endpoints using the trust evaluation mechanism provided by OpenID Federation 1.0. The client demonstrates control\r\n```\r\nI would not say mutual because the client has discovered in a previous moment all the ACME certificate issuers within a large scale federation, and at the time of the acme request only the acme issuers needs to evaluate the trust with the client",
+              "createdAt": "2024-09-03T19:09:37Z",
+              "updatedAt": "2024-09-03T19:09:37Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Hy4Lp",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-03T19:10:27Z",
+          "updatedAt": "2024-09-03T19:10:28Z",
+          "comments": [
+            {
+              "originalPosition": 116,
+              "body": "```suggestion\r\nof a cryptographic public key published in its OpenID Federation Entity Configuration, which the ACME server uses\r\n```",
+              "createdAt": "2024-09-03T19:10:27Z",
+              "updatedAt": "2024-09-03T19:10:28Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Hy4vw",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-03T19:11:31Z",
+          "updatedAt": "2024-09-03T19:11:31Z",
+          "comments": [
+            {
+              "originalPosition": 117,
+              "body": "requirement:\r\n\r\nthe domain must be part of the client_id and therefore of the http url used in the value of the parameter `sub` contained in the entity configuration ",
+              "createdAt": "2024-09-03T19:11:31Z",
+              "updatedAt": "2024-09-03T19:11:31Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Hy6dY",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-03T19:15:11Z",
+          "updatedAt": "2024-09-03T19:15:11Z",
+          "comments": [
+            {
+              "originalPosition": 250,
+              "body": "```suggestion\r\n    field; otherwise, the ACME server MUST start a Federation Entity Discovery about the client\r\n```\r\n\r\nhow the acme issuer know which is the client's entity id? suggest to add it in the previous object to provide a way to the acme issuer to fetch the entity configuration, when the trust chain is not provided within the request",
+              "createdAt": "2024-09-03T19:15:11Z",
+              "updatedAt": "2024-09-03T19:15:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Hy66Q",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-03T19:16:07Z",
+          "updatedAt": "2024-09-03T19:16:08Z",
+          "comments": [
+            {
+              "originalPosition": 241,
+              "body": "\r\n```suggestion\r\nOnce the ACME issuer sends the request the client responds with an object with the following format:\r\n```\r\n\r\nthe acme issuer http request needs to be further described using a non-normative example about the http request",
+              "createdAt": "2024-09-03T19:16:08Z",
+              "updatedAt": "2024-09-03T19:16:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Hy7CS",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-03T19:16:23Z",
+          "updatedAt": "2024-09-03T19:16:24Z",
+          "comments": [
+            {
+              "originalPosition": 244,
+              "body": "```suggestion\r\n    encoded in UTF-8 with one of the keys published in the client's OpenID Federation Entity\r\n```",
+              "createdAt": "2024-09-03T19:16:23Z",
+              "updatedAt": "2024-09-03T19:16:24Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Hy7b7",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-03T19:17:10Z",
+          "updatedAt": "2024-09-03T19:17:11Z",
+          "comments": [
+            {
+              "originalPosition": 247,
+              "body": "```suggestion\r\ntrust_chain (optional, array of string):  an array of base64url-encoded bytes containing a signed JWT and\r\n```",
+              "createdAt": "2024-09-03T19:17:10Z",
+              "updatedAt": "2024-09-03T19:17:31Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Hy8Qn",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-03T19:18:34Z",
+          "updatedAt": "2024-09-03T19:18:34Z",
+          "comments": [
+            {
+              "originalPosition": 250,
+              "body": "another requirement is that the client, within its trust chain, SHOULD use the same trust anchor that it has in common with the acme issuer, in other words the trust anchor used to evaluate the trust with the acme issuer",
+              "createdAt": "2024-09-03T19:18:34Z",
+              "updatedAt": "2024-09-03T19:18:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Hy8ik",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-03T19:19:01Z",
+          "updatedAt": "2024-09-03T19:19:01Z",
+          "comments": [
+            {
+              "originalPosition": 261,
+              "body": "```suggestion\r\n       \"kid\": \"1\",\r\n```",
+              "createdAt": "2024-09-03T19:19:01Z",
+              "updatedAt": "2024-09-03T19:19:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Hy8wR",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-03T19:19:26Z",
+          "updatedAt": "2024-09-03T19:19:26Z",
+          "comments": [
+            {
+              "originalPosition": 255,
+              "body": "```suggestion\r\n   Host: client.example.com\r\n```",
+              "createdAt": "2024-09-03T19:19:26Z",
+              "updatedAt": "2024-09-03T19:19:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Hy9k7",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-03T19:20:59Z",
+          "updatedAt": "2024-09-03T19:20:59Z",
+          "comments": [
+            {
+              "originalPosition": 283,
+              "body": "I would move this note out of the brackets and configuring it as a normative requirement\r\n\r\nthe client can only request certificate about the FQDN used in its federation entity id",
+              "createdAt": "2024-09-03T19:20:59Z",
+              "updatedAt": "2024-09-03T19:20:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Hy-Wh",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-03T19:22:28Z",
+          "updatedAt": "2024-09-03T19:22:28Z",
+          "comments": [
+            {
+              "originalPosition": 294,
+              "body": "provide failure behaviour such as giving http response error code in the form of non-normative example and according to the ACME specs legacy",
+              "createdAt": "2024-09-03T19:22:28Z",
+              "updatedAt": "2024-09-03T19:22:28Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
