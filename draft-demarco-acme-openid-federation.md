@@ -208,9 +208,11 @@ TODO: update text above here
 ## OpenID Federation challenge type
 
 The OpenID Federation challenge type allows a client to prove control of a
-domain via mutual trust in an OIDC Federation. The client demonstrates control
-of a key published in its OIDC Entity Configuration, which the ACME server uses
-to validate that the client is in control of the domain.
+domain and its underlying endpoints using the trust evaluation mechanism
+provided by OpenID Federation 1.0. The client demonstrates control of a
+cryptographic public key published in its OpenID Federation Entity
+Configuration, which the ACME server uses to validate that the client is in
+control of the domain.
 
 The openid-federation-01 ACME challenge object has the following format:
 
@@ -234,14 +236,22 @@ token (required, string):  A random value that uniquely identifies the
 The client responds with an object with the following format:
 
 sig (required, string):  a base64url encoding of a JWS, signing the token
-    encoded in UTF-8 with one of the keys published in the client's OIDC Entity
-    Configuration.
+    encoded in UTF-8 with one of the keys published in the client's OpenID
+    Federation Entity Configuration.
 
-trust_chain (optional, array of string):  an array of base64url-encoded JWS,
-    representing the trust chain of the client in the OpenID Federation. See
-    section 4.3 of [OIDC-FED]. It is RECOMMENDED that the client include this
-    field; otherwise, the ACME server SHOULD start Federation Entity Discovery
-    to obtain the trust chain related to the client.
+trust_chain (optional, array of string):  an array of base64url-encoded bytes
+    containing a signed JWT and representing the trust chain of the client in
+    the OpenID Federation. See section 4.3 of [OIDC-FED]. The client SHOULD use
+    a trust anchor it has in common with the server. It is RECOMMENDED that the
+    client include this field; otherwise, the ACME server SHOULD start
+    Federation Entity Discovery to obtain the trust chain related to the client.
+  
+entity_identifier (optional, string):  the Entity Identifier of the client,
+    which is used by the server to perform Federation Entity Discovery in the
+    case that no trust chain is provided. The client SHOULD include this field
+    only when the `trust_chain` field is not provided.
+
+A non-normative example for an authorization with `trust_chain` specified:
 
 ```
    POST /acme/chall/prV_B7yEyA4
@@ -263,23 +273,47 @@ trust_chain (optional, array of string):  an array of base64url-encoded JWS,
    }
 ```
 
+A non-normative example for an authorization with `entity_identifier` specified:
+
+```
+   POST /acme/chall/prV_B7yEyA4
+   Host: example.com
+   Content-Type: application/jose+json
+
+   {
+     "protected": base64url({
+       "alg": "ES256",
+       "kid": "https://example.com/acme/acct/evOfKhNU60wg",
+       "nonce": "UQI1PoRi5OuXzxuX7V7wL0",
+       "url": "https://example.com/acme/chall/prV_B7yEyA4"
+     }),
+     "payload": base64url({
+      "sig": "wQAvHlPV1tVxRW0vZUa4BQ...",
+      "entity_identifier": "https://client.example.com"
+     }),
+     "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
+   }
+```
+
+
 On receiving a response, the server retrieves the public keys associated with
 the given entity (possibly performing Federation Entity Discovery to do so),
 then:
 
 * Verifies that the requested domain names match the FQDN contained within the
-  `iss` parameter of the client's Entity Configuration. For example, if the
-  `iss` parameter within the Entity Configuration contains the value
+  `sub` parameter of the client's Entity Configuration. For example, if the
+  `sub` parameter within the Entity Configuration contains the value
   `https://requestor.example.org/oidc/rp`, the extracted FQDN is then
-  `requestor.example.org`. (Note: since the Entity Configuration can contain at
-  most one FQDN, this effectively means that this challenge type works with
-  requests for a single domain name only.)
+  `requestor.example.org`. Since the Entity Configuration can contain at most
+  one FQDN, this effectively means that this challenge type works with requests
+  for a single domain name only.
 
 * Verifies that the sig field of the payload includes a valid JWS, signed with
   one of the keys published in the client's Entity Configuration.
 
 If all of the above verifications succeed, then the validation is successful.
-Otherwise, it has failed.
+Otherwise, it has failed. In either case, the server responds according to
+section 7.5.1 of [RFC8555].
 
 TODO: update text below here
 
