@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-09-05T00:31:37.225932+00:00",
+  "timestamp": "2024-09-08T00:35:32.763037+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -125,13 +125,13 @@
       "labels": [],
       "body": "",
       "createdAt": "2024-08-30T23:32:27Z",
-      "updatedAt": "2024-09-03T19:22:28Z",
+      "updatedAt": "2024-09-06T23:54:07Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "5f1e34bcb3bdd432f146773537c3cca10c9b6c8a",
       "headRepository": "branlwyd/draft-demarco-acme-openid-federation",
       "headRefName": "bran/challenge",
-      "headRefOid": "6d6606f07542c0ff8db29e77a496d801403483c3",
+      "headRefOid": "062a8eabcdc6d77a6587115e88d74732927b4432",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -375,6 +375,126 @@
               "body": "provide failure behaviour such as giving http response error code in the form of non-normative example and according to the ACME specs legacy",
               "createdAt": "2024-09-03T19:22:28Z",
               "updatedAt": "2024-09-03T19:22:28Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86IVMZR",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "branlwyd",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-06T22:59:38Z",
+          "updatedAt": "2024-09-06T22:59:38Z",
+          "comments": [
+            {
+              "originalPosition": 117,
+              "body": "I pulled in the following requirement around validation, attempting to match the existing check on the identifier the client is requesting issuance for:\r\n\r\n> Verifies that the requested domain names match the FQDN contained within the `iss` parameter of the client's Entity Configuration.\r\n\r\nThe [OpenID Federation 1.0's Entity Statement](https://openid.net/specs/openid-federation-1_0.html#name-entity-statement) section says:\r\n\r\n> iss\r\n> REQUIRED. The Entity Identifier of the issuer of the Entity Statement. If the iss and the sub are identical, the issuer is making an Entity Statement about itself called an Entity Configuration.\r\n\r\nSince we are explicitly checking the client's Entity Configuration, technically speaking, I think `iss` & `sub` are identical here. (Please correct me if I am wrong here.) Conceptually, however, I think `sub` makes more sense than `iss` since we are interested in knowing the subject of the configuration; I have made the suggested change to the requirements.",
+              "createdAt": "2024-09-06T22:59:38Z",
+              "updatedAt": "2024-09-06T22:59:38Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86IVOoO",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "branlwyd",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-06T23:17:51Z",
+          "updatedAt": "2024-09-06T23:17:51Z",
+          "comments": [
+            {
+              "originalPosition": 261,
+              "body": "I think this is right, currently -- this would be an ACME account key, rather than a key published in the client's Entity Configuration. (I think it's valuable to maintain the concept of ACME accounts separately from the OpenID Entity Configurations since (a) ACME implementations will generally expect accounts to exist and (b) the ACME implementation may wish to implement account controls/rate-limiting/etc at the level of ACME accounts rather than OpenID Entities, i.e. individual domains.)\r\n\r\nHowever, we could add a `kid` field to the payload of the challenge, indicating which key in the Entity Configuration to use to validate the signature. What do you think?",
+              "createdAt": "2024-09-06T23:17:51Z",
+              "updatedAt": "2024-09-06T23:17:51Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86IVOxb",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "branlwyd",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-06T23:19:07Z",
+          "updatedAt": "2024-09-06T23:19:08Z",
+          "comments": [
+            {
+              "originalPosition": 255,
+              "body": "This request is to the issuer, i.e. the ACME server, rather than the client.",
+              "createdAt": "2024-09-06T23:19:07Z",
+              "updatedAt": "2024-09-06T23:19:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86IVQXZ",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "branlwyd",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-06T23:33:10Z",
+          "updatedAt": "2024-09-06T23:33:10Z",
+          "comments": [
+            {
+              "originalPosition": 294,
+              "body": "IMO, we should follow the ACME spec as well as RFC 8737, RFC 8823 -- these all define challenge types in terms of success or failure, relying on [RFC 8555 section 7.3.1](https://datatracker.ietf.org/doc/html/rfc8555/#section-7.5.1) to generically define how success/failure of an authorization attempt is handled.\r\n\r\nI added some text referring to this section.",
+              "createdAt": "2024-09-06T23:33:10Z",
+              "updatedAt": "2024-09-06T23:33:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86IVRWL",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "branlwyd",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-06T23:43:15Z",
+          "updatedAt": "2024-09-06T23:43:15Z",
+          "comments": [
+            {
+              "originalPosition": 241,
+              "body": "Which request? The client's response has a non-normative example below; the rest of the process is standard ACME as described in RFC 8555.",
+              "createdAt": "2024-09-06T23:43:15Z",
+              "updatedAt": "2024-09-06T23:43:16Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86IVSKL",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "branlwyd",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-06T23:52:48Z",
+          "updatedAt": "2024-09-06T23:52:48Z",
+          "comments": [
+            {
+              "originalPosition": 250,
+              "body": "> how the acme issuer know which is the client's entity id? suggest to add it in the previous object to provide a way to the acme issuer to fetch the entity configuration, when the trust chain is not provided within the request\r\n\r\nI added text to this effect.\r\n\r\nFor my own education: is there a reason we couldn't start federation entity discovery based on the FQDN contained in the identifier? For example, could multiple Entities have Entity Configurations with the same FQDN in `iss`? Or maybe it is impractical to look up entities based on partial Entity IDs, even if the FQDN is unique?\r\n\r\n> another requirement is that the client, within its trust chain, SHOULD use the same trust anchor that it has in common with the acme issuer, in other words the trust anchor used to evaluate the trust with the acme issuer\r\n\r\nAdded text to this effect. Why is this a `SHOULD` rather than a `MUST` -- what behavior would we expect of the server if the client sends a trust chain to an anchor it does not trust? (Failure would be the most likely response, but I think we could also allow the server to perform Entity Discovery if it receives a trust chain that it can't verify.)",
+              "createdAt": "2024-09-06T23:52:48Z",
+              "updatedAt": "2024-09-06T23:52:48Z"
             }
           ]
         }
