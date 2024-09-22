@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-09-19T00:32:41.741775+00:00",
+  "timestamp": "2024-09-22T00:36:47.237750+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -125,7 +125,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2024-08-30T23:32:27Z",
-      "updatedAt": "2024-09-06T23:54:07Z",
+      "updatedAt": "2024-09-21T20:19:31Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "5f1e34bcb3bdd432f146773537c3cca10c9b6c8a",
@@ -495,6 +495,66 @@
               "body": "> how the acme issuer know which is the client's entity id? suggest to add it in the previous object to provide a way to the acme issuer to fetch the entity configuration, when the trust chain is not provided within the request\r\n\r\nI added text to this effect.\r\n\r\nFor my own education: is there a reason we couldn't start federation entity discovery based on the FQDN contained in the identifier? For example, could multiple Entities have Entity Configurations with the same FQDN in `iss`? Or maybe it is impractical to look up entities based on partial Entity IDs, even if the FQDN is unique?\r\n\r\n> another requirement is that the client, within its trust chain, SHOULD use the same trust anchor that it has in common with the acme issuer, in other words the trust anchor used to evaluate the trust with the acme issuer\r\n\r\nAdded text to this effect. Why is this a `SHOULD` rather than a `MUST` -- what behavior would we expect of the server if the client sends a trust chain to an anchor it does not trust? (Failure would be the most likely response, but I think we could also allow the server to perform Entity Discovery if it receives a trust chain that it can't verify.)",
               "createdAt": "2024-09-06T23:52:48Z",
               "updatedAt": "2024-09-06T23:52:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86KRthP",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-21T20:12:46Z",
+          "updatedAt": "2024-09-21T20:12:46Z",
+          "comments": [
+            {
+              "originalPosition": 117,
+              "body": "yes, in a entity configuration iss and sub are identical (while in a subordinate statements not).\r\n\r\n",
+              "createdAt": "2024-09-21T20:12:46Z",
+              "updatedAt": "2024-09-21T20:12:46Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86KRtpe",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-21T20:18:36Z",
+          "updatedAt": "2024-09-21T20:18:36Z",
+          "comments": [
+            {
+              "originalPosition": 250,
+              "body": "we use entity id using https url, therefore more than a single FQDN, since within the same hostname/domain we might have more entities with different, even if derived from the same FQDN, entities (eg: multitenancy)\r\n\r\nthere might be implementations/deployments that wants to use federation in a more \"decentralized\" way (such as openid gain-poc wg) where RP of federation X trusts also a list of third party trust anchors belonging to other federations. I nthis scenario X trusts Y because X trusts Y-TrustAnchor and Y trusts X because X-TrustAnchor. These kind of decision belongs to the trust framework in use and goes beyond the scope of openid federation, therefore I decided to use a SHOULD there",
+              "createdAt": "2024-09-21T20:18:36Z",
+              "updatedAt": "2024-09-21T20:18:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86KRtqi",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-09-21T20:19:31Z",
+          "updatedAt": "2024-09-21T20:19:31Z",
+          "comments": [
+            {
+              "originalPosition": 241,
+              "body": "a response happes after a request, there is space to further describe the flow if you agree in giving more guidance to the reader",
+              "createdAt": "2024-09-21T20:19:31Z",
+              "updatedAt": "2024-09-21T20:19:31Z"
             }
           ]
         }
