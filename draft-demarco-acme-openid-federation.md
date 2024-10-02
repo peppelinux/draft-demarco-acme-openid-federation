@@ -227,7 +227,7 @@ token (required, string):  A random value that uniquely identifies the
 ```
    {
      "type": "openid-federation-01",
-     "url": "https://example.com/acme/chall/prV_B7yEyA4",
+     "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
      "status": "pending",
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
@@ -243,7 +243,7 @@ trust_chain (optional, array of string):  an array of base64url-encoded bytes
     containing a signed JWT and representing the trust chain of the client in
     the OpenID Federation. See section 4.3 of [OIDC-FED]. The client SHOULD use
     a trust anchor it has in common with the server. It is RECOMMENDED that the
-    client include this field; otherwise, the ACME server SHOULD start
+    client include this field; otherwise, the ACME server MUST start
     Federation Entity Discovery to obtain the trust chain related to the client.
   
 entity_identifier (optional, string):  the Entity Identifier of the client,
@@ -255,15 +255,15 @@ A non-normative example for an authorization with `trust_chain` specified:
 
 ```
    POST /acme/chall/prV_B7yEyA4
-   Host: example.com
+   Host: issuer.example.com
    Content-Type: application/jose+json
 
    {
      "protected": base64url({
        "alg": "ES256",
-       "kid": "https://example.com/acme/acct/evOfKhNU60wg",
+       "kid": "https://issuer.example.com/acme/acct/evOfKhNU60wg",
        "nonce": "UQI1PoRi5OuXzxuX7V7wL0",
-       "url": "https://example.com/acme/chall/prV_B7yEyA4"
+       "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4"
      }),
      "payload": base64url({
       "sig": "wQAvHlPV1tVxRW0vZUa4BQ...",
@@ -277,19 +277,19 @@ A non-normative example for an authorization with `entity_identifier` specified:
 
 ```
    POST /acme/chall/prV_B7yEyA4
-   Host: example.com
+   Host: issuer.example.com
    Content-Type: application/jose+json
 
    {
      "protected": base64url({
        "alg": "ES256",
-       "kid": "https://example.com/acme/acct/evOfKhNU60wg",
+       "kid": "https://issuer.example.com/acme/acct/evOfKhNU60wg",
        "nonce": "UQI1PoRi5OuXzxuX7V7wL0",
-       "url": "https://example.com/acme/chall/prV_B7yEyA4"
+       "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4"
      }),
      "payload": base64url({
       "sig": "wQAvHlPV1tVxRW0vZUa4BQ...",
-      "entity_identifier": "https://client.example.com"
+      "entity_identifier": "https://requestor.example.com"
      }),
      "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
    }
@@ -303,8 +303,8 @@ then:
 * Verifies that the requested domain names match the FQDN contained within the
   `sub` parameter of the client's Entity Configuration. For example, if the
   `sub` parameter within the Entity Configuration contains the value
-  `https://requestor.example.org/oidc/rp`, the extracted FQDN is then
-  `requestor.example.org`. Since the Entity Configuration can contain at most
+  `https://requestor.example.com/oidc/rp`, the extracted FQDN is then
+  `requestor.example.com`. Since the Entity Configuration can contain at most
   one FQDN, this effectively means that this challenge type works with requests
   for a single domain name only.
 
@@ -314,6 +314,18 @@ then:
 If all of the above verifications succeed, then the validation is successful.
 Otherwise, it has failed. In either case, the server responds according to
 section 7.5.1 of [RFC8555].
+
+A non-normative example for the challenge object post-validation:
+
+```
+   {
+     "type": "openid-federation-01",
+     "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
+     "status": "valid",
+     "validated": "2024-10-01T12:05:13.72Z",
+     "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
+   }
+```
 
 TODO: update text below here
 
