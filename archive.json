@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-01T00:37:52.139451+00:00",
+  "timestamp": "2024-10-03T00:33:41.949768+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -125,13 +125,13 @@
       "labels": [],
       "body": "",
       "createdAt": "2024-08-30T23:32:27Z",
-      "updatedAt": "2024-09-21T20:19:31Z",
+      "updatedAt": "2024-10-02T22:57:17Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "5f1e34bcb3bdd432f146773537c3cca10c9b6c8a",
       "headRepository": "branlwyd/draft-demarco-acme-openid-federation",
       "headRefName": "bran/challenge",
-      "headRefOid": "062a8eabcdc6d77a6587115e88d74732927b4432",
+      "headRefOid": "22589fe6fe6c76989877cf708ebf4532389a2950",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -555,6 +555,126 @@
               "body": "a response happes after a request, there is space to further describe the flow if you agree in giving more guidance to the reader",
               "createdAt": "2024-09-21T20:19:31Z",
               "updatedAt": "2024-09-21T20:19:31Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86LgNG_",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-01T14:04:01Z",
+          "updatedAt": "2024-10-01T14:04:01Z",
+          "comments": [
+            {
+              "originalPosition": 261,
+              "body": "I would not embed challenges values in kid, it's up to the implementers and jwk issuers decide the kid parameter value",
+              "createdAt": "2024-10-01T14:04:01Z",
+              "updatedAt": "2024-10-01T14:04:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86LgNsv",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-01T14:04:53Z",
+          "updatedAt": "2024-10-01T14:04:53Z",
+          "comments": [
+            {
+              "originalPosition": 255,
+              "body": "therefore I'd go to server.example.com\r\n\r\nour example would give more guidance to facilitate the readers in having a good read experience",
+              "createdAt": "2024-10-01T14:04:53Z",
+              "updatedAt": "2024-10-01T14:04:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86LuYLU",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "branlwyd",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-02T22:18:17Z",
+          "updatedAt": "2024-10-02T22:18:17Z",
+          "comments": [
+            {
+              "originalPosition": 250,
+              "body": "From off-PR discussion: I think we should define, probably in another PR, what fields are filled out in the X.509 certificates. RFC 8555 ACME is concerned with validating a domain, and will generate a certificate for that domain. But in a multitenant situation, both tenants of a given domain would get a certificate associating the relevant key to the domain, which I think is not desirable.\r\n\r\nI'm unaware of what will be consuming these certificates, and especially in what they will expect. Is this something we are free to define, or are there designs/implementations that are already consuming the X.509 certificates this design would be creating?\r\n\r\nWe should also specify the public key that is included in the certificate -- IIRC from our discussion, this is the same public key that is included in the Entity Configuration.",
+              "createdAt": "2024-10-02T22:18:17Z",
+              "updatedAt": "2024-10-02T22:18:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86LuaVG",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "branlwyd",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-02T22:27:55Z",
+          "updatedAt": "2024-10-02T22:27:55Z",
+          "comments": [
+            {
+              "originalPosition": 241,
+              "body": "I added a non-normative example of what the challenge object would like like post-validation.",
+              "createdAt": "2024-10-02T22:27:55Z",
+              "updatedAt": "2024-10-02T22:27:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Luaxf",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "branlwyd",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-02T22:29:58Z",
+          "updatedAt": "2024-10-02T22:29:58Z",
+          "comments": [
+            {
+              "originalPosition": 261,
+              "body": "Hmm -- there are two types of keys in play here:\r\n\r\n1. ACME account keys. This is identified by the `kid` field referenced in this comment. I think this should stay the same.\r\n\r\n2. OpenID entity keys. We should decide where to place this `kid` field. I think we could either have the server check all keys published in the entity configuration, or have the client include a `kid` field in the key response identifying which OpenID entity key is used to meet the challenge.",
+              "createdAt": "2024-10-02T22:29:58Z",
+              "updatedAt": "2024-10-02T22:29:58Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Ludl8",
+          "commit": {
+            "abbreviatedOid": "6d6606f"
+          },
+          "author": "branlwyd",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-02T22:43:33Z",
+          "updatedAt": "2024-10-02T22:43:33Z",
+          "comments": [
+            {
+              "originalPosition": 255,
+              "body": "I updated all of the domain names to be `issuer.example.com` (matching some pre-existing URIs for the issuer) or `requestor.example.com`.",
+              "createdAt": "2024-10-02T22:43:33Z",
+              "updatedAt": "2024-10-02T22:45:21Z"
             }
           ]
         }
