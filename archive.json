@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-10T00:33:32.594521+00:00",
+  "timestamp": "2024-10-13T00:37:11.716448+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -681,6 +681,32 @@
           ]
         }
       ]
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOJ6_NW85-Y1wo",
+      "title": "Update introductory & concluding sections to match challenge-type spec.",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/4",
+      "state": "OPEN",
+      "author": "branlwyd",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The text of the initial sections is updated to match the new phrasing of this spec as a new ACME challenge type. I also reflow the text to 80 columns and make a few editorial/typographical changes.",
+      "createdAt": "2024-10-12T00:06:47Z",
+      "updatedAt": "2024-10-12T00:06:47Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "2d7af5cfe546691fc3ccc6baf359592464f645e5",
+      "headRepository": "branlwyd/draft-demarco-acme-openid-federation",
+      "headRefName": "bran/cleanup",
+      "headRefOid": "25d58864dbbcf97eea9f8e7d3f011b36ec4c4825",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
