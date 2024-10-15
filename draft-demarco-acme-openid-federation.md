@@ -133,7 +133,8 @@ This specification can be implemented by:
 # Terminology
 
 **ACME**:
-: Automated Certificate Management Environment, a certificate management protocol [RFC8555].
+: Automated Certificate Management Environment, a certificate management
+  protocol [RFC8555].
 
 **TA**:
 : OpenID Connect Federation Trust Anchor, see CA.
@@ -184,8 +185,8 @@ Issuer has the guarantee that:
 2. The Requestor controls the identifier in question, having published the
    Entity Configuration.
 
-3. The CSR MUST include the public key, attested within the Trust Chain,
-   used by the Requestor to satisfy the Issuer's challenge.
+The CSR MUST include the public key, attested within the Trust Chain, used by
+the Requestor to satisfy the Issuer's challenge.
 
 This process may be repeated to request multiple certificates related to the
 Federation Entity Keys and linked to a single Entity.
@@ -291,11 +292,11 @@ in the federation Entity Configuration of the Issuer.
 
 ## OpenID Federation challenge type {#challenge-type}
 
-The OpenID Federation challenge type allows a client to prove control of a
+The OpenID Federation challenge type allows a requestor to prove control of a
 domain and its underlying endpoints using the trust evaluation mechanism
-provided by OpenID Federation 1.0. The client demonstrates control of a
+provided by OpenID Federation 1.0. The requestor demonstrates control of a
 cryptographic public key published in its OpenID Federation Entity
-Configuration, which the ACME server uses to validate that the client is in
+Configuration, which the ACME server uses to validate that the requestor is in
 control of the domain.
 
 The openid-federation-01 ACME challenge object has the following format:
@@ -317,22 +318,29 @@ token (required, string):  A random value that uniquely identifies the
    }
 ```
 
-The client responds with an object with the following format:
+The requestor responds with an object with the following format:
 
 sig (required, string):  a base64url encoding of a JWS, signing the token
-    encoded in UTF-8 with one of the keys published in the client's OpenID
-    Federation Entity Configuration.
+    encoded in UTF-8 with one of the keys published in the requestor's OpenID
+    Federation Entity Configuration: either in the top-level `jwks` claim as
+    defined in Section 3 of [OIDC-FED] or referenced by the `signed_jwks_uri`,
+    `jwks_uri`, or `jwks` claims in the entity metadata as defined in Section
+    5.2.1 of [OIDC-FED]. It is RECOMMENDED that this JWS include a `kid` claim
+    corresponding to a valid key; if so, the issuer MUST only use keys with a
+    corresponding `kid` value when evaluating the challenge response. Otherwise,
+    the issuer SHOULD enumerate all valid keys and accept a signature from any
+    of them.
 
 trust_chain (optional, array of string):  an array of base64url-encoded bytes
-    containing a signed JWT and representing the trust chain of the client in
-    the OpenID Federation. See section 4.3 of [OIDC-FED]. The client SHOULD use
-    a trust anchor it has in common with the server. It is RECOMMENDED that the
-    client include this field; otherwise, the ACME server MUST start
-    Federation Entity Discovery to obtain the trust chain related to the client.
+    containing a signed JWT and representing the trust chain of the requestor in
+    the OpenID Federation. See section 4.3 of [OIDC-FED]. The requestor SHOULD use
+    a trust anchor it has in common with the issuer. It is RECOMMENDED that the
+    requestor include this field; otherwise, the issuer MUST start
+    Federation Entity Discovery to obtain the trust chain related to the requestor.
 
-entity_identifier (optional, string):  the Entity Identifier of the client,
-    which is used by the server to perform Federation Entity Discovery in the
-    case that no trust chain is provided. The client SHOULD include this field
+entity_identifier (optional, string):  the Entity Identifier of the requestor,
+    which is used by the issuer to perform Federation Entity Discovery in the
+    case that no trust chain is provided. The requestor SHOULD include this field
     only when the `trust_chain` field is not provided.
 
 A non-normative example for an authorization with `trust_chain` specified:
@@ -379,25 +387,33 @@ A non-normative example for an authorization with `entity_identifier` specified:
    }
 ```
 
-
-On receiving a response, the server retrieves the public keys associated with
+On receiving a response, the issuer retrieves the public keys associated with
 the given entity (possibly performing Federation Entity Discovery to do so),
 then:
 
 * Verifies that the requested domain names match the FQDN contained within the
-  `sub` parameter of the client's Entity Configuration. For example, if the
+  `sub` parameter of the requestor's Entity Configuration. For example, if the
   `sub` parameter within the Entity Configuration contains the value
   `https://requestor.example.com/oidc/rp`, the extracted FQDN is then
   `requestor.example.com`. Since the Entity Configuration can contain at most
   one FQDN, this effectively means that this challenge type works with requests
   for a single domain name only.
 
-* Verifies that the sig field of the payload includes a valid JWS, signed with
-  one of the keys published in the client's Entity Configuration.
+* Verifies that the `sig` field of the payload includes a valid JWS over the
+  challenge token, signed with one of the keys published in the requestor's
+  Entity Configuration, either in the top-level `jwks` claim as defined in
+  Section 3 of [OIDC-FED] or referenced by the `signed_jwks_uri`, `jwks_uri`, or
+  `jwks` claims in the entity metadata as defined in Section 5.2.1 of
+  [OIDC-FED]. If the requestor provided a `kid` value in its challenge response,
+  only keys in the Entity Configuration with a matching `kid` value are
+  considered.
 
 If all of the above verifications succeed, then the validation is successful.
-Otherwise, it has failed. In either case, the server responds according to
-section 7.5.1 of [RFC8555].
+Otherwise, it has failed. In either case, the issuer responds according to
+section 7.5.1 of [RFC8555]. In the event that the verification succeeds, the
+eventual CSR MUST include the public key, attested within the Trust Chain, used
+by the Requestor to satisfy the Issuer's challenge.
+
 
 A non-normative example for the challenge object post-validation:
 
@@ -410,8 +426,6 @@ A non-normative example for the challenge object post-validation:
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
 ```
-
-TODO: update text below here
 
 # Publication of the Certificates within the Federation
 
