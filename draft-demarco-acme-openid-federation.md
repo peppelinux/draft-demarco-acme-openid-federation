@@ -253,7 +253,7 @@ TBD: high level design and ascii sequence diagram.
     - The Requestor adds the Trust Chain JWS header parameter related to itself,
       this option is RECOMMENDED since it reduces the effort of the Issuer in
       evaluating the trust to the Requestor;
-    
+
     - The Requestor doesn't add the Trust Chain in the request, then the Issuer
       MUST start a [Federation Entity
       Discovery](https://openid.net/specs/openid-connect-federation-1_0.html#section-8)
