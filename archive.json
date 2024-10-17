@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-15T00:34:31.132038+00:00",
+  "timestamp": "2024-10-17T00:34:05.375297+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -694,18 +694,86 @@
       "labels": [],
       "body": "The text of the initial sections is updated to match the new phrasing of this spec as a new ACME challenge type. I also reflow the text to 80 columns and make a few editorial/typographical changes.",
       "createdAt": "2024-10-12T00:06:47Z",
-      "updatedAt": "2024-10-12T00:06:47Z",
+      "updatedAt": "2024-10-15T23:17:12Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "2d7af5cfe546691fc3ccc6baf359592464f645e5",
       "headRepository": "branlwyd/draft-demarco-acme-openid-federation",
       "headRefName": "bran/cleanup",
-      "headRefOid": "25d58864dbbcf97eea9f8e7d3f011b36ec4c4825",
+      "headRefOid": "4b6731e4a332f8b78e1a21974519f7b48afb74ca",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOJ6_NW85-vkbT",
+      "title": "Define which keys can be used to satisfy a challenge.",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/5",
+      "state": "OPEN",
+      "author": "branlwyd",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This clarifies which keys can be used to satisfy the new ACME challenge\r\ntype. Along with the preexisting text that \"The CSR MUST include the\r\npublic key, attested within the Trust Chain, used by the Requestor to\r\nsatisfy the Issuer's challenge.\", this also defines which keys can be\r\nincluded in the eventual certificate -- I made some editorial changes to\r\nhighlight this requirement.",
+      "createdAt": "2024-10-15T23:11:32Z",
+      "updatedAt": "2024-10-15T23:12:01Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "2d7af5cfe546691fc3ccc6baf359592464f645e5",
+      "headRepository": "branlwyd/draft-demarco-acme-openid-federation",
+      "headRefName": "bran/key",
+      "headRefOid": "272c799e455f8eb7edb4a9ca0356f803a6f79e50",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "branlwyd",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Stacked on #4 -- please review that PR first, and I will rebase as-needed.",
+          "createdAt": "2024-10-15T23:12:00Z",
+          "updatedAt": "2024-10-15T23:12:00Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOJ6_NW85-v37Y",
+      "title": "Specify requirements on CSR and Certificate.",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/6",
+      "state": "OPEN",
+      "author": "branlwyd",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Specifically, require the certificate to include the same public key\r\nused to satisfy the challenge (duplicating text elsewhere), and specify\r\nhow the Entity ID is included in the certificate.",
+      "createdAt": "2024-10-16T00:19:25Z",
+      "updatedAt": "2024-10-16T00:20:18Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "2d7af5cfe546691fc3ccc6baf359592464f645e5",
+      "headRepository": "branlwyd/draft-demarco-acme-openid-federation",
+      "headRefName": "bran/san-entity-id",
+      "headRefOid": "ff1f7f6e2bae2cac71ed4c2f8521e6bf98d6ca53",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "branlwyd",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Stacked on #4 -- please review that PR first, and I will rebase as-needed.\r\n\r\nThe requirement for the CSR to contain the same key used to satisfy the challenge will be written in 3 places now. WDYT about removing the requirement elsewhere, and keeping it only in this new \"CSR and Certificate Requirements\" section?",
+          "createdAt": "2024-10-16T00:20:17Z",
+          "updatedAt": "2024-10-16T00:20:17Z"
+        }
+      ],
       "reviews": []
     }
   ]
