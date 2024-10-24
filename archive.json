@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-22T00:34:46.642991+00:00",
+  "timestamp": "2024-10-24T00:34:09.519813+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -108,6 +108,30 @@
           "body": "Ok, I have added my first review with some suggestions",
           "createdAt": "2024-09-03T19:23:09Z",
           "updatedAt": "2024-09-03T19:23:09Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOJ6_NW86bTiYm",
+      "title": "Actually an ACME provider can be a leaf and not necessarly a Trust Anchor or an Intermediate entity.",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/7",
+      "state": "CLOSED",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "              Actually an ACME provider can be a leaf and not necessarly a Trust Anchor or an Intermediate entity.\r\n\r\n_Originally posted by @peppelinux in https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/4#discussion_r1810813324_\r\n            ",
+      "createdAt": "2024-10-22T14:13:48Z",
+      "updatedAt": "2024-10-22T14:25:27Z",
+      "closedAt": "2024-10-22T14:25:27Z",
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "my fault, we clearly defined that trust anchors and intermediates can publish subordinate statements and therefore these are acme server according to the scopes of this specificaiton",
+          "createdAt": "2024-10-22T14:25:27Z",
+          "updatedAt": "2024-10-22T14:25:27Z"
         }
       ]
     }
@@ -694,7 +718,7 @@
       "labels": [],
       "body": "The text of the initial sections is updated to match the new phrasing of this spec as a new ACME challenge type. I also reflow the text to 80 columns and make a few editorial/typographical changes.",
       "createdAt": "2024-10-12T00:06:47Z",
-      "updatedAt": "2024-10-15T23:17:12Z",
+      "updatedAt": "2024-10-22T14:28:14Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "2d7af5cfe546691fc3ccc6baf359592464f645e5",
@@ -706,7 +730,321 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86OLW86",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:11:26Z",
+          "updatedAt": "2024-10-22T14:11:26Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "```suggestion\r\nThis document defines how X.509 certificates associating a given OpenID Federation Entity\r\n```",
+              "createdAt": "2024-10-22T14:11:26Z",
+              "updatedAt": "2024-10-22T14:11:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLYRt",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:13:18Z",
+          "updatedAt": "2024-10-22T14:13:19Z",
+          "comments": [
+            {
+              "originalPosition": 28,
+              "body": "Actually an ACME provider can be a leaf and not necessarly a Trust Anchor or an Intermediate entity.\r\n\r\n",
+              "createdAt": "2024-10-22T14:13:18Z",
+              "updatedAt": "2024-10-22T14:13:19Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLZDB",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:14:23Z",
+          "updatedAt": "2024-10-22T14:14:23Z",
+          "comments": [
+            {
+              "originalPosition": 47,
+              "body": "```suggestion\r\nOpenID Federation 1.0 allows an ACME server to issue X.509 certificates\r\n```",
+              "createdAt": "2024-10-22T14:14:23Z",
+              "updatedAt": "2024-10-22T14:14:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLa1A",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:16:48Z",
+          "updatedAt": "2024-10-22T14:16:49Z",
+          "comments": [
+            {
+              "originalPosition": 49,
+              "body": "```suggestion\r\nConfiguration. X.509 Certificates can be provided to one or more organizations,\r\n```",
+              "createdAt": "2024-10-22T14:16:48Z",
+              "updatedAt": "2024-10-22T14:17:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLbZ_",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:17:35Z",
+          "updatedAt": "2024-10-22T14:17:35Z",
+          "comments": [
+            {
+              "originalPosition": 55,
+              "body": "```suggestion\r\ntrust framework. OpenID Federation 1.0 allows each participant to\r\n```",
+              "createdAt": "2024-10-22T14:17:35Z",
+              "updatedAt": "2024-10-22T14:17:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLbnT",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:17:52Z",
+          "updatedAt": "2024-10-22T14:17:52Z",
+          "comments": [
+            {
+              "originalPosition": 60,
+              "body": "```suggestion\r\nCertificate to a server and the issuer is the ACME server that validates the\r\n```",
+              "createdAt": "2024-10-22T14:17:52Z",
+              "updatedAt": "2024-10-22T14:17:52Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLcIv",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:18:34Z",
+          "updatedAt": "2024-10-22T14:18:34Z",
+          "comments": [
+            {
+              "originalPosition": 62,
+              "body": "```suggestion\r\nspecification defines how ACME and OpenID Federation 1.0 can be\r\n```",
+              "createdAt": "2024-10-22T14:18:34Z",
+              "updatedAt": "2024-10-22T14:18:35Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLc91",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:19:41Z",
+          "updatedAt": "2024-10-22T14:19:41Z",
+          "comments": [
+            {
+              "originalPosition": 64,
+              "body": "we must say in the terminolog ysection that \"ACME Challenge is defined in RFC....\" and therefore use it the defined term ACME Challenge as well as the other terms",
+              "createdAt": "2024-10-22T14:19:41Z",
+              "updatedAt": "2024-10-22T14:19:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLdJn",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:19:57Z",
+          "updatedAt": "2024-10-22T14:19:57Z",
+          "comments": [
+            {
+              "originalPosition": 69,
+              "body": "```suggestion\r\n  OpenID Federation 1.0.\r\n```",
+              "createdAt": "2024-10-22T14:19:57Z",
+              "updatedAt": "2024-10-22T14:19:57Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLdbe",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:20:06Z",
+          "updatedAt": "2024-10-22T14:20:06Z",
+          "comments": [
+            {
+              "originalPosition": 71,
+              "body": "```suggestion\r\n- It defines how to use and validate a basic OpenID Federation\r\n```",
+              "createdAt": "2024-10-22T14:20:06Z",
+              "updatedAt": "2024-10-22T14:20:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLdzt",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:20:32Z",
+          "updatedAt": "2024-10-22T14:20:32Z",
+          "comments": [
+            {
+              "originalPosition": 77,
+              "body": "```suggestion\r\n  publication of the X.509 Certificates, by a Trust Anchor or Intermediate, that\r\n```",
+              "createdAt": "2024-10-22T14:20:32Z",
+              "updatedAt": "2024-10-22T14:20:57Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLgU1",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:23:56Z",
+          "updatedAt": "2024-10-22T14:23:57Z",
+          "comments": [
+            {
+              "originalPosition": 134,
+              "body": "pelase move these above at the begin of the section and remove all the re-definition by using a short ref as mentioned before in one of the previous comments",
+              "createdAt": "2024-10-22T14:23:56Z",
+              "updatedAt": "2024-10-22T14:23:57Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLhIq",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:25:03Z",
+          "updatedAt": "2024-10-22T14:25:03Z",
+          "comments": [
+            {
+              "originalPosition": 77,
+              "body": "I think \"trust anchor or intermediate\" here is referring to the X.509 CA. I think we should pick some distinguished terminology for the X.509 CA, because \"trust anchor\" is used frequently in the context of OpenID Federation, so making the distinction clear would help with understanding.",
+              "createdAt": "2024-10-22T14:25:03Z",
+              "updatedAt": "2024-10-22T14:25:03Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLh8L",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:26:06Z",
+          "updatedAt": "2024-10-22T14:26:06Z",
+          "comments": [
+            {
+              "originalPosition": 161,
+              "body": "```suggestion\r\n   in its Entity Configuration, attested by the superior Subordinate Statement.\r\n```",
+              "createdAt": "2024-10-22T14:26:06Z",
+              "updatedAt": "2024-10-22T14:26:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLjHa",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-22T14:27:40Z",
+          "updatedAt": "2024-10-22T14:27:40Z",
+          "comments": [
+            {
+              "originalPosition": 282,
+              "body": "```suggestion\r\n   ACME protocol as specified in [RFC8555], using the new challenge defined in\r\n```",
+              "createdAt": "2024-10-22T14:27:40Z",
+              "updatedAt": "2024-10-22T14:27:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86OLjjv",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Approving it and lookign forward for the next review including suggestions and comment before merge",
+          "createdAt": "2024-10-22T14:28:14Z",
+          "updatedAt": "2024-10-22T14:28:14Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 5,
