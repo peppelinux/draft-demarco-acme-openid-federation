@@ -65,13 +65,13 @@ allows server operators to obtain TLS certificates for their websites (HTTPS
 [RFC2818]), based on a demonstration of control over the website's domain via a
 fully-automated challenge/response protocol.
 
-OpenID Connect Federation 1.0 [OIDC-FED] is a standard that allows building
+OpenID Federation 1.0 is a standard that allows building
 multilateral federations through a trust evaluation mechanism attesting the
 possession of public keys, signature capabilities, protocol specific metadata
 and several administrative and technical information in the form of trust marks,
 related to a specific entity belonging to an organization.
 
-This document defines how X.509 certificates associating a given OpenID Entity
+This document defines how X.509 certificates associating a given OpenID Federation Entity
 with a key included in that Entity's Configuration can be issued by a trust
 anchor and its intermediates through the ACME protocol to all the organizations
 that are part of a federation built on top of OpenID Connect Federation 1.0.
