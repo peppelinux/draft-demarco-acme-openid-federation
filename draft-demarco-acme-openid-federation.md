@@ -65,7 +65,8 @@ allows server operators to obtain TLS certificates for their websites (HTTPS
 [RFC2818]), based on a demonstration of control over the website's domain via a
 fully-automated challenge/response protocol.
 
-OpenID Federation 1.0 defines how to build a trust infrastructure using trusted third party model.
+OpenID Federation 1.0 defines how to build a trust infrastructure
+using a trusted third-party model.
 It implements a trust evaluation mechanism attesting the
 possession of public keys, protocol specific metadata
 and several administrative and technical information in the form of trust marks,
