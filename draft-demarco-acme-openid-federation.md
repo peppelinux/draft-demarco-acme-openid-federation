@@ -80,37 +80,37 @@ that are part of a federation built on top of OpenID Connect Federation 1.0.
 
 # Introduction
 
-OpenID Connect Federation 1.0 allows an ACME server to issue X.509 certificates
+OpenID Federation 1.0 allows an ACME server to issue X.509 certificates
 associating a given OpenID Entity to a key included in that Entity's
-configuration. Certificates can be provided to one or more organizations,
+Configuration. X.509 Certificates can be provided to one or more organizations,
 without having pre-established any direct relationship or any stipulation of a
 contract.
 
 In a multilateral federation, composed by thousands of entities belonging to
 different organizations, all the participants adhere to the same regulation or
-trust framework. OpenID Connect Federation 1.0 allows each participant to
+trust framework. OpenID Federation 1.0 allows each participant to
 recognize the other participant using a trust evaluation mechanism, with RESTful
 services and cryptographic materials.
 
 Considering that a requestor is an entity requesting the issuance of a X.509
-certificate to a server and the issuer is the ACME server that validates the
+Certificate to a server and the issuer is the ACME server that validates the
 entitlements of the requestor before issuing the X.509 certificate, this
-specification defines how ACME and OpenID Connect Federation 1.0 can be
+specification defines how ACME and OpenID Federation 1.0 can be
 integrated to allow efficient issuance of X.509 certificates to a requestor via
 the introduction of a new ACME challenge type. The new challenge type extends
 the ACME protocol in the following ways:
 
 - It associates a cryptographic key with an OpenID Entity, rather than a domain,
   since the authentication and authorization of the requestor is asserted with
-  OpenID Connect Federation 1.0.
+  OpenID Federation 1.0.
 
-- It defines how to use and validate a basic OpenID Connect Federation
+- It defines how to use and validate a basic OpenID Federation
   component, called Entity Configuration, that is a signed JWT published in a
   well-known resource (`/.well-known/openid-federation`) without requiring the
   `/.well-known/acme-challenge/{token}` endpoint.
 
 - It defines how the OpenID Federation Entity Statements can be used for the
-  publication of the X.509 certificates, by a trust anchor or intermediate, that
+  publication of the X.509 Certificates, by a Trust Anchor or Intermediate, that
   were previously issued with ACME.
 
 # Audience Target and Use Cases
@@ -179,7 +179,7 @@ The protocol assumes the following discovery preconditions are met. Then the
 Issuer has the guarantee that:
 
 1. The Requestor controls the private key related to the public part published
-   in its Entity Configuration, attested by the superior Entity Statement.
+   in its Entity Configuration, attested by the superior Subordinate Statement.
 
 2. The Requestor controls the identifier in question, having published the
    Entity Configuration.
@@ -261,7 +261,7 @@ TBD: high level design and ascii sequence diagram.
 
 4. The Requestor begins the certificate issuance process by sending a HTTP POST
    request to the Issuer's `newOrder` resource, and follows the remainder of the
-   ACME protocl as specified in [RFC8555], using the new challenge defined in
+   ACME protocol as specified in [RFC8555], using the new challenge defined in
    {{challenge-type}}.
 
 ## Metadata
