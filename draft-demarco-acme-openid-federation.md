@@ -65,11 +65,11 @@ allows server operators to obtain TLS certificates for their websites (HTTPS
 [RFC2818]), based on a demonstration of control over the website's domain via a
 fully-automated challenge/response protocol.
 
-OpenID Federation 1.0 is a standard that allows building
-multilateral federations through a trust evaluation mechanism attesting the
-possession of public keys, signature capabilities, protocol specific metadata
+OpenID Federation 1.0 defines how to build a trust infrastructure using trusted third party model.
+It implements a trust evaluation mechanism attesting the
+possession of public keys, protocol specific metadata
 and several administrative and technical information in the form of trust marks,
-related to a specific entity belonging to an organization.
+related to a specific entity.
 
 This document defines how X.509 certificates associating a given OpenID Federation Entity
 with a key included in that Entity's Configuration can be issued by a trust
