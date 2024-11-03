@@ -33,7 +33,7 @@ normative:
   RFC2986: RFC2986
   RFC8555: RFC8555
 
-  OIDC-FED:
+  OPENID-FED:
     title: "OpenID Connect Federation 1.0"
     author:
       -
@@ -67,15 +67,15 @@ fully-automated challenge/response protocol.
 
 OpenID Federation 1.0 defines how to build a trust infrastructure
 using a trusted third-party model.
-It implements a trust evaluation mechanism attesting the
+It uses a trust evaluation mechanism to attest the
 possession of public keys, protocol specific metadata
-and several administrative and technical information in the form of trust marks,
+and several administrative and technical information
 related to a specific entity.
 
 This document defines how X.509 certificates associating a given OpenID Federation Entity
 with a key included in that Entity's Configuration can be issued by a trust
 anchor and its intermediates through the ACME protocol to all the organizations
-that are part of a federation built on top of OpenID Connect Federation 1.0.
+that are part of a federation built on top of OpenID Federation 1.0.
 
 --- middle
 
@@ -118,7 +118,7 @@ the ACME protocol in the following ways:
 
 The audience of the document are the multilateral federations that require
 automatic issuance of X.509 certificates using an infrastructure of trust based
-on OpenID Connect Federation 1.0.
+on OpenID Federation 1.0.
 
 This specification can be implemented by:
 
@@ -133,11 +133,14 @@ This specification can be implemented by:
 
 # Terminology
 
-**ACME**:
-: Automated Certificate Management Environment, a certificate management protocol [RFC8555].
+The terms "Federation Entity", "Trust Anchor", "Intermediate", "Entity
+Configuration", "Entity Statement", "Trust Mark" and "Trust Chain" used in this
+document are defined in the [Section
+1.2](https://openid.net/specs/openid-federation-1_0.html#name-terminology)
+of [OPENID-FED].
 
 **TA**:
-: OpenID Connect Federation Trust Anchor, see CA.
+: OpenID Federation Trust Anchor, see CA.
 
 **CA**:
 : Certification Authority, also known as Trust Anchor or Intermediate,
@@ -157,17 +160,11 @@ This specification can be implemented by:
 : Federation Entity that serves an ACME Server. The Federation Entity is then a
   CA.
 
-The terms "Federation Entity", "Trust Anchor", "Intermediate", "Entity
-Configuration", "Entity Statement", "Trust Mark" and "Trust Chain" used in this
-document are defined in the [Section
-1.2](https://openid.net/specs/openid-connect-federation-1_0.html#name-terminology)
-of [OIDC-FED].
-
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
 
-# Certificates issued using OIDC Federation
+# Certificates issued using OpenID Federation
 
 The Issuer establishes the authorization of a Federation Entity to obtain
 certificates for the identifier configured in the Requestor's Entity
@@ -208,21 +205,21 @@ an X.509 certificate.
 
 1. The Requestor and the Issuer MUST publish their Entity Configuration as
    defined in the [Section
-   6](https://openid.net/specs/openid-connect-federation-1_0.html#name-obtaining-federation-entity)
-   of [OIDC-FED].
+   6](https://openid.net/specs/openid-federation-1_0.html#name-obtaining-federation-entity)
+   of [OPENID-FED].
 
 2. The Requestor and the Issuer MUST be able to establish the trust to each
    other obtaining the Trust Chain of each other, as defined in the [Section
-   3.2](https://openid.net/specs/openid-connect-federation-1_0.html#name-trust-chain)
-   of [OIDC-FED].
+   3.2](https://openid.net/specs/openid-federation-1_0.html#name-trust-chain)
+   of [OPENID-FED].
 
 3. The Trust Anchor and its Intermediates SHOULD implement an ACME server,
    extended according to this document.
 
 4. The Issuer MUST publish in its Entity Configuration, within the metadata
    parameter as defined in the [Section
-   4](https://openid.net/specs/openid-connect-federation-1_0.html#name-metadata-type-identifiers)
-   of [OIDC-FED], the metadata type `acme_provider` according to the
+   4](https://openid.net/specs/openid-federation-1_0.html#name-metadata-type-identifiers)
+   of [OPENID-FED], the metadata type `acme_provider` according to the
    [Metadata](#metadata) of this specification.
 
 5. The Issuer MAY be a Leaf, in these cases a specific Trust Mark SHOULD be
@@ -240,7 +237,7 @@ the X.509 certificate to the trusted Issuer.
 TBD: high level design and ascii sequence diagram.
 
 1. The Requestor checks if its superior Federation Entity supports the ACME
-   protocol for OpenID Connect Federation 1.0. If not, the Requestor starts the
+   protocol for OpenID Federation 1.0. If not, the Requestor starts the
    discovery process to find which are the Issuers within the federation.
 
 2. The Requestor requests and obtains a new nonce from the Issuer, by sending a
@@ -257,7 +254,7 @@ TBD: high level design and ascii sequence diagram.
 
     - The Requestor doesn't add the Trust Chain in the request, then the Issuer
       MUST start a [Federation Entity
-      Discovery](https://openid.net/specs/openid-connect-federation-1_0.html#section-8)
+      Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)
       to obtain the Trust Chain related to the Requestor.
 
 4. The Requestor begins the certificate issuance process by sending a HTTP POST
@@ -326,7 +323,7 @@ sig (required, string):  a base64url encoding of a JWS, signing the token
 
 trust_chain (optional, array of string):  an array of base64url-encoded bytes
     containing a signed JWT and representing the trust chain of the client in
-    the OpenID Federation. See section 4.3 of [OIDC-FED]. The client SHOULD use
+    the OpenID Federation. See section 4.3 of [OPENID-FED]. The client SHOULD use
     a trust anchor it has in common with the server. It is RECOMMENDED that the
     client include this field; otherwise, the ACME server MUST start
     Federation Entity Discovery to obtain the trust chain related to the client.
