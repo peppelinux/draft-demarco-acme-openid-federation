@@ -124,9 +124,13 @@ This specification can be implemented by:
 
 - Federation Entities that join to a federation staging area using HTTP only
   transport to attest themselves as trustworthy, and then retrieve X.509
-  certificates for their official HTTPS Federation Entity ID.
+  Certificates for their official HTTPS Federation Entity ID.
 
-- Federation Entities that want to ask and obtain X.509 certificate for every
+- Federation Entities that want to ask and obtain X.509 Certificate for every
+  Federation Key contained in their Entity Configuration, as made reliable in a
+  Federation Trust Chain.
+
+- Federation Entities that want to ask and obtain X.509 Certificate for every
   Federation Key contained in their Entity Configuration, as made reliable in a
   Federation Trust Chain.
 
@@ -170,20 +174,24 @@ The Issuer establishes the authorization of a Federation Entity to obtain
 certificates for the identifier configured in the Requestor's Entity
 Configuration.
 
-The Federation Entity Keys are used to satisfy the Issuer's challenge, and the
-public portion of the keys are included in the issued X.509 certificates.
+The Issuer establishes if a Federation Entity il eligible to obtain X.509
+Certificates for the identifier configured in the Requestor's Entity
+Configuration.
 
-The protocol assumes the following discovery preconditions are met. Then the
+The Federation Entity Keys are used to satisfy the Issuer's challenge, and the
+public portion of the keys included in the issued X.509 Certificates.
+
+The protocol assumes the following discovery preconditions are met. The
 Issuer has the guarantee that:
 
 1. The Requestor controls the private key related to the public part published
-   in its Entity Configuration, attested by the superior Subordinate Statement.
+   in its Entity Configuration, attested by the superior Entity Statement.
 
 2. The Requestor controls the identifier in question, having published the
    Entity Configuration.
 
-3. The CSR MUST include the public key, attested within the Trust Chain,
-   used by the Requestor to satisfy the Issuer's challenge.
+The CSR MUST include the public key, attested within the Trust Chain, used by
+the Requestor to satisfy the Issuer's challenge.
 
 This process may be repeated to request multiple certificates related to the
 Federation Entity Keys and linked to a single Entity.
@@ -251,7 +259,7 @@ TBD: high level design and ascii sequence diagram.
     - The Requestor adds the Trust Chain JWS header parameter related to itself,
       this option is RECOMMENDED since it reduces the effort of the Issuer in
       evaluating the trust to the Requestor;
-
+    
     - The Requestor doesn't add the Trust Chain in the request, then the Issuer
       MUST start a [Federation Entity
       Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)
@@ -259,7 +267,7 @@ TBD: high level design and ascii sequence diagram.
 
 4. The Requestor begins the certificate issuance process by sending a HTTP POST
    request to the Issuer's `newOrder` resource, and follows the remainder of the
-   ACME protocol as specified in [RFC8555], using the new challenge defined in
+   ACME protocl as specified in [RFC8555], using the new challenge defined in
    {{challenge-type}}.
 
 ## Metadata
@@ -287,13 +295,13 @@ in the federation Entity Configuration of the Issuer.
 }
 ~~~~
 
-## OpenID Federation challenge type {#challenge-type}
+## OpenID Federation Challenge Type {#challenge-type}
 
 The OpenID Federation challenge type allows a client to prove control of a
 domain and its underlying endpoints using the trust evaluation mechanism
-provided by OpenID Federation 1.0. The client demonstrates control of a
+provided by OpenID Federation 1.0. The requestor demonstrates control of a
 cryptographic public key published in its OpenID Federation Entity
-Configuration, which the ACME server uses to validate that the client is in
+Configuration, which the ACME server uses to validate that the requestor is in
 control of the domain.
 
 The openid-federation-01 ACME challenge object has the following format:
@@ -315,11 +323,18 @@ token (required, string):  A random value that uniquely identifies the
    }
 ```
 
-The client responds with an object with the following format:
+The requestor responds with an object with the following format:
 
 sig (required, string):  a base64url encoding of a JWS, signing the token
-    encoded in UTF-8 with one of the keys published in the client's OpenID
-    Federation Entity Configuration.
+    encoded in UTF-8 with one of the keys published in the requestor's OpenID
+    Federation Entity Configuration: either in the top-level `jwks` claim as
+    defined in Section 3 of [OIDC-FED] or referenced by the `signed_jwks_uri`,
+    `jwks_uri`, or `jwks` claims in the entity metadata as defined in Section
+    5.2.1 of [OIDC-FED]. It is RECOMMENDED that this JWS include a `kid` claim
+    corresponding to a valid key; if so, the issuer MUST only use keys with a
+    corresponding `kid` value when evaluating the challenge response. Otherwise,
+    the issuer SHOULD enumerate all valid keys and accept a signature from any
+    of them.
 
 trust_chain (optional, array of string):  an array of base64url-encoded bytes
     containing a signed JWT and representing the trust chain of the client in
@@ -377,25 +392,33 @@ A non-normative example for an authorization with `entity_identifier` specified:
    }
 ```
 
-
-On receiving a response, the server retrieves the public keys associated with
+On receiving a response, the issuer retrieves the public keys associated with
 the given entity (possibly performing Federation Entity Discovery to do so),
 then:
 
 * Verifies that the requested domain names match the FQDN contained within the
-  `sub` parameter of the client's Entity Configuration. For example, if the
+  `sub` parameter of the requestor's Entity Configuration. For example, if the
   `sub` parameter within the Entity Configuration contains the value
   `https://requestor.example.com/oidc/rp`, the extracted FQDN is then
   `requestor.example.com`. Since the Entity Configuration can contain at most
   one FQDN, this effectively means that this challenge type works with requests
   for a single domain name only.
 
-* Verifies that the sig field of the payload includes a valid JWS, signed with
-  one of the keys published in the client's Entity Configuration.
+* Verifies that the `sig` field of the payload includes a valid JWS over the
+  challenge token, signed with one of the keys published in the requestor's
+  Entity Configuration, either in the top-level `jwks` claim as defined in
+  Section 3 of [OPENID-FED] or referenced by the `signed_jwks_uri`, `jwks_uri`, or
+  `jwks` claims in the entity metadata as defined in Section 5.2.1 of
+  [OEPNID-FED]. If the requestor provided a `kid` value in its challenge response,
+  only keys in the Entity Configuration with a matching `kid` value are
+  considered.
 
 If all of the above verifications succeed, then the validation is successful.
-Otherwise, it has failed. In either case, the server responds according to
-section 7.5.1 of [RFC8555].
+Otherwise, it has failed. In either case, the issuer responds according to
+section 7.5.1 of [RFC8555]. In the event that the verification succeeds, the
+eventual CSR MUST include the public key, attested within the Trust Chain, used
+by the Requestor to satisfy the Issuer's challenge.
+
 
 A non-normative example for the challenge object post-validation:
 
@@ -408,8 +431,6 @@ A non-normative example for the challenge object post-validation:
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
 ```
-
-TODO: update text below here
 
 # Publication of the Certificates within the Federation
 
