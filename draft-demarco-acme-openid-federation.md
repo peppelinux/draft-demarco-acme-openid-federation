@@ -33,7 +33,7 @@ normative:
   RFC2986: RFC2986
   RFC8555: RFC8555
 
-  OIDC-FED:
+  OPENID-FED:
     title: "OpenID Connect Federation 1.0"
     author:
       -
@@ -65,79 +65,86 @@ allows server operators to obtain TLS certificates for their websites (HTTPS
 [RFC2818]), based on a demonstration of control over the website's domain via a
 fully-automated challenge/response protocol.
 
-OpenID Connect Federation 1.0 [OIDC-FED] is a standard that allows building
-multilateral federations through a trust evaluation mechanism attesting the
-possession of public keys, signature capabilities, protocol specific metadata
-and several administrative and technical information in the form of trust marks,
-related to a specific entity belonging to an organization.
+OpenID Federation 1.0 defines how to build a trust infrastructure
+using a trusted third-party model.
+It uses a trust evaluation mechanism to attest the
+possession of public keys, protocol specific metadata
+and several administrative and technical information
+related to a specific entity.
 
-This document defines how X.509 certificates associating a given OpenID Entity
+This document defines how X.509 certificates associating a given OpenID Federation Entity
 with a key included in that Entity's Configuration can be issued by a trust
 anchor and its intermediates through the ACME protocol to all the organizations
-that are part of a federation built on top of OpenID Connect Federation 1.0.
+that are part of a federation built on top of OpenID Federation 1.0.
 
 --- middle
 
 # Introduction
 
-OpenID Connect Federation 1.0 allows an ACME server to issue X.509 certificates
+OpenID Federation 1.0 allows an ACME server to issue X.509 certificates
 associating a given OpenID Entity to a key included in that Entity's
-configuration. Certificates can be provided to one or more organizations,
+Configuration. X.509 Certificates can be provided to one or more organizations,
 without having pre-established any direct relationship or any stipulation of a
 contract.
 
 In a multilateral federation, composed by thousands of entities belonging to
 different organizations, all the participants adhere to the same regulation or
-trust framework. OpenID Connect Federation 1.0 allows each participant to
+trust framework. OpenID Federation 1.0 allows each participant to
 recognize the other participant using a trust evaluation mechanism, with RESTful
 services and cryptographic materials.
 
 Considering that a requestor is an entity requesting the issuance of a X.509
-certificate to a server and the issuer is the ACME server that validates the
+Certificate to a server and the issuer is the ACME server that validates the
 entitlements of the requestor before issuing the X.509 certificate, this
-specification defines how ACME and OpenID Connect Federation 1.0 can be
+specification defines how ACME and OpenID Federation 1.0 can be
 integrated to allow efficient issuance of X.509 certificates to a requestor via
 the introduction of a new ACME challenge type. The new challenge type extends
 the ACME protocol in the following ways:
 
 - It associates a cryptographic key with an OpenID Entity, rather than a domain,
   since the authentication and authorization of the requestor is asserted with
-  OpenID Connect Federation 1.0.
+  OpenID Federation 1.0.
 
-- It defines how to use and validate a basic OpenID Connect Federation
+- It defines how to use and validate a basic OpenID Federation
   component, called Entity Configuration, that is a signed JWT published in a
   well-known resource (`/.well-known/openid-federation`) without requiring the
   `/.well-known/acme-challenge/{token}` endpoint.
 
 - It defines how the OpenID Federation Entity Statements can be used for the
-  publication of the X.509 certificates, by a trust anchor or intermediate, that
+  publication of the X.509 Certificates, by a Trust Anchor or Intermediate, that
   were previously issued with ACME.
 
 # Audience Target and Use Cases
 
 The audience of the document are the multilateral federations that require
 automatic issuance of X.509 certificates using an infrastructure of trust based
-on OpenID Connect Federation 1.0.
+on OpenID Federation 1.0.
 
 This specification can be implemented by:
 
 - Federation Entities that join to a federation staging area using HTTP only
   transport to attest themselves as trustworthy, and then retrieve X.509
-  certificates for their official HTTPS Federation Entity ID.
+  Certificates for their official HTTPS Federation Entity ID.
 
-- Federation Entities that want to ask and obtain X.509 certificate for every
+- Federation Entities that want to ask and obtain X.509 Certificate for every
+  Federation Key contained in their Entity Configuration, as made reliable in a
+  Federation Trust Chain.
+
+- Federation Entities that want to ask and obtain X.509 Certificate for every
   Federation Key contained in their Entity Configuration, as made reliable in a
   Federation Trust Chain.
 
 
 # Terminology
 
-**ACME**:
-: Automated Certificate Management Environment, a certificate management
-  protocol [RFC8555].
+The terms "Federation Entity", "Trust Anchor", "Intermediate", "Entity
+Configuration", "Entity Statement", "Trust Mark" and "Trust Chain" used in this
+document are defined in the [Section
+1.2](https://openid.net/specs/openid-federation-1_0.html#name-terminology)
+of [OPENID-FED].
 
 **TA**:
-: OpenID Connect Federation Trust Anchor, see CA.
+: OpenID Federation Trust Anchor, see CA.
 
 **CA**:
 : Certification Authority, also known as Trust Anchor or Intermediate,
@@ -157,26 +164,24 @@ This specification can be implemented by:
 : Federation Entity that serves an ACME Server. The Federation Entity is then a
   CA.
 
-The terms "Federation Entity", "Trust Anchor", "Intermediate", "Entity
-Configuration", "Entity Statement", "Trust Mark" and "Trust Chain" used in this
-document are defined in the [Section
-1.2](https://openid.net/specs/openid-connect-federation-1_0.html#name-terminology)
-of [OIDC-FED].
-
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
 
-# Certificates issued using OIDC Federation
+# Certificates issued using OpenID Federation
 
 The Issuer establishes the authorization of a Federation Entity to obtain
 certificates for the identifier configured in the Requestor's Entity
 Configuration.
 
-The Federation Entity Keys are used to satisfy the Issuer's challenge, and the
-public portion of the keys are included in the issued X.509 certificates.
+The Issuer establishes if a Federation Entity il eligible to obtain X.509
+Certificates for the identifier configured in the Requestor's Entity
+Configuration.
 
-The protocol assumes the following discovery preconditions are met. Then the
+The Federation Entity Keys are used to satisfy the Issuer's challenge, and the
+public portion of the keys included in the issued X.509 Certificates.
+
+The protocol assumes the following discovery preconditions are met. The
 Issuer has the guarantee that:
 
 1. The Requestor controls the private key related to the public part published
@@ -208,21 +213,21 @@ an X.509 certificate.
 
 1. The Requestor and the Issuer MUST publish their Entity Configuration as
    defined in the [Section
-   6](https://openid.net/specs/openid-connect-federation-1_0.html#name-obtaining-federation-entity)
-   of [OIDC-FED].
+   6](https://openid.net/specs/openid-federation-1_0.html#name-obtaining-federation-entity)
+   of [OPENID-FED].
 
 2. The Requestor and the Issuer MUST be able to establish the trust to each
    other obtaining the Trust Chain of each other, as defined in the [Section
-   3.2](https://openid.net/specs/openid-connect-federation-1_0.html#name-trust-chain)
-   of [OIDC-FED].
+   3.2](https://openid.net/specs/openid-federation-1_0.html#name-trust-chain)
+   of [OPENID-FED].
 
 3. The Trust Anchor and its Intermediates SHOULD implement an ACME server,
    extended according to this document.
 
 4. The Issuer MUST publish in its Entity Configuration, within the metadata
    parameter as defined in the [Section
-   4](https://openid.net/specs/openid-connect-federation-1_0.html#name-metadata-type-identifiers)
-   of [OIDC-FED], the metadata type `acme_provider` according to the
+   4](https://openid.net/specs/openid-federation-1_0.html#name-metadata-type-identifiers)
+   of [OPENID-FED], the metadata type `acme_provider` according to the
    [Metadata](#metadata) of this specification.
 
 5. The Issuer MAY be a Leaf, in these cases a specific Trust Mark SHOULD be
@@ -240,7 +245,7 @@ the X.509 certificate to the trusted Issuer.
 TBD: high level design and ascii sequence diagram.
 
 1. The Requestor checks if its superior Federation Entity supports the ACME
-   protocol for OpenID Connect Federation 1.0. If not, the Requestor starts the
+   protocol for OpenID Federation 1.0. If not, the Requestor starts the
    discovery process to find which are the Issuers within the federation.
 
 2. The Requestor requests and obtains a new nonce from the Issuer, by sending a
@@ -257,7 +262,7 @@ TBD: high level design and ascii sequence diagram.
     
     - The Requestor doesn't add the Trust Chain in the request, then the Issuer
       MUST start a [Federation Entity
-      Discovery](https://openid.net/specs/openid-connect-federation-1_0.html#section-8)
+      Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)
       to obtain the Trust Chain related to the Requestor.
 
 4. The Requestor begins the certificate issuance process by sending a HTTP POST
@@ -290,9 +295,9 @@ in the federation Entity Configuration of the Issuer.
 }
 ~~~~
 
-## OpenID Federation challenge type {#challenge-type}
+## OpenID Federation Challenge Type {#challenge-type}
 
-The OpenID Federation challenge type allows a requestor to prove control of a
+The OpenID Federation challenge type allows a client to prove control of a
 domain and its underlying endpoints using the trust evaluation mechanism
 provided by OpenID Federation 1.0. The requestor demonstrates control of a
 cryptographic public key published in its OpenID Federation Entity
@@ -332,15 +337,15 @@ sig (required, string):  a base64url encoding of a JWS, signing the token
     of them.
 
 trust_chain (optional, array of string):  an array of base64url-encoded bytes
-    containing a signed JWT and representing the trust chain of the requestor in
-    the OpenID Federation. See section 4.3 of [OIDC-FED]. The requestor SHOULD use
-    a trust anchor it has in common with the issuer. It is RECOMMENDED that the
-    requestor include this field; otherwise, the issuer MUST start
-    Federation Entity Discovery to obtain the trust chain related to the requestor.
+    containing a signed JWT and representing the trust chain of the client in
+    the OpenID Federation. See section 4.3 of [OPENID-FED]. The client SHOULD use
+    a trust anchor it has in common with the server. It is RECOMMENDED that the
+    client include this field; otherwise, the ACME server MUST start
+    Federation Entity Discovery to obtain the trust chain related to the client.
 
-entity_identifier (optional, string):  the Entity Identifier of the requestor,
-    which is used by the issuer to perform Federation Entity Discovery in the
-    case that no trust chain is provided. The requestor SHOULD include this field
+entity_identifier (optional, string):  the Entity Identifier of the client,
+    which is used by the server to perform Federation Entity Discovery in the
+    case that no trust chain is provided. The client SHOULD include this field
     only when the `trust_chain` field is not provided.
 
 A non-normative example for an authorization with `trust_chain` specified:
@@ -402,9 +407,9 @@ then:
 * Verifies that the `sig` field of the payload includes a valid JWS over the
   challenge token, signed with one of the keys published in the requestor's
   Entity Configuration, either in the top-level `jwks` claim as defined in
-  Section 3 of [OIDC-FED] or referenced by the `signed_jwks_uri`, `jwks_uri`, or
+  Section 3 of [OPENID-FED] or referenced by the `signed_jwks_uri`, `jwks_uri`, or
   `jwks` claims in the entity metadata as defined in Section 5.2.1 of
-  [OIDC-FED]. If the requestor provided a `kid` value in its challenge response,
+  [OEPNID-FED]. If the requestor provided a `kid` value in its challenge response,
   only keys in the Entity Configuration with a matching `kid` value are
   considered.
 
