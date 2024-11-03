@@ -4,8 +4,8 @@
 
 Automated Certificate Management Environment                 G. D. Marco
 Internet-Draft                                               independent
-Intended status: Standards Track                            17 July 2023
-Expires: 18 January 2024
+Intended status: Standards Track                         3 November 2024
+Expires: 7 May 2025
 
 
 Automatic Certificate Management Environment (ACME) with OpenID Connect
@@ -14,22 +14,23 @@ Automatic Certificate Management Environment (ACME) with OpenID Connect
 
 Abstract
 
-   The Automatic Certificate Management Environment (ACME) is the
-   standard [RFC8555] that allows obtaining certificates for websites
-   (HTTPS [RFC2818]) by verifing the "fully-qualified" domain names
-   [RFC3696] and the web servers within these.
+   The Automatic Certificate Management Environment (ACME) protocol
+   [RFC8555] allows server operators to obtain TLS certificates for
+   their websites (HTTPS [RFC2818]), based on a demonstration of control
+   over the website's domain via a fully-automated challenge/response
+   protocol.
 
-   OpenID Connect Federation 1.0 [OIDC-FED] is the standard that allows
-   building multilateral federations through a trust evaluation
-   mechanism attesting the possession of public keys, signature
-   capabilities, protocol specific metadata and several administrative
-   and tecnical information in the form of trust marks, related to a
-   specific entity belonging to an organization.
+   OpenID Federation 1.0 defines how to build a trust infrastructure
+   using a trusted third-party model.  It uses a trust evaluation
+   mechanism to attest the possession of public keys, protocol specific
+   metadata and several administrative and technical information related
+   to a specific entity.
 
-   This document defines how the X.509 certificates can be issued by a
-   trust anchor and its intermediates through the ACME protocol to all
-   the organizations that are part of a federation built on top of
-   OpenID Connect Federation 1.0.
+   This document defines how X.509 certificates associating a given
+   OpenID Federation Entity with a key included in that Entity's
+   Configuration can be issued by a trust anchor and its intermediates
+   through the ACME protocol to all the organizations that are part of a
+   federation built on top of OpenID Federation 1.0.
 
 About This Document
 
@@ -63,11 +64,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 January 2024.
+   This Internet-Draft will expire on 7 May 2025.
 
 Copyright Notice
 
-   Copyright (c) 2023 IETF Trust and the persons identified as the
+   Copyright (c) 2024 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -85,83 +86,70 @@ Table of Contents
    2.  Audience Target and Use Cases
    3.  Terminology
    4.  Conventions and Definitions
-   5.  Certificates issued using OIDC Federation
+   5.  Certificates issued using OpenID Federation
    6.  Protocol Flow
      6.1.  Discovery Preconditions
      6.2.  Overview
      6.3.  Metadata
-     6.4.  newNonce request
-     6.5.  newOrder request
-     6.6.  Order Object Extensions and Constraints
-     6.7.  newOrder Response
-     6.8.  Finalize Request
-     6.9.  Finalize Response
-     6.10. Downloading the Certificate
-   7.  Federation Identifiers Types
-   8.  Publication of the Certificates within the Federation
-   9.  Certificate Lifecycle and Revocation
-   10. Security Considerations
-   11. IANA Considerations
-   12. Normative References
+     6.4.  OpenID Federation challenge type
+   7.  Publication of the Certificates within the Federation
+   8.  Certificate Lifecycle and Revocation
+   9.  Security Considerations
+   10. IANA Considerations
+   11. Normative References
    Acknowledgments
    Author's Address
 
 1.  Introduction
 
-   OpenID Connect Federation 1.0 allows an ACME server to issue X.509
-   certificates to one or more than a single organization without having
-   pre-established any direct relationship or any stipulation of a
-   contract.
+   OpenID Federation 1.0 allows an ACME server to issue X.509
+   certificates associating a given OpenID Entity to a key included in
+   that Entity's Configuration.  X.509 Certificates can be provided to
+   one or more organizations, without having pre-established any direct
+   relationship or any stipulation of a contract.
 
    In a multilateral federation, composed by thousands of entities
    belonging to different organizations, all the participants adhere to
-   the same regulation or trust framework.  OpenID Connect Federation
-   1.0 allows each participant to recognize the other participant using
-   a trust evaluation mechanism, with RESTful services and cryptographic
+   the same regulation or trust framework.  OpenID Federation 1.0 allows
+   each participant to recognize the other participant using a trust
+   evaluation mechanism, with RESTful services and cryptographic
    materials.
 
    Considering that a requestor is an entity requesting the issuance of
-   a X.509 certificate to a server and the issuer is the ACME server
+   a X.509 Certificate to a server and the issuer is the ACME server
    that validates the entitlements of the requestor before issuing the
    X.509 certificate, this specification defines how ACME and OpenID
-   Connect Federation 1.0 can be integrated allowing an efficient
-   issuance of X.509 to a requestor, reducing both the bureaucratic and
-   the implementative costs, since:
+   Federation 1.0 can be integrated to allow efficient issuance of X.509
+   certificates to a requestor via the introduction of a new ACME
+   challenge type.  The new challenge type extends the ACME protocol in
+   the following ways:
 
-   *  It reduces the number of resources required by the ACME server,
-      since the authentication and authorization of the requestor is
-      asserted with OpenID Connect Federation 1.0.
+   *  It associates a cryptographic key with an OpenID Entity, rather
+      than a domain, since the authentication and authorization of the
+      requestor is asserted with OpenID Federation 1.0.
 
-   *  It defines how to use and validate a basic OpenID Connect
-      Federation component, called Entity Configuration, that is a
-      signed JWT published in a well-known resource (/.well-known/
-      openid-federation) without requiring the /.well-known/acme-
+   *  It defines how to use and validate a basic OpenID Federation
+      component, called Entity Configuration, that is a signed JWT
+      published in a well-known resource (/.well-known/openid-
+      federation) without requiring the /.well-known/acme-
       challenge/{token} endpoint.
 
-   *  It removes the requirement for the authentication of an entity and
-      the provisioning of the _acme-challenge token_, since the
-      authorization mechanisms is built on top of the trust evaluation
-      model as defined in OpenID Connect Federation 1.0.
-
-   *  It extends the ACME newOrder resource, defining a new payload
-      identifier type called openid-federation.
-
    *  It defines how the OpenID Federation Entity Statements can be used
-      for the publication of the X.509 certificates, by a trust anchor
-      or intermediate, that was previously issued with ACME.
+      for the publication of the X.509 Certificates, by a Trust Anchor
+      or Intermediate, that were previously issued with ACME.
 
 2.  Audience Target and Use Cases
 
    The audience of the document are the multilateral federations that
    require automatic issuance of X.509 certificates using an
-   infrastructure of trust based on OpenID Connect Federation 1.0.
+   infrastructure of trust based on OpenID Federation 1.0.
 
    This specification can be implemented by:
 
-   *  Federation Entities that joins to a federation staging area using
-      HTTP only transport to attests themselves as trustworhty, and then
-      ask X.509 certificates for their official HTTPs Federation Entity
-      ID.
+   *  Federation Entities that join to a federation staging area using
+      HTTP only transport to attest themselves as trustworthy, and then
+      retrieve X.509 certificates for their official HTTPS Federation
+      Entity ID.
 
    *  Federation Entities that want to ask and obtain X.509 certificate
       for every Federation Key contained in their Entity Configuration,
@@ -169,31 +157,28 @@ Table of Contents
 
 3.  Terminology
 
-   *ACME*, Automated Certificate Management Environment, a certificate
-   management protocol [RFC8555].
-
-   *TA*, OpenID Connect Federation Trust Anchor, see CA
-
-   *CA*, Certification Authority, also known as Trust Anchor or
-   Intermediate, specifically one that implements the ACME protocol by
-   serving an ACME server.
-
-   *CSR*, Certificate Signing Request, specifically a PKCS#10 [RFC2986]
-   as supported by ACME.
-
-   *FQDN*, Fully Qualified Domain Name.
-
-   *Requestor*, Federation Entity that requests a X.509 certificate to a
-   CA.
-
-   *Issuer*, Federation Entity that serves an ACME Server.  The
-   Federation Entity is then a CA.
-
    The terms "Federation Entity", "Trust Anchor", "Intermediate",
    "Entity Configuration", "Entity Statement", "Trust Mark" and "Trust
    Chain" used in this document are defined in the Section 1.2
-   (https://openid.net/specs/openid-connect-federation-1_0.html#name-
-   terminology) of [OIDC-FED].
+   (https://openid.net/specs/openid-federation-1_0.html#name-
+   terminology) of [OPENID-FED].
+
+   *TA*:  OpenID Federation Trust Anchor, see CA.
+
+   *CA*:  Certification Authority, also known as Trust Anchor or
+      Intermediate, specifically one that implements the ACME protocol
+      by serving an ACME server.
+
+   *CSR*:  Certificate Signing Request, specifically a PKCS#10 [RFC2986]
+      as supported by ACME.
+
+   *FQDN*:  Fully Qualified Domain Name.
+
+   *Requestor*:  Federation Entity that requests a X.509 certificate to
+      a CA.
+
+   *Issuer*:  Federation Entity that serves an ACME Server.  The
+      Federation Entity is then a CA.
 
 4.  Conventions and Definitions
 
@@ -203,34 +188,31 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-5.  Certificates issued using OIDC Federation
-
-   The Federation Entity Keys are used for requesting X.509
-   certificates.
+5.  Certificates issued using OpenID Federation
 
    The Issuer establishes the authorization of a Federation Entity to
    obtain certificates for the identifier configured in the Requestor's
    Entity Configuration.
 
-   The protocol assumes the following discovery preconditions are met,
-   the Issuer MUST then have the guarranty that:
+   The Federation Entity Keys are used to satisfy the Issuer's
+   challenge, and the public portion of the keys are included in the
+   issued X.509 certificates.
+
+   The protocol assumes the following discovery preconditions are met.
+   Then the Issuer has the guarantee that:
 
    1.  The Requestor controls the private key related to the public part
        published in its Entity Configuration, attested by the superior
-       Entity Statement.
+       Subordinate Statement.
 
    2.  The Requestor controls the identifier in question, having
        published the Entity Configuration.
 
-   3.  The newOrder request must be signed using a private key related
-       to a public one published in the Requestor's Entity
-       Configuration, the CSR MUST then be related to the public key,
-       attested within the Trust Chain, used for verifying the signature
-       of the request order.
+   3.  The CSR MUST include the public key, attested within the Trust
+       Chain, used by the Requestor to satisfy the Issuer's challenge.
 
    This process may be repeated to request multiple certificates related
-   to the Federation Entity Keys and linked to a single identifier,
-   that's the Federation Entity FQDN.
+   to the Federation Entity Keys and linked to a single Entity.
 
 6.  Protocol Flow
 
@@ -241,7 +223,7 @@ Table of Contents
       federation.
 
    *  *Order request*, the Requestor requests a X.509 certificate to a
-      CA.
+      CA using the ACME protocol.
 
 6.1.  Discovery Preconditions
 
@@ -251,34 +233,32 @@ Table of Contents
 
    1.  The Requestor and the Issuer MUST publish their Entity
        Configuration as defined in the Section 6
-       (https://openid.net/specs/openid-connect-federation-
-       1_0.html#name-obtaining-federation-entity) of [OIDC-FED].
+       (https://openid.net/specs/openid-federation-1_0.html#name-
+       obtaining-federation-entity) of [OPENID-FED].
 
    2.  The Requestor and the Issuer MUST be able to establish the trust
        to each other obtaining the Trust Chain of each other, as defined
-       in the Section 3.2 (https://openid.net/specs/openid-connect-
-       federation-1_0.html#name-trust-chain) of [OIDC-FED].
+       in the Section 3.2 (https://openid.net/specs/openid-federation-
+       1_0.html#name-trust-chain) of [OPENID-FED].
 
    3.  The Trust Anchor and its Intermediates SHOULD implement an ACME
-       server with at least the newNonce and the newOrder resources, as
-       extended accordingly by this document.
+       server, extended according to this document.
 
    4.  The Issuer MUST publish in its Entity Configuration, within the
        metadata parameter as defined in the Section 4
-       (https://openid.net/specs/openid-connect-federation-
-       1_0.html#name-metadata-type-identifiers) of [OIDC-FED], the
-       metadata type acme_provider according to the Section 6.3 of this
-       specification.
+       (https://openid.net/specs/openid-federation-1_0.html#name-
+       metadata-type-identifiers) of [OPENID-FED], the metadata type
+       acme_provider according to the Section 6.3 of this specification.
 
    5.  The Issuer MAY be a Leaf, in these cases a specific Trust Mark
        SHOULD be issued by the Trust Anchor, or on behalf of it by an
-       allowed Trust Mark issuer as configured in the federation, and.
+       allowed Trust Mark issuer as configured in the federation, and
        the Trust Mark MUST then be published within the Leaf Entity
        Configuration.
 
    Where the precondition number 4 and number 5 are not met, there MAY
-   be some cases where the Requestor known a priori which are the
-   Issuers in one or more federations, in these cases the Requestor
+   be some cases where the Requestor knows a priori the identity of the
+   Issuers in one or more federations; in these cases the Requestor
    directly requests the issuance of the X.509 certificate to the
    trusted Issuer.
 
@@ -287,7 +267,7 @@ Table of Contents
    TBD: high level design and ascii sequence diagram.
 
    1.  The Requestor checks if its superior Federation Entity supports
-       the ACME protocol for OpenID Connect Federation 1.0.  If not, the
+       the ACME protocol for OpenID Federation 1.0.  If not, the
        Requestor starts the discovery process to find which are the
        Issuers within the federation.
 
@@ -307,40 +287,13 @@ Table of Contents
 
        *  The Requestor doesn't add the Trust Chain in the request, then
           the Issuer MUST start a Federation Entity Discovery
-          (https://openid.net/specs/openid-connect-federation-
-          1_0.html#section-8) to obtain the Trust Chain related to the
-          Requestor.
+          (https://openid.net/specs/openid-federation-1_0.html#section-
+          8) to obtain the Trust Chain related to the Requestor.
 
    4.  The Requestor begins the certificate issuance process by sending
-       a HTTP POST request to the Issuer's newOrder resource.
-
-   Below is represented the summary of all the actions supported by the
-   protocol defined in this document.
-
-   +=================+===========================+====================+
-   | Action          | Request                   | Succesful Response |
-   +=================+===========================+====================+
-   | Discovery       | GET Entity Configuration  | 200                |
-   +-----------------+---------------------------+--------------------+
-   +-----------------+---------------------------+--------------------+
-   | Get nonce       | HEAD newNonce             | 200                |
-   +-----------------+---------------------------+--------------------+
-   +-----------------+---------------------------+--------------------+
-   | Submit order    | POST newOrder             | 201                |
-   +-----------------+---------------------------+--------------------+
-   +-----------------+---------------------------+--------------------+
-   | Poll for status | POST-as-GET order         | 200                |
-   +-----------------+---------------------------+--------------------+
-   +-----------------+---------------------------+--------------------+
-   | Finalize order  | POST order's finalize url | 200                |
-   +-----------------+---------------------------+--------------------+
-   +-----------------+---------------------------+--------------------+
-   | Download        | POST-as-GET order's       | 200                |
-   | certificate     | certificate url           |                    |
-   +-----------------+---------------------------+--------------------+
-   +-----------------+---------------------------+--------------------+
-
-                                 Table 1
+       a HTTP POST request to the Issuer's newOrder resource, and
+       follows the remainder of the ACME protocol as specified in
+       [RFC8555], using the new challenge defined in Section 6.4.
 
 6.3.  Metadata
 
@@ -366,272 +319,117 @@ Table of Contents
    }
 }
 
-6.4.  newNonce request
-
-   The Requestor MUST obtain a new nonce from the Issuer, according to
-   the Section 7.2 (https://datatracker.ietf.org/doc/html/
-   rfc8555#section-7.2) of [RFC8555].
-
-   Below a non-normative example of the request:
-
-   HEAD /acme/new-nonce HTTP/1.1
-   Host: issuer.example.com
-
-   HTTP/1.1 200 OK
-   Replay-Nonce: oFvnlFP1wIhRlYS2jTaXbA
-   Cache-Control: no-store
-
-   Differences with [RFC8555]:
-
-   *  The HTTP header Link: <https://issuer.example.com/acme/
-      directory>;rel="index" is not required.
-
-6.5.  newOrder request
-
-   The certificate issuance request is made by sending a HTTP POST to
-   the Issuer newOrder resource, where the body of the POST is a JWS
-   object whose JSON payload is a subset of the _ACME order object_, as
-   defined in the Section 7.4 (https://datatracker.ietf.org/doc/html/
-   rfc8555#section-7.4) of [RFC8555].
-
-   The _ACME order object_ represents the request for a certificate
-   issuance and is used to track the progress of that order through to
-   issuance (see the Section 7.1.6
-   (https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.6) of
-   [RFC8555] for any further information about the statuses).
-
-   POST /acme/new-order HTTP/1.1
-   Host: issuer.example.com
-   Content-Type: application/jose+json
-
-   {
-    "protected": base64url({
-      "alg": "ES256",
-      "kid": "1",
-      "nonce": "oFvnlFP1wIhRlYS2jTaXbA",
-      "url": "https://issuer.example.com/acme/new-order",
-      "trust_chain": ["eyJhbGciOiJFU ...", "eyJhbGci ..."]
-    }),
-    "payload": base64url({
-      "identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],
-      "notBefore": "2024-01-01T00:04:00+04:00",
-      "notAfter": "2024-01-08T00:04:00+04:00"
-    }),
-    "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
-   }
-
-6.6.  Order Object Extensions and Constraints
-
-   To the _ACME order object_ properties already defined in the
-   Section 7.1.3 (https://datatracker.ietf.org/doc/html/rfc8555#section-
-   7.1.3) of [RFC8555] are added those defined by this document and
-   listed below, to be intended as extensions to [RFC8555].
-
-    +===========+=============+============+==========+===============+
-    | place     | parameter   | type       | presence | reference     |
-    +===========+=============+============+==========+===============+
-    | protected | trust_chain | JSON Array | OPTIONAL | [OIDC-FED],   |
-    | headers   |             | of JWS     |          | Section 3.2.1 |
-    +-----------+-------------+------------+----------+---------------+
-
-                                  Table 2
-
-   When OpenID Connect Federation 1.0 is used by the Issuer to attest
-   the reliabiability of a Requestor, the following constraints to the
-   payload.identifiers JSON Array MUST be respected:
-
-   *  type MUST be set to openid-federation;
-
-   *  value MUST correspond to the FQDN contained within the iss
-      parameter of the Requestor's Entity Configuration.  Since the
-      Federation Entity ID is a HTTP URL, the corresponding FQDN MUST be
-      extracted from it.  For example, if the iss parameter withing the
-      Entity Configuration contains the value
-      https://requestor.example.org/oidc/rp, the extracted FQDN is then
-      requestor.example.org and it MUST correspond to the value of the
-      identifier contained in the order object;
-
-   *  the maximum length of the JSON Array contained in the identifiers
-      parameter MUST be 1, since there cannot be more than a single FQDN
-      corresponding to a single Federation Entity.  If other identifiers
-      are present in the request and different from the type openid-
-      federation, these SHOULD be ignored.
-
-6.7.  newOrder Response
-
-   The server MUST return an error if it cannot fulfill the request as
-   specified, and it MUST NOT issue a certificate with contents other
-   than those requested.  If the server requires the request to be
-   modified in a certain way, it should indicate the required changes
-   using an appropriate error type and description.
+6.4.  OpenID Federation challenge type
+
+   The OpenID Federation challenge type allows a client to prove control
+   of a domain and its underlying endpoints using the trust evaluation
+   mechanism provided by OpenID Federation 1.0.  The client demonstrates
+   control of a cryptographic public key published in its OpenID
+   Federation Entity Configuration, which the ACME server uses to
+   validate that the client is in control of the domain.
+
+   The openid-federation-01 ACME challenge object has the following
+   format:
+
+   type (required, string): The string "openid-federation-01"
+
+   token (required, string): A random value that uniquely identifies the
+   challenge.  This value MUST have at least 128 bits of entropy.  It
+   MUST NOT contain any characters outside the base64url alphabet as
+   described in Section 5 of [RFC4648].  Trailing '=' padding characters
+   MUST be stripped.  See [RFC4086] for additional information on
+   randomness requirements.
+
+   { "type": "openid-federation-01", "url":
+   "https://issuer.example.com/acme/chall/prV_B7yEyA4", "status":
+   "pending", "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0" }
+
+   The client responds with an object with the following format:
+
+   sig (required, string): a base64url encoding of a JWS, signing the
+   token encoded in UTF-8 with one of the keys published in the client's
+   OpenID Federation Entity Configuration.
+
+   trust_chain (optional, array of string): an array of base64url-
+   encoded bytes containing a signed JWT and representing the trust
+   chain of the client in the OpenID Federation.  See section 4.3 of
+   [OPENID-FED].  The client SHOULD use a trust anchor it has in common
+   with the server.  It is RECOMMENDED that the client include this
+   field; otherwise, the ACME server MUST start Federation Entity
+   Discovery to obtain the trust chain related to the client.
+
+   entity_identifier (optional, string): the Entity Identifier of the
+   client, which is used by the server to perform Federation Entity
+   Discovery in the case that no trust chain is provided.  The client
+   SHOULD include this field only when the trust_chain field is not
+   provided.
+
+   A non-normative example for an authorization with trust_chain
+   specified:
+
+   ``` POST /acme/chall/prV_B7yEyA4 Host: issuer.example.com Content-
+   Type: application/jose+json
+
+   { "protected": base64url({ "alg": "ES256", "kid":
+   "https://issuer.example.com/acme/acct/evOfKhNU60wg", "nonce":
+   "UQI1PoRi5OuXzxuX7V7wL0", "url":
+   "https://issuer.example.com/acme/chall/prV_B7yEyA4" }), "payload":
+   base64url({ "sig": "wQAvHlPV1tVxRW0vZUa4BQ...", "trust_chain":
+   ["eyJhbGciOiJFU...", "eyJhbGci..."] }), "signature":
+   "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4" } ```
+
+   A non-normative example for an authorization with entity_identifier
+   specified:
+
+   ``` POST /acme/chall/prV_B7yEyA4 Host: issuer.example.com Content-
+   Type: application/jose+json
+
+   { "protected": base64url({ "alg": "ES256", "kid":
+   "https://issuer.example.com/acme/acct/evOfKhNU60wg", "nonce":
+   "UQI1PoRi5OuXzxuX7V7wL0", "url":
+   "https://issuer.example.com/acme/chall/prV_B7yEyA4" }), "payload":
+   base64url({ "sig": "wQAvHlPV1tVxRW0vZUa4BQ...", "entity_identifier":
+   "https://requestor.example.com" }), "signature":
+   "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4" } ```
+
+   On receiving a response, the server retrieves the public keys
+   associated with the given entity (possibly performing Federation
+   Entity Discovery to do so), then:
+
+   *  Verifies that the requested domain names match the FQDN contained
+      within the sub parameter of the client's Entity Configuration.
+      For example, if the sub parameter within the Entity Configuration
+      contains the value https://requestor.example.com/oidc/rp, the
+      extracted FQDN is then requestor.example.com.  Since the Entity
+      Configuration can contain at most one FQDN, this effectively means
+      that this challenge type works with requests for a single domain
+      name only.
+
+   *  Verifies that the sig field of the payload includes a valid JWS,
+      signed with one of the keys published in the client's Entity
+      Configuration.
+
+   If all of the above verifications succeed, then the validation is
+   successful.  Otherwise, it has failed.  In either case, the server
+   responds according to section 7.5.1 of [RFC8555].
+
+   A non-normative example for the challenge object post-validation:
+
+   { "type": "openid-federation-01", "url":
+   "https://issuer.example.com/acme/chall/prV_B7yEyA4", "status":
+   "valid", "validated": "2024-10-01T12:05:13.72Z", "token":
+   "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0" }
+
+   TODO: update text below here
 
-   If the server is willing to issue the requested certificate, it
-   responds with a 201 (Created) response.  The body of this response is
-   an order object reflecting the client's request and any
-   authorizations the client must complete before the certificate will
-   be issued.
-
-   HTTP/1.1 201 Created
-   Replay-Nonce: MYAuvOpaoIiywTezizk5vw
-   Location: https://issuer.example.com/acme/order/TOlocE8rfgo
-
-   {
-    "status": "pending",
-    "expires": "2016-01-05T14:09:07.99Z",
-
-    "notBefore": "2016-01-01T00:00:00Z",
-    "notAfter": "2016-01-08T00:00:00Z",
-
-    "identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],
-
-    "finalize": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize"
-   }
-
-   Differences with [RFC8555]:
-
-   *  The HTTP Header Link is not required
-
-   *  The authorizations arrays is not required an MUST be omitted from
-      the order object.
-
-6.8.  Finalize Request
-
-   Once the client believes it has fulfilled the server's requirements,
-   it should send a POST request to the order resource's finalize URL.
-   The POST body MUST include a CSR in the form of a string.
-
-   The CSR encodes the parameters for the certificate being requested
-   [RFC2986].  The CSR is sent in the base64url-encoded version of the
-   DER format.  Please note that the value is encoded in base64url and
-   does not include headers, then it is different from PEM.
-
-   Below a non-normative example of the finalize made via HTTP POST:
-
-   POST /acme/order/TOlocE8rfgo/finalize HTTP/1.1
-   Host: issuer.example.com
-   Content-Type: application/jose+json
-
-   {
-    "protected": base64url({
-      "alg": "ES256",
-      "kid": "1",
-      "nonce": "MYAuvOpaoIiywTezizk5vw",
-      "url": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize"
-
-    }),
-    "payload": base64url({
-      "csr": "MIIBPTCBxAIBADBFMQ...FS6aKdZeGsysoCo4H9P",
-    }),
-    "signature": "uOrUfIIk5RyQ...nw62Ay1cl6AB"
-   }
-
-   The CSR encodes the client's requests with regard to the content of
-   the certificate to be issued.
-
-   Identifiers value of type "openid-federation" MUST appear either in
-   the commonName portion of the requested subject name or in an
-   extensionRequest attribute [RFC2985] requesting a subjectAltName
-   extension, or both.
-
-6.9.  Finalize Response
-
-   If a request to finalize an order is successful, the server will
-   return a 200 (OK) with an updated order object.  The status of the
-   order will indicate what action the client should take, these action
-   values are defined in the Section 7.4
-   (https://datatracker.ietf.org/doc/html/rfc8555#section-7.4) of
-   [RFC8555].
-
-   HTTP/1.1 200 OK
-   Replay-Nonce: CGf81JWBsq8QyIgPCi9Q9X
-   Location: https://issuer.example.com/acme/order/TOlocE8rfgo
-
-   {
-    "status": "valid",
-    "expires": "2016-01-20T14:09:07.99Z",
-
-    "notBefore": "2016-01-01T00:00:00Z",
-    "notAfter": "2016-01-08T00:00:00Z",
-
-    "identifiers": [{ "type": "openid-federation", "value": "requestor.example.org" }],
-
-    "finalize": "https://issuer.example.com/acme/order/TOlocE8rfgo/finalize",
-
-    "certificate": "https://issuer.example.com/acme/cert/mAt3xBGaobw"
-   }
-
-   Differences with [RFC8555]:
-
-   *  The HTTP Header Link is not required
-
-6.10.  Downloading the Certificate
-
-   The request and the response are fully compliant to the Section 7.4.2
-   (https://datatracker.ietf.org/doc/html/rfc8555#section-7.4.2) defined
-   in [RFC8555].
-
-   Below a non-normative example of a request:
-
-   POST /acme/cert/mAt3xBGaobw HTTP/1.1
-   Host: issuer.example.com
-   Content-Type: application/jose+json
-   Accept: application/pem-certificate-chain
-
-   {
-    "protected": base64url({
-      "alg": "ES256",
-      "kid": "1",
-      "nonce": "CGf81JWBsq8QyIgPCi9Q9X",
-      "url": "https://example.com/acme/cert/mAt3xBGaobw"
-    }),
-    "payload": "",
-    "signature": "nuSDISbWG8mMgE7H...QyVUL68yzf3Zawps"
-   }
-
-   Here follows a non-normative example of a response:
-
-   HTTP/1.1 200 OK
-   Content-Type: application/pem-certificate-chain
-
-   -----BEGIN CERTIFICATE-----
-   [End-entity certificate contents]
-   -----END CERTIFICATE-----
-   -----BEGIN CERTIFICATE-----
-   [Issuer certificate contents]
-   -----END CERTIFICATE-----
-
-7.  Federation Identifiers Types
-
-   The "ACME Identifier Types" registry defined in the Section 9.7.7
-   (https://datatracker.ietf.org/doc/html/rfc8555#section-9.7.7) of
-   [RFC8555] is extended with the types of identifiers listed below.
-
-   Template:
-
-   *  Label: The value to be put in the "type" field of the identifier
-      object.
-
-   *  Reference: Where the identifier type is defined.
-
-   Contents:
-
-       +===================+======================================+
-       | Label             | Reference                            |
-       +===================+======================================+
-       | openid-federation | draft-demarco-acme-openid-federation |
-       +-------------------+--------------------------------------+
-       +-------------------+--------------------------------------+
-
-                                 Table 3
-
-8.  Publication of the Certificates within the Federation
+7.  Publication of the Certificates within the Federation
 
    *TBD*, when the Issuer is the Trust Anchor or Intermediate, the X.509
    certificate linked to Federation Entity Key represented in JWK in the
    Entity Statement related to the Requestor, SHOULD be extended with
    the claim x5c, containing the issued certificate.
 
-9.  Certificate Lifecycle and Revocation
+8.  Certificate Lifecycle and Revocation
 
    *TBD*.
 
@@ -652,17 +450,18 @@ Table of Contents
    (https://datatracker.ietf.org/doc/html/rfc8555#section-7.6) of
    [RFC8555].
 
-10.  Security Considerations
+9.  Security Considerations
 
    TBD.
 
-11.  IANA Considerations
+10.  IANA Considerations
 
    This document has no IANA actions.
 
-12.  Normative References
+11.  Normative References
 
-   [OIDC-FED] Hedberg, R., Jones, M. B., Solberg, A. Å., Bradley, J., De
+   [OPENID-FED]
+              Hedberg, R., Jones, M. B., Solberg, A. Å., Bradley, J., De
               Marco, G., and V. Dzhuvinov, "OpenID Connect Federation
               1.0", n.d..
 
@@ -684,10 +483,6 @@ Table of Contents
               Request Syntax Specification Version 1.7", RFC 2986,
               DOI 10.17487/RFC2986, November 2000,
               <https://www.rfc-editor.org/rfc/rfc2986>.
-
-   [RFC3696]  Klensin, J., "Application Techniques for Checking and
-              Transformation of Names", RFC 3696, DOI 10.17487/RFC3696,
-              February 2004, <https://www.rfc-editor.org/rfc/rfc3696>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
