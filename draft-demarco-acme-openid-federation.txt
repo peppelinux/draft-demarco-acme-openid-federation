@@ -321,6 +321,7 @@ Table of Contents
         "website": "https://www.issuer.example.com/",
         "caaIdentities": ["issuer.example.com"],
         "externalAccountRequired": false
+      }
    }
 }
 
