@@ -308,14 +308,14 @@ token (required, string):  A random value that uniquely identifies the
     Section 5 of [RFC4648]. Trailing '=' padding characters MUST be stripped.
     See [RFC4086] for additional information on randomness requirements.
 
-```
+~~~~
    {
      "type": "openid-federation-01",
      "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
      "status": "pending",
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
-```
+~~~~
 
 The requestor responds with an object with the following format:
 
@@ -344,7 +344,7 @@ entity_identifier (optional, string):  the Entity Identifier of the client,
 
 A non-normative example for an authorization with `trust_chain` specified:
 
-```
+~~~~
    POST /acme/chall/prV_B7yEyA4
    Host: issuer.example.com
    Content-Type: application/jose+json
@@ -362,11 +362,11 @@ A non-normative example for an authorization with `trust_chain` specified:
      }),
      "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
    }
-```
+~~~~
 
 A non-normative example for an authorization with `entity_identifier` specified:
 
-```
+~~~~
    POST /acme/chall/prV_B7yEyA4
    Host: issuer.example.com
    Content-Type: application/jose+json
@@ -384,7 +384,7 @@ A non-normative example for an authorization with `entity_identifier` specified:
      }),
      "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
    }
-```
+~~~~
 
 On receiving a response, the issuer retrieves the public keys associated with
 the given entity (possibly performing Federation Entity Discovery to do so),
@@ -416,7 +416,7 @@ by the Requestor to satisfy the Issuer's challenge.
 
 A non-normative example for the challenge object post-validation:
 
-```
+~~~~
    {
      "type": "openid-federation-01",
      "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
@@ -424,7 +424,7 @@ A non-normative example for the challenge object post-validation:
      "validated": "2024-10-01T12:05:13.72Z",
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
-```
+~~~~
 
 ### CSR and Certificate Requirements
 
