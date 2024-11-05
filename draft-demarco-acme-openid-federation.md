@@ -429,7 +429,7 @@ A non-normative example for the challenge object post-validation:
 ### CSR and Certificate Requirements
 
 When using this challenge type, there are a few requirements imposed on the
-certificate signing request (CSR) and the issued certificate:
+certificate signing request (CSR) and the issued X.509 Certificate:
 
 * Both the CSR and the certificate MUST include a public key corresponding to
   the key used to satisfy the challenge.
