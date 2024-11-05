@@ -285,6 +285,7 @@ in the federation Entity Configuration of the Issuer.
         "website": "https://www.issuer.example.com/",
         "caaIdentities": ["issuer.example.com"],
         "externalAccountRequired": false
+      }
    }
 }
 ~~~~
