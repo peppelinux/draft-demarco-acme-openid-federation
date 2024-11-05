@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-03T00:37:49.668142+00:00",
+  "timestamp": "2024-11-05T00:33:52.809010+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -134,6 +134,22 @@
           "updatedAt": "2024-10-22T14:25:27Z"
         }
       ]
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOJ6_NW86c0jzo",
+      "title": "ACME terms",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/8",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "              we must say in the terminolog ysection that \"ACME Challenge is defined in RFC....\" and therefore use it the defined term ACME Challenge as well as the other terms\r\n\r\n_Originally posted by @peppelinux in https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/4#discussion_r1810825532_\r\n            ",
+      "createdAt": "2024-11-03T07:11:23Z",
+      "updatedAt": "2024-11-03T07:11:23Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -711,24 +727,26 @@
       "id": "PR_kwDOJ6_NW85-Y1wo",
       "title": "Update introductory & concluding sections to match challenge-type spec.",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/4",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "branlwyd",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "The text of the initial sections is updated to match the new phrasing of this spec as a new ACME challenge type. I also reflow the text to 80 columns and make a few editorial/typographical changes.",
       "createdAt": "2024-10-12T00:06:47Z",
-      "updatedAt": "2024-10-22T14:28:14Z",
+      "updatedAt": "2024-11-03T07:31:06Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "2d7af5cfe546691fc3ccc6baf359592464f645e5",
       "headRepository": "branlwyd/draft-demarco-acme-openid-federation",
       "headRefName": "bran/cleanup",
-      "headRefOid": "4b6731e4a332f8b78e1a21974519f7b48afb74ca",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "a2619dd85099e4f5e827c75d840e826882a8e7c7",
+      "closedAt": "2024-11-03T07:31:06Z",
+      "mergedAt": "2024-11-03T07:31:06Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "26507dfd11d4f2c8673966a6b32a4d392ac3d475"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1043,6 +1061,86 @@
           "createdAt": "2024-10-22T14:28:14Z",
           "updatedAt": "2024-10-22T14:28:14Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86PwQY-",
+          "commit": {
+            "abbreviatedOid": "4b6731e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-03T07:06:36Z",
+          "updatedAt": "2024-11-03T07:06:37Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "```suggestion\r\nOpenID Federation 1.0 is a standard that allows building\r\n```",
+              "createdAt": "2024-11-03T07:06:36Z",
+              "updatedAt": "2024-11-03T07:06:37Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86PwQdh",
+          "commit": {
+            "abbreviatedOid": "2727de0"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-03T07:09:09Z",
+          "updatedAt": "2024-11-03T07:09:10Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "```suggestion\r\nOpenID Federation 1.0 defines how to build a trust infrastructure using trusted third party model.\r\nIt implements a trust evaluation mechanism attesting the\r\npossession of public keys, protocol specific metadata\r\nand several administrative and technical information in the form of trust marks,\r\nrelated to a specific entity.\r\n```",
+              "createdAt": "2024-11-03T07:09:09Z",
+              "updatedAt": "2024-11-03T07:09:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86PwQgK",
+          "commit": {
+            "abbreviatedOid": "cf6e4c5"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-03T07:10:50Z",
+          "updatedAt": "2024-11-03T07:10:51Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "```suggestion\r\nOpenID Federation 1.0 defines how to build a trust infrastructure\r\nusing a trusted third-party model.\r\n```",
+              "createdAt": "2024-11-03T07:10:51Z",
+              "updatedAt": "2024-11-03T07:10:51Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86PwREC",
+          "commit": {
+            "abbreviatedOid": "3941bd5"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-03T07:30:36Z",
+          "updatedAt": "2024-11-03T07:30:37Z",
+          "comments": [
+            {
+              "originalPosition": 134,
+              "body": "Done ",
+              "createdAt": "2024-11-03T07:30:37Z",
+              "updatedAt": "2024-11-03T07:30:37Z"
+            }
+          ]
         }
       ]
     },
@@ -1051,24 +1149,26 @@
       "id": "PR_kwDOJ6_NW85-vkbT",
       "title": "Define which keys can be used to satisfy a challenge.",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/5",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "branlwyd",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "This clarifies which keys can be used to satisfy the new ACME challenge\r\ntype. Along with the preexisting text that \"The CSR MUST include the\r\npublic key, attested within the Trust Chain, used by the Requestor to\r\nsatisfy the Issuer's challenge.\", this also defines which keys can be\r\nincluded in the eventual certificate -- I made some editorial changes to\r\nhighlight this requirement.",
       "createdAt": "2024-10-15T23:11:32Z",
-      "updatedAt": "2024-10-15T23:12:01Z",
+      "updatedAt": "2024-11-03T07:39:33Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "2d7af5cfe546691fc3ccc6baf359592464f645e5",
+      "baseRefOid": "26507dfd11d4f2c8673966a6b32a4d392ac3d475",
       "headRepository": "branlwyd/draft-demarco-acme-openid-federation",
       "headRefName": "bran/key",
-      "headRefOid": "272c799e455f8eb7edb4a9ca0356f803a6f79e50",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "099398ec35fa11c023de03324dd27a7af8e88c33",
+      "closedAt": "2024-11-03T07:39:33Z",
+      "mergedAt": "2024-11-03T07:39:33Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "f3830f837d38f53b3ddb5967165714ff6a93f175"
+      },
       "comments": [
         {
           "author": "branlwyd",
