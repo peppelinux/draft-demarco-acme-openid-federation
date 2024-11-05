@@ -4,8 +4,8 @@
 
 Automated Certificate Management Environment                 G. D. Marco
 Internet-Draft                                               independent
-Intended status: Standards Track                         3 November 2024
-Expires: 7 May 2025
+Intended status: Standards Track                         5 November 2024
+Expires: 9 May 2025
 
 
 Automatic Certificate Management Environment (ACME) with OpenID Connect
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 May 2025.
+   This Internet-Draft will expire on 9 May 2025.
 
 Copyright Notice
 
@@ -91,7 +91,8 @@ Table of Contents
      6.1.  Discovery Preconditions
      6.2.  Overview
      6.3.  Metadata
-     6.4.  OpenID Federation challenge type
+     6.4.  OpenID Federation Challenge Type
+       6.4.1.  CSR and Certificate Requirements
    7.  Publication of the Certificates within the Federation
    8.  Certificate Lifecycle and Revocation
    9.  Security Considerations
@@ -116,11 +117,11 @@ Table of Contents
    materials.
 
    Considering that a requestor is an entity requesting the issuance of
-   a X.509 Certificate to a server and the issuer is the ACME server
+   an X.509 Certificate to a server and the issuer is the ACME server
    that validates the entitlements of the requestor before issuing the
-   X.509 certificate, this specification defines how ACME and OpenID
+   X.509 Certificate, this specification defines how ACME and OpenID
    Federation 1.0 can be integrated to allow efficient issuance of X.509
-   certificates to a requestor via the introduction of a new ACME
+   Certificates to a requestor via the introduction of a new ACME
    challenge type.  The new challenge type extends the ACME protocol in
    the following ways:
 
@@ -148,10 +149,10 @@ Table of Contents
 
    *  Federation Entities that join to a federation staging area using
       HTTP only transport to attest themselves as trustworthy, and then
-      retrieve X.509 certificates for their official HTTPS Federation
+      retrieve X.509 Certificates for their official HTTPS Federation
       Entity ID.
 
-   *  Federation Entities that want to ask and obtain X.509 certificate
+   *  Federation Entities that want to ask and obtain X.509 Certificate
       for every Federation Key contained in their Entity Configuration,
       as made reliable in a Federation Trust Chain.
 
@@ -194,22 +195,26 @@ Table of Contents
    obtain certificates for the identifier configured in the Requestor's
    Entity Configuration.
 
+   The Issuer establishes if a Federation Entity is eligible to obtain
+   X.509 Certificates for the identifier configured in the Requestor's
+   Entity Configuration.
+
    The Federation Entity Keys are used to satisfy the Issuer's
-   challenge, and the public portion of the keys are included in the
-   issued X.509 certificates.
+   challenge, and the public portion of the keys included in the issued
+   X.509 Certificates.
 
    The protocol assumes the following discovery preconditions are met.
-   Then the Issuer has the guarantee that:
+   The Issuer has the guarantee that:
 
    1.  The Requestor controls the private key related to the public part
        published in its Entity Configuration, attested by the superior
-       Subordinate Statement.
+       Entity Statement.
 
    2.  The Requestor controls the identifier in question, having
        published the Entity Configuration.
 
-   3.  The CSR MUST include the public key, attested within the Trust
-       Chain, used by the Requestor to satisfy the Issuer's challenge.
+   The CSR MUST include the public key, attested within the Trust Chain,
+   used by the Requestor to satisfy the Issuer's challenge.
 
    This process may be repeated to request multiple certificates related
    to the Federation Entity Keys and linked to a single Entity.
@@ -292,7 +297,7 @@ Table of Contents
 
    4.  The Requestor begins the certificate issuance process by sending
        a HTTP POST request to the Issuer's newOrder resource, and
-       follows the remainder of the ACME protocol as specified in
+       follows the remainder of the ACME protocl as specified in
        [RFC8555], using the new challenge defined in Section 6.4.
 
 6.3.  Metadata
@@ -319,14 +324,14 @@ Table of Contents
    }
 }
 
-6.4.  OpenID Federation challenge type
+6.4.  OpenID Federation Challenge Type
 
    The OpenID Federation challenge type allows a client to prove control
    of a domain and its underlying endpoints using the trust evaluation
-   mechanism provided by OpenID Federation 1.0.  The client demonstrates
-   control of a cryptographic public key published in its OpenID
-   Federation Entity Configuration, which the ACME server uses to
-   validate that the client is in control of the domain.
+   mechanism provided by OpenID Federation 1.0.  The requestor
+   demonstrates control of a cryptographic public key published in its
+   OpenID Federation Entity Configuration, which the ACME server uses to
+   validate that the requestor is in control of the domain.
 
    The openid-federation-01 ACME challenge object has the following
    format:
@@ -340,15 +345,26 @@ Table of Contents
    MUST be stripped.  See [RFC4086] for additional information on
    randomness requirements.
 
-   { "type": "openid-federation-01", "url":
-   "https://issuer.example.com/acme/chall/prV_B7yEyA4", "status":
-   "pending", "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0" }
+      {
+        "type": "openid-federation-01",
+        "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
+        "status": "pending",
+        "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
+      }
 
-   The client responds with an object with the following format:
+   The requestor responds with an object with the following format:
 
    sig (required, string): a base64url encoding of a JWS, signing the
-   token encoded in UTF-8 with one of the keys published in the client's
-   OpenID Federation Entity Configuration.
+   token encoded in UTF-8 with one of the keys published in the
+   requestor's OpenID Federation Entity Configuration: either in the
+   top-level jwks claim as defined in Section 3 of [OIDC-FED] or
+   referenced by the signed_jwks_uri, jwks_uri, or jwks claims in the
+   entity metadata as defined in Section 5.2.1 of [OIDC-FED].  It is
+   RECOMMENDED that this JWS include a kid claim corresponding to a
+   valid key; if so, the issuer MUST only use keys with a corresponding
+   kid value when evaluating the challenge response.  Otherwise, the
+   issuer SHOULD enumerate all valid keys and accept a signature from
+   any of them.
 
    trust_chain (optional, array of string): an array of base64url-
    encoded bytes containing a signed JWT and representing the trust
@@ -367,37 +383,51 @@ Table of Contents
    A non-normative example for an authorization with trust_chain
    specified:
 
-   ``` POST /acme/chall/prV_B7yEyA4 Host: issuer.example.com Content-
-   Type: application/jose+json
+      POST /acme/chall/prV_B7yEyA4
+      Host: issuer.example.com
+      Content-Type: application/jose+json
 
-   { "protected": base64url({ "alg": "ES256", "kid":
-   "https://issuer.example.com/acme/acct/evOfKhNU60wg", "nonce":
-   "UQI1PoRi5OuXzxuX7V7wL0", "url":
-   "https://issuer.example.com/acme/chall/prV_B7yEyA4" }), "payload":
-   base64url({ "sig": "wQAvHlPV1tVxRW0vZUa4BQ...", "trust_chain":
-   ["eyJhbGciOiJFU...", "eyJhbGci..."] }), "signature":
-   "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4" } ```
+      {
+        "protected": base64url({
+          "alg": "ES256",
+          "kid": "https://issuer.example.com/acme/acct/evOfKhNU60wg",
+          "nonce": "UQI1PoRi5OuXzxuX7V7wL0",
+          "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4"
+        }),
+        "payload": base64url({
+         "sig": "wQAvHlPV1tVxRW0vZUa4BQ...",
+         "trust_chain": ["eyJhbGciOiJFU...", "eyJhbGci..."]
+        }),
+        "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
+      }
 
    A non-normative example for an authorization with entity_identifier
    specified:
 
-   ``` POST /acme/chall/prV_B7yEyA4 Host: issuer.example.com Content-
-   Type: application/jose+json
+      POST /acme/chall/prV_B7yEyA4
+      Host: issuer.example.com
+      Content-Type: application/jose+json
 
-   { "protected": base64url({ "alg": "ES256", "kid":
-   "https://issuer.example.com/acme/acct/evOfKhNU60wg", "nonce":
-   "UQI1PoRi5OuXzxuX7V7wL0", "url":
-   "https://issuer.example.com/acme/chall/prV_B7yEyA4" }), "payload":
-   base64url({ "sig": "wQAvHlPV1tVxRW0vZUa4BQ...", "entity_identifier":
-   "https://requestor.example.com" }), "signature":
-   "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4" } ```
+      {
+        "protected": base64url({
+          "alg": "ES256",
+          "kid": "https://issuer.example.com/acme/acct/evOfKhNU60wg",
+          "nonce": "UQI1PoRi5OuXzxuX7V7wL0",
+          "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4"
+        }),
+        "payload": base64url({
+         "sig": "wQAvHlPV1tVxRW0vZUa4BQ...",
+         "entity_identifier": "https://requestor.example.com"
+        }),
+        "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
+      }
 
-   On receiving a response, the server retrieves the public keys
+   On receiving a response, the issuer retrieves the public keys
    associated with the given entity (possibly performing Federation
    Entity Discovery to do so), then:
 
    *  Verifies that the requested domain names match the FQDN contained
-      within the sub parameter of the client's Entity Configuration.
+      within the sub parameter of the requestor's Entity Configuration.
       For example, if the sub parameter within the Entity Configuration
       contains the value https://requestor.example.com/oidc/rp, the
       extracted FQDN is then requestor.example.com.  Since the Entity
@@ -405,22 +435,47 @@ Table of Contents
       that this challenge type works with requests for a single domain
       name only.
 
-   *  Verifies that the sig field of the payload includes a valid JWS,
-      signed with one of the keys published in the client's Entity
-      Configuration.
+   *  Verifies that the sig field of the payload includes a valid JWS
+      over the challenge token, signed with one of the keys published in
+      the requestor's Entity Configuration, either in the top-level jwks
+      claim as defined in Section 3 of [OPENID-FED] or referenced by the
+      signed_jwks_uri, jwks_uri, or jwks claims in the entity metadata
+      as defined in Section 5.2.1 of [OEPNID-FED].  If the requestor
+      provided a kid value in its challenge response, only keys in the
+      Entity Configuration with a matching kid value are considered.
 
    If all of the above verifications succeed, then the validation is
-   successful.  Otherwise, it has failed.  In either case, the server
-   responds according to section 7.5.1 of [RFC8555].
+   successful.  Otherwise, it has failed.  In either case, the issuer
+   responds according to section 7.5.1 of [RFC8555].  In the event that
+   the verification succeeds, the eventual CSR MUST include the public
+   key, attested within the Trust Chain, used by the Requestor to
+   satisfy the Issuer's challenge.
 
    A non-normative example for the challenge object post-validation:
 
-   { "type": "openid-federation-01", "url":
-   "https://issuer.example.com/acme/chall/prV_B7yEyA4", "status":
-   "valid", "validated": "2024-10-01T12:05:13.72Z", "token":
-   "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0" }
+      {
+        "type": "openid-federation-01",
+        "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
+        "status": "valid",
+        "validated": "2024-10-01T12:05:13.72Z",
+        "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
+      }
 
-   TODO: update text below here
+6.4.1.  CSR and Certificate Requirements
+
+   When using this challenge type, both the certificate signing request
+   (CSR) and the X.509 Certificate:
+
+   *  MUST include a public key corresponding to the key used to satisfy
+      the challenge.
+
+   *  MUST include no Common Name, and must include a single Subject
+      Alternative Name value corresponding to an otherName with an ID of
+      *TBD*, containing an Octet String value corresponding to a UTF-8
+      encoding of the Requestor's Entity ID, that is, the value of the
+      sub claim of the Requestor's Entity Configuration.
+
+   TODO: determine the OID for use in the Subject Alternative Name.
 
 7.  Publication of the Certificates within the Federation
 

@@ -11,16 +11,15 @@
 allows server operators to obtain TLS certificates for their websites (HTTPS
  ), based on a demonstration of control over the website's domain via a
 fully-automated challenge/response protocol. 
-       OpenID Federation 1.0 defines how to build a trust infrastructure
-using a trusted third-party model.
-It uses a trust evaluation mechanism to attest the
-possession of public keys, protocol specific metadata
-and several administrative and technical information
-related to a specific entity. 
-       This document defines how X.509 certificates associating a given OpenID Federation Entity
-with a key included in that Entity's Configuration can be issued by a trust
-anchor and its intermediates through the ACME protocol to all the organizations
-that are part of a federation built on top of OpenID Federation 1.0. 
+       OpenID Federation 1.0 defines how to build a trust infrastructure using a
+trusted third-party model. It uses a trust evaluation mechanism to attest the
+possession of public keys, protocol specific metadata and several administrative
+and technical information related to a specific entity. 
+       This document defines how X.509 certificates associating a given OpenID
+Federation Entity with a key included in that Entity's Configuration can be
+issued by a trust anchor and its intermediates through the ACME protocol to all
+the organizations that are part of a federation built on top of OpenID
+Federation 1.0. 
     " name="description">
 <meta content="xml2rfc 3.24.0" name="generator">
 <meta content="OpenID Connect Federation" name="keyword">
@@ -1095,7 +1094,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Marco</td>
-<td class="center">Expires 7 May 2025</td>
+<td class="center">Expires 9 May 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1108,12 +1107,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-demarco-acme-openid-federation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-11-03" class="published">3 November 2024</time>
+<time datetime="2024-11-05" class="published">5 November 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-05-07">7 May 2025</time></dd>
+<dd class="expires"><time datetime="2025-05-09">9 May 2025</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1130,16 +1129,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
 allows server operators to obtain TLS certificates for their websites (HTTPS
 <span>[<a href="#RFC2818" class="cite xref">RFC2818</a>]</span>), based on a demonstration of control over the website's domain via a
 fully-automated challenge/response protocol.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">OpenID Federation 1.0 defines how to build a trust infrastructure
-using a trusted third-party model.
-It uses a trust evaluation mechanism to attest the
-possession of public keys, protocol specific metadata
-and several administrative and technical information
-related to a specific entity.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
-<p id="section-abstract-3">This document defines how X.509 certificates associating a given OpenID Federation Entity
-with a key included in that Entity's Configuration can be issued by a trust
-anchor and its intermediates through the ACME protocol to all the organizations
-that are part of a federation built on top of OpenID Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">OpenID Federation 1.0 defines how to build a trust infrastructure using a
+trusted third-party model. It uses a trust evaluation mechanism to attest the
+possession of public keys, protocol specific metadata and several administrative
+and technical information related to a specific entity.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">This document defines how X.509 certificates associating a given OpenID
+Federation Entity with a key included in that Entity's Configuration can be
+issued by a trust anchor and its intermediates through the ACME protocol to all
+the organizations that are part of a federation built on top of OpenID
+Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1175,7 +1173,7 @@ that are part of a federation built on top of OpenID Federation 1.0.<a href="#se
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 7 May 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 9 May 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1232,7 +1230,12 @@ that are part of a federation built on top of OpenID Federation 1.0.<a href="#se
                 <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-metadata" class="internal xref">Metadata</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4">
-                <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="auto internal xref">6.4</a>.  <a href="#name-openid-federation-challenge" class="internal xref">OpenID Federation challenge type</a></p>
+                <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="auto internal xref">6.4</a>.  <a href="#name-openid-federation-challenge" class="internal xref">OpenID Federation Challenge Type</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4.2.1">
+                    <p id="section-toc.1-1.6.2.4.2.1.1"><a href="#section-6.4.1" class="auto internal xref">6.4.1</a>.  <a href="#name-csr-and-certificate-require" class="internal xref">CSR and Certificate Requirements</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
@@ -1273,16 +1276,16 @@ without having pre-established any direct relationship or any stipulation of a
 contract.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">In a multilateral federation, composed by thousands of entities belonging to
 different organizations, all the participants adhere to the same regulation or
-trust framework. OpenID Federation 1.0 allows each participant to
-recognize the other participant using a trust evaluation mechanism, with RESTful
-services and cryptographic materials.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">Considering that a requestor is an entity requesting the issuance of a X.509
+trust framework. OpenID Federation 1.0 allows each participant to recognize the
+other participant using a trust evaluation mechanism, with RESTful services and
+cryptographic materials.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">Considering that a requestor is an entity requesting the issuance of an X.509
 Certificate to a server and the issuer is the ACME server that validates the
-entitlements of the requestor before issuing the X.509 certificate, this
-specification defines how ACME and OpenID Federation 1.0 can be
-integrated to allow efficient issuance of X.509 certificates to a requestor via
-the introduction of a new ACME challenge type. The new challenge type extends
-the ACME protocol in the following ways:<a href="#section-1-3" class="pilcrow">¶</a></p>
+entitlements of the requestor before issuing the X.509 Certificate, this
+specification defines how ACME and OpenID Federation 1.0 can be integrated to
+allow efficient issuance of X.509 Certificates to a requestor via the
+introduction of a new ACME challenge type. The new challenge type extends the
+ACME protocol in the following ways:<a href="#section-1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1-4.1">
           <p id="section-1-4.1.1">It associates a cryptographic key with an OpenID Entity, rather than a domain,
@@ -1290,9 +1293,9 @@ since the authentication and authorization of the requestor is asserted with
 OpenID Federation 1.0.<a href="#section-1-4.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-4.2">
-          <p id="section-1-4.2.1">It defines how to use and validate a basic OpenID Federation
-component, called Entity Configuration, that is a signed JWT published in a
-well-known resource (<code>/.well-known/openid-federation</code>) without requiring the
+          <p id="section-1-4.2.1">It defines how to use and validate a basic OpenID Federation component, called
+Entity Configuration, that is a signed JWT published in a well-known resource
+(<code>/.well-known/openid-federation</code>) without requiring the
 <code>/.well-known/acme-challenge/{token}</code> endpoint.<a href="#section-1-4.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-4.3">
@@ -1316,10 +1319,10 @@ on OpenID Federation 1.0.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <li class="normal" id="section-2-3.1">
           <p id="section-2-3.1.1">Federation Entities that join to a federation staging area using HTTP only
 transport to attest themselves as trustworthy, and then retrieve X.509
-certificates for their official HTTPS Federation Entity ID.<a href="#section-2-3.1.1" class="pilcrow">¶</a></p>
+Certificates for their official HTTPS Federation Entity ID.<a href="#section-2-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-3.2">
-          <p id="section-2-3.2.1">Federation Entities that want to ask and obtain X.509 certificate for every
+          <p id="section-2-3.2.1">Federation Entities that want to ask and obtain X.509 Certificate for every
 Federation Key contained in their Entity Configuration, as made reliable in a
 Federation Trust Chain.<a href="#section-2-3.2.1" class="pilcrow">¶</a></p>
 </li>
@@ -1398,26 +1401,27 @@ appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶<
 <p id="section-5-1">The Issuer establishes the authorization of a Federation Entity to obtain
 certificates for the identifier configured in the Requestor's Entity
 Configuration.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">The Federation Entity Keys are used to satisfy the Issuer's challenge, and the
-public portion of the keys are included in the issued X.509 certificates.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">The protocol assumes the following discovery preconditions are met. Then the
-Issuer has the guarantee that:<a href="#section-5-3" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-5-4">
-<li id="section-5-4.1">
-          <p id="section-5-4.1.1">The Requestor controls the private key related to the public part published
-in its Entity Configuration, attested by the superior Subordinate Statement.<a href="#section-5-4.1.1" class="pilcrow">¶</a></p>
+<p id="section-5-2">The Issuer establishes if a Federation Entity is eligible to obtain X.509
+Certificates for the identifier configured in the Requestor's Entity
+Configuration.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">The Federation Entity Keys are used to satisfy the Issuer's challenge, and the
+public portion of the keys included in the issued X.509 Certificates.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4">The protocol assumes the following discovery preconditions are met. The
+Issuer has the guarantee that:<a href="#section-5-4" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-5-5">
+<li id="section-5-5.1">
+          <p id="section-5-5.1.1">The Requestor controls the private key related to the public part published
+in its Entity Configuration, attested by the superior Entity Statement.<a href="#section-5-5.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li id="section-5-4.2">
-          <p id="section-5-4.2.1">The Requestor controls the identifier in question, having published the
-Entity Configuration.<a href="#section-5-4.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li id="section-5-4.3">
-          <p id="section-5-4.3.1">The CSR <span class="bcp14">MUST</span> include the public key, attested within the Trust Chain,
-used by the Requestor to satisfy the Issuer's challenge.<a href="#section-5-4.3.1" class="pilcrow">¶</a></p>
+        <li id="section-5-5.2">
+          <p id="section-5-5.2.1">The Requestor controls the identifier in question, having published the
+Entity Configuration.<a href="#section-5-5.2.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
-<p id="section-5-5">This process may be repeated to request multiple certificates related to the
-Federation Entity Keys and linked to a single Entity.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<p id="section-5-6">The CSR <span class="bcp14">MUST</span> include the public key, attested within the Trust Chain, used by
+the Requestor to satisfy the Issuer's challenge.<a href="#section-5-6" class="pilcrow">¶</a></p>
+<p id="section-5-7">This process may be repeated to request multiple certificates related to the
+Federation Entity Keys and linked to a single Entity.<a href="#section-5-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="protocol-flow">
@@ -1519,7 +1523,7 @@ to obtain the Trust Chain related to the Requestor.<a href="#section-6.2-2.3.2.2
           <li id="section-6.2-2.4">
             <p id="section-6.2-2.4.1">The Requestor begins the certificate issuance process by sending a HTTP POST
 request to the Issuer's <code>newOrder</code> resource, and follows the remainder of the
-ACME protocol as specified in <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>, using the new challenge defined in
+ACME protocl as specified in <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>, using the new challenge defined in
 <a href="#challenge-type" class="auto internal xref">Section 6.4</a>.<a href="#section-6.2-2.4.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
@@ -1557,13 +1561,13 @@ in the federation Entity Configuration of the Issuer.<a href="#section-6.3-2" cl
 <div id="challenge-type">
 <section id="section-6.4">
         <h3 id="name-openid-federation-challenge">
-<a href="#section-6.4" class="section-number selfRef">6.4. </a><a href="#name-openid-federation-challenge" class="section-name selfRef">OpenID Federation challenge type</a>
+<a href="#section-6.4" class="section-number selfRef">6.4. </a><a href="#name-openid-federation-challenge" class="section-name selfRef">OpenID Federation Challenge Type</a>
         </h3>
 <p id="section-6.4-1">The OpenID Federation challenge type allows a client to prove control of a
 domain and its underlying endpoints using the trust evaluation mechanism
-provided by OpenID Federation 1.0. The client demonstrates control of a
+provided by OpenID Federation 1.0. The requestor demonstrates control of a
 cryptographic public key published in its OpenID Federation Entity
-Configuration, which the ACME server uses to validate that the client is in
+Configuration, which the ACME server uses to validate that the requestor is in
 control of the domain.<a href="#section-6.4-1" class="pilcrow">¶</a></p>
 <p id="section-6.4-2">The openid-federation-01 ACME challenge object has the following format:<a href="#section-6.4-2" class="pilcrow">¶</a></p>
 <p id="section-6.4-3">type (required, string):  The string "openid-federation-01"<a href="#section-6.4-3" class="pilcrow">¶</a></p>
@@ -1572,18 +1576,27 @@ control of the domain.<a href="#section-6.4-1" class="pilcrow">¶</a></p>
     contain any characters outside the base64url alphabet as described in
     Section 5 of [RFC4648]. Trailing '=' padding characters <span class="bcp14">MUST</span> be stripped.
     See [RFC4086] for additional information on randomness requirements.<a href="#section-6.4-4" class="pilcrow">¶</a></p>
-<p id="section-6.4-5"><code>
+<div class="alignLeft art-text artwork" id="section-6.4-5">
+<pre>
    {
      "type": "openid-federation-01",
      "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
      "status": "pending",
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
-</code><a href="#section-6.4-5" class="pilcrow">¶</a></p>
-<p id="section-6.4-6">The client responds with an object with the following format:<a href="#section-6.4-6" class="pilcrow">¶</a></p>
+</pre><a href="#section-6.4-5" class="pilcrow">¶</a>
+</div>
+<p id="section-6.4-6">The requestor responds with an object with the following format:<a href="#section-6.4-6" class="pilcrow">¶</a></p>
 <p id="section-6.4-7">sig (required, string):  a base64url encoding of a JWS, signing the token
-    encoded in UTF-8 with one of the keys published in the client's OpenID
-    Federation Entity Configuration.<a href="#section-6.4-7" class="pilcrow">¶</a></p>
+    encoded in UTF-8 with one of the keys published in the requestor's OpenID
+    Federation Entity Configuration: either in the top-level <code>jwks</code> claim as
+    defined in Section 3 of [OIDC-FED] or referenced by the <code>signed_jwks_uri</code>,
+    <code>jwks_uri</code>, or <code>jwks</code> claims in the entity metadata as defined in Section
+    5.2.1 of [OIDC-FED]. It is <span class="bcp14">RECOMMENDED</span> that this JWS include a <code>kid</code> claim
+    corresponding to a valid key; if so, the issuer <span class="bcp14">MUST</span> only use keys with a
+    corresponding <code>kid</code> value when evaluating the challenge response. Otherwise,
+    the issuer <span class="bcp14">SHOULD</span> enumerate all valid keys and accept a signature from any
+    of them.<a href="#section-6.4-7" class="pilcrow">¶</a></p>
 <p id="section-6.4-8">trust_chain (optional, array of string):  an array of base64url-encoded bytes
     containing a signed JWT and representing the trust chain of the client in
     the OpenID Federation. See section 4.3 of <span>[<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>. The client <span class="bcp14">SHOULD</span> use
@@ -1595,11 +1608,13 @@ control of the domain.<a href="#section-6.4-1" class="pilcrow">¶</a></p>
     case that no trust chain is provided. The client <span class="bcp14">SHOULD</span> include this field
     only when the <code>trust_chain</code> field is not provided.<a href="#section-6.4-9" class="pilcrow">¶</a></p>
 <p id="section-6.4-10">A non-normative example for an authorization with <code>trust_chain</code> specified:<a href="#section-6.4-10" class="pilcrow">¶</a></p>
-<p id="section-6.4-11">```
+<div class="alignLeft art-text artwork" id="section-6.4-11">
+<pre>
    POST /acme/chall/prV_B7yEyA4
    Host: issuer.example.com
-   Content-Type: application/jose+json<a href="#section-6.4-11" class="pilcrow">¶</a></p>
-<p id="section-6.4-12">{
+   Content-Type: application/jose+json
+
+   {
      "protected": base64url({
        "alg": "ES256",
        "kid": "https://issuer.example.com/acme/acct/evOfKhNU60wg",
@@ -1612,13 +1627,16 @@ control of the domain.<a href="#section-6.4-1" class="pilcrow">¶</a></p>
      }),
      "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
    }
-```<a href="#section-6.4-12" class="pilcrow">¶</a></p>
-<p id="section-6.4-13">A non-normative example for an authorization with <code>entity_identifier</code> specified:<a href="#section-6.4-13" class="pilcrow">¶</a></p>
-<p id="section-6.4-14">```
+</pre><a href="#section-6.4-11" class="pilcrow">¶</a>
+</div>
+<p id="section-6.4-12">A non-normative example for an authorization with <code>entity_identifier</code> specified:<a href="#section-6.4-12" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.4-13">
+<pre>
    POST /acme/chall/prV_B7yEyA4
    Host: issuer.example.com
-   Content-Type: application/jose+json<a href="#section-6.4-14" class="pilcrow">¶</a></p>
-<p id="section-6.4-15">{
+   Content-Type: application/jose+json
+
+   {
      "protected": base64url({
        "alg": "ES256",
        "kid": "https://issuer.example.com/acme/acct/evOfKhNU60wg",
@@ -1631,30 +1649,40 @@ control of the domain.<a href="#section-6.4-1" class="pilcrow">¶</a></p>
      }),
      "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
    }
-```<a href="#section-6.4-15" class="pilcrow">¶</a></p>
-<p id="section-6.4-16">On receiving a response, the server retrieves the public keys associated with
+</pre><a href="#section-6.4-13" class="pilcrow">¶</a>
+</div>
+<p id="section-6.4-14">On receiving a response, the issuer retrieves the public keys associated with
 the given entity (possibly performing Federation Entity Discovery to do so),
-then:<a href="#section-6.4-16" class="pilcrow">¶</a></p>
+then:<a href="#section-6.4-14" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.4-17.1">
-            <p id="section-6.4-17.1.1">Verifies that the requested domain names match the FQDN contained within the
-<code>sub</code> parameter of the client's Entity Configuration. For example, if the
+<li class="normal" id="section-6.4-15.1">
+            <p id="section-6.4-15.1.1">Verifies that the requested domain names match the FQDN contained within the
+<code>sub</code> parameter of the requestor's Entity Configuration. For example, if the
 <code>sub</code> parameter within the Entity Configuration contains the value
 <code>https://requestor.example.com/oidc/rp</code>, the extracted FQDN is then
 <code>requestor.example.com</code>. Since the Entity Configuration can contain at most
 one FQDN, this effectively means that this challenge type works with requests
-for a single domain name only.<a href="#section-6.4-17.1.1" class="pilcrow">¶</a></p>
+for a single domain name only.<a href="#section-6.4-15.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.4-17.2">
-            <p id="section-6.4-17.2.1">Verifies that the sig field of the payload includes a valid JWS, signed with
-one of the keys published in the client's Entity Configuration.<a href="#section-6.4-17.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-6.4-15.2">
+            <p id="section-6.4-15.2.1">Verifies that the <code>sig</code> field of the payload includes a valid JWS over the
+challenge token, signed with one of the keys published in the requestor's
+Entity Configuration, either in the top-level <code>jwks</code> claim as defined in
+Section 3 of <span>[<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span> or referenced by the <code>signed_jwks_uri</code>, <code>jwks_uri</code>, or
+<code>jwks</code> claims in the entity metadata as defined in Section 5.2.1 of
+[OEPNID-FED]. If the requestor provided a <code>kid</code> value in its challenge response,
+only keys in the Entity Configuration with a matching <code>kid</code> value are
+considered.<a href="#section-6.4-15.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-6.4-18">If all of the above verifications succeed, then the validation is successful.
-Otherwise, it has failed. In either case, the server responds according to
-section 7.5.1 of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.4-18" class="pilcrow">¶</a></p>
-<p id="section-6.4-19">A non-normative example for the challenge object post-validation:<a href="#section-6.4-19" class="pilcrow">¶</a></p>
-<p id="section-6.4-20"><code>
+<p id="section-6.4-16">If all of the above verifications succeed, then the validation is successful.
+Otherwise, it has failed. In either case, the issuer responds according to
+section 7.5.1 of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>. In the event that the verification succeeds, the
+eventual CSR <span class="bcp14">MUST</span> include the public key, attested within the Trust Chain, used
+by the Requestor to satisfy the Issuer's challenge.<a href="#section-6.4-16" class="pilcrow">¶</a></p>
+<p id="section-6.4-17">A non-normative example for the challenge object post-validation:<a href="#section-6.4-17" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.4-18">
+<pre>
    {
      "type": "openid-federation-01",
      "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
@@ -1662,8 +1690,31 @@ section 7.5.1 of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>
      "validated": "2024-10-01T12:05:13.72Z",
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
-</code><a href="#section-6.4-20" class="pilcrow">¶</a></p>
-<p id="section-6.4-21">TODO: update text below here<a href="#section-6.4-21" class="pilcrow">¶</a></p>
+</pre><a href="#section-6.4-18" class="pilcrow">¶</a>
+</div>
+<div id="csr-and-certificate-requirements">
+<section id="section-6.4.1">
+          <h4 id="name-csr-and-certificate-require">
+<a href="#section-6.4.1" class="section-number selfRef">6.4.1. </a><a href="#name-csr-and-certificate-require" class="section-name selfRef">CSR and Certificate Requirements</a>
+          </h4>
+<p id="section-6.4.1-1">When using this challenge type, both the certificate signing request (CSR)
+and the X.509 Certificate:<a href="#section-6.4.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.4.1-2.1">
+              <p id="section-6.4.1-2.1.1"><span class="bcp14">MUST</span> include a public key corresponding to
+the key used to satisfy the challenge.<a href="#section-6.4.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-6.4.1-2.2">
+              <p id="section-6.4.1-2.2.1"><span class="bcp14">MUST</span> include no Common Name, and must include
+a single Subject Alternative Name value corresponding to an <code>otherName</code> with an
+ID of <strong>TBD</strong>, containing an Octet String value corresponding to a UTF-8
+encoding of the Requestor's Entity ID, that is, the value of the <code>sub</code> claim
+of the Requestor's Entity Configuration.<a href="#section-6.4.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-6.4.1-3">TODO: determine the OID for use in the Subject Alternative Name.<a href="#section-6.4.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 </section>
