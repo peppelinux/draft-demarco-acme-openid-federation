@@ -65,17 +65,16 @@ allows server operators to obtain TLS certificates for their websites (HTTPS
 [RFC2818]), based on a demonstration of control over the website's domain via a
 fully-automated challenge/response protocol.
 
-OpenID Federation 1.0 defines how to build a trust infrastructure
-using a trusted third-party model.
-It uses a trust evaluation mechanism to attest the
-possession of public keys, protocol specific metadata
-and several administrative and technical information
-related to a specific entity.
+OpenID Federation 1.0 defines how to build a trust infrastructure using a
+trusted third-party model. It uses a trust evaluation mechanism to attest the
+possession of public keys, protocol specific metadata and several administrative
+and technical information related to a specific entity.
 
-This document defines how X.509 certificates associating a given OpenID Federation Entity
-with a key included in that Entity's Configuration can be issued by a trust
-anchor and its intermediates through the ACME protocol to all the organizations
-that are part of a federation built on top of OpenID Federation 1.0.
+This document defines how X.509 certificates associating a given OpenID
+Federation Entity with a key included in that Entity's Configuration can be
+issued by a trust anchor and its intermediates through the ACME protocol to all
+the organizations that are part of a federation built on top of OpenID
+Federation 1.0.
 
 --- middle
 
@@ -89,25 +88,25 @@ contract.
 
 In a multilateral federation, composed by thousands of entities belonging to
 different organizations, all the participants adhere to the same regulation or
-trust framework. OpenID Federation 1.0 allows each participant to
-recognize the other participant using a trust evaluation mechanism, with RESTful
-services and cryptographic materials.
+trust framework. OpenID Federation 1.0 allows each participant to recognize the
+other participant using a trust evaluation mechanism, with RESTful services and
+cryptographic materials.
 
-Considering that a requestor is an entity requesting the issuance of a X.509
+Considering that a requestor is an entity requesting the issuance of an X.509
 Certificate to a server and the issuer is the ACME server that validates the
-entitlements of the requestor before issuing the X.509 certificate, this
-specification defines how ACME and OpenID Federation 1.0 can be
-integrated to allow efficient issuance of X.509 certificates to a requestor via
-the introduction of a new ACME challenge type. The new challenge type extends
-the ACME protocol in the following ways:
+entitlements of the requestor before issuing the X.509 Certificate, this
+specification defines how ACME and OpenID Federation 1.0 can be integrated to
+allow efficient issuance of X.509 Certificates to a requestor via the
+introduction of a new ACME challenge type. The new challenge type extends the
+ACME protocol in the following ways:
 
 - It associates a cryptographic key with an OpenID Entity, rather than a domain,
   since the authentication and authorization of the requestor is asserted with
   OpenID Federation 1.0.
 
-- It defines how to use and validate a basic OpenID Federation
-  component, called Entity Configuration, that is a signed JWT published in a
-  well-known resource (`/.well-known/openid-federation`) without requiring the
+- It defines how to use and validate a basic OpenID Federation component, called
+  Entity Configuration, that is a signed JWT published in a well-known resource
+  (`/.well-known/openid-federation`) without requiring the
   `/.well-known/acme-challenge/{token}` endpoint.
 
 - It defines how the OpenID Federation Entity Statements can be used for the
@@ -129,11 +128,6 @@ This specification can be implemented by:
 - Federation Entities that want to ask and obtain X.509 Certificate for every
   Federation Key contained in their Entity Configuration, as made reliable in a
   Federation Trust Chain.
-
-- Federation Entities that want to ask and obtain X.509 Certificate for every
-  Federation Key contained in their Entity Configuration, as made reliable in a
-  Federation Trust Chain.
-
 
 # Terminology
 
@@ -174,7 +168,7 @@ The Issuer establishes the authorization of a Federation Entity to obtain
 certificates for the identifier configured in the Requestor's Entity
 Configuration.
 
-The Issuer establishes if a Federation Entity il eligible to obtain X.509
+The Issuer establishes if a Federation Entity is eligible to obtain X.509
 Certificates for the identifier configured in the Requestor's Entity
 Configuration.
 
@@ -259,7 +253,7 @@ TBD: high level design and ascii sequence diagram.
     - The Requestor adds the Trust Chain JWS header parameter related to itself,
       this option is RECOMMENDED since it reduces the effort of the Issuer in
       evaluating the trust to the Requestor;
-    
+
     - The Requestor doesn't add the Trust Chain in the request, then the Issuer
       MUST start a [Federation Entity
       Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)
@@ -431,6 +425,22 @@ A non-normative example for the challenge object post-validation:
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
 ```
+
+### CSR and Certificate Requirements
+
+When using this challenge type, there are a few requirements imposed on the
+certificate signing request (CSR) and the issued certificate:
+
+* Both the CSR and the certificate MUST include a public key corresponding to
+  the key used to satisfy the challenge.
+
+* Both the CSR and the certificate MUST include no Common Name, and must include
+  a single Subject Alternative Name vlue corresponding to an `otherName` with an
+  ID of **TBD**, containing an Octet String value corresponding to a UTF-8
+  encoding of the Requestor's Entity ID, that is, the value of the `sub` claim
+  of the Requestor's Entity Configuration.
+
+TODO: determine the OID for use in the Subject Alternative Name.
 
 # Publication of the Certificates within the Federation
 
