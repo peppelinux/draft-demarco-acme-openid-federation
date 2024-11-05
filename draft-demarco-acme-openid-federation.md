@@ -428,14 +428,14 @@ A non-normative example for the challenge object post-validation:
 
 ### CSR and Certificate Requirements
 
-When using this challenge type, there are a few requirements imposed on the
-certificate signing request (CSR) and the issued X.509 Certificate:
+When using this challenge type, both the certificate signing request (CSR)
+and the X.509 Certificate:
 
-* Both the CSR and the certificate MUST include a public key corresponding to
+* MUST include a public key corresponding to
   the key used to satisfy the challenge.
 
-* Both the CSR and the certificate MUST include no Common Name, and must include
-  a single Subject Alternative Name vlue corresponding to an `otherName` with an
+* MUST include no Common Name, and must include
+  a single Subject Alternative Name value corresponding to an `otherName` with an
   ID of **TBD**, containing an Octet String value corresponding to a UTF-8
   encoding of the Requestor's Entity ID, that is, the value of the `sub` claim
   of the Requestor's Entity Configuration.
