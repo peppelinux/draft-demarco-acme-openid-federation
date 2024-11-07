@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-05T00:33:52.809010+00:00",
+  "timestamp": "2024-11-07T00:33:54.907375+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -71,15 +71,15 @@
       "id": "I_kwDOJ6_NW86UD4xZ",
       "title": "Questions regarding the specification",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/2",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "branlwyd",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "I gave the specification (as well as the ACME & OpenID Federation specs) a readthrough. I have a few initial questions:\r\n\r\n1) What kind of X.509 certificates are intended to be generated? For example, the original ACME specification generates domain-validated Web PKI certificates (RFC 8555). It has been extended to create S/MIME certificates (RFC 8823), VoIP certificates (RFC 9448), and probably others. The text in Section 6.8 suggests this may be a Web PKI certificate, but this is not totally clear.\r\n\r\n2) It looks like the ACME authorizations/challenges functionality is not used in this proposal (Section 6.7 says it `MUST` be omitted from the `newOrder` response). Instead, my understanding is that issuance is authorized by having the `newOrder` request signed by a private key controlled by the Requestor & published in its Entity Configuration (Section 5), which may be discovered by the Issuer or included in a new `trust_chain` request field. Is this accurate?\r\n\r\n[nit: Section 5 says the `newOrder` request is signed by the Requestor's private key, while Section 6.2 suggests that the `newNonce` request requires validation. Perhaps both should be?]\r\n\r\n3) Given that requests are expected to be signed with the Requestor's private key, how does this play with standard ACME account management? Standard ACME account management maintains that each client will maintain its own keypair, and each request is authorized by a signature over the request with the account's private key.\r\n\r\n\r\nAnd a final meta-question, wrapping up the previous three questions: why can't this method of authorizing issuance be phrased as a new challenge type, using ACME's existing authorization/challenge/response APIs? For example, the challenge would include a nonce, and the response would involve providing a signature over the nonce with the Entity Key. This would fit more closely to ACME as defined in RFC 8555 as well as existing extensions.",
       "createdAt": "2024-08-23T23:43:26Z",
-      "updatedAt": "2024-09-03T19:23:09Z",
-      "closedAt": null,
+      "updatedAt": "2024-11-05T15:12:28Z",
+      "closedAt": "2024-11-05T15:12:28Z",
       "comments": [
         {
           "author": "peppelinux",
@@ -108,6 +108,13 @@
           "body": "Ok, I have added my first review with some suggestions",
           "createdAt": "2024-09-03T19:23:09Z",
           "updatedAt": "2024-09-03T19:23:09Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "During the meet of 5 nov 2024 we agreed to close this PR since there was consensus on the answers shared during the previosu week and prs",
+          "createdAt": "2024-11-05T15:12:28Z",
+          "updatedAt": "2024-11-05T15:12:28Z"
         }
       ]
     },
@@ -143,11 +150,29 @@
       "state": "OPEN",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
-      "assignees": [],
+      "assignees": [
+        "peppelinux"
+      ],
       "labels": [],
       "body": "              we must say in the terminolog ysection that \"ACME Challenge is defined in RFC....\" and therefore use it the defined term ACME Challenge as well as the other terms\r\n\r\n_Originally posted by @peppelinux in https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/4#discussion_r1810825532_\r\n            ",
       "createdAt": "2024-11-03T07:11:23Z",
-      "updatedAt": "2024-11-03T07:11:23Z",
+      "updatedAt": "2024-11-05T15:11:37Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 10,
+      "id": "I_kwDOJ6_NW86dGhqc",
+      "title": "Sequence Diagram",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/10",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "We need a sequence diagram describing the entire flow\r\n\r\nwe can start in this issue using mermaid or plantuml\r\n\r\nhere an example as template \r\n\r\nwe need three entities\r\n\r\n1. RP (requesting X.509 Certificates)\r\n2. Superior Entity also ACME Provider\r\n3. Trust Anchor supporting trust evaluation \r\n\r\n```mermaid\r\nsequenceDiagram\r\n    participant WalletInstance as Wallet Instance\r\n    participant CV as Credential Verifier\r\n    participant IE as Intermediate\r\n    participant TA as Trust Anchor\r\n\r\n    WalletInstance->>CV: Fetch CV's Entity Configuration\r\n    CV->>WalletInstance: Return Entity Configuration\r\n\r\n    WalletInstance->>CV: Extract Authority Hints from CV's Configuration\r\n    CV->>WalletInstance: Provide Authority Hints\r\n\r\n    loop for each Authority Hint\r\n        WalletInstance->>IE: Fetch Entity Configuration -> get federation_fetch_api URL\r\n        IE->>WalletInstance: Fetch Subordinate Statement\r\n        WalletInstance->>WalletInstance: Validate the previous statement<br/>using the Federation Entity Keys<br/>provided in the Subordinate Statement\r\n    end\r\n\r\n    WalletInstance->>WalletInstance: Validate Trust Chain\r\n\r\n    alt If Trust Chain is valid and unexpired\r\n        WalletInstance->>WalletInstance: Proceed with Federation Process\r\n    else\r\n        WalletInstance->>WalletInstance: Abort Process with Error\r\n    end\r\n\r\n    WalletInstance->>WalletInstance: Applies Policies\r\n    WalletInstance->>WalletInstance: Derive CV's final metadata\r\n\r\n````",
+      "createdAt": "2024-11-05T15:09:47Z",
+      "updatedAt": "2024-11-05T15:09:47Z",
       "closedAt": null,
       "comments": []
     }
@@ -1185,24 +1210,26 @@
       "id": "PR_kwDOJ6_NW85-v37Y",
       "title": "Specify requirements on CSR and Certificate.",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/6",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "branlwyd",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Specifically, require the certificate to include the same public key\r\nused to satisfy the challenge (duplicating text elsewhere), and specify\r\nhow the Entity ID is included in the certificate.",
       "createdAt": "2024-10-16T00:19:25Z",
-      "updatedAt": "2024-10-16T00:20:18Z",
+      "updatedAt": "2024-11-05T15:05:27Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "2d7af5cfe546691fc3ccc6baf359592464f645e5",
+      "baseRefOid": "f3830f837d38f53b3ddb5967165714ff6a93f175",
       "headRepository": "branlwyd/draft-demarco-acme-openid-federation",
       "headRefName": "bran/san-entity-id",
-      "headRefOid": "ff1f7f6e2bae2cac71ed4c2f8521e6bf98d6ca53",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "5e71edb2017cb232d45e6373fe2ef849d1aa33a4",
+      "closedAt": "2024-11-05T15:05:21Z",
+      "mergedAt": "2024-11-05T15:05:21Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "d68a33eeaac1dc672fefac00696bef533e87c5da"
+      },
       "comments": [
         {
           "author": "branlwyd",
@@ -1212,7 +1239,90 @@
           "updatedAt": "2024-10-16T00:20:17Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86P8SDS",
+          "commit": {
+            "abbreviatedOid": "c0a6b8c"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-05T08:32:09Z",
+          "updatedAt": "2024-11-05T08:32:09Z",
+          "comments": [
+            {
+              "originalPosition": 103,
+              "body": "```suggestion\r\ncertificate signing request (CSR) and the issued X.509 Certificate:\r\n```",
+              "createdAt": "2024-11-05T08:32:09Z",
+              "updatedAt": "2024-11-05T08:32:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86P8TCL",
+          "commit": {
+            "abbreviatedOid": "94542d9"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-05T08:34:04Z",
+          "updatedAt": "2024-11-05T08:34:04Z",
+          "comments": [
+            {
+              "originalPosition": 112,
+              "body": "```suggestion\r\nWhen using this challenge type, both the certificate signing request (CSR)\r\nand the X.509 Certificate:\r\n\r\n* MUST include a public key corresponding to\r\n  the key used to satisfy the challenge.\r\n\r\n* MUST include no Common Name, and must include\r\n  a single Subject Alternative Name value corresponding to an `otherName` with an\r\n  ID of **TBD**, containing an Octet String value corresponding to a UTF-8\r\n  encoding of the Requestor's Entity ID, that is, the value of the `sub` claim\r\n  of the Requestor's Entity Configuration.\r\n```",
+              "createdAt": "2024-11-05T08:34:04Z",
+              "updatedAt": "2024-11-05T15:02:14Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOJ6_NW86A8YIw",
+      "title": "editorial: fix json in metadata code block",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/9",
+      "state": "MERGED",
+      "author": "inahga",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Missing closing bracket.",
+      "createdAt": "2024-11-05T15:07:46Z",
+      "updatedAt": "2024-11-05T15:11:14Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "d68a33eeaac1dc672fefac00696bef533e87c5da",
+      "headRepository": "inahga/draft-demarco-acme-openid-federation",
+      "headRefName": "patch-1",
+      "headRefOid": "5b3b05617536d43164ac5eba14ab08ecd707a6d0",
+      "closedAt": "2024-11-05T15:11:14Z",
+      "mergedAt": "2024-11-05T15:11:14Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "7c482e2e9e17f568f9a780e65b2553dbc511f507"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86QAAtc",
+          "commit": {
+            "abbreviatedOid": "5b3b056"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-11-05T15:11:07Z",
+          "updatedAt": "2024-11-05T15:11:07Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
