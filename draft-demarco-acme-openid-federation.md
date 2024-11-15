@@ -113,6 +113,9 @@ ACME protocol in the following ways:
   publication of the X.509 Certificates, by a Trust Anchor or Intermediate, that
   were previously issued with ACME.
 
+- It extends the ACME newOrder resource, defining a new payload identifer type
+  called `openid-federation`.
+
 # Audience Target and Use Cases
 
 The audience of the document are the multilateral federations that require
@@ -261,7 +264,7 @@ TBD: high level design and ascii sequence diagram.
 
 4. The Requestor begins the certificate issuance process by sending a HTTP POST
    request to the Issuer's `newOrder` resource, and follows the remainder of the
-   ACME protocl as specified in [RFC8555], using the new challenge defined in
+   ACME protocol as specified in [RFC8555], using the new challenge defined in
    {{challenge-type}}.
 
 ## Metadata
@@ -290,14 +293,53 @@ in the federation Entity Configuration of the Issuer.
 }
 ~~~~
 
+## newOrder Request
+
+The Requestor begins certificate issuance by sending a HTTP POST request to the
+Issuer's `newOrder` resource, as specified in Section 7.4 of [RFC8555]. However,
+the request payload uses a new identifier `openid-federation`, whose value is
+the `sub` parameter of the requestor's Entity Configuration, as defined in
+Section 1.2 of [OPENID-FED].
+
+A non-normative example of an ACME newOrder request:
+
+~~~~
+   POST /acme/new-order HTTP/1.1
+   Host: issuer.example.com
+   Content-Type: application/jose+json
+
+   {
+     "protected": base64url({
+       "alg": "ES256",
+       "kid": "https://issuer.example.com/acme/acct/evOfKhNU60wg",
+       "nonce": "5XJ1L3lEkMG7tR6pA00clA",
+       "url": "https://issuer.example.com/acme/new-order"
+     }),
+     "payload": base64url({
+       "identifiers": [
+         {
+           "type": "openid-federation",
+           "value": "https://requestor.example.com"
+         }
+       ],
+       "notBefore": "2016-01-01T00:04:00+04:00",
+       "notAfter": "2016-01-08T00:04:00+04:00"
+     }),
+     "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
+   }
+~~~~
+
+The maximum length of the JSON array contained in the identifiers parameter
+MUST be 1, since there cannot be more than a single URI corresponding to a
+Federation Entity.
+
 ## OpenID Federation Challenge Type {#challenge-type}
 
 The OpenID Federation challenge type allows a client to prove control of a
 domain and its underlying endpoints using the trust evaluation mechanism
 provided by OpenID Federation 1.0. The requestor demonstrates control of a
 cryptographic public key published in its OpenID Federation Entity
-Configuration, which the ACME server uses to validate that the requestor is in
-control of the domain.
+Configuration.
 
 The openid-federation-01 ACME challenge object has the following format:
 
@@ -391,13 +433,11 @@ On receiving a response, the issuer retrieves the public keys associated with
 the given entity (possibly performing Federation Entity Discovery to do so),
 then:
 
-* Verifies that the requested domain names match the FQDN contained within the
-  `sub` parameter of the requestor's Entity Configuration. For example, if the
-  `sub` parameter within the Entity Configuration contains the value
-  `https://requestor.example.com/oidc/rp`, the extracted FQDN is then
-  `requestor.example.com`. Since the Entity Configuration can contain at most
-  one FQDN, this effectively means that this challenge type works with requests
-  for a single domain name only.
+* Verifies that the requested `openid-federation` value matches the `sub`
+  parameter of the requestor's Entity Configuration. Since the Entity
+  Configuration can contain at most one Entity Identifier, this effectively
+  means this challenge type works with requests for a single Federation Entity
+  only.
 
 * Verifies that the `sig` field of the payload includes a valid JWS over the
   challenge token, signed with one of the keys published in the requestor's
@@ -476,7 +516,13 @@ TBD.
 
 # IANA Considerations
 
-This document has no IANA actions.
+## ACME Identifier Types
+
+Per this document, a new type has been added to the "ACME Identifyer Types"
+registry, defined in
+[Section 9.7.7](https://datatracker.ietf.org/doc/html/rfc8555#section-9.7.7) of
+[RFC8555] with label "openid-federation" and reference
+"draft-demarco-acme-openid-federation".
 
 
 --- back
