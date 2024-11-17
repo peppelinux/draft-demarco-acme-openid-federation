@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-14T00:34:17.558925+00:00",
+  "timestamp": "2024-11-17T00:38:57.850324+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1321,6 +1321,81 @@
           "createdAt": "2024-11-05T15:11:07Z",
           "updatedAt": "2024-11-05T15:11:07Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "PR_kwDOJ6_NW86CFrVo",
+      "title": "Add openid-federation ACME identifier type",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/11",
+      "state": "OPEN",
+      "author": "inahga",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Reintroduces the addition of an ACME identifier type, since the certs are not for DNS names.",
+      "createdAt": "2024-11-15T20:31:46Z",
+      "updatedAt": "2024-11-15T21:10:18Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "7c482e2e9e17f568f9a780e65b2553dbc511f507",
+      "headRepository": "inahga/draft-demarco-acme-openid-federation",
+      "headRefName": "inahga/resource-type",
+      "headRefOid": "146d240d25dede2519f4d73eebd30a34fbec2ad2",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "inahga",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@branlwyd I could use your review too.",
+          "createdAt": "2024-11-15T20:32:37Z",
+          "updatedAt": "2024-11-15T20:32:37Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86RaOVN",
+          "commit": {
+            "abbreviatedOid": "f408830"
+          },
+          "author": "inahga",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-15T20:34:21Z",
+          "updatedAt": "2024-11-15T20:34:21Z",
+          "comments": [
+            {
+              "originalPosition": 73,
+              "body": "Raised this question in channel, but where are we retrieving the Entity Configuration from? Presumably the Issuer is reaching out to the Requestor at `https://requestor.example.com/.well-known/openid-federation`.\r\n\r\nIf this is the case, we have to consider how we would derive the discovery URL from the requestor's newOrder. If the requestor supplies `https://requestor.example.com/oidc/rp`, where is the Entity Configuration stored?",
+              "createdAt": "2024-11-15T20:34:21Z",
+              "updatedAt": "2024-11-15T20:34:21Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Rale6",
+          "commit": {
+            "abbreviatedOid": "146d240"
+          },
+          "author": "inahga",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-15T21:10:18Z",
+          "updatedAt": "2024-11-15T21:10:18Z",
+          "comments": [
+            {
+              "originalPosition": 71,
+              "body": "This was a source of some confusion, I think a holdover from a previous iteration. The challenge doesn't provide domain validation.",
+              "createdAt": "2024-11-15T21:10:18Z",
+              "updatedAt": "2024-11-15T21:10:18Z"
+            }
+          ]
         }
       ]
     }
