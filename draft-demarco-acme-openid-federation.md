@@ -241,11 +241,11 @@ TBD: high level design and ascii sequence diagram.
    error to return). There are two ways the Certificate Issuer is able to check if a
    Requestor is part of the federation, these are listed below:
 
-    - The Requestor adds the Trust Chain JWT header parameter related to itself,
-      this option is RECOMMENDED since it reduces the effort of the Certificate Issuer in
+    - The Requestor adds the Trust Chain JWT header parameter related to itself.
+      This option is RECOMMENDED since it reduces the effort of the Certificate Issuer in
       evaluating the trust to the Requestor;
 
-    - The Requestor doesn't add the Trust Chain in the request, then the Certificate Issuer
+    - The Requestor doesn't add the Trust Chain in the request. The Certificate Issuer
       MUST start a [Federation Entity
       Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)
       to obtain the Trust Chain related to the Requestor.
@@ -365,7 +365,7 @@ sig (required, string):  a base64url encoding of a JWT, signing the token
     signature from any of them.
 
 trust_chain (optional, array of string):  an array of base64url-encoded bytes
-    containing a signed JWT and representing the Trust Chain about the Requestor.
+    containing a signed JWT and representing the Trust Chain of the Requestor.
     See section 4.3 of [OPENID-FED]. The Requestor SHOULD use
     a Trust Anchor it has in common with the ACME server. It is RECOMMENDED that the
     Requestor include this field; otherwise, the ACME server MUST start
@@ -494,7 +494,7 @@ the X.509 Certificate related to it
 SHOULD be revoked by its Credential Issuer, if not expired.
 
 A Requestor SHOULD request the revocation of its X.509 Certificate when the related
-when the related cryptographic material is revoked and published in the Federation Historical Key
+cryptographic material is revoked and published in the Federation Historical Key
 Registry.
 
 The X.509 Certficate revocation request is defined in the [Section
