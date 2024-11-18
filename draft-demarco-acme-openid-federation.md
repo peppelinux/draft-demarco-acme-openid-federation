@@ -253,7 +253,6 @@ TBD: high level design and ascii sequence diagram.
 4. The Requestor begins the X.509 Certificate issuance process by sending a HTTP POST
    request to the Certificate Issuer's `newOrder` resource, and follows the remainder of the
    ACME protocol as specified in [RFC8555], using the new challenge defined in
-   
    {{challenge-type}}.
 
 ## Metadata
