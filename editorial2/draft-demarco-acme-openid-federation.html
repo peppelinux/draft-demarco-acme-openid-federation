@@ -1485,12 +1485,12 @@ error to return). There are two ways the Certificate Issuer is able to check if 
 Requestor is part of the federation, these are listed below:<a href="#section-6.2-2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-6.2-2.3.2.1">
-                <p id="section-6.2-2.3.2.1.1">The Requestor adds the Trust Chain JWT header parameter related to itself,
-this option is <span class="bcp14">RECOMMENDED</span> since it reduces the effort of the Certificate Issuer in
+                <p id="section-6.2-2.3.2.1.1">The Requestor adds the Trust Chain JWT header parameter related to itself.
+This option is <span class="bcp14">RECOMMENDED</span> since it reduces the effort of the Certificate Issuer in
 evaluating the trust to the Requestor;<a href="#section-6.2-2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-6.2-2.3.2.2">
-                <p id="section-6.2-2.3.2.2.1">The Requestor doesn't add the Trust Chain in the request, then the Certificate Issuer
+                <p id="section-6.2-2.3.2.2.1">The Requestor doesn't add the Trust Chain in the request. The Certificate Issuer
 <span class="bcp14">MUST</span> start a <a href="https://openid.net/specs/openid-federation-1_0.html#section-8">Federation Entity
 Discovery</a>
 to obtain the Trust Chain related to the Requestor.<a href="#section-6.2-2.3.2.2.1" class="pilcrow">¶</a></p>
@@ -1619,7 +1619,7 @@ cryptographic public key published in its OpenID Federation Entity Configuration
     the Certificate Issuer <span class="bcp14">SHOULD</span> enumerate all valid keys and accept a
     signature from any of them.<a href="#section-6.5-7" class="pilcrow">¶</a></p>
 <p id="section-6.5-8">trust_chain (optional, array of string):  an array of base64url-encoded bytes
-    containing a signed JWT and representing the Trust Chain about the Requestor.
+    containing a signed JWT and representing the Trust Chain of the Requestor.
     See section 4.3 of <span>[<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>. The Requestor <span class="bcp14">SHOULD</span> use
     a Trust Anchor it has in common with the ACME server. It is <span class="bcp14">RECOMMENDED</span> that the
     Requestor include this field; otherwise, the ACME server <span class="bcp14">MUST</span> start
@@ -1762,7 +1762,7 @@ Chain.<a href="#section-8-2" class="pilcrow">¶</a></p>
 the X.509 Certificate related to it
 <span class="bcp14">SHOULD</span> be revoked by its Credential Issuer, if not expired.<a href="#section-8-3" class="pilcrow">¶</a></p>
 <p id="section-8-4">A Requestor <span class="bcp14">SHOULD</span> request the revocation of its X.509 Certificate when the related
-when the related cryptographic material is revoked and published in the Federation Historical Key
+cryptographic material is revoked and published in the Federation Historical Key
 Registry.<a href="#section-8-4" class="pilcrow">¶</a></p>
 <p id="section-8-5">The X.509 Certficate revocation request is defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.6">Section
 7.6</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-8-5" class="pilcrow">¶</a></p>

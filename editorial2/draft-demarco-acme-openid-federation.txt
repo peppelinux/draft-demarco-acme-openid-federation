@@ -280,15 +280,14 @@ Table of Contents
        is part of the federation, these are listed below:
 
        *  The Requestor adds the Trust Chain JWT header parameter
-          related to itself, this option is RECOMMENDED since it reduces
-          the effort of the Certificate Issuer in evaluating the trust
-          to the Requestor;
+          related to itself.  This option is RECOMMENDED since it
+          reduces the effort of the Certificate Issuer in evaluating the
+          trust to the Requestor;
 
-       *  The Requestor doesn't add the Trust Chain in the request, then
-          the Certificate Issuer MUST start a Federation Entity
-          Discovery (https://openid.net/specs/openid-federation-
-          1_0.html#section-8) to obtain the Trust Chain related to the
-          Requestor.
+       *  The Requestor doesn't add the Trust Chain in the request.  The
+          Certificate Issuer MUST start a Federation Entity Discovery
+          (https://openid.net/specs/openid-federation-1_0.html#section-
+          8) to obtain the Trust Chain related to the Requestor.
 
    4.  The Requestor begins the X.509 Certificate issuance process by
        sending a HTTP POST request to the Certificate Issuer's newOrder
@@ -406,7 +405,7 @@ Table of Contents
 
    trust_chain (optional, array of string): an array of base64url-
    encoded bytes containing a signed JWT and representing the Trust
-   Chain about the Requestor.  See section 4.3 of [OPENID-FED].  The
+   Chain of the Requestor.  See section 4.3 of [OPENID-FED].  The
    Requestor SHOULD use a Trust Anchor it has in common with the ACME
    server.  It is RECOMMENDED that the Requestor include this field;
    otherwise, the ACME server MUST start Federation Entity Discovery to
@@ -534,8 +533,8 @@ Table of Contents
    by its Credential Issuer, if not expired.
 
    A Requestor SHOULD request the revocation of its X.509 Certificate
-   when the related when the related cryptographic material is revoked
-   and published in the Federation Historical Key Registry.
+   when the related cryptographic material is revoked and published in
+   the Federation Historical Key Registry.
 
    The X.509 Certficate revocation request is defined in the Section 7.6
    (https://datatracker.ietf.org/doc/html/rfc8555#section-7.6) of
