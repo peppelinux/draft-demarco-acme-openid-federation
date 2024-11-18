@@ -113,8 +113,9 @@ ACME protocol in the following ways:
   publication of the X.509 Certificates, by a Trust Anchor or Intermediate, that
   were previously issued with ACME.
 
-- It extends the ACME newOrder resource, defining a new payload identifer type
-  called `openid-federation`.
+- It extends the ACME newOrder resource, as defined in Section 7.4 of
+  [`RFC8555`], defining a new payload identifer type called
+  `openid-federation`.
 
 # Audience Target and Use Cases
 
@@ -435,7 +436,7 @@ then:
 
 * Verifies that the requested `openid-federation` value matches the `sub`
   parameter of the requestor's Entity Configuration. Since the Entity
-  Configuration can contain at most one Entity Identifier, this effectively
+  Configuration MUST contain at most one Entity Identifier, this effectively
   means this challenge type works with requests for a single Federation Entity
   only.
 
