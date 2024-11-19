@@ -433,7 +433,7 @@ then:
   Entity Configuration, either in the top-level `jwks` claim as defined in
   Section 3 of [OPENID-FED] or referenced by the `signed_jwks_uri`, `jwks_uri`, or
   `jwks` claims in the entity metadata as defined in Section 5.2.1 of
-  [OPENID-FED]. If the Requestor provides a `kid` value in its challenge response,
+  [OPENID-FED]. Since the Requestor MUST provide a `kid` value in its challenge response,
   only keys (JWKs) in the Entity Configuration with a matching `kid` value are
   considered.
 
