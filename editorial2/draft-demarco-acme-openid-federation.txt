@@ -305,8 +305,9 @@ Table of Contents
    7.1.1) of [RFC8555] in the federation Entity Configuration of the
    Issuer.
 
-   TBD: the example below is non-normative.  A table describing each
-   REQUIRED or OPTIONAL parameter is required.
+   Below is a non-normative example about the Credential Issuer metadata
+   object.  All the parameters contained within it are defined in the
+   [RFC8555]. parameter is required.
 
 {
   "metadata":
