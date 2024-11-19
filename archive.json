@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-17T00:38:57.850324+00:00",
+  "timestamp": "2024-11-19T00:36:28.941234+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1329,24 +1329,26 @@
       "id": "PR_kwDOJ6_NW86CFrVo",
       "title": "Add openid-federation ACME identifier type",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/11",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "inahga",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Reintroduces the addition of an ACME identifier type, since the certs are not for DNS names.",
       "createdAt": "2024-11-15T20:31:46Z",
-      "updatedAt": "2024-11-15T21:10:18Z",
+      "updatedAt": "2024-11-18T16:47:55Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
-      "baseRefName": "main",
-      "baseRefOid": "7c482e2e9e17f568f9a780e65b2553dbc511f507",
+      "baseRefName": "editorial2",
+      "baseRefOid": "c4603337df3ba57d041986eb51e3a1f98e1ba7b3",
       "headRepository": "inahga/draft-demarco-acme-openid-federation",
       "headRefName": "inahga/resource-type",
-      "headRefOid": "146d240d25dede2519f4d73eebd30a34fbec2ad2",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "b58db54c928722ff886421b3d1d148298ee4b3aa",
+      "closedAt": "2024-11-18T16:47:55Z",
+      "mergedAt": "2024-11-18T16:47:55Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "e25b6ae1f3387405d0efdf7018135ccce67058d9"
+      },
       "comments": [
         {
           "author": "inahga",
@@ -1354,6 +1356,13 @@
           "body": "@branlwyd I could use your review too.",
           "createdAt": "2024-11-15T20:32:37Z",
           "updatedAt": "2024-11-15T20:32:37Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "I have rebased to get this PR merged to the editorial2 branch, therefore I have resolved the conflicts.\r\n\r\nwe will have a final review on the editorial2 branch before the merge to the main branch",
+          "createdAt": "2024-11-18T16:47:29Z",
+          "updatedAt": "2024-11-18T16:47:29Z"
         }
       ],
       "reviews": [
@@ -1394,6 +1403,182 @@
               "body": "This was a source of some confusion, I think a holdover from a previous iteration. The challenge doesn't provide domain validation.",
               "createdAt": "2024-11-15T21:10:18Z",
               "updatedAt": "2024-11-15T21:10:18Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86RjDnO",
+          "commit": {
+            "abbreviatedOid": "146d240"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2024-11-18T08:49:27Z",
+          "updatedAt": "2024-11-18T08:51:04Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "```suggestion\r\n- It extends the ACME newOrder resource, as defined in Section 7.4 of [RFC8555], defining a new payload identifer type\r\n```",
+              "createdAt": "2024-11-18T08:49:27Z",
+              "updatedAt": "2024-11-18T08:51:05Z"
+            },
+            {
+              "originalPosition": 90,
+              "body": "```suggestion\r\n* Verifies that the requested `openid-federation` value matches the `sub`\r\n  parameter of the requestor's Entity Configuration. Since the Entity\r\n  Configuration MUST contain at most one Entity Identifier, this effectively\r\n  means this challenge type works with requests for a single Federation Entity\r\n  only.\r\n```",
+              "createdAt": "2024-11-18T08:50:47Z",
+              "updatedAt": "2024-11-18T08:51:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Rn8i1",
+          "commit": {
+            "abbreviatedOid": "f408830"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-18T16:42:11Z",
+          "updatedAt": "2024-11-18T16:42:11Z",
+          "comments": [
+            {
+              "originalPosition": 73,
+              "body": "See: https://openid.net/specs/openid-federation-1_0.html#section-9\r\n\r\nwe can use a ref to that specific Section ",
+              "createdAt": "2024-11-18T16:42:11Z",
+              "updatedAt": "2024-11-18T16:42:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Rn9Kt",
+          "commit": {
+            "abbreviatedOid": "402f3cf"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-11-18T16:43:16Z",
+          "updatedAt": "2024-11-18T16:43:16Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Rn9bY",
+          "commit": {
+            "abbreviatedOid": "f408830"
+          },
+          "author": "inahga",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-18T16:43:42Z",
+          "updatedAt": "2024-11-18T16:43:43Z",
+          "comments": [
+            {
+              "originalPosition": 73,
+              "body": "Thanks, will work on this section more in another PR.",
+              "createdAt": "2024-11-18T16:43:43Z",
+              "updatedAt": "2024-11-18T16:43:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Rn_Cm",
+          "commit": {
+            "abbreviatedOid": "873db27"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-18T16:46:36Z",
+          "updatedAt": "2024-11-18T16:46:36Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "```suggestion\r\n\r\n```",
+              "createdAt": "2024-11-18T16:46:36Z",
+              "updatedAt": "2024-11-18T16:46:36Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDOJ6_NW86COUXy",
+      "title": "fix: editorials and terminology used",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/12",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "This PR alignes terminology, in particular\r\n\r\n- replaces Entity Statement with Subordinate Statement, to be more clear about the type of Entity Statement used and therefore aligned with the current Federation Draft\r\n- remove the word \"Connect\" in OpenID Federation\r\n- uses the term Certificate Issuer instead of Issuer alone\r\n- use more normative language\r\n- removes some useless remark\r\n\r\nGenerally this PR facilitate the further works of:\r\n\r\n- reducing duplication, in the text we might see some duplicated words about the check and the overall verification mechanism\r\n- introducing sequence diagrams",
+      "createdAt": "2024-11-18T10:15:53Z",
+      "updatedAt": "2024-11-18T16:48:53Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "7c482e2e9e17f568f9a780e65b2553dbc511f507",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "editorial2",
+      "headRefOid": "16a2f1bec85b7afedb91c358968925dcdd462e54",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86RnXEb",
+          "commit": {
+            "abbreviatedOid": "c460333"
+          },
+          "author": "inahga",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "Largely LGTM",
+          "createdAt": "2024-11-18T15:43:56Z",
+          "updatedAt": "2024-11-18T15:55:36Z",
+          "comments": [
+            {
+              "originalPosition": 212,
+              "body": "```suggestion\r\n    - The Requestor adds the Trust Chain JWT header parameter related to itself.\r\n      This option is RECOMMENDED since it reduces the effort of the Certificate Issuer in\r\n```\r\nEditorial",
+              "createdAt": "2024-11-18T15:43:56Z",
+              "updatedAt": "2024-11-18T15:55:36Z"
+            },
+            {
+              "originalPosition": 219,
+              "body": "```suggestion\r\n    - The Requestor doesn't add the Trust Chain in the request. The Certificate Issuer\r\n      MUST start a [Federation Entity\r\n      Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)\r\n      to obtain the Trust Chain related to the Requestor.\r\n```\r\nSimilar to above, reads a little bit easier.",
+              "createdAt": "2024-11-18T15:45:18Z",
+              "updatedAt": "2024-11-18T15:55:36Z"
+            },
+            {
+              "originalPosition": 277,
+              "body": "I think this sentence is unnecessary? The certificate issuer shouldn't have to enumerate all keys, since in this changeset the requestor is REQUIRED to include valid key ID.",
+              "createdAt": "2024-11-18T15:48:14Z",
+              "updatedAt": "2024-11-18T15:55:36Z"
+            },
+            {
+              "originalPosition": 289,
+              "body": "```suggestion\r\n    containing a signed JWT and representing the Trust Chain of the Requestor.\r\n```\r\neditorial",
+              "createdAt": "2024-11-18T15:48:31Z",
+              "updatedAt": "2024-11-18T15:55:36Z"
+            },
+            {
+              "originalPosition": 330,
+              "body": "As earlier, since the requestor is now required to provide the `kid`, this can be reworded.\r\n\r\nMaybe something like \"Only keys in the entity configuration matching the `kid` in the requestor's challenge response are considered.\"",
+              "createdAt": "2024-11-18T15:53:09Z",
+              "updatedAt": "2024-11-18T15:55:36Z"
+            },
+            {
+              "originalPosition": 374,
+              "body": "```suggestion\r\nA Requestor SHOULD request the revocation of its X.509 Certificate when the related\r\ncryptographic material is revoked and published in the Federation Historical Key\r\nRegistry.\r\n```\r\neditorial, duplicate words",
+              "createdAt": "2024-11-18T15:55:19Z",
+              "updatedAt": "2024-11-18T15:55:36Z"
             }
           ]
         }
