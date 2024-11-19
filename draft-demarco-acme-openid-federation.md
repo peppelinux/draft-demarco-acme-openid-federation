@@ -264,7 +264,7 @@ This section describe how to use the parameters defined in the [Section
 7.1.1](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1) of [RFC8555]
 in the federation Entity Configuration of the Issuer.
 
-TBD: the example below is non-normative. A table describing each REQUIRED or OPTIONAL
+Below is a non-normative example about the Credential Issuer metadata object. All the parameters contained within it are defined in the [RFC8555].
 parameter is required.
 
 ~~~~
