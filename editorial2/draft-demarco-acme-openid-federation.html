@@ -1650,7 +1650,7 @@ challenge token, signed with one of the keys published in the Requestor's
 Entity Configuration, either in the top-level <code>jwks</code> claim as defined in
 Section 3 of <span>[<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span> or referenced by the <code>signed_jwks_uri</code>, <code>jwks_uri</code>, or
 <code>jwks</code> claims in the entity metadata as defined in Section 5.2.1 of
-<span>[<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>. If the Requestor provides a <code>kid</code> value in its challenge response,
+<span>[<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>. Since the Requestor <span class="bcp14">MUST</span> provide a <code>kid</code> value in its challenge response,
 only keys (JWKs) in the Entity Configuration with a matching <code>kid</code> value are
 considered.<a href="#section-6.5-15.2.1" class="pilcrow">¶</a></p>
 </li>
