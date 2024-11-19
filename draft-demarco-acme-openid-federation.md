@@ -361,8 +361,6 @@ sig (required, string):  a base64url encoding of a JWT, signing the token
     5.2.1 of [OIDC-FED]. It is REQUIRED that this JWT include a `kid` claim
     corresponding to a valid key; The Credential Issuer MUST only use keys with a
     corresponding `kid` value when evaluating the challenge response. Otherwise,
-    the Certificate Issuer SHOULD enumerate all valid keys and accept a
-    signature from any of them.
 
 trust_chain (optional, array of string):  an array of base64url-encoded bytes
     containing a signed JWT and representing the Trust Chain of the Requestor.
