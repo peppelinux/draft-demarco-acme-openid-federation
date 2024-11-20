@@ -508,18 +508,24 @@ TBD.
 
 # IANA Considerations
 
-IANA is kindly asked to update one registry table and make one assignment:
+IANA is kindly asked to update two registry tables and make one assignment:
 
 ## Update ACME Identifier Types
 
-IANA is asked to add a label "openid-federation" and reference
-"draft-demarco-acme-openid-federation" within the "ACME Identifier Types"
-registry, defined in [Section 9.7.7](https://datatracker.ietf.org/doc/html/rfc8555#section-9.7.7) of [RFC8555].
+IANA is asked to add to the "ACME Identifier Types"
+registry, defined in [Section 9.7.7](https://datatracker.ietf.org/doc/html/rfc8555#section-9.7.7)
+of [RFC8555] a label "openid-federation" and reference this document.
+
+IANA is also asked to to the "ACME Validation Methods"
+registry, defined in [Section 9.7.8](https://datatracker.ietf.org/doc/html/rfc8555#section-9.7.8)
+of [RFC8555] add a label "openid-federation-01" and reference this document.
 
 ## Assign X.509 PKIX Other Name
 
 IANA is asked to add a "OpenIdFederationEntityId" otherName in
-the "PKIX Other Name Forms" registry ([1.3.6.1.5.5.7.8](https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.8)).
+the "PKIX Other Name Forms" registry
+([1.3.6.1.5.5.7.8](https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.8))
+and reference this document.
 
 
 --- back
