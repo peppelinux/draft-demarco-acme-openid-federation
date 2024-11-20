@@ -116,7 +116,7 @@ ACME protocol in the following ways:
   were previously issued with ACME.
 
 - It extends the ACME newOrder resource, as defined in Section 7.4 of
-  [`RFC8555`], defining a new payload identifer type called
+  [`RFC8555`], defining a new payload identifier type called
   `openid-federation`.
 
 # Audience Target and Use Cases
@@ -192,7 +192,7 @@ inspecting the ACME provider metadata types.
 ## Discovery Preconditions
 
 The protocol assumes the following discovery preconditions are met, where for
-discovery is intended the phase where a Requestor searches an Certificate Issuer to requests
+discovery is intended the phase where a Requestor searches an Certificate Issuer to request
 an X.509 Certificate.
 
 1. The Requestor and the Issuer MUST publish their Entity Configuration as
@@ -465,12 +465,15 @@ and the X.509 Certificate:
   the key used to satisfy the challenge.
 
 * MUST include no Common Name, and must include
-  a single Subject Alternative Name value corresponding to an `otherName` with an
-  ID of **TBD**, containing an Octet String value corresponding to a UTF-8
+  a single Subject Alternative Name value corresponding to an `otherName` with a `type-id` of `id-on-OpenIdFederationEntityId`, containing an Octet String value corresponding to a UTF-8
   encoding of the Requestor's Entity ID, that is, the value of the `sub` claim
   of the Requestor's Entity Configuration.
 
-TODO: determine the OID for use in the Subject Alternative Name.
+~~~~
+   id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
+
+   OpenIdFederationEntityId ::= OctetString
+~~~~
 
 # Publication of the Certificates within the Federation
 
@@ -495,7 +498,7 @@ A Requestor SHOULD request the revocation of its X.509 Certificate when the rela
 cryptographic material is revoked and published in the Federation Historical Key
 Registry.
 
-The X.509 Certficate revocation request is defined in the [Section
+The X.509 Certificate revocation request is defined in the [Section
 7.6](https://datatracker.ietf.org/doc/html/rfc8555#section-7.6) of [RFC8555].
 
 # Security Considerations
@@ -505,13 +508,18 @@ TBD.
 
 # IANA Considerations
 
-## ACME Identifier Types
+IANA is kindly asked to update one registry table and make one assignment:
 
-Per this document, a new type has been added to the "ACME Identifyer Types"
-registry, defined in
-[Section 9.7.7](https://datatracker.ietf.org/doc/html/rfc8555#section-9.7.7) of
-[RFC8555] with label "openid-federation" and reference
-"draft-demarco-acme-openid-federation".
+## Update ACME Identifier Types
+
+IANA is asked to add a label "openid-federation" and reference
+"draft-demarco-acme-openid-federation" within the "ACME Identifier Types"
+registry, defined in [Section 9.7.7](https://datatracker.ietf.org/doc/html/rfc8555#section-9.7.7) of [RFC8555].
+
+## Assign X.509 PKIX Other Name
+
+IANA is asked to add a "OpenIdFederationEntityId" otherName in
+the "PKIX Other Name Forms" registry ([1.3.6.1.5.5.7.8](https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.8)).
 
 
 --- back
