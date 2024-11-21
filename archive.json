@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-19T00:36:28.941234+00:00",
+  "timestamp": "2024-11-21T00:36:10.422638+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -47,6 +47,11 @@
       "name": "wontfix",
       "description": "This will not be worked on",
       "color": "ffffff"
+    },
+    {
+      "name": "breaking change",
+      "description": "",
+      "color": "9F2F27"
     }
   ],
   "issues": [
@@ -73,7 +78,7 @@
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/2",
       "state": "CLOSED",
       "author": "branlwyd",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "I gave the specification (as well as the ACME & OpenID Federation specs) a readthrough. I have a few initial questions:\r\n\r\n1) What kind of X.509 certificates are intended to be generated? For example, the original ACME specification generates domain-validated Web PKI certificates (RFC 8555). It has been extended to create S/MIME certificates (RFC 8823), VoIP certificates (RFC 9448), and probably others. The text in Section 6.8 suggests this may be a Web PKI certificate, but this is not totally clear.\r\n\r\n2) It looks like the ACME authorizations/challenges functionality is not used in this proposal (Section 6.7 says it `MUST` be omitted from the `newOrder` response). Instead, my understanding is that issuance is authorized by having the `newOrder` request signed by a private key controlled by the Requestor & published in its Entity Configuration (Section 5), which may be discovered by the Issuer or included in a new `trust_chain` request field. Is this accurate?\r\n\r\n[nit: Section 5 says the `newOrder` request is signed by the Requestor's private key, while Section 6.2 suggests that the `newNonce` request requires validation. Perhaps both should be?]\r\n\r\n3) Given that requests are expected to be signed with the Requestor's private key, how does this play with standard ACME account management? Standard ACME account management maintains that each client will maintain its own keypair, and each request is authorized by a signature over the request with the account's private key.\r\n\r\n\r\nAnd a final meta-question, wrapping up the previous three questions: why can't this method of authorizing issuance be phrased as a new challenge type, using ACME's existing authorization/challenge/response APIs? For example, the challenge would include a nonce, and the response would involve providing a signature over the nonce with the Entity Key. This would fit more closely to ACME as defined in RFC 8555 as well as existing extensions.",
@@ -90,14 +95,14 @@
         },
         {
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "body": "1. Sounds good; I think we eventually need to think through what kind of CSRs are acceptable, but this doesn't need to be spelled out in the spec (RFC 8555 & RFC 8823 spell out CSR requirements in general terms; RFC 9448 provides more detail but still looks non-comprehensive).\r\n\r\nFinal: Sounds good, I will open a PR in the next few days -- it will likely phrase the authorization logic as a new challenge type.",
           "createdAt": "2024-08-28T20:44:34Z",
           "updatedAt": "2024-08-28T20:44:34Z"
         },
         {
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "body": "I sent https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/3 as a WIP example of my suggestion to phrase the validation as a new ACME challenge type. Feedback very welcome; I will clean it up and turn it into a proper PR if the approach is acceptable.",
           "createdAt": "2024-08-30T23:36:15Z",
           "updatedAt": "2024-08-30T23:36:15Z"
@@ -168,11 +173,81 @@
       "state": "OPEN",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
-      "assignees": [],
+      "assignees": [
+        "inahga"
+      ],
       "labels": [],
       "body": "We need a sequence diagram describing the entire flow\r\n\r\nwe can start in this issue using mermaid or plantuml\r\n\r\nhere an example as template \r\n\r\nwe need three entities\r\n\r\n1. RP (requesting X.509 Certificates)\r\n2. Superior Entity also ACME Provider\r\n3. Trust Anchor supporting trust evaluation \r\n\r\n```mermaid\r\nsequenceDiagram\r\n    participant WalletInstance as Wallet Instance\r\n    participant CV as Credential Verifier\r\n    participant IE as Intermediate\r\n    participant TA as Trust Anchor\r\n\r\n    WalletInstance->>CV: Fetch CV's Entity Configuration\r\n    CV->>WalletInstance: Return Entity Configuration\r\n\r\n    WalletInstance->>CV: Extract Authority Hints from CV's Configuration\r\n    CV->>WalletInstance: Provide Authority Hints\r\n\r\n    loop for each Authority Hint\r\n        WalletInstance->>IE: Fetch Entity Configuration -> get federation_fetch_api URL\r\n        IE->>WalletInstance: Fetch Subordinate Statement\r\n        WalletInstance->>WalletInstance: Validate the previous statement<br/>using the Federation Entity Keys<br/>provided in the Subordinate Statement\r\n    end\r\n\r\n    WalletInstance->>WalletInstance: Validate Trust Chain\r\n\r\n    alt If Trust Chain is valid and unexpired\r\n        WalletInstance->>WalletInstance: Proceed with Federation Process\r\n    else\r\n        WalletInstance->>WalletInstance: Abort Process with Error\r\n    end\r\n\r\n    WalletInstance->>WalletInstance: Applies Policies\r\n    WalletInstance->>WalletInstance: Derive CV's final metadata\r\n\r\n````",
       "createdAt": "2024-11-05T15:09:47Z",
-      "updatedAt": "2024-11-05T15:09:47Z",
+      "updatedAt": "2024-11-19T15:37:17Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "see: https://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/main/draft-demarco-acme-openid-federation.md?plain=1#L230",
+          "createdAt": "2024-11-19T15:21:00Z",
+          "updatedAt": "2024-11-19T15:21:00Z"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "id": "I_kwDOJ6_NW86fS8YW",
+      "title": "Definition of Errors",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/13",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/e75f931bfd51f13af8e0201e18a6a37b960ed141/draft-demarco-acme-openid-federation.md?plain=1#L240\r\n\r\nwe should use the same errors already defined in the ACME standard(s) and define in this draft that additional errors about the failure trust evaluation that might happen, must reuse the errors already defined in the openid federation draft\r\n\r\nexamples are welcome to give implementation guides",
+      "createdAt": "2024-11-19T15:20:05Z",
+      "updatedAt": "2024-11-19T15:21:27Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "A new section about the error handling should be used",
+          "createdAt": "2024-11-19T15:21:27Z",
+          "updatedAt": "2024-11-19T15:21:27Z"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "id": "I_kwDOJ6_NW86fS_4e",
+      "title": "Subject Alternative Name value corresponding to an `otherName` with an ID of **TBD**",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/14",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "branlwyd"
+      ],
+      "labels": [],
+      "body": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/e75f931bfd51f13af8e0201e18a6a37b960ed141/draft-demarco-acme-openid-federation.md?plain=1#L469\r\n\r\nWe need to create a new ID",
+      "createdAt": "2024-11-19T15:25:48Z",
+      "updatedAt": "2024-11-19T15:25:49Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 15,
+      "id": "I_kwDOJ6_NW86fTGRi",
+      "title": "entity_id must be required, trust chain optional in the request",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/15",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "breaking change"
+      ],
+      "body": "In the current draft we mandate the use of static trust chains\r\n\r\nwe want to configure as mandatory the entity_id instead, and having the trust chain as optional or recommended",
+      "createdAt": "2024-11-19T15:35:32Z",
+      "updatedAt": "2024-11-19T15:35:53Z",
       "closedAt": null,
       "comments": []
     }
@@ -185,7 +260,7 @@
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/3",
       "state": "MERGED",
       "author": "branlwyd",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
@@ -451,7 +526,7 @@
             "abbreviatedOid": "6d6606f"
           },
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-09-06T22:59:38Z",
@@ -471,7 +546,7 @@
             "abbreviatedOid": "6d6606f"
           },
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-09-06T23:17:51Z",
@@ -491,7 +566,7 @@
             "abbreviatedOid": "6d6606f"
           },
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-09-06T23:19:07Z",
@@ -511,7 +586,7 @@
             "abbreviatedOid": "6d6606f"
           },
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-09-06T23:33:10Z",
@@ -531,7 +606,7 @@
             "abbreviatedOid": "6d6606f"
           },
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-09-06T23:43:15Z",
@@ -551,7 +626,7 @@
             "abbreviatedOid": "6d6606f"
           },
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-09-06T23:52:48Z",
@@ -671,7 +746,7 @@
             "abbreviatedOid": "6d6606f"
           },
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-10-02T22:18:17Z",
@@ -691,7 +766,7 @@
             "abbreviatedOid": "6d6606f"
           },
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-10-02T22:27:55Z",
@@ -711,7 +786,7 @@
             "abbreviatedOid": "6d6606f"
           },
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-10-02T22:29:58Z",
@@ -731,7 +806,7 @@
             "abbreviatedOid": "6d6606f"
           },
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-10-02T22:43:33Z",
@@ -754,7 +829,7 @@
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/4",
       "state": "MERGED",
       "author": "branlwyd",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The text of the initial sections is updated to match the new phrasing of this spec as a new ACME challenge type. I also reflow the text to 80 columns and make a few editorial/typographical changes.",
@@ -1176,7 +1251,7 @@
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/5",
       "state": "MERGED",
       "author": "branlwyd",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This clarifies which keys can be used to satisfy the new ACME challenge\r\ntype. Along with the preexisting text that \"The CSR MUST include the\r\npublic key, attested within the Trust Chain, used by the Requestor to\r\nsatisfy the Issuer's challenge.\", this also defines which keys can be\r\nincluded in the eventual certificate -- I made some editorial changes to\r\nhighlight this requirement.",
@@ -1197,7 +1272,7 @@
       "comments": [
         {
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "body": "Stacked on #4 -- please review that PR first, and I will rebase as-needed.",
           "createdAt": "2024-10-15T23:12:00Z",
           "updatedAt": "2024-10-15T23:12:00Z"
@@ -1212,7 +1287,7 @@
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/6",
       "state": "MERGED",
       "author": "branlwyd",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Specifically, require the certificate to include the same public key\r\nused to satisfy the challenge (duplicating text elsewhere), and specify\r\nhow the Entity ID is included in the certificate.",
@@ -1233,7 +1308,7 @@
       "comments": [
         {
           "author": "branlwyd",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "body": "Stacked on #4 -- please review that PR first, and I will rebase as-needed.\r\n\r\nThe requirement for the CSR to contain the same key used to satisfy the challenge will be written in 3 places now. WDYT about removing the requirement elsewhere, and keeping it only in this new \"CSR and Certificate Requirements\" section?",
           "createdAt": "2024-10-16T00:20:17Z",
           "updatedAt": "2024-10-16T00:20:17Z"
@@ -1289,7 +1364,7 @@
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/9",
       "state": "MERGED",
       "author": "inahga",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Missing closing bracket.",
@@ -1331,7 +1406,7 @@
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/11",
       "state": "MERGED",
       "author": "inahga",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Reintroduces the addition of an ACME identifier type, since the certs are not for DNS names.",
@@ -1352,7 +1427,7 @@
       "comments": [
         {
           "author": "inahga",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "body": "@branlwyd I could use your review too.",
           "createdAt": "2024-11-15T20:32:37Z",
           "updatedAt": "2024-11-15T20:32:37Z"
@@ -1372,7 +1447,7 @@
             "abbreviatedOid": "f408830"
           },
           "author": "inahga",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-11-15T20:34:21Z",
@@ -1392,7 +1467,7 @@
             "abbreviatedOid": "146d240"
           },
           "author": "inahga",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-11-15T21:10:18Z",
@@ -1471,7 +1546,7 @@
             "abbreviatedOid": "f408830"
           },
           "author": "inahga",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-11-18T16:43:42Z",
@@ -1512,24 +1587,26 @@
       "id": "PR_kwDOJ6_NW86COUXy",
       "title": "fix: editorials and terminology used",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/12",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "This PR alignes terminology, in particular\r\n\r\n- replaces Entity Statement with Subordinate Statement, to be more clear about the type of Entity Statement used and therefore aligned with the current Federation Draft\r\n- remove the word \"Connect\" in OpenID Federation\r\n- uses the term Certificate Issuer instead of Issuer alone\r\n- use more normative language\r\n- removes some useless remark\r\n\r\nGenerally this PR facilitate the further works of:\r\n\r\n- reducing duplication, in the text we might see some duplicated words about the check and the overall verification mechanism\r\n- introducing sequence diagrams",
       "createdAt": "2024-11-18T10:15:53Z",
-      "updatedAt": "2024-11-18T16:48:53Z",
+      "updatedAt": "2024-11-19T15:17:23Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "7c482e2e9e17f568f9a780e65b2553dbc511f507",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "editorial2",
-      "headRefOid": "16a2f1bec85b7afedb91c358968925dcdd462e54",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "68e39b51ddec34ac9f39af0aba61516ac309f973",
+      "closedAt": "2024-11-19T15:17:22Z",
+      "mergedAt": "2024-11-19T15:17:22Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "e75f931bfd51f13af8e0201e18a6a37b960ed141"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1538,7 +1615,7 @@
             "abbreviatedOid": "c460333"
           },
           "author": "inahga",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "Largely LGTM",
           "createdAt": "2024-11-18T15:43:56Z",
@@ -1581,8 +1658,107 @@
               "updatedAt": "2024-11-18T15:55:36Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Rx1zn",
+          "commit": {
+            "abbreviatedOid": "16a2f1b"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-19T15:06:43Z",
+          "updatedAt": "2024-11-19T15:06:43Z",
+          "comments": [
+            {
+              "originalPosition": 324,
+              "body": "```suggestion\r\n```",
+              "createdAt": "2024-11-19T15:06:43Z",
+              "updatedAt": "2024-11-19T15:06:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Rx4Rp",
+          "commit": {
+            "abbreviatedOid": "1702e92"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-19T15:10:12Z",
+          "updatedAt": "2024-11-19T15:10:12Z",
+          "comments": [
+            {
+              "originalPosition": 238,
+              "body": "```suggestion\r\nBelow is a non-normative example about the Credential Issuer metadata object. All the parameters contained within it are defined in the [RFC8555].\r\n```",
+              "createdAt": "2024-11-19T15:10:12Z",
+              "updatedAt": "2024-11-19T15:10:12Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Rx8Uq",
+          "commit": {
+            "abbreviatedOid": "82e1688"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-19T15:16:03Z",
+          "updatedAt": "2024-11-19T15:16:03Z",
+          "comments": [
+            {
+              "originalPosition": 378,
+              "body": "```suggestion\r\n  [OPENID-FED]. Since the Requestor MUST provide a `kid` value in its challenge response,\r\n  only keys (JWKs) in the Entity Configuration with a matching `kid` value are\r\n```",
+              "createdAt": "2024-11-19T15:16:03Z",
+              "updatedAt": "2024-11-19T15:16:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Rx8tn",
+          "commit": {
+            "abbreviatedOid": "82e1688"
+          },
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-11-19T15:16:37Z",
+          "updatedAt": "2024-11-19T15:16:37Z",
+          "comments": []
         }
       ]
+    },
+    {
+      "number": 16,
+      "id": "PR_kwDOJ6_NW86CeFXR",
+      "title": "Grammar, spelling, and an initial IANA Considerations section",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/16",
+      "state": "OPEN",
+      "author": "jcjones",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I pulled `OpenIdFederationEntityId` out of thin air, we should ensure `id` is capitalized the way we want, and consider pulling the second out to `identifier` to match 1.3.6.1.5.5.7.8.3 `id-on-permanentIdentifier`, but this is only intended as a first stab.",
+      "createdAt": "2024-11-20T04:14:59Z",
+      "updatedAt": "2024-11-20T04:22:41Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "e75f931bfd51f13af8e0201e18a6a37b960ed141",
+      "headRepository": "jcjones/draft-demarco-acme-openid-federation",
+      "headRefName": "main",
+      "headRefOid": "7e4d83f23f7fa3ff85ca9c8f2966313308c7dd0f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
