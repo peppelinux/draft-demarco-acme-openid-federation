@@ -258,18 +258,33 @@ TBD: high level design and ascii sequence diagram.
 ## Metadata
 
 The Issuer MUST publish its Entity Configuration including the `acme_provider`
-metadata within it.
+metadata within it. The body of the `acme_provider` metadata is the ACME
+Directory, as defined in
+[Section 7.1.1](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1) of
+[RFC8555].
 
-This section describe how to use the parameters defined in the [Section
-7.1.1](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1) of [RFC8555]
-in the federation Entity Configuration of the Issuer.
-
-Below is a non-normative example about the Credential Issuer metadata object. All the parameters contained within it are defined in the [RFC8555].
-parameter is required.
+The following is a non-normative example of an Entity Configuration including
+the `acme_provider` metadata:
 
 ~~~~
 {
-  "metadata":
+  "iss": "https://issuer.example.com",
+  "sub": "https://issuer.example.com",
+  "iat": 1516239022,
+  "exp": 1516298022,
+  "jwks": {
+    "keys": [
+      {
+        "kty": "RSA",
+        "alg": "RS256",
+        "use": "sig",
+        "kid": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs",
+        "n": "pnXBOusEANuug6ewezb9J_...",
+        "e": "AQAB"
+      }
+    ]
+  },
+  "metadata": {
     "acme_provider": {
       "newNonce": "https://issuer.example.com/acme/new-nonce",
       "newOrder": "https://issuer.example.com/acme/new-order",
@@ -281,6 +296,7 @@ parameter is required.
         "externalAccountRequired": false
       }
    }
+  },
 }
 ~~~~
 
