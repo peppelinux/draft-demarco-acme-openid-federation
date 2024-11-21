@@ -263,6 +263,9 @@ Directory, as defined in
 [Section 7.1.1](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1) of
 [RFC8555].
 
+Requestors MUST use the ACME Directory provided in the Issuer's Entity
+Configuration for client configuration of ACME endpoints.
+
 The following is a non-normative example of an Entity Configuration including
 the `acme_provider` metadata:
 
