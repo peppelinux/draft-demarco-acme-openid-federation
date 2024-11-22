@@ -1478,16 +1478,34 @@ ACME protocol as specified in <span>[<a href="#RFC8555" class="cite xref">RFC855
 <a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-metadata" class="section-name selfRef">Metadata</a>
         </h3>
 <p id="section-6.3-1">The Issuer <span class="bcp14">MUST</span> publish its Entity Configuration including the <code>acme_provider</code>
-metadata within it.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
-<p id="section-6.3-2">This section describe how to use the parameters defined in the <a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1">Section
-7.1.1</a> of <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>
-in the federation Entity Configuration of the Issuer.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
-<p id="section-6.3-3">Below is a non-normative example about the Credential Issuer metadata object. All the parameters contained within it are defined in the <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.
-parameter is required.<a href="#section-6.3-3" class="pilcrow">¶</a></p>
+metadata within it. The body of the <code>acme_provider</code> metadata is the ACME
+Directory, as defined in
+<a href="https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.1">Section 7.1.1</a> of
+<span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.3-2">Requestors <span class="bcp14">MUST</span> use the ACME Directory provided in the Issuer's Entity
+Configuration for client configuration of ACME endpoints.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
+<p id="section-6.3-3">The following is a non-normative example of an Entity Configuration including
+the <code>acme_provider</code> metadata:<a href="#section-6.3-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-6.3-4">
 <pre>
 {
-  "metadata":
+  "iss": "https://issuer.example.com",
+  "sub": "https://issuer.example.com",
+  "iat": 1516239022,
+  "exp": 1516298022,
+  "jwks": {
+    "keys": [
+      {
+        "kty": "RSA",
+        "alg": "RS256",
+        "use": "sig",
+        "kid": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs",
+        "n": "pnXBOusEANuug6ewezb9J_...",
+        "e": "AQAB"
+      }
+    ]
+  },
+  "metadata": {
     "acme_provider": {
       "newNonce": "https://issuer.example.com/acme/new-nonce",
       "newOrder": "https://issuer.example.com/acme/new-order",
@@ -1499,6 +1517,7 @@ parameter is required.<a href="#section-6.3-3" class="pilcrow">¶</a></p>
         "externalAccountRequired": false
       }
    }
+  },
 }
 </pre><a href="#section-6.3-4" class="pilcrow">¶</a>
 </div>
