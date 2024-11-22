@@ -161,7 +161,8 @@ The Certificate Issuer establishes if a Federation Entity is eligible to obtain 
 Certificates for the identifier configured in the Requestor's Entity
 Configuration.
 
-The Federation Entity Keys are used to satisfy the Certificate Issuer's challenge, and the
+The cryptographic keys published within the Requestor Entity Configuration
+are used to satisfy the Certificate Issuer's challenge, and the
 public portion of the keys included in the issued X.509 Certificates.
 
 The protocol assumes the following discovery preconditions are met. The
@@ -177,7 +178,7 @@ The CSR MUST include the public key, attested within the Trust Chain, used by
 the Requestor to satisfy the Certificate Issuer's challenge.
 
 This process may be repeated to request multiple X.509 Certificates related to the
-Federation Entity Keys and linked to a single Entity.
+cryptographic keys and linked to a single Entity.
 
 # Protocol Flow
 
@@ -497,25 +498,24 @@ and the X.509 Certificate:
 # Publication of the Certificates within the Federation
 
 **TBD**, when the Certificate Issuer is the Trust Anchor or Intermediate, the X.509
-Certificate linked to Federation Entity Key represented in JWK in the Subordinate
+Certificate linked to JWK in the Subordinate
 Statement related to the Requestor, SHOULD be extended with the claim `x5c`,
 containing the issued X.509 Certificate.
 
 # Certificate Lifecycle and Revocation
 
-**TBD**.
+The issued X.509 Certificate is associated with a cryptographic public key
+attested within a Trust Chain. It is up to the Certificate Issuer to decide
+the expiration time of the X.509 Certificate. In some cases, and when required,
+it MAY be set to match the expiration of the Trust Chain.
 
-The issued X.509 Certificates are related to the Federation Key attested within a
-Trust Chain, their expiration time MUST be equal to the expiration of the Trust
-Chain.
-
-When a Federation Key is removed from the Requestor Entity Configuration
+When a cryptographic public key is removed from the Requestor Entity Configuration
 the X.509 Certificate related to it
 SHOULD be revoked by its Credential Issuer, if not expired.
 
 A Requestor SHOULD request the revocation of its X.509 Certificate when the related
-cryptographic material is revoked and published in the Federation Historical Key
-Registry.
+cryptographic material is revoked. The Requestor SHOULD publish the revoked or
+expired cryptographic keys in the Federation Historical Key Registry.
 
 The X.509 Certificate revocation request is defined in the [Section
 7.6](https://datatracker.ietf.org/doc/html/rfc8555#section-7.6) of [RFC8555].
