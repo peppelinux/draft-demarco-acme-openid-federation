@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-21T00:36:10.422638+00:00",
+  "timestamp": "2024-11-24T00:39:10.550569+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -52,6 +52,11 @@
       "name": "breaking change",
       "description": "",
       "color": "9F2F27"
+    },
+    {
+      "name": "has-pr",
+      "description": "",
+      "color": "DDF976"
     }
   ],
   "issues": [
@@ -152,7 +157,7 @@
       "id": "I_kwDOJ6_NW86c0jzo",
       "title": "ACME terms",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/8",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -161,9 +166,17 @@
       "labels": [],
       "body": "              we must say in the terminolog ysection that \"ACME Challenge is defined in RFC....\" and therefore use it the defined term ACME Challenge as well as the other terms\r\n\r\n_Originally posted by @peppelinux in https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/4#discussion_r1810825532_\r\n            ",
       "createdAt": "2024-11-03T07:11:23Z",
-      "updatedAt": "2024-11-05T15:11:37Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2024-11-22T08:25:40Z",
+      "closedAt": "2024-11-22T08:25:40Z",
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "No other relevant/pending actions after got https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/12/files merged",
+          "createdAt": "2024-11-22T08:25:40Z",
+          "updatedAt": "2024-11-22T08:25:40Z"
+        }
+      ]
     },
     {
       "number": 10,
@@ -179,7 +192,7 @@
       "labels": [],
       "body": "We need a sequence diagram describing the entire flow\r\n\r\nwe can start in this issue using mermaid or plantuml\r\n\r\nhere an example as template \r\n\r\nwe need three entities\r\n\r\n1. RP (requesting X.509 Certificates)\r\n2. Superior Entity also ACME Provider\r\n3. Trust Anchor supporting trust evaluation \r\n\r\n```mermaid\r\nsequenceDiagram\r\n    participant WalletInstance as Wallet Instance\r\n    participant CV as Credential Verifier\r\n    participant IE as Intermediate\r\n    participant TA as Trust Anchor\r\n\r\n    WalletInstance->>CV: Fetch CV's Entity Configuration\r\n    CV->>WalletInstance: Return Entity Configuration\r\n\r\n    WalletInstance->>CV: Extract Authority Hints from CV's Configuration\r\n    CV->>WalletInstance: Provide Authority Hints\r\n\r\n    loop for each Authority Hint\r\n        WalletInstance->>IE: Fetch Entity Configuration -> get federation_fetch_api URL\r\n        IE->>WalletInstance: Fetch Subordinate Statement\r\n        WalletInstance->>WalletInstance: Validate the previous statement<br/>using the Federation Entity Keys<br/>provided in the Subordinate Statement\r\n    end\r\n\r\n    WalletInstance->>WalletInstance: Validate Trust Chain\r\n\r\n    alt If Trust Chain is valid and unexpired\r\n        WalletInstance->>WalletInstance: Proceed with Federation Process\r\n    else\r\n        WalletInstance->>WalletInstance: Abort Process with Error\r\n    end\r\n\r\n    WalletInstance->>WalletInstance: Applies Policies\r\n    WalletInstance->>WalletInstance: Derive CV's final metadata\r\n\r\n````",
       "createdAt": "2024-11-05T15:09:47Z",
-      "updatedAt": "2024-11-19T15:37:17Z",
+      "updatedAt": "2024-11-22T08:24:11Z",
       "closedAt": null,
       "comments": [
         {
@@ -203,7 +216,7 @@
       "labels": [],
       "body": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/e75f931bfd51f13af8e0201e18a6a37b960ed141/draft-demarco-acme-openid-federation.md?plain=1#L240\r\n\r\nwe should use the same errors already defined in the ACME standard(s) and define in this draft that additional errors about the failure trust evaluation that might happen, must reuse the errors already defined in the openid federation draft\r\n\r\nexamples are welcome to give implementation guides",
       "createdAt": "2024-11-19T15:20:05Z",
-      "updatedAt": "2024-11-19T15:21:27Z",
+      "updatedAt": "2024-11-22T08:26:04Z",
       "closedAt": null,
       "comments": [
         {
@@ -220,7 +233,7 @@
       "id": "I_kwDOJ6_NW86fS_4e",
       "title": "Subject Alternative Name value corresponding to an `otherName` with an ID of **TBD**",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/14",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -229,9 +242,17 @@
       "labels": [],
       "body": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/e75f931bfd51f13af8e0201e18a6a37b960ed141/draft-demarco-acme-openid-federation.md?plain=1#L469\r\n\r\nWe need to create a new ID",
       "createdAt": "2024-11-19T15:25:48Z",
-      "updatedAt": "2024-11-19T15:25:49Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2024-11-22T07:53:37Z",
+      "closedAt": "2024-11-22T07:53:37Z",
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "Resolved by https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/16",
+          "createdAt": "2024-11-22T07:53:31Z",
+          "updatedAt": "2024-11-22T07:53:31Z"
+        }
+      ]
     },
     {
       "number": 15,
@@ -247,9 +268,96 @@
       ],
       "body": "In the current draft we mandate the use of static trust chains\r\n\r\nwe want to configure as mandatory the entity_id instead, and having the trust chain as optional or recommended",
       "createdAt": "2024-11-19T15:35:32Z",
-      "updatedAt": "2024-11-19T15:35:53Z",
+      "updatedAt": "2024-11-22T08:23:54Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 18,
+      "id": "I_kwDOJ6_NW86fy2fp",
+      "title": "Why does the expiration time of issued certificates need to equal the expiration of the trust chain?",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/18",
+      "state": "OPEN",
+      "author": "inahga",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "has-pr"
+      ],
+      "body": "Section 8 states:\r\n\r\n```\r\nThe issued X.509 Certificates are related to the Federation Key attested within a\r\nTrust Chain, their expiration time MUST be equal to the expiration of the Trust\r\nChain.\r\n```\r\n\r\nWhy is the case? If the requestor wants a short-lived certificate, this might be needlessly restrictive.\r\n\r\nA less-than-or-equal relation ship might make more sense here.\r\n\r\nThanks to @jcjones for pointing this out. We should also note _why_ we have chosen this expiration time, and also make the same note in the CSR and newOrder sections.",
+      "createdAt": "2024-11-21T20:47:49Z",
+      "updatedAt": "2024-11-22T08:23:44Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 19,
+      "id": "I_kwDOJ6_NW86fzm2U",
+      "title": "Why do we enforce federation membership checking on each newNonce request?",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/19",
+      "state": "OPEN",
+      "author": "inahga",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6.2\r\n\r\nOne problem with this is HEAD is not a good verb for this request, since it's quite involved. Semantically, HEAD should be quick and easy for the server to respond to. POST-as-GET may fit better, and is allowable for us to service newNonce in that way.\r\n\r\nBut, it seems unusual to authenticate newNonce in this way.\r\n\r\nIs the intent to prevent non-federation entities from accessing the ACME server? If so, we may be better off with some kind of federation -> ACME account binding. Perhaps with externalAccountBinding.\r\n\r\nThanks to @jcjones for pointing this out.",
+      "createdAt": "2024-11-21T22:01:44Z",
+      "updatedAt": "2024-11-22T08:39:58Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "divergentdave",
+          "authorAssociation": "NONE",
+          "body": "Note that externalAccountBinding only comes into play at the time of the newAccount request. The ACME client must have acquired a nonce prior to sending this request. I think that the document should not attempt to add authentication to newNonce requests, in order to better fit into the existing ACME protocol. Checking federation membership can be deferred to challenge response time.\r\n\r\neAB might not be a good fit here, because that would require distributing MAC keys to ACME clients up front. That could be made to work by defining another API, but I don't think it would improve the protocol. Either we check federation membership only when handing out eAB MAC keys, and we effectively lose federation trust revocation, or we check federation membership both when handing out eAB MAC keys and during challenge verification, which duplicates effort, or we check federation membership only during challenge verification.",
+          "createdAt": "2024-11-21T22:16:33Z",
+          "updatedAt": "2024-11-21T22:16:33Z"
+        },
+        {
+          "author": "jcjones",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It's enough at Let's Encrypt's scale to have load-balancer rate limits on newNonce of like, 2 rps per IP address, and that keeps abuse down.",
+          "createdAt": "2024-11-21T22:46:48Z",
+          "updatedAt": "2024-11-21T22:46:48Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "I have used the HTTP HEAD because of this:\r\nhttps://datatracker.ietf.org/doc/html/rfc8555#page-16",
+          "createdAt": "2024-11-22T08:32:06Z",
+          "updatedAt": "2024-11-22T08:32:06Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "This PR aims to resolve this issue:\r\n\r\nhttps://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/22\r\n\r\n",
+          "createdAt": "2024-11-22T08:39:54Z",
+          "updatedAt": "2024-11-22T08:39:54Z"
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "id": "I_kwDOJ6_NW86f4MG-",
+      "title": "Create a section describing how to inspect all the jwks within the Entity Configuration",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/21",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "The Certificate Issuer needs to inspect the Requestor's Entity Configuration once the Trust Chain is verified, as it requires finding the matching JSON Web Key (JWK).\r\n\r\nThe JWK can be one of the federation entity keys or one of the JWKs contained within each metadata.\r\n\r\nThe JWKs can be provided by reference (using signed_jwks_uri) or by value (using jwks).\r\n\r\nIt would be beneficial to use a meta-language or a detailed description of the steps and mechanisms the Certificate Issuer might use to inspect the Entity Configuration for the matching JWK.",
+      "createdAt": "2024-11-22T08:21:38Z",
+      "updatedAt": "2024-11-22T08:23:36Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "Also related to https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/10",
+          "createdAt": "2024-11-22T08:22:15Z",
+          "updatedAt": "2024-11-22T08:22:15Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -1739,26 +1847,187 @@
       "id": "PR_kwDOJ6_NW86CeFXR",
       "title": "Grammar, spelling, and an initial IANA Considerations section",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/16",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jcjones",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "I pulled `OpenIdFederationEntityId` out of thin air, we should ensure `id` is capitalized the way we want, and consider pulling the second out to `identifier` to match 1.3.6.1.5.5.7.8.3 `id-on-permanentIdentifier`, but this is only intended as a first stab.",
       "createdAt": "2024-11-20T04:14:59Z",
-      "updatedAt": "2024-11-20T04:22:41Z",
+      "updatedAt": "2024-11-22T07:53:23Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e75f931bfd51f13af8e0201e18a6a37b960ed141",
       "headRepository": "jcjones/draft-demarco-acme-openid-federation",
       "headRefName": "main",
       "headRefOid": "7e4d83f23f7fa3ff85ca9c8f2966313308c7dd0f",
+      "closedAt": "2024-11-22T07:53:22Z",
+      "mergedAt": "2024-11-22T07:53:22Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "f5878af0534c2c884ae74aef326ac79090e27e4c"
+      },
+      "comments": [
+        {
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closes, or at least overlaps with https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/14",
+          "createdAt": "2024-11-21T17:42:35Z",
+          "updatedAt": "2024-11-21T17:42:35Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86SPhLi",
+          "commit": {
+            "abbreviatedOid": "7e4d83f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-11-22T07:51:23Z",
+          "updatedAt": "2024-11-22T07:51:23Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "id": "PR_kwDOJ6_NW86CuDBt",
+      "title": "Reword metadata section for clarity",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/17",
+      "state": "MERGED",
+      "author": "inahga",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This section is somewhat awkwardly worded. Reword to make it clear that we're taking the ACME directory and putting it in the entity configuration.",
+      "createdAt": "2024-11-21T20:04:50Z",
+      "updatedAt": "2024-11-22T07:54:44Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "e75f931bfd51f13af8e0201e18a6a37b960ed141",
+      "headRepository": "inahga/draft-demarco-acme-openid-federation",
+      "headRefName": "inahga/entity-configuration-metadata",
+      "headRefOid": "c1c0b628e93082257b2506d6ab6431c711c28812",
+      "closedAt": "2024-11-22T07:54:44Z",
+      "mergedAt": "2024-11-22T07:54:44Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "d657adb592006d98b9bbe29106497f8e4c7001f1"
+      },
+      "comments": [
+        {
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@divergentdave brings up a good point about clients using the directory in the entity configuration. I believe that's the intent of having the whole directory in the entity configuration, so make this an explicit requirement in [c1c0b62](https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/17/commits/c1c0b628e93082257b2506d6ab6431c711c28812).",
+          "createdAt": "2024-11-21T20:37:21Z",
+          "updatedAt": "2024-11-21T20:37:21Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86SPjDn",
+          "commit": {
+            "abbreviatedOid": "c1c0b62"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-11-22T07:54:34Z",
+          "updatedAt": "2024-11-22T07:54:34Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "PR_kwDOJ6_NW86CxwOX",
+      "title": "fix: all the the keys and not federation entity keys only",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/20",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "This PR\r\n\r\n- fix the inconsistency we have mentioning the federation entity keys instead of all the jwks made available through the entity configuration\r\n- Resolves https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/18",
+      "createdAt": "2024-11-22T08:16:41Z",
+      "updatedAt": "2024-11-22T15:06:17Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "d657adb592006d98b9bbe29106497f8e4c7001f1",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "all-jwks",
+      "headRefOid": "5e36f064246e557db6a7b153358109dfc5674be1",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86ST3nO",
+          "commit": {
+            "abbreviatedOid": "5e36f06"
+          },
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-11-22T15:05:16Z",
+          "updatedAt": "2024-11-22T15:06:17Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "```suggestion\r\nother cryptographic keys published in the Requestor's Entity Configuration.\r\n```\r\neditorial: maybe reads better?",
+              "createdAt": "2024-11-22T15:05:16Z",
+              "updatedAt": "2024-11-22T15:06:17Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "id": "PR_kwDOJ6_NW86CyAO7",
+      "title": "fix: nonce endpoint is not protected",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/22",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "this PR resolves https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/19",
+      "createdAt": "2024-11-22T08:39:34Z",
+      "updatedAt": "2024-11-22T15:02:33Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "d657adb592006d98b9bbe29106497f8e4c7001f1",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "nonce-withouth-auth",
+      "headRefOid": "31b054209fdbddf2b0d3170cde95d0299f9ad76c",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86ST1_G",
+          "commit": {
+            "abbreviatedOid": "31b0542"
+          },
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-11-22T15:02:33Z",
+          "updatedAt": "2024-11-22T15:02:33Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
