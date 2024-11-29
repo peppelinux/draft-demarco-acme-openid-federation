@@ -178,7 +178,7 @@ The CSR MUST include the public key, attested within the Trust Chain, used by
 the Requestor to satisfy the Certificate Issuer's challenge.
 
 This process may be repeated to request multiple X.509 Certificates related to the
-cryptographic keys and linked to a single Entity.
+other cryptographic keys published in the Requestor's Entity Configuration.
 
 # Protocol Flow
 
