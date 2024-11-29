@@ -236,10 +236,20 @@ TBD: high level design and ascii sequence diagram.
 2. The Requestor requests and obtains a new nonce from the Certificate Issuer,
    by sending a HTTP HEAD request to the Issuer's `newNonce` resource;
 
-3. The Certificate Issuer evaluates the trust to the Requestor by checking if it is part of
-   the federation. If not the `newNonce` request MUST be rejected (**TBD** the
-   error to return). There are two ways the Certificate Issuer is able to check if a
-   Requestor is part of the federation, these are listed below:
+3. The Requestor begins the X.509 Certificate issuance process by sending a HTTP POST
+   request to the Certificate Issuer's `newOrder` resource, and follows the remainder of the
+   ACME protocol as specified in [RFC8555], using the new challenge defined in
+   {{challenge-type}}.
+
+4. The Requestor sends the newOrder request to the Certificate Issuer,
+   as described in Section [newOrder Request](#neworder-request).
+
+5. The Certificate Issuer evaluates the trust to the Requestor by checking if it is part of
+   the federation. If not the CSR request MUST be rejected (**TBD** the
+   error to return).
+
+There are two ways the Certificate Issuer is able to check if a
+Requestor is part of the federation, these are listed below:
 
     - The Requestor adds the Trust Chain JWT header parameter related to itself.
       This option is RECOMMENDED since it reduces the effort of the Certificate Issuer in
@@ -249,11 +259,6 @@ TBD: high level design and ascii sequence diagram.
       MUST start a [Federation Entity
       Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)
       to obtain the Trust Chain related to the Requestor.
-
-4. The Requestor begins the X.509 Certificate issuance process by sending a HTTP POST
-   request to the Certificate Issuer's `newOrder` resource, and follows the remainder of the
-   ACME protocol as specified in [RFC8555], using the new challenge defined in
-   {{challenge-type}}.
 
 ## Metadata
 
