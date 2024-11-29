@@ -4,8 +4,8 @@
 
 Automated Certificate Management Environment                 G. D. Marco
 Internet-Draft                                               independent
-Intended status: Standards Track                        22 November 2024
-Expires: 26 May 2025
+Intended status: Standards Track                        29 November 2024
+Expires: 2 June 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 May 2025.
+   This Internet-Draft will expire on 2 June 2025.
 
 Copyright Notice
 
@@ -274,27 +274,30 @@ Table of Contents
        Certificate Issuer, by sending a HTTP HEAD request to the
        Issuer's newNonce resource;
 
-   3.  The Certificate Issuer evaluates the trust to the Requestor by
-       checking if it is part of the federation.  If not the newNonce
-       request MUST be rejected (*TBD* the error to return).  There are
-       two ways the Certificate Issuer is able to check if a Requestor
-       is part of the federation, these are listed below:
-
-       *  The Requestor adds the Trust Chain JWT header parameter
-          related to itself.  This option is RECOMMENDED since it
-          reduces the effort of the Certificate Issuer in evaluating the
-          trust to the Requestor;
-
-       *  The Requestor doesn't add the Trust Chain in the request.  The
-          Certificate Issuer MUST start a Federation Entity Discovery
-          (https://openid.net/specs/openid-federation-1_0.html#section-
-          8) to obtain the Trust Chain related to the Requestor.
-
-   4.  The Requestor begins the X.509 Certificate issuance process by
+   3.  The Requestor begins the X.509 Certificate issuance process by
        sending a HTTP POST request to the Certificate Issuer's newOrder
        resource, and follows the remainder of the ACME protocol as
        specified in [RFC8555], using the new challenge defined in
        Section 6.5.
+
+   4.  The Requestor sends the newOrder request to the Certificate
+       Issuer, as described in Section newOrder Request (Section 6.4).
+
+   5.  The Certificate Issuer evaluates the trust to the Requestor by
+       checking if it is part of the federation.  If not the CSR request
+       MUST be rejected (*TBD* the error to return).
+
+   There are two ways the Certificate Issuer is able to check if a
+   Requestor is part of the federation, these are listed below:
+
+- The Requestor adds the Trust Chain JWT header parameter related to itself.
+  This option is RECOMMENDED since it reduces the effort of the Certificate Issuer in
+  evaluating the trust to the Requestor;
+
+- The Requestor doesn't add the Trust Chain in the request. The Certificate Issuer
+  MUST start a [Federation Entity
+  Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)
+  to obtain the Trust Chain related to the Requestor.
 
 6.3.  Metadata
 
