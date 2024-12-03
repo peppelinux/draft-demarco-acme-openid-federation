@@ -235,8 +235,6 @@ an X.509 Certificate.
 
 ## Overview
 
-TBD: high level design and ascii sequence diagram.
-
 1. The Requestor checks if its superior Federation Entity supports the ACME
    protocol for OpenID Federation 1.0. If not, the Requestor starts the
    discovery process to find which are the Issuers within the federation.
@@ -268,6 +266,41 @@ Requestor is part of the federation, these are listed below:
     MUST start a [Federation Entity
     Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)
     to obtain the Trust Chain related to the Requestor.
+
+The following diagram illustrates a successful interaction between Issuer and
+Requestor to retrieve a certificate. It assumes the Requestor has already
+discovered the Issuer, and has already created an ACME account.
+
+TODO: convert mermaid diagram to ASCII before submitting as ID (or does data
+tracker support mermaid now?).
+
+```mermaid
+sequenceDiagram
+  participant R as Requestor
+  participant A as Issuer
+
+  R ->> A: POST /acme/new-order
+  A -->> R: Authorization at /acme/authz/[authz-id], Finalize at /acme/order/[order-id]/finalize
+  R ->> A: POST /acme/authz/[authz-id]
+  A -->> R: openid-federation-01 Challenge at /acme/chall/[chall-id]
+  R ->> R: Sign challenge token with private key
+  R ->> A: POST /acme/chall/[chall-id] with signed token<br>and entity ID set to Requestor's ID
+  A ->> R: GET /.well-known/openid-federation
+  R -->> A: Requestor's Entity Configuration
+  A ->> A: Check entity configuration sub matches<br>entity identifier in the order
+  A ->> A: Check challenge sig is signed with key in<br>entity configuration
+  opt If requestor did not provide Trust Chain
+    create participant F as Federation Trust Anchors<br>and Intermediates
+    A <<->> F: Determine trust chain between<br>Issuer and Requestor<br>(OpenID Federation Discovery)
+  end
+  A ->> A: Evaluate trust chain
+  A -->> R: Respond to POST with validation success
+  R ->> A: POST /acme/orders/[order-id]/finalize with CSR
+  A ->> A: Check CSR validity according to protocol and CA policy
+  A -->> R: Order object with certificate at /acme/cert/[cert-id]
+  R ->> A: POST /acme/cert/[cert-id]
+  A -->> R: Newly issued certificate 🎉
+```
 
 ## Entity Configuration Metadata
 
