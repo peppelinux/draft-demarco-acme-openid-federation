@@ -221,10 +221,10 @@ an X.509 Certificate.
    issuer as configured in the federation. When used, the Trust Mark MUST be
    published within the Leaf's Entity Configuration.
 
-Where the precondition number 4 and number 5 are not met, there MAY be some
-cases where the Requestor knows a priori the identity of the Issuers in one or
-more federations; in these cases the Requestor directly requests the issuance of
-the X.509 Certificate to the trusted Certificate Issuer.
+   If this is not the case, there MAY be some cases where the Requestor knows
+   a priori the identity of the Issuers in one or more federations; in these
+   cases, the Requestor directly requests the issuance of the X.509 Certificate
+   from the Issuer, without discovery.
 
 ## Overview
 
@@ -252,14 +252,14 @@ TBD: high level design and ascii sequence diagram.
 There are two ways the Certificate Issuer is able to check if a
 Requestor is part of the federation, these are listed below:
 
-    - The Requestor adds the Trust Chain JWT header parameter related to itself.
-      This option is RECOMMENDED since it reduces the effort of the Certificate Issuer in
-      evaluating the trust to the Requestor;
+  - The Requestor adds the Trust Chain JWT header parameter related to itself.
+    This option is RECOMMENDED since it reduces the effort of the Certificate Issuer in
+    evaluating the trust to the Requestor;
 
-    - The Requestor doesn't add the Trust Chain in the request. The Certificate Issuer
-      MUST start a [Federation Entity
-      Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)
-      to obtain the Trust Chain related to the Requestor.
+  - The Requestor doesn't add the Trust Chain in the request. The Certificate Issuer
+    MUST start a [Federation Entity
+    Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)
+    to obtain the Trust Chain related to the Requestor.
 
 ## Metadata
 
