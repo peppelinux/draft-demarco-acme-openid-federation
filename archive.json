@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-03T00:38:23.897071+00:00",
+  "timestamp": "2024-12-05T00:37:48.308395+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -358,6 +358,46 @@
           "updatedAt": "2024-11-22T08:22:15Z"
         }
       ]
+    },
+    {
+      "number": 24,
+      "id": "I_kwDOJ6_NW86h4gXv",
+      "title": "We should disallow issuing certificates for arbitrary keys",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/24",
+      "state": "OPEN",
+      "author": "inahga",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "At minimum, we should avoid looking at the top level `jwks` field of the entity configuration for the requestor's key. OIDF states:\r\n\r\n> These Federation Entity Keys SHOULD NOT be used in other protocols. (Keys to be used in other protocols, such as OpenID Connect, are conveyed in the metadata elements for the protocol's Entity Type Identifiers, such as the metadata under the openid_provider and openid_relying_party Entity Type Identifiers.)\r\n\r\nI'm inclined to agree, since reusing cryptographic keys for different purposes is generally a bad idea. The issuer not reading the `jwks` field avoids the requestor misusing the entity key for another purpose.\r\n\r\nSimilarly, we should also probably not allow issuance for arbitrary keys in the entity metadata either. It would be better if we either defined a new Entity Type Identifier and metadata structure for the purpose of X.509 issuance, and/or allow the CA to define its metadata structures.",
+      "createdAt": "2024-12-03T20:45:43Z",
+      "updatedAt": "2024-12-03T22:22:18Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "I fully agree to restrict x5c issuance to metadata jwks only and not federation entity keys.\r\n\r\nFor the second point we need further conversation during the editor's call",
+          "createdAt": "2024-12-03T22:22:17Z",
+          "updatedAt": "2024-12-03T22:22:17Z"
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "id": "I_kwDOJ6_NW86iBu_k",
+      "title": "Should we allow OIDF Leafs to be Issuers?",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/25",
+      "state": "OPEN",
+      "author": "inahga",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We would prefer that Trust Anchors and Intermediates be the only ones to implement the ACME server.\r\n\r\nBut are there are valid use cases for a Leaf to implement the server as well?",
+      "createdAt": "2024-12-04T17:19:07Z",
+      "updatedAt": "2024-12-04T17:19:08Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -2032,6 +2072,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 23,
+      "id": "PR_kwDOJ6_NW86D7nta",
+      "title": "editorial: reword discovery for clarity",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/23",
+      "state": "OPEN",
+      "author": "inahga",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Precondition 4 is always true, and doesn't seem applicable to the statement we're making here. I also reworded slightly.\r\n\r\nIn Overview I also fix the formatting slightly--the indentation was too deep causing it to be rendered as a code block.",
+      "createdAt": "2024-12-03T18:33:18Z",
+      "updatedAt": "2024-12-03T18:33:18Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "638608e286c1969155ac14730455791f608b8be1",
+      "headRepository": "inahga/draft-demarco-acme-openid-federation",
+      "headRefName": "inahga/editorial",
+      "headRefOid": "e77f9359a7e497e4ac368d216865b7d4e7401534",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
