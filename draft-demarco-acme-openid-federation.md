@@ -26,6 +26,10 @@ author:
     fullname: Giuseppe De Marco
     organization: independent
     email: demarcog83@gmail.com
+ -
+    name: Ameer Ghani
+    org: ISRG
+    email: inahga@divviup.org
 
 normative:
   RFC1035: RFC1035
