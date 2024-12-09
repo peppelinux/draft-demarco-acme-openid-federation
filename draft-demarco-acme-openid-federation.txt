@@ -4,8 +4,9 @@
 
 Automated Certificate Management Environment                 G. D. Marco
 Internet-Draft                                               independent
-Intended status: Standards Track                        29 November 2024
-Expires: 2 June 2025
+Intended status: Standards Track                                A. Ghani
+Expires: 12 June 2025                                               ISRG
+                                                         9 December 2024
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -64,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 June 2025.
+   This Internet-Draft will expire on 12 June 2025.
 
 Copyright Notice
 
@@ -102,7 +103,7 @@ Table of Contents
      10.2.  Assign X.509 PKIX Other Name
    11. Normative References
    Acknowledgments
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
@@ -642,8 +643,13 @@ Acknowledgments
 
    TODO acknowledge.
 
-Author's Address
+Authors' Addresses
 
    Giuseppe De Marco
    independent
    Email: demarcog83@gmail.com
+
+
+   Ameer Ghani
+   ISRG
+   Email: inahga@divviup.org
