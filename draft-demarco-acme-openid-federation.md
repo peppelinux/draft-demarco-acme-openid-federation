@@ -232,8 +232,6 @@ the X.509 Certificate to the trusted Certificate Issuer.
 
 ## Overview
 
-TBD: high level design and ascii sequence diagram.
-
 1. The Requestor checks if its superior Federation Entity supports the ACME
    protocol for OpenID Federation 1.0. If not, the Requestor starts the
    discovery process to find which are the Issuers within the federation.
@@ -264,6 +262,73 @@ Requestor is part of the federation, these are listed below:
       MUST start a [Federation Entity
       Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)
       to obtain the Trust Chain related to the Requestor.
+
+As a non-normative example, consider the following simple Federation:
+
+TODO: convert mermaid diagrams to ASCII before IETF submission
+
+```mermaid
+graph TD
+  T["Trust Anchor"]
+  A["Intermediate A<br>(Issuer)"]
+  B["Intermediate B"]
+  R["Requestor"]
+
+  T --> A
+  T --> B
+  B --> R
+```
+
+The following diagram illustrates the steps the Requestor takes to discover
+that Intermediate A is an Issuer.
+
+(Is this necessary?)
+
+```mermaid
+```
+
+The following diagram illustrates the flow when the Requestor requests a
+certificate from Intermediate A, without including the Trust Chain in the ACME
+payload.
+
+```mermaid
+sequenceDiagram
+  participant R as Requestor
+  participant A as Intermediate A<br>(Issuer)
+  participant B as Intermediate B
+  participant T as Trust Anchor
+
+  R ->> A: POST /acme/new-order
+  A ->> R: Authorization at /acme/authz/aaa, Finalize at /acme/order/ooo/finalize
+  R ->> A: POST /acme/authz/aaa
+  A ->> R: openid-federation-01 Challenge at /acme/chall/bbb
+  R ->> R: Sign challenge token with private key
+  R ->> A: POST /acme/chall/bbb with signed token<br>and entity ID set to Requestor's ID
+  A ->> R: GET /.well-known/openid-federation
+  R ->> A: Requestor's Entity Configuration
+  A ->> A: Check entity configuration sub matches<br>entity identifier in the order
+  A ->> A: Check challenge sig is signed with key in<br>entity configuration
+  Note over A: Requestor's authority_hints points to Intermediate B
+  A ->> B: GET /.well_known/openid-federation
+  B ->> A: Intermediate B's Entity Configuration<br>including federation_fetch_endpoint
+  A ->> B: Fetch subordinate statement about Requestor<br>/fedapi?sub=requestor.example.com
+  Note over A: Intermediate B's authority_hints points to Trust Anchor
+  A ->> T: GET /.well_known/openid-federation
+  T ->> A: Trust Anchor's Entity Configuration<br>including federation_fetch_endpoint
+  A ->> T: Fetch subordinate statement about Intermediate B<br>/fedapi?sub=intermediateB.example.com
+  Note over A: Trust chain data is collected<br>1. Entity Configuration for Requestor<br>2. Subordinate statement about Requestor by Intermediate B<br>3. Subordinate statement about Intermediate B by Trust Anchor<br>4. Entity Configuration for Trust Anchor
+  A ->> A: Evaluate trust chain
+  A ->> R: Respond to POST with validation success
+  R ->> A: POST /acme/orders/ooo/finalize with CSR
+  A ->> A: Check CSR validity according to spec and CA policy
+  R ->> A: Order object with certificate at /acme/cert/cccc
+  A ->> R: POST /acme/cert/cccc
+  R ->> A: Newly issued certificate 🎉
+```
+
+The following diagram instead illustrates the flow if the Requestor includes
+the Trust Chain in the ACME payload.
+
 
 ## Metadata
 
