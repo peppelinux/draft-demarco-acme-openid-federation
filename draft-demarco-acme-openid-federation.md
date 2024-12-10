@@ -30,6 +30,10 @@ author:
     name: Ameer Ghani
     org: ISRG
     email: inahga@divviup.org
+ -
+    name: Brandon Pitman
+    org: ISRG
+    email: bran@bran.land
 
 normative:
   RFC1035: RFC1035
