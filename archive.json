@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-08T00:41:16.100800+00:00",
+  "timestamp": "2024-12-10T00:38:26.804837+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -2085,7 +2085,7 @@
       "labels": [],
       "body": "Precondition 4 is always true, and doesn't seem applicable to the statement we're making here. I also reworded slightly.\r\n\r\nIn Overview I also fix the formatting slightly--the indentation was too deep causing it to be rendered as a code block.",
       "createdAt": "2024-12-03T18:33:18Z",
-      "updatedAt": "2024-12-03T18:33:18Z",
+      "updatedAt": "2024-12-09T17:43:47Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "638608e286c1969155ac14730455791f608b8be1",
@@ -2097,33 +2097,83 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86UY2tV",
+          "commit": {
+            "abbreviatedOid": "e77f935"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-09T17:43:29Z",
+          "updatedAt": "2024-12-09T17:43:29Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "```suggestion\r\n  - The Requestor adds the Trust Chain JWT header parameter related to itself, as described in Section 4.3. of [OPENID-FED].\r\n```",
+              "createdAt": "2024-12-09T17:43:29Z",
+              "updatedAt": "2024-12-09T17:43:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86UY23r",
+          "commit": {
+            "abbreviatedOid": "e77f935"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "a little comment",
+          "createdAt": "2024-12-09T17:43:47Z",
+          "updatedAt": "2024-12-09T17:43:47Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 26,
       "id": "PR_kwDOJ6_NW86EN0qX",
       "title": "authors: add Ameer",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/26",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "inahga",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-12-05T17:31:12Z",
-      "updatedAt": "2024-12-05T17:31:13Z",
+      "updatedAt": "2024-12-09T17:41:29Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "638608e286c1969155ac14730455791f608b8be1",
       "headRepository": "inahga/draft-demarco-acme-openid-federation",
       "headRefName": "inahga/contributors",
       "headRefOid": "86c2c8ef9783d2dfa2e530daf2494a4487de6c0c",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-12-09T17:41:29Z",
+      "mergedAt": "2024-12-09T17:41:28Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "ee391f959f71bbfd6f8bea658749c280926033f8"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86UY1FG",
+          "commit": {
+            "abbreviatedOid": "86c2c8e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-12-09T17:41:21Z",
+          "updatedAt": "2024-12-09T17:41:21Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 27,
