@@ -252,9 +252,10 @@ TBD: high level design and ascii sequence diagram.
 There are two ways the Certificate Issuer is able to check if a
 Requestor is part of the federation, these are listed below:
 
-  - The Requestor adds the Trust Chain JWT header parameter related to itself.
-    This option is RECOMMENDED since it reduces the effort of the Certificate Issuer in
-    evaluating the trust to the Requestor;
+  - The Requestor adds the Trust Chain JWT header parameter related to itself,
+    as described in Section 4.3. of [OPENID-FED]. This option is RECOMMENDED
+    since it reduces the effort of the Certificate Issuer in evaluating the
+    trust to the Requestor.
 
   - The Requestor doesn't add the Trust Chain in the request. The Certificate Issuer
     MUST start a [Federation Entity
