@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-10T00:38:26.804837+00:00",
+  "timestamp": "2024-12-12T00:37:46.017908+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -2078,24 +2078,26 @@
       "id": "PR_kwDOJ6_NW86D7nta",
       "title": "editorial: reword discovery for clarity",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/23",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "inahga",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Precondition 4 is always true, and doesn't seem applicable to the statement we're making here. I also reworded slightly.\r\n\r\nIn Overview I also fix the formatting slightly--the indentation was too deep causing it to be rendered as a code block.",
       "createdAt": "2024-12-03T18:33:18Z",
-      "updatedAt": "2024-12-09T17:43:47Z",
+      "updatedAt": "2024-12-10T15:44:27Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "638608e286c1969155ac14730455791f608b8be1",
+      "baseRefOid": "ee391f959f71bbfd6f8bea658749c280926033f8",
       "headRepository": "inahga/draft-demarco-acme-openid-federation",
       "headRefName": "inahga/editorial",
-      "headRefOid": "e77f9359a7e497e4ac368d216865b7d4e7401534",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "8b659b0a28b3f62bb1a13925cfa0161d44f80408",
+      "closedAt": "2024-12-10T15:44:27Z",
+      "mergedAt": "2024-12-10T15:44:27Z",
+      "mergedBy": "inahga",
+      "mergeCommit": {
+        "oid": "f3796ced732711b2652217b93df0a2ec8638512e"
+      },
       "comments": [],
       "reviews": [
         {
@@ -2185,21 +2187,123 @@
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
-      "body": "Closes https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/10\r\n\r\nIn draft.",
+      "body": "Closes https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/10\r\n",
       "createdAt": "2024-12-05T17:41:56Z",
-      "updatedAt": "2024-12-05T17:41:56Z",
+      "updatedAt": "2024-12-10T22:03:21Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "638608e286c1969155ac14730455791f608b8be1",
+      "baseRefOid": "b2b3d1f5eecc6864a7d6c6d387b03031fc751593",
       "headRepository": "inahga/draft-demarco-acme-openid-federation",
       "headRefName": "inahga/sequence",
-      "headRefOid": "589601170721dcd3b37c4a68d790a9ac8cbf8f32",
+      "headRefOid": "058325e7ceb238e9d7198f286904a61ef260d110",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 28,
+      "id": "PR_kwDOJ6_NW86EvTMU",
+      "title": "Add Brandon Pitman as author.",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/28",
+      "state": "MERGED",
+      "author": "branlwyd",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-12-10T17:28:21Z",
+      "updatedAt": "2024-12-10T19:47:47Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "f3796ced732711b2652217b93df0a2ec8638512e",
+      "headRepository": "branlwyd/draft-demarco-acme-openid-federation",
+      "headRefName": "bran/author",
+      "headRefOid": "4435e54ed3208cd1271155226c216053d9171eb0",
+      "closedAt": "2024-12-10T19:47:47Z",
+      "mergedAt": "2024-12-10T19:47:47Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "b2b3d1f5eecc6864a7d6c6d387b03031fc751593"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86UmQY-",
+          "commit": {
+            "abbreviatedOid": "4435e54"
+          },
+          "author": "branlwyd",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-10T17:28:51Z",
+          "updatedAt": "2024-12-10T17:28:52Z",
+          "comments": [
+            {
+              "originalPosition": 3,
+              "body": "N.B. my understanding is that authors will typically use a personal email address, rather than one connected to an organization. This is up to personal preference, of course.",
+              "createdAt": "2024-12-10T17:28:52Z",
+              "updatedAt": "2024-12-10T17:28:52Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86UnJLm",
+          "commit": {
+            "abbreviatedOid": "4435e54"
+          },
+          "author": "branlwyd",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-10T18:50:39Z",
+          "updatedAt": "2024-12-10T18:50:39Z",
+          "comments": [
+            {
+              "originalPosition": 3,
+              "body": "@inahga ^",
+              "createdAt": "2024-12-10T18:50:39Z",
+              "updatedAt": "2024-12-10T18:50:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86UnpXy",
+          "commit": {
+            "abbreviatedOid": "4435e54"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-12-10T19:47:18Z",
+          "updatedAt": "2024-12-10T19:47:18Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Unple",
+          "commit": {
+            "abbreviatedOid": "4435e54"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-10T19:47:43Z",
+          "updatedAt": "2024-12-10T19:47:43Z",
+          "comments": [
+            {
+              "originalPosition": 3,
+              "body": "no particular rules, I saw authors with both personal or org e-mail addresses",
+              "createdAt": "2024-12-10T19:47:43Z",
+              "updatedAt": "2024-12-10T19:47:43Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
