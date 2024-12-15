@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-12T00:37:46.017908+00:00",
+  "timestamp": "2024-12-15T00:41:30.845357+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -2304,6 +2304,32 @@
           ]
         }
       ]
+    },
+    {
+      "number": 29,
+      "id": "PR_kwDOJ6_NW86FE2Fb",
+      "title": "Add acme_requestor metadata",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/29",
+      "state": "OPEN",
+      "author": "inahga",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/24\r\n\r\nI think this also relates to https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/21.",
+      "createdAt": "2024-12-12T22:07:44Z",
+      "updatedAt": "2024-12-12T22:16:21Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "b2b3d1f5eecc6864a7d6c6d387b03031fc751593",
+      "headRepository": "inahga/draft-demarco-acme-openid-federation",
+      "headRefName": "inahga/metadata",
+      "headRefOid": "e7b20d248db9e18274c20cb4da583af8a1ff71ff",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
