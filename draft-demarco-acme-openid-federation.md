@@ -456,17 +456,14 @@ sig (required, string):  a base64url encoding of a JWT, signing the token
     [Requestor](#requestor-metadata). It is REQUIRED that this JWT include a `kid` claim
     corresponding to a valid key.
 
-trust_chain (optional, array of string):  an array of base64url-encoded bytes
-    containing a signed JWT and representing the Trust Chain of the Requestor.
-    See section 4.3 of [OPENID-FED]. The Requestor SHOULD use
-    a Trust Anchor it has in common with the ACME server. It is RECOMMENDED that the
-    Requestor include this field; otherwise, the ACME server MUST start
-    Federation Entity Discovery to obtain the Trust Chain related to the Requestor.
+entity_identifier (required, string):  the Entity Identifier of the Requestor.
 
-entity_identifier (optional, string):  the Entity Identifier of the Requestor,
-    which is used by the ACME server to perform Federation Entity Discovery in the
-    case that no Trust Chain is provided. The Requestor SHOULD include this field
-    only when the `trust_chain` field is not provided.
+trust_chain (optional, array of string):  an array of base64url-encoded bytes
+    containing a signed JWT and representing the Trust Chain of the Requestor,
+    See section 4.3 of [OPENID-FED]. The Requestor SHOULD use a Trust Anchor it
+    has in common with the ACME server. It is RECOMMENDED that the Requestor
+    include this field; otherwise, the ACME server MUST start Federation Entity
+    Discovery to obtain the Trust Chain related to the Requestor.
 
 A non-normative example for an authorization with `trust_chain` specified:
 
@@ -484,29 +481,8 @@ A non-normative example for an authorization with `trust_chain` specified:
      }),
      "payload": base64url({
       "sig": "wQAvHlPV1tVxRW0vZUa4BQ...",
+      "entity_identifier": "https://requestor.example.com",
       "trust_chain": ["eyJhbGciOiJFU...", "eyJhbGci..."]
-     }),
-     "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
-   }
-~~~~
-
-A non-normative example for an authorization with `entity_identifier` specified:
-
-~~~~
-   POST /acme/chall/prV_B7yEyA4
-   Host: issuer.example.com
-   Content-Type: application/jose+json
-
-   {
-     "protected": base64url({
-       "alg": "ES256",
-       "kid": "https://issuer.example.com/acme/acct/evOfKhNU60wg",
-       "nonce": "UQI1PoRi5OuXzxuX7V7wL0",
-       "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4"
-     }),
-     "payload": base64url({
-      "sig": "wQAvHlPV1tVxRW0vZUa4BQ...",
-      "entity_identifier": "https://requestor.example.com"
      }),
      "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
    }
