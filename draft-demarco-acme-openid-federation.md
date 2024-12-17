@@ -217,7 +217,7 @@ an X.509 Certificate.
 6. The Certificate Issuer MAY be a Leaf, in these cases a specific Trust Mark
    enabling the issuance of X.509 Certificates within the federation MAY be
    issued by the Trust Anchor, or on behalf of it by an allowed Trust Mark
-   issuer as configured in the federation. When used, the Trust Mark MUST be
+   Issuer as configured in the federation. When used, the Trust Mark MUST be
    published within the Leaf's Entity Configuration.
 
 Where the precondition number 4 and number 5 are not met, there MAY be some
