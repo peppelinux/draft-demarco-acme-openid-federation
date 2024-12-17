@@ -262,7 +262,8 @@ Requestor is part of the federation, these are listed below:
 
 ## Entity Configuration Metadata
 
-This section contains the description of the Entity's metadata in its Entity Configuration, enabling the interoperability between the Issuer and the Requestor.
+This section describes the metadata a Requestor and Issuer MUST publish in their
+respective Entity Configurations.
 
 ### Issuer Metadata
 
@@ -367,8 +368,9 @@ the `acme_requestor` metadata and using the `jwks` metadata parameter.
 }
 ~~~~
 
-After X.509 Certificate issuance, the Requestor MAY remove the `acme_requestor`
-metadata from its Entity Configuration.
+The Issuer MUST only use the Requestor's `acme_requestor` to validate an ACME
+challenge. Therefore, after completing the challenge, the Requestor MAY remove
+the `acme_requestor` metadata from its Entity Configuration.
 
 ## newOrder Request
 
