@@ -271,8 +271,6 @@ The following diagram illustrates a successful interaction between Issuer and
 Requestor to retrieve a certificate. It assumes the Requestor has already
 discovered the Issuer, and has already created an ACME account.
 
-TODO: convert mermaid diagram to ASCII before submitting as ID (or does data
-tracker support mermaid now?).
 
 ```mermaid
 sequenceDiagram
