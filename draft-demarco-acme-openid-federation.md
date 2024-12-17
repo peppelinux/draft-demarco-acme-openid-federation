@@ -367,7 +367,7 @@ the `acme_requestor` metadata and using the `jwks` metadata parameter.
 }
 ~~~~
 
-After certificate issuance, the Requestor MAY remove the `acme_requestor`
+After X.509 Certificate issuance, the Requestor MAY remove the `acme_requestor`
 metadata from its Entity Configuration.
 
 ## newOrder Request
