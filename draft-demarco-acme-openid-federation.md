@@ -262,6 +262,8 @@ Requestor is part of the federation, these are listed below:
 
 ## Entity Configuration Metadata
 
+This section contains the description of the Entity's metadata in its Entity Configuration, enabling the interoperability between the Issuer and the Requestor.
+
 ### Issuer Metadata
 
 The Issuer MUST publish its Entity Configuration including the `acme_provider`
