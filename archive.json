@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-17T00:37:43.370326+00:00",
+  "timestamp": "2024-12-19T00:36:48.559741+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -65,16 +65,31 @@
       "id": "I_kwDOJ6_NW859ms0D",
       "title": "specialized keys by scopes",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "we need a way (optional) to define the scope of the key where the issued certificate is related to",
       "createdAt": "2024-01-30T09:07:23Z",
-      "updatedAt": "2024-01-30T09:07:23Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2024-12-17T15:37:39Z",
+      "closedAt": "2024-12-17T15:36:27Z",
+      "comments": [
+        {
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Out of scope, this is handled at CSR finalizing time. We don't want to have to extend the challenge to handle this.",
+          "createdAt": "2024-12-17T15:36:27Z",
+          "updatedAt": "2024-12-17T15:36:27Z"
+        },
+        {
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "body": "https://www.ietf.org/archive/id/draft-aaron-acme-profiles-00.html may be relevant here. It defines the notion of a \"certificate profile\", allowing the requestor to select from a predefined set of certificate parameters.",
+          "createdAt": "2024-12-17T15:37:38Z",
+          "updatedAt": "2024-12-17T15:37:38Z"
+        }
+      ]
     },
     {
       "number": 2,
@@ -216,7 +231,7 @@
       "labels": [],
       "body": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/e75f931bfd51f13af8e0201e18a6a37b960ed141/draft-demarco-acme-openid-federation.md?plain=1#L240\r\n\r\nwe should use the same errors already defined in the ACME standard(s) and define in this draft that additional errors about the failure trust evaluation that might happen, must reuse the errors already defined in the openid federation draft\r\n\r\nexamples are welcome to give implementation guides",
       "createdAt": "2024-11-19T15:20:05Z",
-      "updatedAt": "2024-11-22T08:26:04Z",
+      "updatedAt": "2024-12-17T15:44:29Z",
       "closedAt": null,
       "comments": [
         {
@@ -225,6 +240,20 @@
           "body": "A new section about the error handling should be used",
           "createdAt": "2024-11-19T15:21:27Z",
           "updatedAt": "2024-11-19T15:21:27Z"
+        },
+        {
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "body": "We don't want to define new any new errors. Errors related to ACME and OIDF flows are defined in their respective documents, so we should make references to those documents when the relevant errors come up.",
+          "createdAt": "2024-12-17T15:40:23Z",
+          "updatedAt": "2024-12-17T15:40:23Z"
+        },
+        {
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "body": "We may define an ACME error URI that is a catch-all \"some OIDF error occurred, here's the detail\". If using our own URIs (e.g. `urn:ietf:params:acme-oidf:error:OIDFError`) we would need to register this namespace.",
+          "createdAt": "2024-12-17T15:44:21Z",
+          "updatedAt": "2024-12-17T15:44:21Z"
         }
       ]
     },
@@ -262,15 +291,25 @@
       "state": "OPEN",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
-      "assignees": [],
+      "assignees": [
+        "inahga"
+      ],
       "labels": [
         "breaking change"
       ],
       "body": "In the current draft we mandate the use of static trust chains\r\n\r\nwe want to configure as mandatory the entity_id instead, and having the trust chain as optional or recommended",
       "createdAt": "2024-11-19T15:35:32Z",
-      "updatedAt": "2024-11-22T08:23:54Z",
+      "updatedAt": "2024-12-17T15:33:57Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "body": "n.b. In current draft we say that we can take either the entity_id or the trust chain.",
+          "createdAt": "2024-12-17T15:33:53Z",
+          "updatedAt": "2024-12-17T15:33:53Z"
+        }
+      ]
     },
     {
       "number": 18,
@@ -2189,19 +2228,132 @@
       "labels": [],
       "body": "Closes https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/10\r\n",
       "createdAt": "2024-12-05T17:41:56Z",
-      "updatedAt": "2024-12-10T22:03:21Z",
+      "updatedAt": "2024-12-17T16:52:18Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "b2b3d1f5eecc6864a7d6c6d387b03031fc751593",
       "headRepository": "inahga/draft-demarco-acme-openid-federation",
       "headRefName": "inahga/sequence",
-      "headRefOid": "058325e7ceb238e9d7198f286904a61ef260d110",
+      "headRefOid": "84f8fbdab33d119aacf359532ca72385b1154f3e",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86Vfsc0",
+          "commit": {
+            "abbreviatedOid": "058325e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-17T08:09:31Z",
+          "updatedAt": "2024-12-17T08:09:31Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "```suggestion\r\nThe following diagram illustrates a successful interaction between Issuer and\r\nRequestor to retrieve an X.509 Certificate. In the diagram there is flow about a Requestor that has already\r\ndiscovered the Issuer\r\n```\r\n\r\nit is not clear to me the presence of this requirement about the acme account creation.\r\nUsing an automatic issuance the acme account would not be required, or differently, it would be created during the first interaction between a requestor and a issuer, on the fly.\r\n\r\nWe need to further align on this element.",
+              "createdAt": "2024-12-17T08:09:31Z",
+              "updatedAt": "2024-12-17T08:09:31Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86VftHo",
+          "commit": {
+            "abbreviatedOid": "058325e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-17T08:10:46Z",
+          "updatedAt": "2024-12-17T08:10:47Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "```suggestion\r\n```\r\n\r\nI will move this seq diagram in a file within the folder called `diagrams` and convert it to ascii arts",
+              "createdAt": "2024-12-17T08:10:47Z",
+              "updatedAt": "2024-12-17T08:10:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86VjW0e",
+          "commit": {
+            "abbreviatedOid": "058325e"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-17T14:40:48Z",
+          "updatedAt": "2024-12-17T14:44:37Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "RFC XML supports a `src` attribute on `<figure>` elements to provide a separate graphics file, but we'll still need an ASCII art text representation to fall back to. `kramdown-rfc2629` supports [running a number of tools](https://github.com/cabo/kramdown-rfc/blob/18d5a95dee9ea9d180a37d8c8a4c5ce1b806339f/lib/kramdown-rfc2629.rb#L581) to turn inline diagram DSLs into SVGs, including `aasvg`, `plantuml`, etc., but not Mermaid, it looks like.",
+              "createdAt": "2024-12-17T14:40:48Z",
+              "updatedAt": "2024-12-17T14:44:37Z"
+            },
+            {
+              "originalPosition": 37,
+              "body": "Since trust chains are asymmetric, I recommend changing this to \"Determine trust chain from Issuer's trust anchors to Requestor\".",
+              "createdAt": "2024-12-17T14:41:43Z",
+              "updatedAt": "2024-12-17T14:44:37Z"
+            },
+            {
+              "originalPosition": 31,
+              "body": "Would it make sense to split the Requestor participant in this diagram in two, into the Requestor-as-ACME client and the server that hosts the Requestor's OpenID Federation entity?",
+              "createdAt": "2024-12-17T14:43:45Z",
+              "updatedAt": "2024-12-17T14:44:37Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Vjn-k",
+          "commit": {
+            "abbreviatedOid": "058325e"
+          },
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-17T15:08:26Z",
+          "updatedAt": "2024-12-17T15:08:26Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "I will note the section of ACME that relates to the account. I will also note somewhere a prerequisite of having an ACME account.\r\n\r\n",
+              "createdAt": "2024-12-17T15:08:26Z",
+              "updatedAt": "2024-12-17T15:15:03Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Vjw_r",
+          "commit": {
+            "abbreviatedOid": "058325e"
+          },
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-17T15:19:31Z",
+          "updatedAt": "2024-12-17T15:19:31Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "I will take this suggestion, and also clarify definitions of the Requestor and Requestor-as-ACME client.",
+              "createdAt": "2024-12-17T15:19:31Z",
+              "updatedAt": "2024-12-17T15:19:31Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 28,
@@ -2317,19 +2469,167 @@
       "labels": [],
       "body": "Closes https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/24\r\n\r\nI think this also relates to https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/21.",
       "createdAt": "2024-12-12T22:07:44Z",
-      "updatedAt": "2024-12-12T22:16:21Z",
+      "updatedAt": "2024-12-17T17:00:51Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "b2b3d1f5eecc6864a7d6c6d387b03031fc751593",
       "headRepository": "inahga/draft-demarco-acme-openid-federation",
       "headRefName": "inahga/metadata",
-      "headRefOid": "e7b20d248db9e18274c20cb4da583af8a1ff71ff",
+      "headRefOid": "8c5f5488d2ad3b725d41e4860457f6583574f997",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86Vfnt8",
+          "commit": {
+            "abbreviatedOid": "e7b20d2"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-17T07:58:30Z",
+          "updatedAt": "2024-12-17T07:58:30Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "```suggestion\r\n   Issuer as configured in the federation. When used, the Trust Mark MUST be\r\n```\r\n\r\nnow in openidfed it is a defined term.",
+              "createdAt": "2024-12-17T07:58:30Z",
+              "updatedAt": "2024-12-17T07:58:30Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Vfo9L",
+          "commit": {
+            "abbreviatedOid": "e7b20d2"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-17T08:01:29Z",
+          "updatedAt": "2024-12-17T08:01:29Z",
+          "comments": [
+            {
+              "originalPosition": 49,
+              "body": "```suggestion\r\n\r\nThis section contains the description of the Entity's metadata in its Entity Configuration, enabling the interoperability between the Issuer and the Requestor.\r\n\r\n```",
+              "createdAt": "2024-12-17T08:01:29Z",
+              "updatedAt": "2024-12-17T15:22:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86VfpNK",
+          "commit": {
+            "abbreviatedOid": "e7b20d2"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-17T08:02:05Z",
+          "updatedAt": "2024-12-17T08:02:06Z",
+          "comments": [
+            {
+              "originalPosition": 119,
+              "body": "```suggestion\r\nAfter X.509 Certificate issuance, the Requestor MAY remove the `acme_requestor`\r\n```",
+              "createdAt": "2024-12-17T08:02:05Z",
+              "updatedAt": "2024-12-17T08:02:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86VfqOK",
+          "commit": {
+            "abbreviatedOid": "e7b20d2"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-17T08:04:23Z",
+          "updatedAt": "2024-12-17T08:04:23Z",
+          "comments": [
+            {
+              "originalPosition": 119,
+              "body": "what if the requestor does not remove those jwks?\r\n\r\nbe the issuer able to inspect if those requestor's jwks was already issued in the form of x.509 certificates and if not expired yet no action, or it should be mandated to reissue the certificates?\r\n\r\nthe key element is that it's up to the requestor specifying the key used for the x.509 request, this makes the presence of old/already issued public key impactless for the issuer ",
+              "createdAt": "2024-12-17T08:04:23Z",
+              "updatedAt": "2024-12-17T08:04:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86Vkh6n",
+          "commit": {
+            "abbreviatedOid": "e7b20d2"
+          },
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-17T16:13:21Z",
+          "updatedAt": "2024-12-17T16:13:21Z",
+          "comments": [
+            {
+              "originalPosition": 119,
+              "body": "I will elaborate on this section a bit.",
+              "createdAt": "2024-12-17T16:13:21Z",
+              "updatedAt": "2024-12-17T16:13:21Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "id": "PR_kwDOJ6_NW86Fhne-",
+      "title": "Make entity_id required",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/30",
+      "state": "OPEN",
+      "author": "inahga",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/15",
+      "createdAt": "2024-12-17T17:08:17Z",
+      "updatedAt": "2024-12-17T17:09:05Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "b2b3d1f5eecc6864a7d6c6d387b03031fc751593",
+      "headRepository": "inahga/draft-demarco-acme-openid-federation",
+      "headRefName": "inahga/15",
+      "headRefOid": "64bc8ea272cbf67e4a83f7bdafde2ebc0f197dd2",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86VlI9q",
+          "commit": {
+            "abbreviatedOid": "64bc8ea"
+          },
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-17T17:09:04Z",
+          "updatedAt": "2024-12-17T17:09:05Z",
+          "comments": [
+            {
+              "originalPosition": 36,
+              "body": "Editorial: The only difference between the examples is one optional field, so I don't think both are necessary.",
+              "createdAt": "2024-12-17T17:09:04Z",
+              "updatedAt": "2024-12-17T17:09:05Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
