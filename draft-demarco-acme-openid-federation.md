@@ -139,10 +139,9 @@ This specification can be implemented by:
   transport to attest themselves as trustworthy, and then retrieve X.509
   Certificates for their official HTTPS Federation Entity ID.
 
-- Federation Entities that want to ask and obtain X.509 Certificate for every
-  public cryptographic key in their Entity Configuration, be these
-  Federation Entity Keys or metadata specific keys, as made reliable in a
-  Federation Trust Chain.
+- Federation Entities that want to ask and obtain X.509 Certificate for one or
+  more public cryptographic keys published in their Entity Configuration, as
+  defined in Section 4 of [OPENID-FED].
 
 # Terminology
 
@@ -169,7 +168,7 @@ The Certificate Issuer establishes if a Federation Entity is eligible to obtain 
 Certificates for the identifier configured in the Requestor's Entity
 Configuration.
 
-The cryptographic keys published within the Requestor Entity Configuration
+The cryptographic keys published within the Requestor's Entity Configuration
 are used to satisfy the Certificate Issuer's challenge, and the
 public portion of the keys included in the issued X.509 Certificates.
 
@@ -217,16 +216,16 @@ an X.509 Certificate.
 3. The Trust Anchor and its Intermediates SHOULD implement an ACME server,
    extended according to this document.
 
-4. The Certificate Issuer MUST publish in its Entity Configuration, within the metadata
-   parameter as defined in the [Section
-   4](https://openid.net/specs/openid-federation-1_0.html#name-metadata-type-identifiers)
-   of [OPENID-FED], the metadata type `acme_provider` according to the
-   [Metadata](#metadata) of this specification.
+4. The Requestor MUST publish the metadata type `acme_requestor` in its Entity
+   Configuration, according to [Requestor Metadata](#requestor-metadata).
 
-5. The Certificate Issuer MAY be a Leaf, in these cases a specific Trust Mark
+5. The Issuer MUST publish the metadata type `acme_provider` in its Entity
+   Configuration, according to [Issuer Metadata](#issuer-metadata).
+
+6. The Certificate Issuer MAY be a Leaf, in these cases a specific Trust Mark
    enabling the issuance of X.509 Certificates within the federation MAY be
    issued by the Trust Anchor, or on behalf of it by an allowed Trust Mark
-   issuer as configured in the federation. When used, the Trust Mark MUST be
+   Issuer as configured in the federation. When used, the Trust Mark MUST be
    published within the Leaf's Entity Configuration.
 
    If this is not the case, there MAY be some cases where the Requestor knows
@@ -270,7 +269,12 @@ Requestor is part of the federation, these are listed below:
     Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)
     to obtain the Trust Chain related to the Requestor.
 
-## Metadata
+## Entity Configuration Metadata
+
+This section describes the metadata a Requestor and Issuer MUST publish in their
+respective Entity Configurations.
+
+### Issuer Metadata
 
 The Issuer MUST publish its Entity Configuration including the `acme_provider`
 metadata within it. The body of the `acme_provider` metadata is the ACME
@@ -313,10 +317,69 @@ the `acme_provider` metadata:
         "caaIdentities": ["issuer.example.com"],
         "externalAccountRequired": false
       }
-   }
-  },
+    }
+  }
 }
 ~~~~
+
+### Requestor Metadata
+
+The Requestor MUST publish in its Entity Configuration an `acme_requestor`
+metadata containing a JWK set, according to Section 5.2.1 of [OPENID-FED].
+The keys in the set represent the keys that the Requestor MAY request
+certificates for.
+
+The following is a non-normative example of an Entity Configuration including
+the `acme_requestor` metadata and using the `jwks` metadata parameter.
+
+~~~~
+{
+  "iss": "https://requestor.example.com",
+  "sub": "https://requestor.example.com",
+  "iat": 1516239022,
+  "exp": 1516298022,
+  "jwks": {
+    "keys": [
+      {
+        "kty": "RSA",
+        "alg": "RS256",
+        "use": "sig",
+        "kid": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs",
+        "n": "pnXBOusEANuug6ewezb9J_...",
+        "e": "AQAB"
+      }
+    ]
+  },
+  "metadata": {
+    "acme_requestor": {
+      "jwks": {
+        "keys": [
+          {
+            "kty": "RSA",
+            "kid": "SUdtUndEWVY2cUFDeD...",
+            "n": "y_Zc8rByfeRIC9fFZrD...",
+            "e": "AQAB"
+          },
+          {
+            "kty": "EC",
+            "kid": "MFYycG1raTI4SkZvVDBIMF9CNGw3VEZYUmxQLVN2T21nSWlkd3",
+            "crv": "P-256",
+            "x": "qAOdPQROkHfZY1daGofOmSNQWpYK8c9G2m2Rbkpbd4c",
+            "y": "G_7fF-T8n2vONKM15Mzj4KR_shvHBxKGjMosF6FdoPY"
+          }
+        ],
+        "iss": "https://requestor.example.com",
+        "sub": "https://requestor.example.com",
+        "iat": 1618410883
+      }
+    }
+  }
+}
+~~~~
+
+The Issuer MUST only use the Requestor's `acme_requestor` to validate an ACME
+challenge. Therefore, after completing the challenge, the Requestor MAY remove
+the `acme_requestor` metadata from its Entity Configuration.
 
 ## newOrder Request
 
@@ -388,13 +451,10 @@ token (required, string):  A random value that uniquely identifies the
 The Requestor responds with an object with the following format:
 
 sig (required, string):  a base64url encoding of a JWT, signing the token
-    encoded in UTF-8 with one of the keys published in the requestor's OpenID
-    Federation Entity Configuration: either in the top-level `jwks` claim as
-    defined in Section 3 of [OIDC-FED] or referenced by the `signed_jwks_uri`,
-    `jwks_uri`, or `jwks` claims in the entity metadata as defined in Section
-    5.2.1 of [OIDC-FED]. It is REQUIRED that this JWT include a `kid` claim
-    corresponding to a valid key; The Credential Issuer MUST only use keys with a
-    corresponding `kid` value when evaluating the challenge response. Otherwise,
+    encoded in UTF-8 with one of the keys published in the Requestor's
+    `acme_requestor` metadata in its Entity Configuration, as specified in
+    [Requestor](#requestor-metadata). It is REQUIRED that this JWT include a `kid` claim
+    corresponding to a valid key.
 
 trust_chain (optional, array of string):  an array of base64url-encoded bytes
     containing a signed JWT and representing the Trust Chain of the Requestor.
@@ -464,12 +524,11 @@ then:
 
 * Verifies that the `sig` field of the payload includes a valid JWT over the
   challenge token, signed with one of the keys published in the Requestor's
-  Entity Configuration, either in the top-level `jwks` claim as defined in
-  Section 3 of [OPENID-FED] or referenced by the `signed_jwks_uri`, `jwks_uri`, or
-  `jwks` claims in the entity metadata as defined in Section 5.2.1 of
-  [OPENID-FED]. Since the Requestor MUST provide a `kid` value in its challenge response,
-  only keys (JWKs) in the Entity Configuration with a matching `kid` value are
-  considered.
+  `acme_requestor` metadata in its Entity Configuration, as specified in
+  [Requestor](#requestor-metadata). The Issuer MUST only consider the key
+  whose `kid` matches the `kid` claim in the Requestor's challenge response.
+  The Issuer also MUST only consider keys published in the Requestor's
+  `acme_requestor` metadata.
 
 If all of the above verifications succeed, then the validation is successful.
 Otherwise, it has failed. In either case, the Certificate Issuer responds according to
