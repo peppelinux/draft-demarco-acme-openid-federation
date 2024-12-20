@@ -462,7 +462,7 @@ trust_chain (optional, array of string):  an array of base64url-encoded bytes
     containing a signed JWT and representing the Trust Chain of the Requestor,
     See section 4.3 of [OPENID-FED]. The Requestor SHOULD use a Trust Anchor it
     has in common with the ACME server. It is RECOMMENDED that the Requestor
-    include this field; otherwise, the ACME server MUST start Federation Entity
+    includes this field; otherwise, the ACME server MUST start Federation Entity
     Discovery to obtain the Trust Chain related to the Requestor.
 
 A non-normative example for an authorization with `trust_chain` specified:
