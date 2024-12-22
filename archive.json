@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-19T00:36:48.559741+00:00",
+  "timestamp": "2024-12-22T00:38:04.852725+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -379,15 +379,15 @@
       "id": "I_kwDOJ6_NW86f4MG-",
       "title": "Create a section describing how to inspect all the jwks within the Entity Configuration",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/21",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "The Certificate Issuer needs to inspect the Requestor's Entity Configuration once the Trust Chain is verified, as it requires finding the matching JSON Web Key (JWK).\r\n\r\nThe JWK can be one of the federation entity keys or one of the JWKs contained within each metadata.\r\n\r\nThe JWKs can be provided by reference (using signed_jwks_uri) or by value (using jwks).\r\n\r\nIt would be beneficial to use a meta-language or a detailed description of the steps and mechanisms the Certificate Issuer might use to inspect the Entity Configuration for the matching JWK.",
       "createdAt": "2024-11-22T08:21:38Z",
-      "updatedAt": "2024-11-22T08:23:36Z",
-      "closedAt": null,
+      "updatedAt": "2024-12-20T00:02:22Z",
+      "closedAt": "2024-12-20T00:02:22Z",
       "comments": [
         {
           "author": "peppelinux",
@@ -403,15 +403,15 @@
       "id": "I_kwDOJ6_NW86h4gXv",
       "title": "We should disallow issuing certificates for arbitrary keys",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/24",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "inahga",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "At minimum, we should avoid looking at the top level `jwks` field of the entity configuration for the requestor's key. OIDF states:\r\n\r\n> These Federation Entity Keys SHOULD NOT be used in other protocols. (Keys to be used in other protocols, such as OpenID Connect, are conveyed in the metadata elements for the protocol's Entity Type Identifiers, such as the metadata under the openid_provider and openid_relying_party Entity Type Identifiers.)\r\n\r\nI'm inclined to agree, since reusing cryptographic keys for different purposes is generally a bad idea. The issuer not reading the `jwks` field avoids the requestor misusing the entity key for another purpose.\r\n\r\nSimilarly, we should also probably not allow issuance for arbitrary keys in the entity metadata either. It would be better if we either defined a new Entity Type Identifier and metadata structure for the purpose of X.509 issuance, and/or allow the CA to define its metadata structures.",
       "createdAt": "2024-12-03T20:45:43Z",
-      "updatedAt": "2024-12-03T22:22:18Z",
-      "closedAt": null,
+      "updatedAt": "2024-12-20T00:02:22Z",
+      "closedAt": "2024-12-20T00:02:22Z",
       "comments": [
         {
           "author": "peppelinux",
@@ -2462,24 +2462,26 @@
       "id": "PR_kwDOJ6_NW86FE2Fb",
       "title": "Add acme_requestor metadata",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/29",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "inahga",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Closes https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/24\r\n\r\nI think this also relates to https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/21.",
       "createdAt": "2024-12-12T22:07:44Z",
-      "updatedAt": "2024-12-17T17:00:51Z",
+      "updatedAt": "2024-12-20T00:02:21Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "b2b3d1f5eecc6864a7d6c6d387b03031fc751593",
       "headRepository": "inahga/draft-demarco-acme-openid-federation",
       "headRefName": "inahga/metadata",
       "headRefOid": "8c5f5488d2ad3b725d41e4860457f6583574f997",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-12-20T00:02:21Z",
+      "mergedAt": "2024-12-20T00:02:21Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "07d9e1cc40dce10212160dac8d7c1059ff538b49"
+      },
       "comments": [],
       "reviews": [
         {
@@ -2581,6 +2583,19 @@
               "updatedAt": "2024-12-17T16:13:21Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86V_dOc",
+          "commit": {
+            "abbreviatedOid": "8c5f548"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-12-20T00:02:12Z",
+          "updatedAt": "2024-12-20T00:02:12Z",
+          "comments": []
         }
       ]
     },
@@ -2596,13 +2611,13 @@
       "labels": [],
       "body": "Closes https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/15",
       "createdAt": "2024-12-17T17:08:17Z",
-      "updatedAt": "2024-12-17T17:09:05Z",
+      "updatedAt": "2024-12-20T18:33:30Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "b2b3d1f5eecc6864a7d6c6d387b03031fc751593",
+      "baseRefOid": "07d9e1cc40dce10212160dac8d7c1059ff538b49",
       "headRepository": "inahga/draft-demarco-acme-openid-federation",
       "headRefName": "inahga/15",
-      "headRefOid": "64bc8ea272cbf67e4a83f7bdafde2ebc0f197dd2",
+      "headRefOid": "308334b9a83382bd8e21b8c18ed59911278571c7",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -2626,6 +2641,66 @@
               "body": "Editorial: The only difference between the examples is one optional field, so I don't think both are necessary.",
               "createdAt": "2024-12-17T17:09:04Z",
               "updatedAt": "2024-12-17T17:09:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86V_dx7",
+          "commit": {
+            "abbreviatedOid": "64bc8ea"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-20T00:04:44Z",
+          "updatedAt": "2024-12-20T00:04:44Z",
+          "comments": [
+            {
+              "originalPosition": 2,
+              "body": "`Otherwise,` ?\r\n\r\nis that a typo?",
+              "createdAt": "2024-12-20T00:04:44Z",
+              "updatedAt": "2024-12-20T00:04:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86V_d1n",
+          "commit": {
+            "abbreviatedOid": "64bc8ea"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-20T00:05:05Z",
+          "updatedAt": "2024-12-20T00:05:06Z",
+          "comments": [
+            {
+              "originalPosition": 20,
+              "body": "```suggestion\r\n    includes this field; otherwise, the ACME server MUST start Federation Entity\r\n```",
+              "createdAt": "2024-12-20T00:05:05Z",
+              "updatedAt": "2024-12-20T00:05:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86WF3Xy",
+          "commit": {
+            "abbreviatedOid": "64bc8ea"
+          },
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-12-20T18:33:30Z",
+          "updatedAt": "2024-12-20T18:33:30Z",
+          "comments": [
+            {
+              "originalPosition": 2,
+              "body": "[Yes, that was fixed in the last PR.](https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/29/files#diff-a10546b011a74e6e9acf1e13c8e156ab69679b6d20d778d806b69054d1b72ba4L388)",
+              "createdAt": "2024-12-20T18:33:30Z",
+              "updatedAt": "2024-12-20T18:33:31Z"
             }
           ]
         }
