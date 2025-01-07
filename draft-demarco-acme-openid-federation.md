@@ -301,11 +301,11 @@ sequenceDiagram
   RC ->> A: POST /acme/chall/[chall-id] with signed token<br>and entity ID set to Requestor's ID
   A ->> RF: GET /.well-known/openid-federation
   RF -->> A: Requestor's Entity Configuration
-  A ->> A: Check entity configuration sub matches<br>entity identifier in the order
-  A ->> A: Check challenge sig is signed with key in<br>entity configuration
+  A ->> A: Check Entity Configuration sub matches<br>Entity identifier in the order
+  A ->> A: Check challenge sig is signed with key in<br>Entity Configuration
   opt If requestor did not provide Trust Chain
     create participant F as Federation Trust Anchors<br>and Intermediates
-    A <<->> F: Determine trust chain from<br>Issuer's trust anchors to Requestor<br>(OpenID Federation Discovery)
+    A <<->> F: Determine Trust Chain from<br>Issuer's Trust Anchors to Requestor<br>(OpenID Federation Discovery)
   end
   A ->> A: Evaluate trust chain
   A -->> RC: Respond to POST with validation success
