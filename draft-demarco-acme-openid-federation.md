@@ -151,8 +151,20 @@ document are defined in the [Section
 1.2](https://openid.net/specs/openid-federation-1_0.html#name-terminology)
 of [OPENID-FED]. The term "FQDN" used in this document is defined in [RFC1035].
 The term "CSR" used in this document is defined in [RFC2986]. The
-term Certificate Authority used in this document is defined in [RFC5280].
+term Certificate Authority used in this document is defined in [RFC5280]. The
+terms "ACME Client" and "ACME Server" are defined in [RFC8555].
 
+The specification also defines the following terms:
+
+Requestor:
+: A Federation Entity which wants to request X.509 certificates. It operates
+  a web server for hosting its Entity Configuration. It also operates an ACME
+  client, extended according to this document.
+
+Issuer:
+: A Federation Entity which issues X.509 certificates. It operates a web server
+  for hosting its Entity Configuration. It also operates an ACME server,
+  extended according to this document.
 
 # Conventions and Definitions
 
@@ -233,9 +245,10 @@ an X.509 Certificate.
    cases, the Requestor directly requests the issuance of the X.509 Certificate
    from the Issuer, without discovery.
 
-## Overview
+6. The Requestor creates an ACME Account with the Issuer, as described in
+   Section 7.3 of [RFC8555].
 
-TBD: high level design and ascii sequence diagram.
+## Overview
 
 1. The Requestor checks if its superior Federation Entity supports the ACME
    protocol for OpenID Federation 1.0. If not, the Requestor starts the
@@ -268,6 +281,40 @@ Requestor is part of the federation, these are listed below:
     MUST start a [Federation Entity
     Discovery](https://openid.net/specs/openid-federation-1_0.html#section-8)
     to obtain the Trust Chain related to the Requestor.
+
+The following diagram illustrates a successful interaction between Issuer and
+Requestor to retrieve an X.509 Certificate. The diagram assumes the Requestor
+has already discovered the Issuer, and the Requestor has already created an
+ACME account with the Issuer.
+
+```mermaid
+sequenceDiagram
+  participant RF as Requestor's OpenID Federation<br> Web Server
+  participant RC as Requestor's ACME Client
+  participant A as Issuer
+
+  RC ->> A: POST /acme/new-order
+  A -->> RC: Authorization at /acme/authz/[authz-id], Finalize at /acme/order/[order-id]/finalize
+  RC ->> A: POST /acme/authz/[authz-id]
+  A -->> RC: openid-federation-01 Challenge at /acme/chall/[chall-id]
+  RC ->> RC: Sign challenge token with private key
+  RC ->> A: POST /acme/chall/[chall-id] with signed token<br>and entity ID set to Requestor's ID
+  A ->> RF: GET /.well-known/openid-federation
+  RF -->> A: Requestor's Entity Configuration
+  A ->> A: Check Entity Configuration sub matches<br>Entity identifier in the order
+  A ->> A: Check challenge sig is signed with key in<br>Entity Configuration
+  opt If requestor did not provide Trust Chain
+    create participant F as Federation Trust Anchors<br>and Intermediates
+    A <<->> F: Determine Trust Chain from<br>Issuer's Trust Anchors to Requestor<br>(OpenID Federation Discovery)
+  end
+  A ->> A: Evaluate trust chain
+  A -->> RC: Respond to POST with validation success
+  RC ->> A: POST /acme/orders/[order-id]/finalize with CSR
+  A ->> A: Check CSR validity according to protocol and CA policy
+  A -->> RC: Order object with certificate at /acme/cert/[cert-id]
+  RC ->> A: POST /acme/cert/[cert-id]
+  A -->> RC: Newly issued X.509 Certificate 🎉
+```
 
 ## Entity Configuration Metadata
 
