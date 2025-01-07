@@ -313,7 +313,7 @@ sequenceDiagram
   A ->> A: Check CSR validity according to protocol and CA policy
   A -->> RC: Order object with certificate at /acme/cert/[cert-id]
   RC ->> A: POST /acme/cert/[cert-id]
-  A -->> RC: Newly issued certificate 🎉
+  A -->> RC: Newly issued X.509 Certificate 🎉
 ```
 
 ## Entity Configuration Metadata
