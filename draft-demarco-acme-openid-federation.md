@@ -456,7 +456,7 @@ sig (required, string):  a base64url encoding of a JWT, signing the token
     [Requestor](#requestor-metadata). It is REQUIRED that this JWT include a `kid` claim
     corresponding to a valid key.
 
-entity_identifier (required, string):  the Entity Identifier of the Requestor.
+entity_identifier (required, string):  the Entity identifier of the Requestor.
 
 trust_chain (optional, array of string):  an array of base64url-encoded bytes
     containing a signed JWT and representing the Trust Chain of the Requestor,
