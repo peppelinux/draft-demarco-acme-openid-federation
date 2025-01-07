@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-05T00:38:22.131421+00:00",
+  "timestamp": "2025-01-07T00:35:33.086749+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -2228,13 +2228,13 @@
       "labels": [],
       "body": "Closes https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/10\r\n",
       "createdAt": "2024-12-05T17:41:56Z",
-      "updatedAt": "2024-12-17T16:52:18Z",
+      "updatedAt": "2025-01-06T23:31:17Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "b2b3d1f5eecc6864a7d6c6d387b03031fc751593",
+      "baseRefOid": "07d9e1cc40dce10212160dac8d7c1059ff538b49",
       "headRepository": "inahga/draft-demarco-acme-openid-federation",
       "headRefName": "inahga/sequence",
-      "headRefOid": "84f8fbdab33d119aacf359532ca72385b1154f3e",
+      "headRefOid": "e5b5fb23db728e12de758b25d50121266cccb72b",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
