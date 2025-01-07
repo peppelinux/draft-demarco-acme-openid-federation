@@ -256,8 +256,9 @@ Table of Contents
        in the Section 3.2 (https://openid.net/specs/openid-federation-
        1_0.html#name-trust-chain) of [OPENID-FED].
 
-   3.  The Trust Anchor and its Intermediates SHOULD implement an ACME
-       server, extended according to this document.
+   3.  The Issuer, be this the Trust Anchor or one or more of its
+       Intermediates, MUST implement an ACME server, extended according
+       to this document.
 
    4.  The Requestor MUST publish the metadata type acme_requestor in
        its Entity Configuration, according to Requestor Metadata
