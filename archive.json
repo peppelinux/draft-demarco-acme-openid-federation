@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-07T00:35:33.086749+00:00",
+  "timestamp": "2025-01-09T00:35:08.556305+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -198,7 +198,7 @@
       "id": "I_kwDOJ6_NW86dGhqc",
       "title": "Sequence Diagram",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/10",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -207,8 +207,8 @@
       "labels": [],
       "body": "We need a sequence diagram describing the entire flow\r\n\r\nwe can start in this issue using mermaid or plantuml\r\n\r\nhere an example as template \r\n\r\nwe need three entities\r\n\r\n1. RP (requesting X.509 Certificates)\r\n2. Superior Entity also ACME Provider\r\n3. Trust Anchor supporting trust evaluation \r\n\r\n```mermaid\r\nsequenceDiagram\r\n    participant WalletInstance as Wallet Instance\r\n    participant CV as Credential Verifier\r\n    participant IE as Intermediate\r\n    participant TA as Trust Anchor\r\n\r\n    WalletInstance->>CV: Fetch CV's Entity Configuration\r\n    CV->>WalletInstance: Return Entity Configuration\r\n\r\n    WalletInstance->>CV: Extract Authority Hints from CV's Configuration\r\n    CV->>WalletInstance: Provide Authority Hints\r\n\r\n    loop for each Authority Hint\r\n        WalletInstance->>IE: Fetch Entity Configuration -> get federation_fetch_api URL\r\n        IE->>WalletInstance: Fetch Subordinate Statement\r\n        WalletInstance->>WalletInstance: Validate the previous statement<br/>using the Federation Entity Keys<br/>provided in the Subordinate Statement\r\n    end\r\n\r\n    WalletInstance->>WalletInstance: Validate Trust Chain\r\n\r\n    alt If Trust Chain is valid and unexpired\r\n        WalletInstance->>WalletInstance: Proceed with Federation Process\r\n    else\r\n        WalletInstance->>WalletInstance: Abort Process with Error\r\n    end\r\n\r\n    WalletInstance->>WalletInstance: Applies Policies\r\n    WalletInstance->>WalletInstance: Derive CV's final metadata\r\n\r\n````",
       "createdAt": "2024-11-05T15:09:47Z",
-      "updatedAt": "2024-11-22T08:24:11Z",
-      "closedAt": null,
+      "updatedAt": "2025-01-07T10:34:24Z",
+      "closedAt": "2025-01-07T10:34:24Z",
       "comments": [
         {
           "author": "peppelinux",
@@ -288,7 +288,7 @@
       "id": "I_kwDOJ6_NW86fTGRi",
       "title": "entity_id must be required, trust chain optional in the request",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/15",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [
@@ -299,8 +299,8 @@
       ],
       "body": "In the current draft we mandate the use of static trust chains\r\n\r\nwe want to configure as mandatory the entity_id instead, and having the trust chain as optional or recommended",
       "createdAt": "2024-11-19T15:35:32Z",
-      "updatedAt": "2024-12-17T15:33:57Z",
-      "closedAt": null,
+      "updatedAt": "2025-01-07T10:28:30Z",
+      "closedAt": "2025-01-07T10:28:29Z",
       "comments": [
         {
           "author": "inahga",
@@ -431,10 +431,43 @@
       "author": "inahga",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "enhancement"
+      ],
       "body": "We would prefer that Trust Anchors and Intermediates be the only ones to implement the ACME server.\r\n\r\nBut are there are valid use cases for a Leaf to implement the server as well?",
       "createdAt": "2024-12-04T17:19:07Z",
-      "updatedAt": "2024-12-04T17:19:08Z",
+      "updatedAt": "2025-01-07T15:06:45Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "the way we see a leaf is relative to the context where we place the entity\r\n\r\nusing openid federation and entity can be, at the same time, a leaf in federation A, a trust anchor in its own federation, an intermediate in federation B\r\n\r\ntechnically nothing prevents a federation leaf to offer x.509 certificates through acme",
+          "createdAt": "2025-01-07T14:33:37Z",
+          "updatedAt": "2025-01-07T14:33:37Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "Actually, we have already enabled leaves playing the acme server role, here: https://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/main/draft-demarco-acme-openid-federation.md?plain=1#L237",
+          "createdAt": "2025-01-07T15:06:44Z",
+          "updatedAt": "2025-01-07T15:06:44Z"
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "id": "I_kwDOJ6_NW86lTEB4",
+      "title": "Allow separate keypairs for challenge and X.509 certificates",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/32",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Currently, we require that the same public key be used in the `acme_requestor` field of the Entity Configuration, the CSR, and the final X.509 certificate. This requirement seems unnecessarily restrictive to me, and it cuts against some cryptographic best practices. I suggest we remove the requirement that the public key in the CSR match the `acme_requestor` metadata. This will both allow users to use different private keys for different purposes, eliminating any concerns of cross-protocol attacks, and make it trivial to rotate keys when requesting a new X.509 certificate. The main thing we'd lose is that any Superior Entity above the Requestor would no longer get any say on the algorithm of public keys in X.509 certificates, or the public keys themselves, but I don't see why that would be useful in practice.\r\n\r\nGenerally, defending against cross-protocol attacks requires that it be infeasibly difficult to get a message that is signed in one protocol to be reinterpreted as a valid message in another protocol. This can be solved with domain separation, but simply using different private keys for different protocols is a foolproof defense. I think the domain separation argument that JWT-X.509 private key reuse would probably lean on the JWT claims set message starting with either `{` or whitespace, and the X.509 message starting with 0x30 0x82 (or 0x30 0x81, or 0x30 0x83) to denote a SEQUENCE, assuming it's a tbsCertificate/tbsCertList/tbsResponseData/etc. We'd also have to consider key reuse between JWT and TLS.\r\n\r\nIt is currently the norm for many ACME clients to generate a new keypair whenever they renew certificates. This is good for security because it limits the impact of point-in-time private key compromises to just the one certificate's remaining validity period. If we require that the X.509 certificate's public key match the OpenID Federation metadata, then ACME clients that support this challenge type would need a separate mode where they only use a provided private key to sign CSRs, rather than generating fresh keys as needed. Furthermore, users deploying this system would need to develop their own way to rotate keys, starting with changing their Entity Configuration.\r\n\r\nRemoving this requirement that JWT and X.509 public keys match would also make implementation easier, because we wouldn't have to develop mappings between JWT signature algorithms and X.509 signature algorithms, etc.",
+      "createdAt": "2025-01-07T16:18:19Z",
+      "updatedAt": "2025-01-07T16:18:19Z",
       "closedAt": null,
       "comments": []
     }
@@ -2221,24 +2254,26 @@
       "id": "PR_kwDOJ6_NW86EN42t",
       "title": "High level sequence diagram",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/27",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "inahga",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Closes https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/10\r\n",
       "createdAt": "2024-12-05T17:41:56Z",
-      "updatedAt": "2025-01-06T23:31:17Z",
+      "updatedAt": "2025-01-07T10:34:23Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "07d9e1cc40dce10212160dac8d7c1059ff538b49",
       "headRepository": "inahga/draft-demarco-acme-openid-federation",
       "headRefName": "inahga/sequence",
-      "headRefOid": "e5b5fb23db728e12de758b25d50121266cccb72b",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "d5a28f47412b5be00c78c3e8353ae8302ea9908e",
+      "closedAt": "2025-01-07T10:34:23Z",
+      "mergedAt": "2025-01-07T10:34:22Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "76771e0e00e8f820ecaac8b62239e3f277b24fe0"
+      },
       "comments": [],
       "reviews": [
         {
@@ -2350,6 +2385,86 @@
               "body": "I will take this suggestion, and also clarify definitions of the Requestor and Requestor-as-ACME client.",
               "createdAt": "2024-12-17T15:19:31Z",
               "updatedAt": "2024-12-17T15:19:31Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86XCTJm",
+          "commit": {
+            "abbreviatedOid": "e5b5fb2"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-01-07T10:29:50Z",
+          "updatedAt": "2025-01-07T10:29:50Z",
+          "comments": [
+            {
+              "originalPosition": 59,
+              "body": "```suggestion\r\n  A ->> A: Check challenge sig is signed with key in<br>Entity Configuration\r\n```",
+              "createdAt": "2025-01-07T10:29:50Z",
+              "updatedAt": "2025-01-07T10:29:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86XCTUj",
+          "commit": {
+            "abbreviatedOid": "e5b5fb2"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-01-07T10:30:10Z",
+          "updatedAt": "2025-01-07T10:30:10Z",
+          "comments": [
+            {
+              "originalPosition": 62,
+              "body": "```suggestion\r\n    A <<->> F: Determine Trust Chain from<br>Issuer's Trust Anchors to Requestor<br>(OpenID Federation Discovery)\r\n```",
+              "createdAt": "2025-01-07T10:30:10Z",
+              "updatedAt": "2025-01-07T10:30:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86XCTid",
+          "commit": {
+            "abbreviatedOid": "e5b5fb2"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-01-07T10:30:30Z",
+          "updatedAt": "2025-01-07T10:30:30Z",
+          "comments": [
+            {
+              "originalPosition": 58,
+              "body": "```suggestion\r\n  A ->> A: Check Entity Configuration sub matches<br>Entity identifier in the order\r\n```",
+              "createdAt": "2025-01-07T10:30:30Z",
+              "updatedAt": "2025-01-07T10:30:30Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86XCTym",
+          "commit": {
+            "abbreviatedOid": "e5b5fb2"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-01-07T10:30:54Z",
+          "updatedAt": "2025-01-07T10:30:54Z",
+          "comments": [
+            {
+              "originalPosition": 70,
+              "body": "```suggestion\r\n  A -->> RC: Newly issued X.509 Certificate \ud83c\udf89\r\n```",
+              "createdAt": "2025-01-07T10:30:54Z",
+              "updatedAt": "2025-01-07T10:30:54Z"
             }
           ]
         }
@@ -2604,24 +2719,26 @@
       "id": "PR_kwDOJ6_NW86Fhne-",
       "title": "Make entity_id required",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/30",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "inahga",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Closes https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/15",
       "createdAt": "2024-12-17T17:08:17Z",
-      "updatedAt": "2024-12-20T18:33:30Z",
+      "updatedAt": "2025-01-07T10:28:29Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "07d9e1cc40dce10212160dac8d7c1059ff538b49",
       "headRepository": "inahga/draft-demarco-acme-openid-federation",
       "headRefName": "inahga/15",
-      "headRefOid": "308334b9a83382bd8e21b8c18ed59911278571c7",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "ab8e4ebd16bd22ea030b34143d7466fa614f723f",
+      "closedAt": "2025-01-07T10:28:28Z",
+      "mergedAt": "2025-01-07T10:28:28Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "6d4c2a594d369625a239bdf660d4a4d35233b53d"
+      },
       "comments": [],
       "reviews": [
         {
@@ -2703,6 +2820,114 @@
               "updatedAt": "2024-12-20T18:33:31Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86XCREp",
+          "commit": {
+            "abbreviatedOid": "308334b"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-01-07T10:25:53Z",
+          "updatedAt": "2025-01-07T10:25:53Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86XCR_v",
+          "commit": {
+            "abbreviatedOid": "308334b"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-01-07T10:27:40Z",
+          "updatedAt": "2025-01-07T10:27:40Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "Entity Identifier it is not a defined term yet, therefore it should be Entity identifier",
+              "createdAt": "2025-01-07T10:27:40Z",
+              "updatedAt": "2025-01-07T10:27:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86XCSIA",
+          "commit": {
+            "abbreviatedOid": "308334b"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-01-07T10:27:55Z",
+          "updatedAt": "2025-01-07T10:27:56Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "```suggestion\r\nentity_identifier (required, string):  the Entity identifier of the Requestor.\r\n```",
+              "createdAt": "2025-01-07T10:27:55Z",
+              "updatedAt": "2025-01-07T10:27:56Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "id": "PR_kwDOJ6_NW86G80ku",
+      "title": "fix: generalization of the role of the Issuer within the federation",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/31",
+      "state": "MERGED",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "This PR clarifies that the Issuer MUST implement ACME and it might match the trust anchor or one of its intermediates",
+      "createdAt": "2025-01-07T15:02:35Z",
+      "updatedAt": "2025-01-07T21:35:55Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "76771e0e00e8f820ecaac8b62239e3f277b24fe0",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "iss-1",
+      "headRefOid": "f20e7055743879a5fcd40c98c55c805c35ee390c",
+      "closedAt": "2025-01-07T21:35:55Z",
+      "mergedAt": "2025-01-07T21:35:55Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "338de0daeb77e37e02a4b3da4d7f48c85a45607f"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86XEqMm",
+          "commit": {
+            "abbreviatedOid": "f20e705"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-01-07T15:07:13Z",
+          "updatedAt": "2025-01-07T15:07:13Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86XGHb6",
+          "commit": {
+            "abbreviatedOid": "f20e705"
+          },
+          "author": "jcjones",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-01-07T17:13:18Z",
+          "updatedAt": "2025-01-07T17:13:18Z",
+          "comments": []
         }
       ]
     }
