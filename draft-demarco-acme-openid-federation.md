@@ -287,34 +287,92 @@ Requestor to retrieve an X.509 Certificate. The diagram assumes the Requestor
 has already discovered the Issuer, and the Requestor has already created an
 ACME account with the Issuer.
 
-```mermaid
-sequenceDiagram
-  participant RF as Requestor's OpenID Federation<br> Web Server
-  participant RC as Requestor's ACME Client
-  participant A as Issuer
+~~~~ ascii-art
+┌─────────────────┐
+│Requestor's      │ ┌───────────┐
+│OpenID Federation│ │Requestor's│                            ┌────────────────────────┐                    ┌───────────────────────┐
+│ Web Server      │ │ACME Client│                            │X.509 Certificate Issuer│                    │Federation Trust Anchor│
+└────────┬────────┘ └─────┬─────┘                            └────────────┬───────────┘                    └───────────┬───────────┘
+         │                │            POST /acme/new-order               │                                            │
+         │                │──────────────────────────────────────────────>│                                            │
+         │                │                                               │                                            │
+         │                │ Authorization at /acme/authz/[authz-id]       │                                            │
+         │                │ Finalize at /acme/order/[order-id]/finalize   │                                            │
+         │                │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─  ─ ─│                                            │
+         │                │                                               │                                            │
+         │                │         POST /acme/authz/[authz-id]           │                                            │
+         │                │──────────────────────────────────────────────>│                                            │
+         │                │                                               │                                            │
+         │                │       openid-federation-01 Challenge          │                                            │
+         │                │       at /acme/chall/[chall-id]               │                                            │
+         │                │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─  ─ ─│                                            │
+         │                │                                               │                                            │
+         │                │────┐                                          │                                            │
+         │                │    │ Sign challenge token with private key    │                                            │
+         │                │<───┘                                          │                                            │
+         │                │                                               │                                            │
+         │                │ POST /acme/chall/[chall-id] with signed token │                                            │
+         │                │ and entity ID set to Requestor's ID           │                                            │
+         │                │──────────────────────────────────────────────>│                                            │
+         │                │                                               │                                            │
+         │             GET /.well-known/openid-federation                 │                                            │
+         │<───────────────────────────────────────────────────────────────│                                            │
+         │                │                                               │                                            │
+         │              Requestor's Entity Configuration                  │                                            │
+         │ ─ ─ ─ ─ ─  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─>│                                            │
+         │                │                                               │                                            │
+         │                │                                               │────┐                                       │
+         │                │                                               │    │ Check Entity Configuration sub matches│
+         │                │                                               │<───┘ Entity identifier in the order        │
+         │                │                                               │                                            │
+         │                │                                               │                                            │
+         │                │                                               │────┐                                       │
+         │                │                                               │    │ Check challenge sig is signed         │
+         │                │                                               │    │ with key in                           │
+         │                │                                               │<───┘ Entity Configuration                  │
+         │                │                                               │                                            │
+         │                │                                               │                                            │
+         │                │                                               │                                            │
+         │                │                            ╔══════╤═══════════╪════════════════════════════════════════════╪══╗
+         │                │                            ║ OPT  │  If requestor did not provide Trust Chain              │  ║
+         │                │                            ╟──────┘           │                                            │  ║
+         │                │                            ║                  │    Determine Trust Chain                   │  ║
+         │                │                            ║                  │    from Issuer's Trust Anchor to Requestor │  ║
+         │                │                            ║                  │    (OpenID Federation Discovery)           │  ║
+         │                │                            ║                  │<──────────────────────────────────────────>│  ║
+         │                │                            ╚══════════════════╪════════════════════════════════════════════╪══╝
+         │                │                                               │                                            │
+         │                │                                               │────┐                                       │
+         │                │                                               │    │ Evaluate trust chain                  │
+         │                │                                               │<───┘                                       │
+         │                │                                               │                                            │
+         │                │    Respond to POST with validation success    │                                            │
+         │                │<─ ── ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─│                                            │
+         │                │                                               │                                            │
+         │                │POST /acme/orders/[order-id]/finalize with CSR │                                            │
+         │                │──────────────────────────────────────────────>│                                            │
+         │                │                                               │                                            │
+         │                │                                               │────┐                                       │
+         │                │                                               │    │ Check CSR validity                    │
+         │                │                                               │<───┘ according to protocol and CA policy   │
+         │                │                                               │                                            │
+         │                │                                               │                                            │
+         │                │Order object with certificate                  │                                            │
+         │                │ at /acme/cert/[cert-id]                       │                                            │
+         │                │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─  ─ ─│                                            │
+         │                │                                               │                                            │
+         │                │              POST /acme/cert/[cert-id]        │                                            │
+         │                │──────────────────────────────────────────────>│                                            │
+         │                │                                               │                                            │
+         │                │           Newly issued X.509 Certificate      │                                            │
+         │                │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ── ─ ─│                                            │
+┌────────┴────────┐ ┌─────┴─────┐                               ┌─────────┴──────────────┐                 ┌───────────┴───────────┐
+│Requestor's      │ │Requestor's│                               │X.509 Certificate Issuer│                 │Federation Trust Anchor│
+│OpenID Federation│ │ACME Client│                               └────────────────────────┘                 └───────────────────────┘
+│ Web Server      │ └───────────┘
+└─────────────────┘
 
-  RC ->> A: POST /acme/new-order
-  A -->> RC: Authorization at /acme/authz/[authz-id], Finalize at /acme/order/[order-id]/finalize
-  RC ->> A: POST /acme/authz/[authz-id]
-  A -->> RC: openid-federation-01 Challenge at /acme/chall/[chall-id]
-  RC ->> RC: Sign challenge token with private key
-  RC ->> A: POST /acme/chall/[chall-id] with signed token<br>and entity ID set to Requestor's ID
-  A ->> RF: GET /.well-known/openid-federation
-  RF -->> A: Requestor's Entity Configuration
-  A ->> A: Check Entity Configuration sub matches<br>Entity identifier in the order
-  A ->> A: Check challenge sig is signed with key in<br>Entity Configuration
-  opt If requestor did not provide Trust Chain
-    create participant F as Federation Trust Anchors<br>and Intermediates
-    A <<->> F: Determine Trust Chain from<br>Issuer's Trust Anchors to Requestor<br>(OpenID Federation Discovery)
-  end
-  A ->> A: Evaluate trust chain
-  A -->> RC: Respond to POST with validation success
-  RC ->> A: POST /acme/orders/[order-id]/finalize with CSR
-  A ->> A: Check CSR validity according to protocol and CA policy
-  A -->> RC: Order object with certificate at /acme/cert/[cert-id]
-  RC ->> A: POST /acme/cert/[cert-id]
-  A -->> RC: Newly issued X.509 Certificate 🎉
-```
+~~~~
 
 ## Entity Configuration Metadata
 

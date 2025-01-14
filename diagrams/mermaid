@@ -1,0 +1,26 @@
+sequenceDiagram
+  participant RF as Requestor's OpenID Federation<br> Web Server
+  participant RC as Requestor's ACME Client
+  participant A as Issuer
+
+  RC ->> A: POST /acme/new-order
+  A -->> RC: Authorization at /acme/authz/[authz-id], Finalize at /acme/order/[order-id]/finalize
+  RC ->> A: POST /acme/authz/[authz-id]
+  A -->> RC: openid-federation-01 Challenge at /acme/chall/[chall-id]
+  RC ->> RC: Sign challenge token with private key
+  RC ->> A: POST /acme/chall/[chall-id] with signed token<br>and entity ID set to Requestor's ID
+  A ->> RF: GET /.well-known/openid-federation
+  RF -->> A: Requestor's Entity Configuration
+  A ->> A: Check Entity Configuration sub matches<br>Entity identifier in the order
+  A ->> A: Check challenge sig is signed with key in<br>Entity Configuration
+  opt If requestor did not provide Trust Chain
+    create participant F as Federation Trust Anchors<br>and Intermediates
+    A <<->> F: Determine Trust Chain from<br>Issuer's Trust Anchors to Requestor<br>(OpenID Federation Discovery)
+  end
+  A ->> A: Evaluate trust chain
+  A -->> RC: Respond to POST with validation success
+  RC ->> A: POST /acme/orders/[order-id]/finalize with CSR
+  A ->> A: Check CSR validity according to protocol and CA policy
+  A -->> RC: Order object with certificate at /acme/cert/[cert-id]
+  RC ->> A: POST /acme/cert/[cert-id]
+  A -->> RC: Newly issued X.509 Certificate 🎉
