@@ -44,7 +44,9 @@ normative:
   RFC8555: RFC8555
 
   OPENID-FED:
-    title: "OpenID Federation 1.0"
+    title: "OpenID Federation 1.0 - draft 41"
+    target: https://openid.net/specs/openid-federation-1_0-41.html
+    date: 2024-12-04
     author:
       -
         ins: R. Hedberg
@@ -64,6 +66,12 @@ normative:
       -
         ins: V. Dzhuvinov
         name: Vladimir Dzhuvinov
+
+  IANA-OAUTH:
+    title: "OAuth Parameters"
+    target: https://www.iana.org/assignments/oauth-parameters/oauth-parameters.xhtml
+    author:
+      organization: IANA
 
 informative:
 
@@ -265,9 +273,11 @@ an X.509 Certificate.
 4. The Requestor sends the newOrder request to the Certificate Issuer,
    as described in Section [newOrder Request](#neworder-request).
 
-5. The Certificate Issuer evaluates the trust to the Requestor by checking if it is part of
-   the federation. If not the CSR request MUST be rejected (**TBD** the
-   error to return).
+5. The Certificate Issuer evaluates the trust to the Requestor by checking if it
+   is part of its federation. If not the CSR request MUST be rejected, with
+   error type `urn:ietf:params:ppm:acme-openid-federation:error:oauthError`,
+   and an error code of `invalid_trust_chain`
+   ({{Section 8.9 of OPENID-FED}}{: relative="#section-8.9"}).
 
 There are two ways the Certificate Issuer is able to check if a
 Requestor is part of the federation, these are listed below:
@@ -674,6 +684,19 @@ expired cryptographic keys in the Federation Historical Key Registry.
 The X.509 Certificate revocation request is defined in the [Section
 7.6](https://datatracker.ietf.org/doc/html/rfc8555#section-7.6) of [RFC8555].
 
+# Errors
+
+This document defines one new error type URI to be used in problem documents
+{{!RFC9457}}, as described in {{Section 6.7 of !RFC8555}}.
+
+The error type `urn:ietf:params:ppm:acme-openid-federation:error:oauthError` can
+be used to encapsulate any OAuth error code returned while resolving OpenID
+Federation entities. The title of this error type is "OAuth Error". The `detail`
+member of the document MAY include the description of the particular OAuth error
+code that caused the error. This error type has an extension member named
+`error_code`. The `error_code` member SHOULD be set to the OAuth error code,
+taken from the IANA "OAuth Extensions Error Registry" {{IANA-OAUTH}}.
+
 # Security Considerations
 
 TBD.
@@ -681,7 +704,7 @@ TBD.
 
 # IANA Considerations
 
-IANA is kindly asked to update two registry tables and make one assignment:
+IANA is kindly asked to make the following updates to registries:
 
 ## Update ACME Identifier Types
 
@@ -700,6 +723,43 @@ the "PKIX Other Name Forms" registry
 ([1.3.6.1.5.5.7.8](https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.8))
 and reference this document.
 
+## URN Sub-namespace for ACME with OpenID Federation (urn:ietf:params:acme-openid-federation) {#urn-namespace}
+
+IANA is asked to register the following value in the "IETF URN Sub-namespace for
+Registered Protocol Parameter Identifiers" registry, following the template in
+{{!RFC3553}}:
+
+~~~
+Registry name: acme-openid-federation
+
+Specification: RFC XXXX
+
+Repository: http://www.iana.org/assignments/acme-openid-federation
+
+Index value: No transformation needed.
+~~~
+
+## Error Types
+
+IANA is asked to create a new registry group named "Automatic Certificate
+Management Environment (ACME) with OpenID Federation 1.0", and a new registry
+named "Error Types" within it.
+
+This registry is administered under a Specification Required policy
+{{!RFC8126}}.
+
+This registry has the following three fields:
+
+- Identifier: The label to be included in the URN for this error type, following
+  `urn:ietf:params:ppm:acme-openid-federation:error:`
+- Description: A human-readable description of the error type
+- Reference: Where the error type is defined
+
+The initial contents of the registry are as follows
+
+|Identifier|Description|Reference|
+|----------|-----------|---------|
+|oauthError|Encapsulates an OAuth error code|RFC XXXX|
 
 --- back
 
