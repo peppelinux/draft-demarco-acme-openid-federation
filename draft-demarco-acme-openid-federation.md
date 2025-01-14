@@ -123,7 +123,7 @@ ACME protocol in the following ways:
   were previously issued with ACME.
 
 - It extends the ACME newOrder resource, as defined in Section 7.4 of
-  [`RFC8555`], defining a new payload identifier type called
+  [RFC8555], defining a new payload identifier type called
   `openid-federation`.
 
 # Audience Target and Use Cases
@@ -540,8 +540,8 @@ type (required, string):  The string "openid-federation-01"
 token (required, string):  A random value that uniquely identifies the
     challenge. This value MUST have at least 128 bits of entropy. It MUST NOT
     contain any characters outside the base64url alphabet as described in
-    Section 5 of [RFC4648]. Trailing '=' padding characters MUST be stripped.
-    See [RFC4086] for additional information on randomness requirements.
+    Section 5 of {{!RFC4648}}. Trailing '=' padding characters MUST be stripped.
+    See {{!RFC4086}} for additional information on randomness requirements.
 
 ~~~~
    {
