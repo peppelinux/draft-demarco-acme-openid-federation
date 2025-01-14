@@ -67,9 +67,15 @@ normative:
         ins: V. Dzhuvinov
         name: Vladimir Dzhuvinov
 
+  IANA-ACME:
+    title: "Automated Certificate Management Environment (ACME) Protocol"
+    target: https://www.iana.org/assignments/acme
+    author:
+      organization: IANA
+
   IANA-OAUTH:
     title: "OAuth Parameters"
-    target: https://www.iana.org/assignments/oauth-parameters/oauth-parameters.xhtml
+    target: https://www.iana.org/assignments/oauth-parameters
     author:
       organization: IANA
 
@@ -728,7 +734,7 @@ and reference this document.
 
 IANA is asked to add the following assignment to the "ACME Error Types"
 registry, in the "Automated Certificate Management Environment (ACME) Protocol"
-registry group.
+registry group {{IANA-ACME}}.
 
 |Type|Description|Reference|
 |----|-----------|---------|
