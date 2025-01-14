@@ -693,8 +693,8 @@ The error type `urn:ietf:params:acme-openid-federation:error:oauthError` can
 be used to encapsulate any OAuth error code returned while resolving OpenID
 Federation entities. The title of this error type is "OAuth Error". The `detail`
 member of the document MAY include the description of the particular OAuth error
-code that caused the error. This error type has an extension member named
-`error_code`. The `error_code` member SHOULD be set to the OAuth error code,
+code that caused the error. The problem document for this error type SHOULD include an extension
+member named `error_code`. The `error_code` member SHOULD be set to the OAuth error code,
 taken from the IANA "OAuth Extensions Error Registry" {{IANA-OAUTH}}.
 
 # Security Considerations
