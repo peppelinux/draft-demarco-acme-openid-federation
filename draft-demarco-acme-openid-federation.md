@@ -275,7 +275,7 @@ an X.509 Certificate.
 
 5. The Certificate Issuer evaluates the trust to the Requestor by checking if it
    is part of its federation. If not the CSR request MUST be rejected, with
-   error type `urn:ietf:params:ppm:acme-openid-federation:error:oauthError`,
+   error type `urn:ietf:params:acme-openid-federation:error:oauthError`,
    and an error code of `invalid_trust_chain`
    ({{Section 8.9 of OPENID-FED}}{: relative="#section-8.9"}).
 
@@ -689,7 +689,7 @@ The X.509 Certificate revocation request is defined in the [Section
 This document defines one new error type URI to be used in problem documents
 {{!RFC9457}}, as described in {{Section 6.7 of !RFC8555}}.
 
-The error type `urn:ietf:params:ppm:acme-openid-federation:error:oauthError` can
+The error type `urn:ietf:params:acme-openid-federation:error:oauthError` can
 be used to encapsulate any OAuth error code returned while resolving OpenID
 Federation entities. The title of this error type is "OAuth Error". The `detail`
 member of the document MAY include the description of the particular OAuth error
@@ -751,7 +751,7 @@ This registry is administered under a Specification Required policy
 This registry has the following three fields:
 
 - Identifier: The label to be included in the URN for this error type, following
-  `urn:ietf:params:ppm:acme-openid-federation:error:`
+  `urn:ietf:params:acme-openid-federation:error:`
 - Description: A human-readable description of the error type
 - Reference: Where the error type is defined
 
