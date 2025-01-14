@@ -275,7 +275,7 @@ an X.509 Certificate.
 
 5. The Certificate Issuer evaluates the trust to the Requestor by checking if it
    is part of its federation. If not the CSR request MUST be rejected, with
-   error type `urn:ietf:params:acme-openid-federation:error:oauthError`,
+   error type `urn:ietf:params:acme:error:openIDFederationError`,
    and an error code of `invalid_trust_chain`
    ({{Section 8.9 of OPENID-FED}}{: relative="#section-8.9"}).
 
@@ -689,13 +689,14 @@ The X.509 Certificate revocation request is defined in the [Section
 This document defines one new error type URI to be used in problem documents
 {{!RFC9457}}, as described in {{Section 6.7 of !RFC8555}}.
 
-The error type `urn:ietf:params:acme-openid-federation:error:oauthError` can
+The error type `urn:ietf:params:acme:error:openIDFederationError` can
 be used to encapsulate any OAuth error code returned while resolving OpenID
-Federation entities. The title of this error type is "OAuth Error". The `detail`
-member of the document MAY include the description of the particular OAuth error
-code that caused the error. The problem document for this error type SHOULD include an extension
-member named `error_code`. The `error_code` member SHOULD be set to the OAuth error code,
-taken from the IANA "OAuth Extensions Error Registry" {{IANA-OAUTH}}.
+Federation entities. The title of this error type is "OpenID Federation Error".
+The `detail` member of the problem document MAY include the description of the
+particular OAuth error code that caused the error. The problem document for this
+error type SHOULD include an extension member named `error_code`. The
+`error_code` member SHOULD be set to the OAuth error code, taken from the IANA
+"OAuth Extensions Error Registry" {{IANA-OAUTH}}.
 
 # Security Considerations
 
@@ -723,43 +724,15 @@ the "PKIX Other Name Forms" registry
 ([1.3.6.1.5.5.7.8](https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.8))
 and reference this document.
 
-## URN Sub-namespace for ACME with OpenID Federation (urn:ietf:params:acme-openid-federation) {#urn-namespace}
+## ACME Error Types
 
-IANA is asked to register the following value in the "IETF URN Sub-namespace for
-Registered Protocol Parameter Identifiers" registry, following the template in
-{{!RFC3553}}:
+IANA is asked to add the following assignment to the "ACME Error Types"
+registry, in the "Automated Certificate Management Environment (ACME) Protocol"
+registry group.
 
-~~~
-Registry name: acme-openid-federation
-
-Specification: RFC XXXX
-
-Repository: http://www.iana.org/assignments/acme-openid-federation
-
-Index value: No transformation needed.
-~~~
-
-## Error Types
-
-IANA is asked to create a new registry group named "Automatic Certificate
-Management Environment (ACME) with OpenID Federation 1.0", and a new registry
-named "Error Types" within it.
-
-This registry is administered under a Specification Required policy
-{{!RFC8126}}.
-
-This registry has the following three fields:
-
-- Identifier: The label to be included in the URN for this error type, following
-  `urn:ietf:params:acme-openid-federation:error:`
-- Description: A human-readable description of the error type
-- Reference: Where the error type is defined
-
-The initial contents of the registry are as follows
-
-|Identifier|Description|Reference|
-|----------|-----------|---------|
-|oauthError|Encapsulates an OAuth error code|RFC XXXX|
+|Type|Description|Reference|
+|----|-----------|---------|
+|openIDFederationError|An error occurred while resolving an OpenID Federation entity|RFC XXXX|
 
 --- back
 
