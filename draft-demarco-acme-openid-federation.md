@@ -281,7 +281,7 @@ an X.509 Certificate.
 
 5. The Certificate Issuer evaluates the trust to the Requestor by checking if it
    is part of its federation. If not the CSR request MUST be rejected, with
-   error type `urn:ietf:params:acme:error:openIDFederationError`,
+   error type `urn:ietf:params:acme:error:openIDFederationEntity`,
    and an error code of `invalid_trust_chain`
    ({{Section 8.9 of OPENID-FED}}{: relative="#section-8.9"}).
 
@@ -695,7 +695,7 @@ The X.509 Certificate revocation request is defined in the [Section
 This document defines one new error type URI to be used in problem documents
 {{!RFC9457}}, as described in {{Section 6.7 of !RFC8555}}.
 
-The error type `urn:ietf:params:acme:error:openIDFederationError` can
+The error type `urn:ietf:params:acme:error:openIDFederationEntity` can
 be used to encapsulate any OAuth error code returned while resolving OpenID
 Federation entities. The title of this error type is "OpenID Federation Error".
 The `detail` member of the problem document MAY include the description of the
@@ -738,7 +738,7 @@ registry group {{IANA-ACME}}.
 
 |Type|Description|Reference|
 |----|-----------|---------|
-|openIDFederationError|An error occurred while resolving an OpenID Federation entity|RFC XXXX|
+|openIDFederationEntity|An error occurred while resolving an OpenID Federation entity|RFC XXXX|
 
 --- back
 
