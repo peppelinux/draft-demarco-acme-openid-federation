@@ -738,7 +738,7 @@ registry group {{IANA-ACME}}.
 
 |Type|Description|Reference|
 |----|-----------|---------|
-|openIDFederationEntity|An error occurred while resolving an OpenID Federation entity|RFC XXXX|
+|openIDFederationEntity|An error occurred while resolving an OpenID Federation entity|this document|
 
 --- back
 
