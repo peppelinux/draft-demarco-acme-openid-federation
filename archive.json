@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-14T00:33:22.090518+00:00",
+  "timestamp": "2025-01-16T00:33:55.773355+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -467,7 +467,7 @@
       "labels": [],
       "body": "Currently, we require that the same public key be used in the `acme_requestor` field of the Entity Configuration, the CSR, and the final X.509 certificate. This requirement seems unnecessarily restrictive to me, and it cuts against some cryptographic best practices. I suggest we remove the requirement that the public key in the CSR match the `acme_requestor` metadata. This will both allow users to use different private keys for different purposes, eliminating any concerns of cross-protocol attacks, and make it trivial to rotate keys when requesting a new X.509 certificate. The main thing we'd lose is that any Superior Entity above the Requestor would no longer get any say on the algorithm of public keys in X.509 certificates, or the public keys themselves, but I don't see why that would be useful in practice.\r\n\r\nGenerally, defending against cross-protocol attacks requires that it be infeasibly difficult to get a message that is signed in one protocol to be reinterpreted as a valid message in another protocol. This can be solved with domain separation, but simply using different private keys for different protocols is a foolproof defense. I think the domain separation argument that JWT-X.509 private key reuse would probably lean on the JWT claims set message starting with either `{` or whitespace, and the X.509 message starting with 0x30 0x82 (or 0x30 0x81, or 0x30 0x83) to denote a SEQUENCE, assuming it's a tbsCertificate/tbsCertList/tbsResponseData/etc. We'd also have to consider key reuse between JWT and TLS.\r\n\r\nIt is currently the norm for many ACME clients to generate a new keypair whenever they renew certificates. This is good for security because it limits the impact of point-in-time private key compromises to just the one certificate's remaining validity period. If we require that the X.509 certificate's public key match the OpenID Federation metadata, then ACME clients that support this challenge type would need a separate mode where they only use a provided private key to sign CSRs, rather than generating fresh keys as needed. Furthermore, users deploying this system would need to develop their own way to rotate keys, starting with changing their Entity Configuration.\r\n\r\nRemoving this requirement that JWT and X.509 public keys match would also make implementation easier, because we wouldn't have to develop mappings between JWT signature algorithms and X.509 signature algorithms, etc.\r\n\r\nEdit: note to self: we'll have to revise the last paragraph of the abstract, and remove mention of the key in the Entity Configuration.",
       "createdAt": "2025-01-07T16:18:19Z",
-      "updatedAt": "2025-01-13T23:15:33Z",
+      "updatedAt": "2025-01-14T17:10:47Z",
       "closedAt": null,
       "comments": [
         {
@@ -476,8 +476,31 @@
           "body": "Great catch. In fact, we should probably make a note to include comments in the Security Considerations section that it's worth encouraging using different keys for different purposes, and that rotating the keys periodically is also good practice.",
           "createdAt": "2025-01-09T18:15:54Z",
           "updatedAt": "2025-01-09T18:15:54Z"
+        },
+        {
+          "author": "divergentdave",
+          "authorAssociation": "NONE",
+          "body": "As a point of comparison, the onion-csr-01 challenge from draft-ietf-acme-onion has a lot in common with our openid-federation-01 challenge. There, the client signs a CSR containing a nonce from the challenge using a keypair that has its public key distributed via the Tor rendezvous v3 protocol. They have a requirement that the key used in the challenge's CSR \"MUST NOT be the same public key presented in the CSR to finalize the order\".",
+          "createdAt": "2025-01-14T17:10:46Z",
+          "updatedAt": "2025-01-14T17:10:46Z"
         }
       ]
+    },
+    {
+      "number": 37,
+      "id": "I_kwDOJ6_NW86mMNuy",
+      "title": "Use UTF8String in OpenIdFederationEntityId",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/37",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Currently the definition of `OpenIdFederationEntityId` is that it's an OctetString, and the narrative text accompanying it says that the octet string value must be the UTF-8 encoding of the entity ID. I think it would be more natural to use the UTF8String type defined RFC 5280. This type is also an octet string, though with a universal tag preceding it, and it also requires its contents to be UTF-8 encoded.",
+      "createdAt": "2025-01-14T20:27:34Z",
+      "updatedAt": "2025-01-14T20:27:34Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -2944,24 +2967,26 @@
       "id": "PR_kwDOJ6_NW86HMuAz",
       "title": "Sequence diagram in ascii arts",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/33",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-01-09T12:20:09Z",
-      "updatedAt": "2025-01-09T16:13:27Z",
+      "updatedAt": "2025-01-14T14:18:55Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "338de0daeb77e37e02a4b3da4d7f48c85a45607f",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "seq2",
-      "headRefOid": "3bb4a63c575aab00e221c82d40b6619803567c6f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "d462427b04bdb8b29117bcfd096ddc1a2bea8ec1",
+      "closedAt": "2025-01-14T14:18:55Z",
+      "mergedAt": "2025-01-14T14:18:55Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "bfc7b9d18c67a5c514909ba615eb941e0e1847fd"
+      },
       "comments": [],
       "reviews": [
         {
@@ -2975,6 +3000,199 @@
           "body": "Nice!",
           "createdAt": "2025-01-09T16:13:27Z",
           "updatedAt": "2025-01-09T16:13:27Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 34,
+      "id": "PR_kwDOJ6_NW86HvHMd",
+      "title": "Specify how errors are formatted",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/34",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "This addresses #13. I introduce one new problem type for the problem details returned in ACME error responses. This encapsulates an OAuth error code, and thus provides us a way to translate all existing OpenID Federation error codes into an ACME error response. This also requires some additional IANA considerations, in order to set up a registration justifying the `urn:ietf:params:` URI.",
+      "createdAt": "2025-01-14T16:40:26Z",
+      "updatedAt": "2025-01-15T22:55:31Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "bfc7b9d18c67a5c514909ba615eb941e0e1847fd",
+      "headRepository": "divergentdave/draft-demarco-acme-openid-federation",
+      "headRefName": "david/error-type",
+      "headRefOid": "060d60f7bf4d8932f30353da3b7c13c23b7c958e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86YCNB5",
+          "commit": {
+            "abbreviatedOid": "7606ecf"
+          },
+          "author": "jcjones",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-01-14T18:30:44Z",
+          "updatedAt": "2025-01-14T18:31:51Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "We probably don't want to use the `ppm` namespace for `acme`\r\n```suggestion\r\n   error type `urn:ietf:params:acme:openid-federation:error:oauthError`,\r\n```\r\n\r\nHaving `acme:acme-` seems redundant so I dropped the second, but we'd want to make the change throughout.",
+              "createdAt": "2025-01-14T18:30:44Z",
+              "updatedAt": "2025-01-14T18:31:52Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86YCTJj",
+          "commit": {
+            "abbreviatedOid": "7606ecf"
+          },
+          "author": "jcjones",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2025-01-14T18:43:54Z",
+          "updatedAt": "2025-01-14T18:45:45Z",
+          "comments": [
+            {
+              "originalPosition": 53,
+              "body": "Let's be clear about where this extension member goes\r\n\r\n```suggestion\r\ncode that caused the error. The problem document for this error type SHOULD include an extension\r\nmember named `error_code`. The `error_code` member SHOULD be set to the OAuth error code,\r\n```",
+              "createdAt": "2025-01-14T18:43:54Z",
+              "updatedAt": "2025-01-14T18:45:45Z"
+            },
+            {
+              "originalPosition": 74,
+              "body": "I am missing why this can't just go as another entry in [ACME Error Types](https://www.iana.org/assignments/acme/acme.xhtml#acme-error-types). We need to justify creating a new registry, particularly for a single value, and I don't see that yet.",
+              "createdAt": "2025-01-14T18:45:10Z",
+              "updatedAt": "2025-01-14T18:58:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86YDtvj",
+          "commit": {
+            "abbreviatedOid": "7606ecf"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-01-14T22:01:11Z",
+          "updatedAt": "2025-01-14T22:01:11Z",
+          "comments": [
+            {
+              "originalPosition": 74,
+              "body": "Good point, will do.",
+              "createdAt": "2025-01-14T22:01:11Z",
+              "updatedAt": "2025-01-14T22:01:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86YOPwP",
+          "commit": {
+            "abbreviatedOid": "e4400a4"
+          },
+          "author": "jcjones",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-01-15T20:33:41Z",
+          "updatedAt": "2025-01-15T20:33:41Z",
+          "comments": [
+            {
+              "originalPosition": 94,
+              "body": "Since `error` is already in the URN, and [none of the other error types include `error`](https://www.iana.org/assignments/acme/acme.xhtml#acme-error-types), what do you think of this being `openIDFederationEntity`?\r\n\r\n```suggestion\r\n|openIDFederationEntity|An error occurred while resolving an OpenID Federation entity|this document|\r\n```",
+              "createdAt": "2025-01-15T20:33:41Z",
+              "updatedAt": "2025-01-15T20:34:01Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "id": "PR_kwDOJ6_NW86Hwa0p",
+      "title": "Clean up references",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/35",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "This fixes some warnings about broken references, improves formatting of references and links, and fixes links that were pointing to incorrect or nonexistent sections of OpenID Federation 1.0. (presumably because of changes in recent draft versions)\r\n\r\nFor the OpenID Federation 1.0 links to particular sections, I had to include an inline attribute list specifying the fragment to add to the URL. I'm not sure if this is because RFCs have special handling, or because RFCs have bibxml files available. It'd be nice to eliminate the IALs and have the section links populated automatically, but this will work for now.\r\n\r\nFWIW the unused reference removed in the first commit became unused as of PR #3.",
+      "createdAt": "2025-01-14T19:12:27Z",
+      "updatedAt": "2025-01-14T19:38:52Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "bfc7b9d18c67a5c514909ba615eb941e0e1847fd",
+      "headRepository": "divergentdave/draft-demarco-acme-openid-federation",
+      "headRefName": "david/ref-cleanup",
+      "headRefOid": "3a7a3f143af2bb0d3b439a0e34927f61144f7193",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86YCxOf",
+          "commit": {
+            "abbreviatedOid": "3a7a3f1"
+          },
+          "author": "jcjones",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-01-14T19:38:52Z",
+          "updatedAt": "2025-01-14T19:38:52Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "id": "PR_kwDOJ6_NW86HwcY9",
+      "title": "Fix Giuseppe's name in authors",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/36",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Giuseppe's name is not handled correctly by heuristics. This explicitly sets the \"initials/surname\" field to fix that, copying from the OPENID-FED reference's authors.",
+      "createdAt": "2025-01-14T19:16:43Z",
+      "updatedAt": "2025-01-14T20:52:21Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "bfc7b9d18c67a5c514909ba615eb941e0e1847fd",
+      "headRepository": "divergentdave/draft-demarco-acme-openid-federation",
+      "headRefName": "david/giuseppe-ins",
+      "headRefOid": "094beac67e0fb7e0428f49cfe5f174aa9d8b5b43",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86YDRQj",
+          "commit": {
+            "abbreviatedOid": "094beac"
+          },
+          "author": "jcjones",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-01-14T20:52:21Z",
+          "updatedAt": "2025-01-14T20:52:21Z",
           "comments": []
         }
       ]
