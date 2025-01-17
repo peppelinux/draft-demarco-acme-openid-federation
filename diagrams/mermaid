@@ -9,6 +9,8 @@ sequenceDiagram
   A -->> RC: openid-federation-01 Challenge at /acme/chall/[chall-id]
   RC ->> RC: Sign challenge token with private key
   RC ->> A: POST /acme/chall/[chall-id] with signed token<br>and entity ID set to Requestor's ID
+  A -->> RC: Challenge validation beginning
+
   A ->> RF: GET /.well-known/openid-federation
   RF -->> A: Requestor's Entity Configuration
   A ->> A: Check Entity Configuration sub matches<br>Entity identifier in the order
@@ -18,9 +20,16 @@ sequenceDiagram
     A <<->> F: Determine Trust Chain from<br>Issuer's Trust Anchors to Requestor<br>(OpenID Federation Discovery)
   end
   A ->> A: Evaluate trust chain
-  A -->> RC: Respond to POST with validation success
+
+  loop Poll until authz status is "valid" or "invalid"
+  RC ->> A: POST-as-GET /acme/authz/[authz-id]
+  A ->> RC: Current authz status
+  end
+
+  opt If the authz status is "valid"
   RC ->> A: POST /acme/orders/[order-id]/finalize with CSR
   A ->> A: Check CSR validity according to protocol and CA policy
   A -->> RC: Order object with certificate at /acme/cert/[cert-id]
   RC ->> A: POST /acme/cert/[cert-id]
   A -->> RC: Newly issued X.509 Certificate 🎉
+  end
