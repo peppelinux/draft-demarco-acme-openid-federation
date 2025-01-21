@@ -24,6 +24,7 @@ venue:
 author:
  -
     fullname: Giuseppe De Marco
+    ins: G. De Marco
     organization: independent
     email: demarcog83@gmail.com
  -
