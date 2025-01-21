@@ -697,7 +697,7 @@ This document defines one new error type URI to be used in problem documents
 
 The error type `urn:ietf:params:acme:error:openIDFederationEntity` can
 be used to encapsulate any OAuth error code returned while resolving OpenID
-Federation entities. The title of this error type is "OpenID Federation Error".
+Federation Entities. The title of this error type is "OpenID Federation Error".
 The `detail` member of the problem document MAY include the description of the
 particular OAuth error code that caused the error. The problem document for this
 error type SHOULD include an extension member named `error_code`. The
