@@ -100,11 +100,13 @@ Table of Contents
        6.5.1.  CSR and Certificate Requirements
    7.  Publication of the Certificates within the Federation
    8.  Certificate Lifecycle and Revocation
-   9.  Security Considerations
-   10. IANA Considerations
-     10.1.  Update ACME Identifier Types
-     10.2.  Assign X.509 PKIX Other Name
-   11. Normative References
+   9.  Errors
+   10. Security Considerations
+   11. IANA Considerations
+     11.1.  Update ACME Identifier Types
+     11.2.  Assign X.509 PKIX Other Name
+     11.3.  ACME Error Types
+   12. Normative References
    Acknowledgments
    Authors' Addresses
 
@@ -299,8 +301,10 @@ Table of Contents
        Issuer, as described in Section 6.4.
 
    5.  The Certificate Issuer evaluates the trust to the Requestor by
-       checking if it is part of the federation.  If not the CSR request
-       MUST be rejected (*TBD* the error to return).
+       checking if it is part of its federation.  If not the CSR request
+       MUST be rejected, with error type
+       urn:ietf:params:acme:error:openIDFederationEntity, and an error
+       code of invalid_trust_chain (Section 8.9 of [OPENID-FED]).
 
    There are two ways the Certificate Issuer is able to check if a
    Requestor is part of the federation, these are listed below:
@@ -717,16 +721,30 @@ Table of Contents
    The X.509 Certificate revocation request is defined in Section 7.6 of
    [RFC8555].
 
-9.  Security Considerations
+9.  Errors
+
+   This document defines one new error type URI to be used in problem
+   documents [RFC9457], as described in Section 6.7 of [RFC8555].
+
+   The error type urn:ietf:params:acme:error:openIDFederationEntity can
+   be used to encapsulate any OAuth error code returned while resolving
+   OpenID Federation Entities.  The title of this error type is "OpenID
+   Federation Error".  The detail member of the problem document MAY
+   include the description of the particular OAuth error code that
+   caused the error.  The problem document for this error type SHOULD
+   include an extension member named error_code.  The error_code member
+   SHOULD be set to the OAuth error code, taken from the IANA "OAuth
+   Extensions Error Registry" [IANA-OAUTH].
+
+10.  Security Considerations
 
    TBD.
 
-10.  IANA Considerations
+11.  IANA Considerations
 
-   IANA is kindly asked to update two registry tables and make one
-   assignment:
+   IANA is kindly asked to make the following updates to registries:
 
-10.1.  Update ACME Identifier Types
+11.1.  Update ACME Identifier Types
 
    IANA is asked to add to the "ACME Identifier Types" registry, defined
    in Section 9.7.7 of [RFC8555] a label "openid-federation" and
@@ -736,14 +754,38 @@ Table of Contents
    defined in Section 9.7.8 of [RFC8555] add a label "openid-federation-
    01" and reference this document.
 
-10.2.  Assign X.509 PKIX Other Name
+11.2.  Assign X.509 PKIX Other Name
 
    IANA is asked to add a "OpenIdFederationEntityId" otherName in the
    "PKIX Other Name Forms" registry (1.3.6.1.5.5.7.8
    (https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-
    numbers-1.3.6.1.5.5.7.8)) and reference this document.
 
-11.  Normative References
+11.3.  ACME Error Types
+
+   IANA is asked to add the following assignment to the "ACME Error
+   Types" registry, in the "Automated Certificate Management Environment
+   (ACME) Protocol" registry group [IANA-ACME].
+
+     +========================+=========================+===========+
+     | Type                   | Description             | Reference |
+     +========================+=========================+===========+
+     | openIDFederationEntity | An error occurred while | this      |
+     |                        | resolving an OpenID     | document  |
+     |                        | Federation entity       |           |
+     +------------------------+-------------------------+-----------+
+
+                                 Table 1
+
+12.  Normative References
+
+   [IANA-ACME]
+              IANA, "Automated Certificate Management Environment (ACME)
+              Protocol", n.d., <https://www.iana.org/assignments/acme>.
+
+   [IANA-OAUTH]
+              IANA, "OAuth Parameters", n.d.,
+              <https://www.iana.org/assignments/oauth-parameters>.
 
    [OPENID-FED]
               Hedberg, R., Jones, M. B., Solberg, A. Å., Bradley, J., De
@@ -792,6 +834,10 @@ Table of Contents
               Kasten, "Automatic Certificate Management Environment
               (ACME)", RFC 8555, DOI 10.17487/RFC8555, March 2019,
               <https://www.rfc-editor.org/rfc/rfc8555>.
+
+   [RFC9457]  Nottingham, M., Wilde, E., and S. Dalal, "Problem Details
+              for HTTP APIs", RFC 9457, DOI 10.17487/RFC9457, July 2023,
+              <https://www.rfc-editor.org/rfc/rfc9457>.
 
 Acknowledgments
 

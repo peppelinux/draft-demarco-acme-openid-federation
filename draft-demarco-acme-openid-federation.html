@@ -1234,27 +1234,33 @@ Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-certificate-lifecycle-and-r" class="internal xref">Certificate Lifecycle and Revocation</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-errors" class="internal xref">Errors</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
-                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="auto internal xref">10.1</a>.  <a href="#name-update-acme-identifier-type" class="internal xref">Update ACME Identifier Types</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
-                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="auto internal xref">10.2</a>.  <a href="#name-assign-x509-pkix-other-name" class="internal xref">Assign X.509 PKIX Other Name</a></p>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
+                <p id="section-toc.1-1.11.2.1.1"><a href="#section-11.1" class="auto internal xref">11.1</a>.  <a href="#name-update-acme-identifier-type" class="internal xref">Update ACME Identifier Types</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
+                <p id="section-toc.1-1.11.2.2.1"><a href="#section-11.2" class="auto internal xref">11.2</a>.  <a href="#name-assign-x509-pkix-other-name" class="internal xref">Assign X.509 PKIX Other Name</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.3">
+                <p id="section-toc.1-1.11.2.3.1"><a href="#section-11.3" class="auto internal xref">11.3</a>.  <a href="#name-acme-error-types" class="internal xref">ACME Error Types</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-normative-references" class="internal xref">Normative References</a></p>
-</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#section-12" class="auto internal xref">12</a>. <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1496,9 +1502,11 @@ ACME protocol as specified in <span>[<a href="#RFC8555" class="cite xref">RFC855
 as described in <a href="#neworder-request" class="auto internal xref">Section 6.4</a>.<a href="#section-6.2-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-6.2-1.5">
-            <p id="section-6.2-1.5.1">The Certificate Issuer evaluates the trust to the Requestor by checking if it is part of
-the federation. If not the CSR request <span class="bcp14">MUST</span> be rejected (<strong>TBD</strong> the
-error to return).<a href="#section-6.2-1.5.1" class="pilcrow">¶</a></p>
+            <p id="section-6.2-1.5.1">The Certificate Issuer evaluates the trust to the Requestor by checking if it
+is part of its federation. If not the CSR request <span class="bcp14">MUST</span> be rejected, with
+error type <code>urn:ietf:params:acme:error:openIDFederationEntity</code>,
+and an error code of <code>invalid_trust_chain</code>
+(<span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-8.9" class="relref">Section 8.9</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>).<a href="#section-6.2-1.5.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
 <p id="section-6.2-2">There are two ways the Certificate Issuer is able to check if a
@@ -1953,50 +1961,102 @@ expired cryptographic keys in the Federation Historical Key Registry.<a href="#s
 <p id="section-8-4">The X.509 Certificate revocation request is defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.6" class="relref">Section 7.6</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-8-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="security-considerations">
+<div id="errors">
 <section id="section-9">
-      <h2 id="name-security-considerations">
-<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      <h2 id="name-errors">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-errors" class="section-name selfRef">Errors</a>
       </h2>
-<p id="section-9-1">TBD.<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-9-1">This document defines one new error type URI to be used in problem documents
+<span>[<a href="#RFC9457" class="cite xref">RFC9457</a>]</span>, as described in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-6.7" class="relref">Section 6.7</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-9-2">The error type <code>urn:ietf:params:acme:error:openIDFederationEntity</code> can
+be used to encapsulate any OAuth error code returned while resolving OpenID
+Federation Entities. The title of this error type is "OpenID Federation Error".
+The <code>detail</code> member of the problem document <span class="bcp14">MAY</span> include the description of the
+particular OAuth error code that caused the error. The problem document for this
+error type <span class="bcp14">SHOULD</span> include an extension member named <code>error_code</code>. The
+<code>error_code</code> member <span class="bcp14">SHOULD</span> be set to the OAuth error code, taken from the IANA
+"OAuth Extensions Error Registry" <span>[<a href="#IANA-OAUTH" class="cite xref">IANA-OAUTH</a>]</span>.<a href="#section-9-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-10">
+      <h2 id="name-security-considerations">
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-10-1">TBD.<a href="#section-10-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-10">
+<section id="section-11">
       <h2 id="name-iana-considerations">
-<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-10-1">IANA is kindly asked to update two registry tables and make one assignment:<a href="#section-10-1" class="pilcrow">¶</a></p>
+<p id="section-11-1">IANA is kindly asked to make the following updates to registries:<a href="#section-11-1" class="pilcrow">¶</a></p>
 <div id="update-acme-identifier-types">
-<section id="section-10.1">
+<section id="section-11.1">
         <h3 id="name-update-acme-identifier-type">
-<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-update-acme-identifier-type" class="section-name selfRef">Update ACME Identifier Types</a>
+<a href="#section-11.1" class="section-number selfRef">11.1. </a><a href="#name-update-acme-identifier-type" class="section-name selfRef">Update ACME Identifier Types</a>
         </h3>
-<p id="section-10.1-1">IANA is asked to add to the "ACME Identifier Types"
-registry, defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-9.7.7" class="relref">Section 9.7.7</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> a label "openid-federation" and reference this document.<a href="#section-10.1-1" class="pilcrow">¶</a></p>
-<p id="section-10.1-2">IANA is also asked to to the "ACME Validation Methods"
-registry, defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-9.7.8" class="relref">Section 9.7.8</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> add a label "openid-federation-01" and reference this document.<a href="#section-10.1-2" class="pilcrow">¶</a></p>
+<p id="section-11.1-1">IANA is asked to add to the "ACME Identifier Types"
+registry, defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-9.7.7" class="relref">Section 9.7.7</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> a label "openid-federation" and reference this document.<a href="#section-11.1-1" class="pilcrow">¶</a></p>
+<p id="section-11.1-2">IANA is also asked to to the "ACME Validation Methods"
+registry, defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-9.7.8" class="relref">Section 9.7.8</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> add a label "openid-federation-01" and reference this document.<a href="#section-11.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="assign-x509-pkix-other-name">
-<section id="section-10.2">
+<section id="section-11.2">
         <h3 id="name-assign-x509-pkix-other-name">
-<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-assign-x509-pkix-other-name" class="section-name selfRef">Assign X.509 PKIX Other Name</a>
+<a href="#section-11.2" class="section-number selfRef">11.2. </a><a href="#name-assign-x509-pkix-other-name" class="section-name selfRef">Assign X.509 PKIX Other Name</a>
         </h3>
-<p id="section-10.2-1">IANA is asked to add a "OpenIdFederationEntityId" otherName in
+<p id="section-11.2-1">IANA is asked to add a "OpenIdFederationEntityId" otherName in
 the "PKIX Other Name Forms" registry
 (<a href="https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.8">1.3.6.1.5.5.7.8</a>)
-and reference this document.<a href="#section-10.2-1" class="pilcrow">¶</a></p>
+and reference this document.<a href="#section-11.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="acme-error-types">
+<section id="section-11.3">
+        <h3 id="name-acme-error-types">
+<a href="#section-11.3" class="section-number selfRef">11.3. </a><a href="#name-acme-error-types" class="section-name selfRef">ACME Error Types</a>
+        </h3>
+<p id="section-11.3-1">IANA is asked to add the following assignment to the "ACME Error Types"
+registry, in the "Automated Certificate Management Environment (ACME) Protocol"
+registry group <span>[<a href="#IANA-ACME" class="cite xref">IANA-ACME</a>]</span>.<a href="#section-11.3-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Type</th>
+              <th class="text-left" rowspan="1" colspan="1">Description</th>
+              <th class="text-left" rowspan="1" colspan="1">Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">openIDFederationEntity</td>
+              <td class="text-left" rowspan="1" colspan="1">An error occurred while resolving an OpenID Federation entity</td>
+              <td class="text-left" rowspan="1" colspan="1">this document</td>
+            </tr>
+          </tbody>
+        </table>
 </section>
 </div>
 </section>
 </div>
 <div id="sec-normative-references">
-<section id="section-11">
+<section id="section-12">
       <h2 id="name-normative-references">
-<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-12" class="section-number selfRef">12. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
 <dl class="references">
+<dt id="IANA-ACME">[IANA-ACME]</dt>
+      <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"Automated Certificate Management Environment (ACME) Protocol"</span>, <span>n.d.</span>, <span>&lt;<a href="https://www.iana.org/assignments/acme">https://www.iana.org/assignments/acme</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-OAUTH">[IANA-OAUTH]</dt>
+      <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"OAuth Parameters"</span>, <span>n.d.</span>, <span>&lt;<a href="https://www.iana.org/assignments/oauth-parameters">https://www.iana.org/assignments/oauth-parameters</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="OPENID-FED">[OPENID-FED]</dt>
       <dd>
 <span class="refAuthor">Hedberg, R.</span>, <span class="refAuthor">Jones, M. B.</span>, <span class="refAuthor">Solberg, A. Å.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">De Marco, G.</span>, and <span class="refAuthor">V. Dzhuvinov</span>, <span class="refTitle">"OpenID Federation 1.0 - draft 41"</span>, <time datetime="2024-12-04" class="refDate">4 December 2024</time>, <span>&lt;<a href="https://openid.net/specs/openid-federation-1_0-41.html">https://openid.net/specs/openid-federation-1_0-41.html</a>&gt;</span>. </dd>
@@ -2034,8 +2094,12 @@ and reference this document.<a href="#section-10.2-1" class="pilcrow">¶</a></p>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8555">[RFC8555]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Hoffman-Andrews, J.</span>, <span class="refAuthor">McCarney, D.</span>, and <span class="refAuthor">J. Kasten</span>, <span class="refTitle">"Automatic Certificate Management Environment (ACME)"</span>, <span class="seriesInfo">RFC 8555</span>, <span class="seriesInfo">DOI 10.17487/RFC8555</span>, <time datetime="2019-03" class="refDate">March 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8555">https://www.rfc-editor.org/rfc/rfc8555</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9457">[RFC9457]</dt>
+    <dd>
+<span class="refAuthor">Nottingham, M.</span>, <span class="refAuthor">Wilde, E.</span>, and <span class="refAuthor">S. Dalal</span>, <span class="refTitle">"Problem Details for HTTP APIs"</span>, <span class="seriesInfo">RFC 9457</span>, <span class="seriesInfo">DOI 10.17487/RFC9457</span>, <time datetime="2023-07" class="refDate">July 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9457">https://www.rfc-editor.org/rfc/rfc9457</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
