@@ -37,7 +37,6 @@ author:
     email: bran@bran.land
 
 normative:
-  RFC1035: RFC1035
   RFC2818: RFC2818
   RFC2986: RFC2986
   RFC5280: RFC5280
@@ -161,7 +160,6 @@ This specification can be implemented by:
 The terms "Federation Entity", "Trust Anchor", "Intermediate", "Entity
 Configuration", "Subordinate Statement", "Trust Mark" and "Trust Chain" used in this
 document are defined in {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2"}.
-The term "FQDN" used in this document is defined in [RFC1035].
 The term "CSR" used in this document is defined in [RFC2986]. The
 term Certificate Authority used in this document is defined in [RFC5280]. The
 terms "ACME Client" and "ACME Server" are defined in [RFC8555].
@@ -558,7 +556,7 @@ Federation Entity.
 ## OpenID Federation Challenge Type {#challenge-type}
 
 The OpenID Federation challenge type allows a Requestor to prove control of a
-domain and its underlying endpoints using the trust evaluation mechanism
+Federation Entity using the trust evaluation mechanism
 provided by {{OPENID-FED}}. The Requestor demonstrates control of a
 cryptographic public key published in its OpenID Federation Entity Configuration.
 
