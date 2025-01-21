@@ -66,6 +66,18 @@ normative:
         ins: V. Dzhuvinov
         name: Vladimir Dzhuvinov
 
+  IANA-ACME:
+    title: "Automated Certificate Management Environment (ACME) Protocol"
+    target: https://www.iana.org/assignments/acme
+    author:
+      organization: IANA
+
+  IANA-OAUTH:
+    title: "OAuth Parameters"
+    target: https://www.iana.org/assignments/oauth-parameters
+    author:
+      organization: IANA
+
 informative:
 
 
@@ -262,9 +274,11 @@ an X.509 Certificate.
 4. The Requestor sends the newOrder request to the Certificate Issuer,
    as described in {{neworder-request}}.
 
-5. The Certificate Issuer evaluates the trust to the Requestor by checking if it is part of
-   the federation. If not the CSR request MUST be rejected (**TBD** the
-   error to return).
+5. The Certificate Issuer evaluates the trust to the Requestor by checking if it
+   is part of its federation. If not the CSR request MUST be rejected, with
+   error type `urn:ietf:params:acme:error:openIDFederationEntity`,
+   and an error code of `invalid_trust_chain`
+   ({{Section 8.9 of OPENID-FED}}{: relative="#section-8.9"}).
 
 There are two ways the Certificate Issuer is able to check if a
 Requestor is part of the federation, these are listed below:
@@ -685,6 +699,20 @@ expired cryptographic keys in the Federation Historical Key Registry.
 
 The X.509 Certificate revocation request is defined in {{Section 7.6 of !RFC8555}}.
 
+# Errors
+
+This document defines one new error type URI to be used in problem documents
+{{!RFC9457}}, as described in {{Section 6.7 of !RFC8555}}.
+
+The error type `urn:ietf:params:acme:error:openIDFederationEntity` can
+be used to encapsulate any OAuth error code returned while resolving OpenID
+Federation Entities. The title of this error type is "OpenID Federation Error".
+The `detail` member of the problem document MAY include the description of the
+particular OAuth error code that caused the error. The problem document for this
+error type SHOULD include an extension member named `error_code`. The
+`error_code` member SHOULD be set to the OAuth error code, taken from the IANA
+"OAuth Extensions Error Registry" {{IANA-OAUTH}}.
+
 # Security Considerations
 
 TBD.
@@ -692,7 +720,7 @@ TBD.
 
 # IANA Considerations
 
-IANA is kindly asked to update two registry tables and make one assignment:
+IANA is kindly asked to make the following updates to registries:
 
 ## Update ACME Identifier Types
 
@@ -709,6 +737,15 @@ the "PKIX Other Name Forms" registry
 ([1.3.6.1.5.5.7.8](https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.8))
 and reference this document.
 
+## ACME Error Types
+
+IANA is asked to add the following assignment to the "ACME Error Types"
+registry, in the "Automated Certificate Management Environment (ACME) Protocol"
+registry group {{IANA-ACME}}.
+
+|Type|Description|Reference|
+|----|-----------|---------|
+|openIDFederationEntity|An error occurred while resolving an OpenID Federation entity|this document|
 
 --- back
 
