@@ -1344,7 +1344,6 @@ defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html
 <p id="section-3-1">The terms "Federation Entity", "Trust Anchor", "Intermediate", "Entity
 Configuration", "Subordinate Statement", "Trust Mark" and "Trust Chain" used in this
 document are defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
-The term "FQDN" used in this document is defined in <span>[<a href="#RFC1035" class="cite xref">RFC1035</a>]</span>.
 The term "CSR" used in this document is defined in <span>[<a href="#RFC2986" class="cite xref">RFC2986</a>]</span>. The
 term Certificate Authority used in this document is defined in <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>. The
 terms "ACME Client" and "ACME Server" are defined in <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
@@ -1807,7 +1806,7 @@ Federation Entity.<a href="#section-6.4-4" class="pilcrow">¶</a></p>
 <a href="#section-6.5" class="section-number selfRef">6.5. </a><a href="#name-openid-federation-challenge" class="section-name selfRef">OpenID Federation Challenge Type</a>
         </h3>
 <p id="section-6.5-1">The OpenID Federation challenge type allows a Requestor to prove control of a
-domain and its underlying endpoints using the trust evaluation mechanism
+Federation Entity using the trust evaluation mechanism
 provided by <span>[<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>. The Requestor demonstrates control of a
 cryptographic public key published in its OpenID Federation Entity Configuration.<a href="#section-6.5-1" class="pilcrow">¶</a></p>
 <p id="section-6.5-2">The openid-federation-01 ACME challenge object has the following format:<a href="#section-6.5-2" class="pilcrow">¶</a></p>
@@ -2060,10 +2059,6 @@ registry group <span>[<a href="#IANA-ACME" class="cite xref">IANA-ACME</a>]</spa
 <dt id="OPENID-FED">[OPENID-FED]</dt>
       <dd>
 <span class="refAuthor">Hedberg, R.</span>, <span class="refAuthor">Jones, M. B.</span>, <span class="refAuthor">Solberg, A. Å.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">De Marco, G.</span>, and <span class="refAuthor">V. Dzhuvinov</span>, <span class="refTitle">"OpenID Federation 1.0 - draft 41"</span>, <time datetime="2024-12-04" class="refDate">4 December 2024</time>, <span>&lt;<a href="https://openid.net/specs/openid-federation-1_0-41.html">https://openid.net/specs/openid-federation-1_0-41.html</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC1035">[RFC1035]</dt>
-      <dd>
-<span class="refAuthor">Mockapetris, P.</span>, <span class="refTitle">"Domain names - implementation and specification"</span>, <span class="seriesInfo">STD 13</span>, <span class="seriesInfo">RFC 1035</span>, <span class="seriesInfo">DOI 10.17487/RFC1035</span>, <time datetime="1987-11" class="refDate">November 1987</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc1035">https://www.rfc-editor.org/rfc/rfc1035</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
       <dd>

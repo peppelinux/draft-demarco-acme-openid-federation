@@ -174,8 +174,7 @@ Table of Contents
    The terms "Federation Entity", "Trust Anchor", "Intermediate",
    "Entity Configuration", "Subordinate Statement", "Trust Mark" and
    "Trust Chain" used in this document are defined in Section 1.2 of
-   [OPENID-FED].  The term "FQDN" used in this document is defined in
-   [RFC1035].  The term "CSR" used in this document is defined in
+   [OPENID-FED].  The term "CSR" used in this document is defined in
    [RFC2986].  The term Certificate Authority used in this document is
    defined in [RFC5280].  The terms "ACME Client" and "ACME Server" are
    defined in [RFC8555].
@@ -578,10 +577,10 @@ Table of Contents
 6.5.  OpenID Federation Challenge Type
 
    The OpenID Federation challenge type allows a Requestor to prove
-   control of a domain and its underlying endpoints using the trust
-   evaluation mechanism provided by [OPENID-FED].  The Requestor
-   demonstrates control of a cryptographic public key published in its
-   OpenID Federation Entity Configuration.
+   control of a Federation Entity using the trust evaluation mechanism
+   provided by [OPENID-FED].  The Requestor demonstrates control of a
+   cryptographic public key published in its OpenID Federation Entity
+   Configuration.
 
    The openid-federation-01 ACME challenge object has the following
    format:
@@ -792,10 +791,6 @@ Table of Contents
               Marco, G., and V. Dzhuvinov, "OpenID Federation 1.0 -
               draft 41", 4 December 2024,
               <https://openid.net/specs/openid-federation-1_0-41.html>.
-
-   [RFC1035]  Mockapetris, P., "Domain names - implementation and
-              specification", STD 13, RFC 1035, DOI 10.17487/RFC1035,
-              November 1987, <https://www.rfc-editor.org/rfc/rfc1035>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
