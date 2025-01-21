@@ -1807,16 +1807,15 @@ cryptographic public key published in its OpenID Federation Entity Configuration
     <code>acme_requestor</code> metadata in its Entity Configuration, as specified in
     <a href="#requestor-metadata" class="auto internal xref">Section 6.3.2</a>. It is <span class="bcp14">REQUIRED</span> that this JWT include a <code>kid</code> claim
     corresponding to a valid key.<a href="#section-6.5-7" class="pilcrow">¶</a></p>
-<p id="section-6.5-8">entity_identifier (required, string):  the Entity identifier of the Requestor.<a href="#section-6.5-8" class="pilcrow">¶</a></p>
-<p id="section-6.5-9">trust_chain (optional, array of string):  an array of base64url-encoded bytes
+<p id="section-6.5-8">trust_chain (optional, array of string):  an array of base64url-encoded bytes
     containing a signed JWT and representing the Trust Chain of the Requestor,
     See <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-4.3" class="relref">Section 4.3</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
     The Requestor <span class="bcp14">SHOULD</span> use a Trust Anchor it
     has in common with the ACME server. It is <span class="bcp14">RECOMMENDED</span> that the Requestor
     includes this field; otherwise, the ACME server <span class="bcp14">MUST</span> start Federation Entity
-    Discovery to obtain the Trust Chain related to the Requestor.<a href="#section-6.5-9" class="pilcrow">¶</a></p>
-<p id="section-6.5-10">A non-normative example for an authorization with <code>trust_chain</code> specified:<a href="#section-6.5-10" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.5-11">
+    Discovery to obtain the Trust Chain related to the Requestor.<a href="#section-6.5-8" class="pilcrow">¶</a></p>
+<p id="section-6.5-9">A non-normative example for an authorization with <code>trust_chain</code> specified:<a href="#section-6.5-9" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.5-10">
 <pre>
    POST /acme/chall/prV_B7yEyA4
    Host: issuer.example.com
@@ -1831,41 +1830,40 @@ cryptographic public key published in its OpenID Federation Entity Configuration
      }),
      "payload": base64url({
       "sig": "wQAvHlPV1tVxRW0vZUa4BQ...",
-      "entity_identifier": "https://requestor.example.com",
       "trust_chain": ["eyJhbGciOiJFU...", "eyJhbGci..."]
      }),
      "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
    }
-</pre><a href="#section-6.5-11" class="pilcrow">¶</a>
+</pre><a href="#section-6.5-10" class="pilcrow">¶</a>
 </div>
-<p id="section-6.5-12">On receiving a response, the Certificate Issuer retrieves the public keys associated with
+<p id="section-6.5-11">On receiving a response, the Certificate Issuer retrieves the public keys associated with
 the given entity (possibly performing Federation Entity Discovery to do so),
-then:<a href="#section-6.5-12" class="pilcrow">¶</a></p>
+then:<a href="#section-6.5-11" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.5-13.1">
-            <p id="section-6.5-13.1.1">Verifies that the requested <code>openid-federation</code> value matches the <code>sub</code>
+<li class="normal" id="section-6.5-12.1">
+            <p id="section-6.5-12.1.1">Verifies that the requested <code>openid-federation</code> value matches the <code>sub</code>
 parameter of the Requestor's Entity Configuration. Since the Entity
 Configuration <span class="bcp14">MUST</span> contain at most one Entity Identifier, this effectively
 means this challenge type works with requests for a single Federation Entity
-only.<a href="#section-6.5-13.1.1" class="pilcrow">¶</a></p>
+only.<a href="#section-6.5-12.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.5-13.2">
-            <p id="section-6.5-13.2.1">Verifies that the <code>sig</code> field of the payload includes a valid JWT over the
+          <li class="normal" id="section-6.5-12.2">
+            <p id="section-6.5-12.2.1">Verifies that the <code>sig</code> field of the payload includes a valid JWT over the
 challenge token, signed with one of the keys published in the Requestor's
 <code>acme_requestor</code> metadata in its Entity Configuration, as specified in
 <a href="#requestor-metadata" class="auto internal xref">Section 6.3.2</a>. The Issuer <span class="bcp14">MUST</span> only consider the key
 whose <code>kid</code> matches the <code>kid</code> claim in the Requestor's challenge response.
 The Issuer also <span class="bcp14">MUST</span> only consider keys published in the Requestor's
-<code>acme_requestor</code> metadata.<a href="#section-6.5-13.2.1" class="pilcrow">¶</a></p>
+<code>acme_requestor</code> metadata.<a href="#section-6.5-12.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-6.5-14">If all of the above verifications succeed, then the validation is successful.
+<p id="section-6.5-13">If all of the above verifications succeed, then the validation is successful.
 Otherwise, it has failed. In either case, the Certificate Issuer responds according to
 <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.5.1" class="relref">Section 7.5.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>. In the event that the verification succeeds, the
 eventual CSR <span class="bcp14">MUST</span> include the public key, attested within the Trust Chain, used
-by the Requestor to satisfy the Certificate Issuer's challenge.<a href="#section-6.5-14" class="pilcrow">¶</a></p>
-<p id="section-6.5-15">A non-normative example for the challenge object post-validation:<a href="#section-6.5-15" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.5-16">
+by the Requestor to satisfy the Certificate Issuer's challenge.<a href="#section-6.5-13" class="pilcrow">¶</a></p>
+<p id="section-6.5-14">A non-normative example for the challenge object post-validation:<a href="#section-6.5-14" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.5-15">
 <pre>
    {
      "type": "openid-federation-01",
@@ -1874,7 +1872,7 @@ by the Requestor to satisfy the Certificate Issuer's challenge.<a href="#section
      "validated": "2024-10-01T12:05:13.72Z",
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
-</pre><a href="#section-6.5-16" class="pilcrow">¶</a>
+</pre><a href="#section-6.5-15" class="pilcrow">¶</a>
 </div>
 <div id="csr-and-certificate-requirements">
 <section id="section-6.5.1">
