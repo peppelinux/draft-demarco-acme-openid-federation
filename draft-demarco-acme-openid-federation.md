@@ -670,7 +670,7 @@ and the X.509 Certificate:
 ~~~~
    id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
 
-   OpenIdFederationEntityId ::= OctetString
+   OpenIdFederationEntityId ::= UTF8String
 ~~~~
 
 # Publication of the Certificates within the Federation
