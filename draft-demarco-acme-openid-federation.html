@@ -1531,106 +1531,125 @@ ACME account with the Issuer.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-ascii-art art-text artwork" id="section-6.2-5">
 <pre>
 ,-----------------.
-|Requestor's      |          ,-----------.
-|OpenID Federation|          |Requestor's|                         ,------------------------.                   ,-----------------------.
-| Web Server      |          |ACME Client|                         |X.509 Certificate Issuer|                   |Federation Trust Anchor|
-`--------+--------'          `-----+-----'                         `-----------+------------'                   `-----------+-----------'
-        |                         |           POST /acme/new-order            |                                            |
-        |                         |-------------------------------------------&gt;                                            |
-        |                         |                                           |                                            |
-        |                         |Authorization at /acme/authz/[authz-id]    |                                            |
-        |                         |Finalize at /acme/order/[order-id]/finalize|                                            |
-        |                         |&lt;- - - - - - - - - - - - - - - - - - - - - -                                            |
-        |                         |                                           |                                            |
-        |                         |        POST /acme/authz/[authz-id]        |                                            |
-        |                         |-------------------------------------------&gt;                                            |
-        |                         |                                           |                                            |
-        |                         |      openid-federation-01 Challenge       |                                            |
-        |                         |      at /acme/chall/[chall-id]            |                                            |
-        |                         |&lt;- - - - - - - - - - - - - - - - - - - - - -                                            |
-        |                         |                                           |                                            |
-        |                         ----.                                       |                                            |
-        |                             | Sign challenge token with private key |                                            |
-        |                         &lt;---'                                       |                                            |
-        |                         |                                           |                                            |
-        |                         | POST /acme/chall/[chall-id] with signed   |                                            |
-        |                         | token and entity ID set to Requestor's ID |                                            |
-        |                         |-------------------------------------------&gt;                                            |
-        |                         |                                           |                                            |
-        |                         |      Challenge validation beginning       |                                            |
-        |                         |&lt;- - - - - - - - - - - - - - - - - - - - - -                                            |
-        |                         |                                           |                                            |
-        |                 GET /.well-known/openid-federation                  |                                            |
-        |&lt;---------------------------------------------------------------------                                            |
-        |                         |                                           |                                            |
-        |                  Requestor's Entity Configuration                   |                                            |
-        | - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - &gt;                                            |
-        |                         |                                           |                                            |
-        |                         |                                           |----.                                       |
-        |                         |                                           |    | Check Entity Configuration sub matches|
-        |                         |                                           |&lt;---' Entity identifier in the order        |
-        |                         |                                           |                                            |
-        |                         |                                           |                                            |
-        |                         |                                           |----.                                       |
-        |                         |                                           |    | Check challenge sig is signed         |
-        |                         |                                           |&lt;---' with key in Entity Configuration      |
-        |                         |                                           |                                            |
-        |                         |                                           |                                            |
-        |                         |                                           |                                            |
-        |                         |                     ________________________________________________________________________________________
-        |                         |                     ! OPT  /  If requestor did not provide Trust Chain                 |                    !
-        |                         |                     !_____/               |                                            |                    !
-        |                         |                     !                     |  Determine Trust Chain                     |                    !
-        |                         |                     !                     |  from Issuer's Trust Anchor to Requestor   |                    !
-        |                         |                     !                     |  (OpenID Federation Discovery)             |                    !
-        |                         |                     !                     | &lt;-----------------------------------------&gt;|                    !
-        |                         |                     !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!
-        |                         |                                           |                                            |
-        |                         |                                           |----.                                       |
-        |                         |                                           |    | Evaluate trust chain                  |
-        |                         |                                           |&lt;---'                                       |
-        |                         |                                           |                                            |
-        |                         |  Respond to POST with validation success  |                                            |
-        |                         |&lt;- - - - - - - - - - - - - - - - - - - - - -                                            |
-        |                         |                                           |                                            |
-        |                         |                                           |                                            |
-        |         ___________________________________________________________________________________                      |
-        |         ! LOOP  /  Poll until authz status is "valid" or "invalid"  |                      !                     |
-        |         !______/        |                                           |                      !                     |
-        |         !               |    POST-as-GET /acme/authz/[authz-id]     |                      !                     |
-        |         !               |-------------------------------------------&gt;                      !                     |
-        |         !               |                                           |                      !                     |
-        |         !               |           Current authz status            |                      !                     |
-        |         !               |&lt;-------------------------------------------                      !                     |
-        |         !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!                     |
-        |                         |                                           |                                            |
-        |                         |                                           |                                            |
-        |         ______________________________________________________________________________________________________   |
-        |         ! OPT  /  If the authz status is "valid"                    |                                         !  |
-        |         !_____/         |                                           |                                         !  |
-        |         !               |   POST /acme/orders/[order-id]/finalize   |                                         !  |
-        |         !               |   with CSR                                |                                         !  |
-        |         !               |-------------------------------------------&gt;                                         !  |
-        |         !               |                                           |                                         !  |
-        |         !               |                                           |----.                                    !  |
-        |         !               |                                           |    | Check CSR validity according to    !  |
-        |         !               |                                           |&lt;---' protocol and CA policy             !  |
-        |         !               |                                           |                                         !  |
-        |         !               |                                           |                                         !  |
-        |         !               |       Order object with certificate       |                                         !  |
-        |         !               |       at /acme/cert/[cert-id]             |                                         !  |
-        |         !               |&lt;- - - - - - - - - - - - - - - - - - - - - -                                         !  |
-        |         !               |                                           |                                         !  |
-        |         !               |         POST /acme/cert/[cert-id]         |                                         !  |
-        |         !               |-------------------------------------------&gt;                                         !  |
-        |         !               |                                           |                                         !  |
-        |         !               |     Newly issued X.509 Certificate 🎉     |                                         !  |
-        |         !               |&lt;- - - - - - - - - - - - - - - - - - - - - -                                         !  |
-        |         !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!  |
-,--------+--------.          ,-----+-----.                         ,-----------+------------.                   ,-----------+-----------.
-|Requestor's      |          |Requestor's|                         |X.509 Certificate Issuer|                   |Federation Trust Anchor|
-|OpenID Federation|          |ACME Client|                         `------------------------'                   `-----------------------'
-| Web Server      |          `-----------'
+|Requestor's      |  ,-----------.
+|OpenID Federation|  |Requestor's|               ,------------------------.  ,-----------------------.
+| Web Server      |  |ACME Client|               |X.509 Certificate Issuer|  |Federation Trust Anchor|
+`--------+--------'  `-----+-----'               `-----------+------------'  `-----------+-----------'
+        |                  |           POST /acme/new-order  |                           |
+        |                  |---------------------------------&gt;                           |
+        |                  |                                 |                           |
+        |                  |Authorization at                 |                           |
+        |                  |/acme/authz/[authz-id]           |                           |
+        |                  |Finalize at                      |                           |
+        |                  | /acme/order/[order-id]/finalize |                           |
+        |                  |&lt;- - - - - - - - - - - - - - - - -                           |
+        |                  |                                 |                           |
+        |                  | POST /acme/authz/[authz-id]     |                           |
+        |                  |---------------------------------&gt;                           |
+        |                  |                                 |                           |
+        |                  |  openid-federation-01 Challenge |                           |
+        |                  |  at /acme/chall/[chall-id]      |                           |
+        |                  |&lt;- - - - - - - - - - - - - - - - -                           |
+        |                  |                                 |                           |
+        |                  ----.                             |                           |
+        |                      | Sign challenge token        |                           |
+        |                      | with private key            |                           |
+        |                  &lt;---'                             |                           |
+        |                  |                                 |                           |
+        |                  | POST /acme/chall/[chall-id]     |                           |
+        |                  | with signed                     |                           |
+        |                  | token and entity ID             |                           |
+        |                  | set to Requestor's ID           |                           |
+        |                  |---------------------------------&gt;                           |
+        |                  |                                 |                           |
+        |                  |      Challenge validation       |                           |
+        |                  |      beginning                  |                           |
+        |                  |&lt;- - - - - - - - - - - - - - - - -                           |
+        |                  |                                 |                           |
+        |          GET /.well-known/openid-federation        |                           |
+        |&lt;----------------------------------------------------                           |
+        |                  |                                 |                           |
+        |           Requestor's Entity Configuration         |                           |
+        | - - -  - - - - - - - - - - - - - - - - - - - - - - &gt;                           |
+        |                  |                                 |                           |
+        |                  |                                 |----.                      |
+        |                  |                                 |    | Check                |
+        |                  |                                 |    | Entity Configuration |
+        |                  |                                 |    | sub matches          |
+        |                  |                                 |    | Entity identifier    |
+        |                  |                                 |&lt;---' in the order         |
+        |                  |                                 |                           |
+        |                  |                                 |                           |
+        |                  |                                 |----.                      |
+        |                  |                                 |    | Check challenge      |
+        |                  |                                 |    | sig is signed        |
+        |                  |                                 |    | with key in          |
+        |                  |                                 |&lt;---' Entity Configuration |
+        |                  |                                 |                           |
+        |                  |                                 |                           |
+        |                  |                                 |                           |
+        |                  |           ______________________________________________________
+        |                  |           ! OPT  /  If requestor didn't provide Trust Chain |  !
+        |                  |           !_____/               |                           |  !
+        |                  |           !                     |  Determine Trust Chain    |  !
+        |                  |           !                     |  from Issuer's            |  !
+        |                  |           !                     |  Trust Anchor to Requestor|  !
+        |                  |           !                     |  (Federation Discovery)   |  !
+        |                  |           !                     | &lt;------------------------&gt;|  !
+        |                  |           !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!
+        |                  |                                 |                           |
+        |                  |                                 |----.                      |
+        |                  |                                 |    | Evaluate trust chain |
+        |                  |                                 |&lt;---'                      |
+        |                  |                                 |                           |
+        |                  |  Respond to POST with           |                           |
+        |                  |  validation success             |                           |
+        |                  |&lt;- - - - - - - - - - - - - - - - -                           |
+        |                  |                                 |                           |
+        |                  |                                 |                           |
+        |  _________________________________________________________________________     |
+        |  ! LOOP  /  Poll until authz status                |                      !    |
+        |  !      /  is "valid" or "invalid"                 |                      !    |
+        |  !_____/         |                                 |                      !    |
+        |  !               |    POST-as-GET                  |                      !    |
+        |  !               |    /acme/authz/[authz-id]       |                      !    |
+        |  !               |---------------------------------&gt;                      !    |
+        |  !               |                                 |                      !    |
+        |  !               |           Current authz status  |                      !    |
+        |  !               |&lt;---------------------------------                      !    |
+        |  !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!    |
+        |                  |                                 |                           |
+        |                  |                                 |                           |
+        |  ___________________________________________________________________________   |
+        |  ! OPT  /  If the authz status is "valid"          |                        !  |
+        |  !_____/         |                                 |                        !  |
+        |  !               | POST                            |                        !  |
+        |  !               | /acme/orders/[order-id]/finalize|                        !  |
+        |  !               | with CSR                        |                        !  |
+        |  !               |---------------------------------&gt;                        !  |
+        |  !               |                                 |                        !  |
+        |  !               |                                 |----.                   !  |
+        |  !               |                                 |    | Check CSR         !  |
+        |  !               |                                 |    | validity          !  |
+        |  !               |                                 |    | according to      !  |
+        |  !               |                                 |    | protocol          !  |
+        |  !               |                                 |&lt;---' and CA policy     !  |
+        |  !               |                                 |                        !  |
+        |  !               |                                 |                        !  |
+        |  !               |  Order object with certificate  |                        !  |
+        |  !               |  at /acme/cert/[cert-id]        |                        !  |
+        |  !               |&lt;- - - - - - - - - - - - - - - - -                        !  |
+        |  !               |                                 |                        !  |
+        |  !               |       POST /acme/cert/[cert-id] |                        !  |
+        |  !               |---------------------------------&gt;                        !  |
+        |  !               |                                 |                        !  |
+        |  !               |  Newly issued X.509 Certificate |                        !  |
+        |  !               |&lt;- - - - - - - - - - - - - - - - -                        !  |
+        |  !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!  |
+,--------+--------.  ,-----+-----.               ,-----------+------------.  ,-----------+-----------.
+|Requestor's      |  |Requestor's|               |X.509 Certificate Issuer|  |Federation Trust Anchor|
+|OpenID Federation|  |ACME Client|               `------------------------'  `-----------------------'
+| Web Server      |  `-----------'
 `-----------------'
 </pre><a href="#section-6.2-5" class="pilcrow">¶</a>
 </div>
