@@ -417,6 +417,7 @@ ACME account with the Issuer.
 |Requestor's      |  |Requestor's|               |X.509 Certificate Issuer|  |Federation Trust Anchor|
 |OpenID Federation|  |ACME Client|               `------------------------'  `-----------------------'
 | Web Server      |  `-----------'
+`-----------------'
 ~~~~
 
 ## Entity Configuration Metadata
