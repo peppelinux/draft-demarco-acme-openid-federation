@@ -443,6 +443,7 @@ Table of Contents
 |Requestor's      |  |Requestor's|               |X.509 Certificate Issuer|  |Federation Trust Anchor|
 |OpenID Federation|  |ACME Client|               `------------------------'  `-----------------------'
 | Web Server      |  `-----------'
+`-----------------'
 
 6.3.  Entity Configuration Metadata
 
