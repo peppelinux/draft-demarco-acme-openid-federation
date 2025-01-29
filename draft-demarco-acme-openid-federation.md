@@ -215,62 +215,56 @@ This section presents the protocol flow. The protocol flow is subdivided in the
 following phases:
 
 - **Discovery**, the Requestor obtains the available CAs within a federation,
-inspecting the ACME provider metadata types.
+inspecting the ACME provider entity types.
 - **Order request**, the Requestor requests a X.509 Certificate to a Certificate Issuer using
   the ACME protocol.
 
-## Discovery Preconditions
+## Preconditions
 
-The protocol assumes the following discovery preconditions are met, where for
-discovery is intended the phase where a Requestor searches an Certificate Issuer to request
-an X.509 Certificate.
+The protocol assumes the following preconditions are met.
 
 1. The Requestor and the Issuer MUST publish their Entity Configuration as
    defined in {{Section 9 of OPENID-FED}}{: relative="#section-9"}.
 
-2. The Requestor and the Issuer MUST be able to establish the trust to each
-   other obtaining the Trust Chain of each other, as defined in
-   {{Section 4 of OPENID-FED}}{: relative="#section-4"}.
+2. The Requestor and the Issuer MUST be able to establish a Trust Chain to each
+   other, as defined in {{Section 4 of OPENID-FED}}{: relative="#section-4"},
+   from their respective Trust Anchors.
 
-3. The Issuer, be this the Trust Anchor or one or more of its Intermediates, MUST implement an ACME server,
-   extended according to this document.
+3. The Issuer MUST implement an ACME server, extended according to this document.
 
-4. The Requestor MUST publish the metadata type `acme_requestor` in its Entity
+4. The Requestor MUST publish the entity type `acme_requestor` in its Entity
    Configuration, according to {{requestor-metadata}}.
 
-5. The Issuer MUST publish the metadata type `acme_provider` in its Entity
+5. The Issuer MUST publish the entity type `acme_provider` in its Entity
    Configuration, according to {{issuer-metadata}}.
 
-6. The Certificate Issuer MAY be a Leaf, in these cases a specific Trust Mark
-   enabling the issuance of X.509 Certificates within the federation MAY be
-   issued by the Trust Anchor, or on behalf of it by an allowed Trust Mark
-   Issuer as configured in the federation. When used, the Trust Mark MUST be
-   published within the Leaf's Entity Configuration.
+## Discovery
 
-   If this is not the case, there MAY be some cases where the Requestor knows
-   a priori the identity of the Issuers in one or more federations; in these
-   cases, the Requestor directly requests the issuance of the X.509 Certificate
-   from the Issuer, without discovery.
-
-7. The Requestor creates an ACME Account with the Issuer, as described in
-   {{Section 7.3 of !RFC8555}}.
+The Requestor's ACME client may either be configured to use a particular ACME
+server, or to automatically discover a Certificate Issuer through the
+federation.
+Requestors that use discovery may select any entity with an entity type of
+`acme_provider`, or they may additionally require that such entities have a
+valid Trust Mark with a particular Trust Mark Identifier.
 
 ## Overview
 
 1. The Requestor checks if its superior Federation Entity supports the ACME
    protocol for OpenID Federation 1.0. If not, the Requestor starts the
-   discovery process to find which are the Issuers within the federation.
+   discovery process to find Issuers within the federation.
 
-2. The Requestor requests and obtains a new nonce from the Certificate Issuer,
-   by sending a HTTP HEAD request to the Issuer's `newNonce` resource;
+3. The Requestor requests and obtains a new nonce from the Certificate Issuer,
+   by sending a HTTP HEAD request to the Issuer's `newNonce` resource,
+   as described in {{Section 7.2 of !RFC8555}}.
 
-3. The Requestor begins the X.509 Certificate issuance process by sending a HTTP POST
-   request to the Certificate Issuer's `newOrder` resource, and follows the remainder of the
+2. The Requestor creates an ACME Account with the Issuer, as described in
+   {{Section 7.3 of !RFC8555}}.
+
+4. The Requestor begins the X.509 Certificate issuance process by sending a HTTP POST
+   request to the Certificate Issuer's `newOrder` resource,
+   as described in {{neworder-request}}, and follows the remainder of the
    ACME protocol as specified in {{!RFC8555}}, using the new challenge defined in
    {{challenge-type}}.
-
-4. The Requestor sends the newOrder request to the Certificate Issuer,
-   as described in {{neworder-request}}.
 
 5. The Certificate Issuer evaluates the trust to the Requestor by checking if it
    is part of its federation. If not the CSR request MUST be rejected, with
