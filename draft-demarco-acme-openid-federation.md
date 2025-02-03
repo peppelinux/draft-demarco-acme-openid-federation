@@ -463,7 +463,6 @@ the `acme_provider` metadata:
       "meta": {
         "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
         "website": "https://www.issuer.example.com/",
-        "caaIdentities": ["issuer.example.com"],
         "externalAccountRequired": false
       }
     }
