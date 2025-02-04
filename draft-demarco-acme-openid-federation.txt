@@ -90,14 +90,15 @@ Table of Contents
    4.  Conventions and Definitions
    5.  Certificates issued using OpenID Federation
    6.  Protocol Flow
-     6.1.  Discovery Preconditions
-     6.2.  Overview
-     6.3.  Entity Configuration Metadata
-       6.3.1.  Issuer Metadata
-       6.3.2.  Requestor Metadata
-     6.4.  newOrder Request
-     6.5.  OpenID Federation Challenge Type
-       6.5.1.  CSR and Certificate Requirements
+     6.1.  Preconditions
+     6.2.  Discovery
+     6.3.  Overview
+     6.4.  Entity Configuration Metadata
+       6.4.1.  Issuer Metadata
+       6.4.2.  Requestor Metadata
+     6.5.  newOrder Request
+     6.6.  OpenID Federation Challenge Type
+       6.6.1.  CSR and Certificate Requirements
    7.  Publication of the Certificates within the Federation
    8.  Certificate Lifecycle and Revocation
    9.  Errors
@@ -235,69 +236,60 @@ Table of Contents
    subdivided in the following phases:
 
    *  *Discovery*, the Requestor obtains the available CAs within a
-      federation, inspecting the ACME provider metadata types.
+      federation, inspecting the ACME provider entity types.
 
    *  *Order request*, the Requestor requests a X.509 Certificate to a
       Certificate Issuer using the ACME protocol.
 
-6.1.  Discovery Preconditions
+6.1.  Preconditions
 
-   The protocol assumes the following discovery preconditions are met,
-   where for discovery is intended the phase where a Requestor searches
-   an Certificate Issuer to request an X.509 Certificate.
+   The protocol requires the following preconditions are met.
 
    1.  The Requestor and the Issuer MUST publish their Entity
        Configuration as defined in Section 9 of [OPENID-FED].
 
-   2.  The Requestor and the Issuer MUST be able to establish the trust
-       to each other obtaining the Trust Chain of each other, as defined
-       in Section 4 of [OPENID-FED].
+   2.  The Requestor and the Issuer MUST be able to establish a Trust
+       Chain to each other, as defined in Section 4 of [OPENID-FED],
+       from their respective Trust Anchors.
 
-   3.  The Issuer, be this the Trust Anchor or one or more of its
-       Intermediates, MUST implement an ACME server, extended according
-       to this document.
+   3.  The Issuer MUST implement an ACME server, extended according to
+       this document.
 
-   4.  The Requestor MUST publish the metadata type acme_requestor in
-       its Entity Configuration, according to Section 6.3.2.
+   4.  The Requestor MUST publish the entity type acme_requestor in its
+       Entity Configuration, according to Section 6.4.2.
 
-   5.  The Issuer MUST publish the metadata type acme_provider in its
-       Entity Configuration, according to Section 6.3.1.
+   5.  The Issuer MUST publish the entity type acme_provider in its
+       Entity Configuration, according to Section 6.4.1.
 
-   6.  The Certificate Issuer MAY be a Leaf, in these cases a specific
-       Trust Mark enabling the issuance of X.509 Certificates within the
-       federation MAY be issued by the Trust Anchor, or on behalf of it
-       by an allowed Trust Mark Issuer as configured in the federation.
-       When used, the Trust Mark MUST be published within the Leaf's
-       Entity Configuration.
+6.2.  Discovery
 
-       If this is not the case, there MAY be some cases where the
-       Requestor knows a priori the identity of the Issuers in one or
-       more federations; in these cases, the Requestor directly requests
-       the issuance of the X.509 Certificate from the Issuer, without
-       discovery.
+   The Requestor's ACME client may either be configured to use a
+   particular ACME server, or to automatically discover a Certificate
+   Issuer through the federation.  Requestors that use discovery MAY
+   select any entity with an entity type of acme_provider, or they may
+   additionally require that such entities have a valid Trust Mark with
+   a particular Trust Mark Identifier.
 
-   7.  The Requestor creates an ACME Account with the Issuer, as
-       described in Section 7.3 of [RFC8555].
-
-6.2.  Overview
+6.3.  Overview
 
    1.  The Requestor checks if its superior Federation Entity supports
        the ACME protocol for OpenID Federation 1.0.  If not, the
-       Requestor starts the discovery process to find which are the
-       Issuers within the federation.
+       Requestor starts the discovery process to find Issuers within the
+       federation.
 
    2.  The Requestor requests and obtains a new nonce from the
        Certificate Issuer, by sending a HTTP HEAD request to the
-       Issuer's newNonce resource;
+       Issuer's newNonce resource, as described in Section 7.2 of
+       [RFC8555].
 
-   3.  The Requestor begins the X.509 Certificate issuance process by
+   3.  The Requestor creates an ACME Account with the Issuer, as
+       described in Section 7.3 of [RFC8555].
+
+   4.  The Requestor begins the X.509 Certificate issuance process by
        sending a HTTP POST request to the Certificate Issuer's newOrder
-       resource, and follows the remainder of the ACME protocol as
-       specified in [RFC8555], using the new challenge defined in
-       Section 6.5.
-
-   4.  The Requestor sends the newOrder request to the Certificate
-       Issuer, as described in Section 6.4.
+       resource, as described in Section 6.5, and follows the remainder
+       of the ACME protocol as specified in [RFC8555], using the new
+       challenge defined in Section 6.6.
 
    5.  The Certificate Issuer evaluates the trust to the Requestor by
        checking if it is part of its federation.  If not the CSR request
@@ -445,12 +437,12 @@ Table of Contents
 | Web Server      |  `-----------'
 `-----------------'
 
-6.3.  Entity Configuration Metadata
+6.4.  Entity Configuration Metadata
 
    This section describes the metadata a Requestor and Issuer MUST
    publish in their respective Entity Configurations.
 
-6.3.1.  Issuer Metadata
+6.4.1.  Issuer Metadata
 
    The Issuer MUST publish its Entity Configuration including the
    acme_provider metadata within it.  The body of the acme_provider
@@ -494,7 +486,7 @@ Table of Contents
   }
 }
 
-6.3.2.  Requestor Metadata
+6.4.2.  Requestor Metadata
 
    The Requestor MUST publish in its Entity Configuration an
    acme_requestor metadata containing a JWK set, according to
@@ -553,7 +545,7 @@ Table of Contents
    Requestor MAY remove the acme_requestor metadata from its Entity
    Configuration.
 
-6.4.  newOrder Request
+6.5.  newOrder Request
 
    The Requestor begins certificate issuance by sending a HTTP POST
    request to the Issuer's newOrder resource, as specified in
@@ -592,7 +584,7 @@ Table of Contents
    parameter MUST be 1, since there cannot be more than a single URI
    corresponding to a Federation Entity.
 
-6.5.  OpenID Federation Challenge Type
+6.6.  OpenID Federation Challenge Type
 
    The OpenID Federation challenge type allows a Requestor to prove
    control of a Federation Entity using the trust evaluation mechanism
@@ -627,7 +619,7 @@ Table of Contents
    account key, as defined in Section 8.1 of [RFC8555].  The signature
    must be made by one of the keys published in the Requestor's
    acme_requestor metadata in its Entity Configuration, as specified in
-   Section 6.3.2.  It is REQUIRED that this JWT include a kid claim
+   Section 6.4.2.  It is REQUIRED that this JWT include a kid claim
    corresponding to a valid key.
 
    trust_chain (optional, array of string): an array of base64url-
@@ -672,7 +664,7 @@ Table of Contents
    *  Verifies that the sig field of the payload includes a valid JWT
       over the key authorization, signed with one of the keys published
       in the Requestor's acme_requestor metadata in its Entity
-      Configuration, as specified in Section 6.3.2.  The Issuer MUST
+      Configuration, as specified in Section 6.4.2.  The Issuer MUST
       only consider the key whose kid matches the kid claim in the
       Requestor's challenge response.  The Issuer also MUST only
       consider keys published in the Requestor's acme_requestor
@@ -695,7 +687,7 @@ Table of Contents
         "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
       }
 
-6.5.1.  CSR and Certificate Requirements
+6.6.1.  CSR and Certificate Requirements
 
    When using this challenge type, both the certificate signing request
    (CSR) and the X.509 Certificate:
@@ -758,7 +750,7 @@ Table of Contents
 
 10.  Security Considerations
 
-   The openid-federation-01 challenge defined in Section 6.5 defends
+   The openid-federation-01 challenge defined in Section 6.6 defends
    against replay attacks by malicious ACME servers because the
    signature in challenge responses is over an ACME key authorization,
    which binds the ACME account key.
