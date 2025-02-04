@@ -5,9 +5,9 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                                A. Ghani
-Expires: 1 August 2025                                         B. Pitman
+Expires: 8 August 2025                                         B. Pitman
                                                                     ISRG
-                                                         28 January 2025
+                                                         4 February 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -66,7 +66,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 August 2025.
+   This Internet-Draft will expire on 8 August 2025.
 
 Copyright Notice
 
@@ -488,7 +488,6 @@ Table of Contents
       "meta": {
         "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
         "website": "https://www.issuer.example.com/",
-        "caaIdentities": ["issuer.example.com"],
         "externalAccountRequired": false
       }
     }
@@ -623,10 +622,13 @@ Table of Contents
    The Requestor responds with an object with the following format:
 
    sig (required, string): a base64url encoding of a JWT, signing the
-   token encoded in UTF-8 with one of the keys published in the
-   Requestor's acme_requestor metadata in its Entity Configuration, as
-   specified in Section 6.3.2.  It is REQUIRED that this JWT include a
-   kid claim corresponding to a valid key.
+   key authorization encoded in UTF-8.  The key authorization is
+   computed from the token in the challenge and the Requestor's ACME
+   account key, as defined in Section 8.1 of [RFC8555].  The signature
+   must be made by one of the keys published in the Requestor's
+   acme_requestor metadata in its Entity Configuration, as specified in
+   Section 6.3.2.  It is REQUIRED that this JWT include a kid claim
+   corresponding to a valid key.
 
    trust_chain (optional, array of string): an array of base64url-
    encoded bytes containing a signed JWT and representing the Trust
@@ -668,8 +670,8 @@ Table of Contents
       a single Federation Entity only.
 
    *  Verifies that the sig field of the payload includes a valid JWT
-      over the challenge token, signed with one of the keys published in
-      the Requestor's acme_requestor metadata in its Entity
+      over the key authorization, signed with one of the keys published
+      in the Requestor's acme_requestor metadata in its Entity
       Configuration, as specified in Section 6.3.2.  The Issuer MUST
       only consider the key whose kid matches the kid claim in the
       Requestor's challenge response.  The Issuer also MUST only
@@ -756,7 +758,10 @@ Table of Contents
 
 10.  Security Considerations
 
-   TBD.
+   The openid-federation-01 challenge defined in Section 6.5 defends
+   against replay attacks by malicious ACME servers because the
+   signature in challenge responses is over an ACME key authorization,
+   which binds the ACME account key.
 
 11.  IANA Considerations
 
