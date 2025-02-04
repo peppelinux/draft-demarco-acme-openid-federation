@@ -613,18 +613,18 @@ Table of Contents
 
    The Requestor responds with an object with the following format:
 
-   sig (required, string): a base64url encoding of a JWT, signing the
-   key authorization encoded in UTF-8.  The key authorization is
-   computed from the token in the challenge and the Requestor's ACME
-   account key, as defined in Section 8.1 of [RFC8555].  The signature
-   must be made by one of the keys published in the Requestor's
-   acme_requestor metadata in its Entity Configuration, as specified in
-   Section 6.4.2.  It is REQUIRED that this JWT include a kid claim
-   corresponding to a valid key.
-
-   trust_chain (optional, array of string): an array of base64url-
-   encoded bytes containing a signed JWT and representing the Trust
-   Chain of the Requestor, See Section 4.3 of [OPENID-FED].  The
+   sig (required, string): the compact JSON serialization (as described
+   in Section 7.1 of [RFC7515]) of a JWS, signing the key authorization
+   encoded in UTF-8.  The key authorization is computed from the token
+   in the challenge and the Requestor's ACME account key, as defined in
+   Section 8.1 of [RFC8555].  The signature must be made by one of the
+   keys published in the Requestor's acme_requestor metadata in its
+   Entity Configuration, as specified in Section 6.4.2.  The JWS MUST
+   include a kid header parameter corresponding to the key used to sign
+   the key authorization and a typ header parameter set to "signed-acme-
+   challenge+jwt". trust_chain (optional, array of string): an array of
+   base64url-encoded bytes containing a signed JWT and representing the
+   Trust Chain of the Requestor, See Section 4.3 of [OPENID-FED].  The
    Requestor SHOULD use a Trust Anchor it has in common with the ACME
    server.  It is RECOMMENDED that the Requestor includes this field;
    otherwise, the ACME server MUST start Federation Entity Discovery to
@@ -836,6 +836,10 @@ Table of Contents
               Infrastructure Certificate and Certificate Revocation List
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <https://www.rfc-editor.org/rfc/rfc5280>.
+
+   [RFC7515]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web
+              Signature (JWS)", RFC 7515, DOI 10.17487/RFC7515, May
+              2015, <https://www.rfc-editor.org/rfc/rfc7515>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,

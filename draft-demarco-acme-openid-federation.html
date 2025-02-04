@@ -1844,23 +1844,26 @@ cryptographic public key published in its OpenID Federation Entity Configuration
 </pre><a href="#section-6.6-5" class="pilcrow">¶</a>
 </div>
 <p id="section-6.6-6">The Requestor responds with an object with the following format:<a href="#section-6.6-6" class="pilcrow">¶</a></p>
-<p id="section-6.6-7">sig (required, string):  a base64url encoding of a JWT, signing the key
-    authorization encoded in UTF-8.
+<p id="section-6.6-7">sig (required, string):  the compact JSON serialization (as described in
+    <span><a href="https://rfc-editor.org/rfc/rfc7515#section-7.1" class="relref">Section 7.1</a> of [<a href="#RFC7515" class="cite xref">RFC7515</a>]</span>) of a JWS, signing the key authorization
+    encoded in UTF-8.
     The key authorization is computed from the token in the challenge and the
     Requestor's ACME account key, as defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-8.1" class="relref">Section 8.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.
     The signature must be made by one of the keys published in the Requestor's
     <code>acme_requestor</code> metadata in its Entity Configuration, as specified in
-    <a href="#requestor-metadata" class="auto internal xref">Section 6.4.2</a>. It is <span class="bcp14">REQUIRED</span> that this JWT include a <code>kid</code> claim
-    corresponding to a valid key.<a href="#section-6.6-7" class="pilcrow">¶</a></p>
-<p id="section-6.6-8">trust_chain (optional, array of string):  an array of base64url-encoded bytes
+    <a href="#requestor-metadata" class="auto internal xref">Section 6.4.2</a>.
+    The JWS <span class="bcp14">MUST</span> include a <code>kid</code> header parameter corresponding to the key used
+    to sign the key authorization and a <code>typ</code> header parameter set to
+    "signed-acme-challenge+jwt".
+trust_chain (optional, array of string):  an array of base64url-encoded bytes
     containing a signed JWT and representing the Trust Chain of the Requestor,
     See <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-4.3" class="relref">Section 4.3</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
     The Requestor <span class="bcp14">SHOULD</span> use a Trust Anchor it
     has in common with the ACME server. It is <span class="bcp14">RECOMMENDED</span> that the Requestor
     includes this field; otherwise, the ACME server <span class="bcp14">MUST</span> start Federation Entity
-    Discovery to obtain the Trust Chain related to the Requestor.<a href="#section-6.6-8" class="pilcrow">¶</a></p>
-<p id="section-6.6-9">A non-normative example for an authorization with <code>trust_chain</code> specified:<a href="#section-6.6-9" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.6-10">
+    Discovery to obtain the Trust Chain related to the Requestor.<a href="#section-6.6-7" class="pilcrow">¶</a></p>
+<p id="section-6.6-8">A non-normative example for an authorization with <code>trust_chain</code> specified:<a href="#section-6.6-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.6-9">
 <pre>
    POST /acme/chall/prV_B7yEyA4
    Host: issuer.example.com
@@ -1879,36 +1882,36 @@ cryptographic public key published in its OpenID Federation Entity Configuration
      }),
      "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
    }
-</pre><a href="#section-6.6-10" class="pilcrow">¶</a>
+</pre><a href="#section-6.6-9" class="pilcrow">¶</a>
 </div>
-<p id="section-6.6-11">On receiving a response, the Certificate Issuer retrieves the public keys associated with
+<p id="section-6.6-10">On receiving a response, the Certificate Issuer retrieves the public keys associated with
 the given entity (possibly performing Federation Entity Discovery to do so),
-then:<a href="#section-6.6-11" class="pilcrow">¶</a></p>
+then:<a href="#section-6.6-10" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.6-12.1">
-            <p id="section-6.6-12.1.1">Verifies that the requested <code>openid-federation</code> value matches the <code>sub</code>
+<li class="normal" id="section-6.6-11.1">
+            <p id="section-6.6-11.1.1">Verifies that the requested <code>openid-federation</code> value matches the <code>sub</code>
 parameter of the Requestor's Entity Configuration. Since the Entity
 Configuration <span class="bcp14">MUST</span> contain at most one Entity Identifier, this effectively
 means this challenge type works with requests for a single Federation Entity
-only.<a href="#section-6.6-12.1.1" class="pilcrow">¶</a></p>
+only.<a href="#section-6.6-11.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.6-12.2">
-            <p id="section-6.6-12.2.1">Verifies that the <code>sig</code> field of the payload includes a valid JWT over the
+          <li class="normal" id="section-6.6-11.2">
+            <p id="section-6.6-11.2.1">Verifies that the <code>sig</code> field of the payload includes a valid JWT over the
 key authorization, signed with one of the keys published in the Requestor's
 <code>acme_requestor</code> metadata in its Entity Configuration, as specified in
 <a href="#requestor-metadata" class="auto internal xref">Section 6.4.2</a>. The Issuer <span class="bcp14">MUST</span> only consider the key
 whose <code>kid</code> matches the <code>kid</code> claim in the Requestor's challenge response.
 The Issuer also <span class="bcp14">MUST</span> only consider keys published in the Requestor's
-<code>acme_requestor</code> metadata.<a href="#section-6.6-12.2.1" class="pilcrow">¶</a></p>
+<code>acme_requestor</code> metadata.<a href="#section-6.6-11.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-6.6-13">If all of the above verifications succeed, then the validation is successful.
+<p id="section-6.6-12">If all of the above verifications succeed, then the validation is successful.
 Otherwise, it has failed. In either case, the Certificate Issuer responds according to
 <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.5.1" class="relref">Section 7.5.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>. In the event that the verification succeeds, the
 eventual CSR <span class="bcp14">MUST</span> include the public key, attested within the Trust Chain, used
-by the Requestor to satisfy the Certificate Issuer's challenge.<a href="#section-6.6-13" class="pilcrow">¶</a></p>
-<p id="section-6.6-14">A non-normative example for the challenge object post-validation:<a href="#section-6.6-14" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.6-15">
+by the Requestor to satisfy the Certificate Issuer's challenge.<a href="#section-6.6-12" class="pilcrow">¶</a></p>
+<p id="section-6.6-13">A non-normative example for the challenge object post-validation:<a href="#section-6.6-13" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.6-14">
 <pre>
    {
      "type": "openid-federation-01",
@@ -1917,7 +1920,7 @@ by the Requestor to satisfy the Certificate Issuer's challenge.<a href="#section
      "validated": "2024-10-01T12:05:13.72Z",
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
-</pre><a href="#section-6.6-15" class="pilcrow">¶</a>
+</pre><a href="#section-6.6-14" class="pilcrow">¶</a>
 </div>
 <div id="csr-and-certificate-requirements">
 <section id="section-6.6.1">
@@ -2106,6 +2109,10 @@ registry group <span>[<a href="#IANA-ACME" class="cite xref">IANA-ACME</a>]</spa
 <dt id="RFC5280">[RFC5280]</dt>
       <dd>
 <span class="refAuthor">Cooper, D.</span>, <span class="refAuthor">Santesson, S.</span>, <span class="refAuthor">Farrell, S.</span>, <span class="refAuthor">Boeyen, S.</span>, <span class="refAuthor">Housley, R.</span>, and <span class="refAuthor">W. Polk</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile"</span>, <span class="seriesInfo">RFC 5280</span>, <span class="seriesInfo">DOI 10.17487/RFC5280</span>, <time datetime="2008-05" class="refDate">May 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5280">https://www.rfc-editor.org/rfc/rfc5280</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7515">[RFC7515]</dt>
+      <dd>
+<span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Bradley, J.</span>, and <span class="refAuthor">N. Sakimura</span>, <span class="refTitle">"JSON Web Signature (JWS)"</span>, <span class="seriesInfo">RFC 7515</span>, <span class="seriesInfo">DOI 10.17487/RFC7515</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7515">https://www.rfc-editor.org/rfc/rfc7515</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
       <dd>
