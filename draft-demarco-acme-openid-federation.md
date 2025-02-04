@@ -221,7 +221,7 @@ inspecting the ACME provider entity types.
 
 ## Preconditions
 
-The protocol assumes the following preconditions are met.
+The protocol requires the following preconditions are met.
 
 1. The Requestor and the Issuer MUST publish their Entity Configuration as
    defined in {{Section 9 of OPENID-FED}}{: relative="#section-9"}.
@@ -243,7 +243,7 @@ The protocol assumes the following preconditions are met.
 The Requestor's ACME client may either be configured to use a particular ACME
 server, or to automatically discover a Certificate Issuer through the
 federation.
-Requestors that use discovery may select any entity with an entity type of
+Requestors that use discovery MAY select any entity with an entity type of
 `acme_provider`, or they may additionally require that such entities have a
 valid Trust Mark with a particular Trust Mark Identifier.
 
