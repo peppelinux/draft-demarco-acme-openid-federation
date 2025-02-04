@@ -20,8 +20,6 @@ opt If requestor did not provide Trust Chain
   A <<->> F: Determine Trust Chain\nfrom Issuer's Trust Anchor to Requestor\n(OpenID Federation Discovery)
 end
 A ->> A: Evaluate trust chain
-A -->> RC: Respond to POST with validation success
-
 
 loop Poll until authz status is "valid" or "invalid"
 RC ->> A: POST-as-GET /acme/authz/[authz-id]
