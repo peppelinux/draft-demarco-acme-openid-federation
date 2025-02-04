@@ -369,11 +369,6 @@ ACME account with the Issuer.
         |                  |                                 |    | Evaluate trust chain |
         |                  |                                 |<---'                      |
         |                  |                                 |                           |
-        |                  |  Respond to POST with           |                           |
-        |                  |  validation success             |                           |
-        |                  |<- - - - - - - - - - - - - - - - -                           |
-        |                  |                                 |                           |
-        |                  |                                 |                           |
         |  _________________________________________________________________________     |
         |  ! LOOP  /  Poll until authz status                |                      !    |
         |  !      /  is "valid" or "invalid"                 |                      !    |
