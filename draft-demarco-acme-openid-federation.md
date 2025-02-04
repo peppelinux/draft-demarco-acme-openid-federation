@@ -593,15 +593,17 @@ token (required, string):  A random value that uniquely identifies the
 
 The Requestor responds with an object with the following format:
 
-sig (required, string):  a base64url encoding of a JWT, signing the key
-    authorization encoded in UTF-8.
+sig (required, string):  the compact JSON serialization (as described in
+    {{Section 7.1 of !RFC7515}}) of a JWS, signing the key authorization
+    encoded in UTF-8.
     The key authorization is computed from the token in the challenge and the
     Requestor's ACME account key, as defined in {{Section 8.1 of !RFC8555}}.
     The signature must be made by one of the keys published in the Requestor's
     `acme_requestor` metadata in its Entity Configuration, as specified in
-    {{requestor-metadata}}. It is REQUIRED that this JWT include a `kid` claim
-    corresponding to a valid key.
-
+    {{requestor-metadata}}.
+    The JWS MUST include a `kid` header parameter corresponding to the key used
+    to sign the key authorization and a `typ` header parameter set to
+    "signed-acme-challenge+jwt".
 trust_chain (optional, array of string):  an array of base64url-encoded bytes
     containing a signed JWT and representing the Trust Chain of the Requestor,
     See {{Section 4.3 of OPENID-FED}}{: relative="#section-4.3"}.
