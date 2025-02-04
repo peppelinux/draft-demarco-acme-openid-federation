@@ -463,7 +463,6 @@ the `acme_provider` metadata:
       "meta": {
         "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
         "website": "https://www.issuer.example.com/",
-        "caaIdentities": ["issuer.example.com"],
         "externalAccountRequired": false
       }
     }
@@ -600,8 +599,11 @@ token (required, string):  A random value that uniquely identifies the
 
 The Requestor responds with an object with the following format:
 
-sig (required, string):  a base64url encoding of a JWT, signing the token
-    encoded in UTF-8 with one of the keys published in the Requestor's
+sig (required, string):  a base64url encoding of a JWT, signing the key
+    authorization encoded in UTF-8.
+    The key authorization is computed from the token in the challenge and the
+    Requestor's ACME account key, as defined in {{Section 8.1 of !RFC8555}}.
+    The signature must be made by one of the keys published in the Requestor's
     `acme_requestor` metadata in its Entity Configuration, as specified in
     {{requestor-metadata}}. It is REQUIRED that this JWT include a `kid` claim
     corresponding to a valid key.
@@ -647,7 +649,7 @@ then:
   only.
 
 * Verifies that the `sig` field of the payload includes a valid JWT over the
-  challenge token, signed with one of the keys published in the Requestor's
+  key authorization, signed with one of the keys published in the Requestor's
   `acme_requestor` metadata in its Entity Configuration, as specified in
   {{requestor-metadata}}. The Issuer MUST only consider the key
   whose `kid` matches the `kid` claim in the Requestor's challenge response.
@@ -732,8 +734,10 @@ error type SHOULD include an extension member named `error_code`. The
 
 # Security Considerations
 
-TBD.
-
+The `openid-federation-01` challenge defined in {{challenge-type}} defends
+against replay attacks by malicious ACME servers because the signature in
+challenge responses is over an ACME key authorization, which binds the ACME
+account key.
 
 # IANA Considerations
 

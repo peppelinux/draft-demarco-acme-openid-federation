@@ -1,6 +1,6 @@
-# Automatic Certificate Management Environment (ACME) for OpenID Connect Federation 1.0
+# Automatic Certificate Management Environment (ACME) with OpenID Federation 1.0
 
-This is the working area for the individual Internet-Draft, "Automatic Certificate Management Environment (ACME) for OpenID Connect Federation 1.0".
+This is the working area for the individual Internet-Draft, "Automatic Certificate Management Environment (ACME) with OpenID Federation 1.0".
 
 * [Editor's Copy](https://peppelinux.github.io/draft-demarco-acme-openid-federation/#go.draft-demarco-acme-openid-federation.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-demarco-acme-openid-federation)
