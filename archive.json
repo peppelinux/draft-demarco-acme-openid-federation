@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-30T00:33:19.824382+00:00",
+  "timestamp": "2025-02-06T00:34:46.808882+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -520,7 +520,7 @@
       ],
       "body": "Currently, we require that the same public key be used in the `acme_requestor` field of the Entity Configuration, the CSR, and the final X.509 certificate. This requirement seems unnecessarily restrictive to me, and it cuts against some cryptographic best practices. I suggest we remove the requirement that the public key in the CSR match the `acme_requestor` metadata. This will both allow users to use different private keys for different purposes, eliminating any concerns of cross-protocol attacks, and make it trivial to rotate keys when requesting a new X.509 certificate. The main thing we'd lose is that any Superior Entity above the Requestor would no longer get any say on the algorithm of public keys in X.509 certificates, or the public keys themselves, but I don't see why that would be useful in practice.\r\n\r\nGenerally, defending against cross-protocol attacks requires that it be infeasibly difficult to get a message that is signed in one protocol to be reinterpreted as a valid message in another protocol. This can be solved with domain separation, but simply using different private keys for different protocols is a foolproof defense. I think the domain separation argument that JWT-X.509 private key reuse would probably lean on the JWT claims set message starting with either `{` or whitespace, and the X.509 message starting with 0x30 0x82 (or 0x30 0x81, or 0x30 0x83) to denote a SEQUENCE, assuming it's a tbsCertificate/tbsCertList/tbsResponseData/etc. We'd also have to consider key reuse between JWT and TLS.\r\n\r\nIt is currently the norm for many ACME clients to generate a new keypair whenever they renew certificates. This is good for security because it limits the impact of point-in-time private key compromises to just the one certificate's remaining validity period. If we require that the X.509 certificate's public key match the OpenID Federation metadata, then ACME clients that support this challenge type would need a separate mode where they only use a provided private key to sign CSRs, rather than generating fresh keys as needed. Furthermore, users deploying this system would need to develop their own way to rotate keys, starting with changing their Entity Configuration.\r\n\r\nRemoving this requirement that JWT and X.509 public keys match would also make implementation easier, because we wouldn't have to develop mappings between JWT signature algorithms and X.509 signature algorithms, etc.\r\n\r\nEdit: note to self: we'll have to revise the last paragraph of the abstract, and remove mention of the key in the Entity Configuration.",
       "createdAt": "2025-01-07T16:18:19Z",
-      "updatedAt": "2025-01-28T15:28:47Z",
+      "updatedAt": "2025-02-04T01:10:02Z",
       "closedAt": null,
       "comments": [
         {
@@ -536,6 +536,13 @@
           "body": "As a point of comparison, the onion-csr-01 challenge from draft-ietf-acme-onion has a lot in common with our openid-federation-01 challenge. There, the client signs a CSR containing a nonce from the challenge using a keypair that has its public key distributed via the Tor rendezvous v3 protocol. They have a requirement that the key used in the challenge's CSR \"MUST NOT be the same public key presented in the CSR to finalize the order\".",
           "createdAt": "2025-01-14T17:10:46Z",
           "updatedAt": "2025-01-14T17:10:46Z"
+        },
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Another virtue of doing this is that it makes it possible to use a single authorization for multiple orders, which is something ACME is designed to do (see the last few paragraphs of [RFC 8555 7.1.3](https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.3)). Doing this is particularly useful in the case of acme-openid because the requestor's `acme_metadata` might contain multiple keys, and the requestor might want certs for each of them. As of right now, the requestor has to bind the ACME order to the key that is being certified by signing the issuer's challenge with it.",
+          "createdAt": "2025-02-04T01:10:01Z",
+          "updatedAt": "2025-02-04T01:10:01Z"
         }
       ]
     },
@@ -633,7 +640,7 @@
       "id": "I_kwDOJ6_NW86mo-oQ",
       "title": "Consider binding challenge response to ACME account key",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/42",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -642,8 +649,8 @@
       ],
       "body": "Currently, the signature in challenge responses binds the token and the keypair used to sign the token. As a defense in depth measure, we could sign the \"key authorization\", as defined in RFC 8555, instead of just the token. This would bind the ACME account key as well. The main attack this would protect against is a malicious ACME server standing between a client and a target ACME server, replaying a token from the target ACME server's challenges to the client, and getting a valid challenge response it can use to issue certificates under its own control. This may not be a big deal, since we expect the ACME server to be configured manually or discovered from the federation, and thus at least somewhat trusted, but it would be an easy protocol change. Unlike in http-01, dns-01, or tls-alpn-01, the signature we care about is only sent via HTTPS to the ACME server, and is not exposed to third parties.",
       "createdAt": "2025-01-17T15:38:12Z",
-      "updatedAt": "2025-01-28T22:29:18Z",
-      "closedAt": null,
+      "updatedAt": "2025-02-04T17:38:58Z",
+      "closedAt": "2025-02-04T17:38:57Z",
       "comments": [
         {
           "author": "divergentdave",
@@ -773,7 +780,7 @@
       "id": "I_kwDOJ6_NW86mrKO2",
       "title": "Discovery: separate discussion of leaf entities and trust marks",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/48",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -782,8 +789,8 @@
       "labels": [],
       "body": "The sixth bullet point in the discovery section imposes some additional requirements on entities with `acme_provider` entity type if they are a leaf entity. It discusses both trust marks and out-of-band configuration. I think we should decouple these concepts, because the fact that a federation entity is or isn't a leaf doesn't mean much, and the other concepts may be useful more broadly, even if the entity isn't a leaf.\n\nA federation entity is a leaf if and only if it doesn't have any subordinates. So, a leaf entity could turn itself into an intermediate entity just by adding `federation_fetch_endpoint` and `federation_list_endpoint` fields under its `federation_entity` entity type, and signing at least one subordinate statement. (assuming a superior entity hasn't blocked this with constraints) I don't think we want clients to try to determine whether an entity is an intermediate or leaf, as that doesn't buy us much security-wise, and it seems to go against the intent of how OpenID Federation typically works. In fact, the spec says that \"Leaf Entities typically play a protocol role\", which suggests that it might be more conventional to put the `acme_provider` entity type in leaf entities than otherwise.\n\nThe rest of this bullet point may still be useful to deployments. I suggest we hoist these further up in the discovery section and lay out the three options: a) the ACME client is pre-configured with the ACME provider entity to use b) the ACME client discovers ACME providers by listing federation entities c) the ACME client discovers ACME providers by listing federation entities, and it additionally filters for entities that have a trust mark with a particular trust mark identifier. Depending on the deployment, and the policies governing both federation membership and trust mark issuance, this should give users the tools they need.",
       "createdAt": "2025-01-17T21:26:02Z",
-      "updatedAt": "2025-01-28T15:19:48Z",
-      "closedAt": null,
+      "updatedAt": "2025-02-04T18:36:26Z",
+      "closedAt": "2025-02-04T18:36:25Z",
       "comments": [
         {
           "author": "peppelinux",
@@ -793,6 +800,38 @@
           "updatedAt": "2025-01-28T15:15:50Z"
         }
       ]
+    },
+    {
+      "number": 54,
+      "id": "I_kwDOJ6_NW86oTm58",
+      "title": "Avoid constraining certificate profiles",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/54",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We should change the requirements on CSRs and certificates regarding the subject's common name and subject alternative name to optional suggestions. This draft should limit itself to defining the new ACME identifier and challenge types, and leave certificate profiles up to individual CAs, depending on the requirements of the PKI they are a part of. For example, a CA in some federation may have a good distinguished name for every federation entity. Then, it could put those names in the subject of certificates it issues, and wouldn't need to use subject alternative names at all. It would still be valuable to define `id-on-OpenIdFederationEntityId` and `OpenIdFederationEntityId` in this document, to provide an easy default for profiles.\n\nThanks to @aarongable for the suggestion.",
+      "createdAt": "2025-01-31T14:51:37Z",
+      "updatedAt": "2025-01-31T14:51:37Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 59,
+      "id": "I_kwDOJ6_NW86onRKI",
+      "title": "Explicitly restrict permitted challenge types for OpenID Federation ACME identifiers",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/59",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The draft defines a new ACME identifier type `openid-federation`, and a new ACME challenge type `openid-federation-01`, but we don't make it clear that they can only be used together. We should follow the precedent of [RFC 8738 section 4](https://datatracker.ietf.org/doc/html/rfc8738#section-4) and make this explicit. Additionally, the IANA considerations section should add entries similarly to [RFC 8738 section 8.2](https://datatracker.ietf.org/doc/html/rfc8738#section-8.2)",
+      "createdAt": "2025-02-04T00:47:27Z",
+      "updatedAt": "2025-02-04T00:47:27Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -3837,52 +3876,513 @@
       "id": "PR_kwDOJ6_NW86JbFvh",
       "title": "Rewrite Discovery Preconditions section",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/52",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This rewrites the Discovery Preconditions section, splitting it in two and moving some other parts to neighboring sections. The text no longer distinguishes between leaf and intermediate federation entities. The options of no discovery/discovery by entity type alone/discovery with trust marks are laid out in the new discovery section. ACME account creation is moved to the overview section, and the procedure there is cleaned up a bit. Closes #48.",
       "createdAt": "2025-01-29T21:24:09Z",
-      "updatedAt": "2025-01-29T21:24:10Z",
+      "updatedAt": "2025-02-04T18:36:25Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e763d59eb2897bfce13d704dd6c7e06d7ca9b87c",
       "headRepository": "divergentdave/draft-demarco-acme-openid-federation",
       "headRefName": "david/discovery",
-      "headRefOid": "d428628f49c02087d06709b9e89df2eb552c5d06",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "2a51af57accc620f4e6a196a49e2f9d2f8fe5b9d",
+      "closedAt": "2025-02-04T18:36:24Z",
+      "mergedAt": "2025-02-04T18:36:24Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "5dcc1cbea80db472453c367e07b1efea0ce11c86"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86aGdrR",
+          "commit": {
+            "abbreviatedOid": "d428628"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "I've gone through this yesterday and today feeling like I need to give some sort of feedback, but haven't come up with anything yet to improve on it.\r\n\r\nBy posting this comment, I hope to actually jog my brain into coming up with something useful tomorrow.",
+          "createdAt": "2025-01-31T00:17:19Z",
+          "updatedAt": "2025-01-31T00:17:19Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86aaPqD",
+          "commit": {
+            "abbreviatedOid": "d428628"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM.",
+          "createdAt": "2025-02-03T17:24:47Z",
+          "updatedAt": "2025-02-03T17:24:47Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86alvf6",
+          "commit": {
+            "abbreviatedOid": "d428628"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-04T17:37:06Z",
+          "updatedAt": "2025-02-04T17:37:07Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "```suggestion\r\nThe protocol requires the following preconditions are met.\r\n```",
+              "createdAt": "2025-02-04T17:37:07Z",
+              "updatedAt": "2025-02-04T17:37:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86alvwo",
+          "commit": {
+            "abbreviatedOid": "d428628"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-04T17:37:38Z",
+          "updatedAt": "2025-02-04T17:37:38Z",
+          "comments": [
+            {
+              "originalPosition": 56,
+              "body": "```suggestion\r\nRequestors that use discovery MAY select any entity with an entity type of\r\n```",
+              "createdAt": "2025-02-04T17:37:38Z",
+              "updatedAt": "2025-02-04T17:37:38Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86alv_c",
+          "commit": {
+            "abbreviatedOid": "d428628"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "CHANGES_REQUESTED",
+          "body": "two normative language suggestions",
+          "createdAt": "2025-02-04T17:38:06Z",
+          "updatedAt": "2025-02-04T17:38:06Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86amBy0",
+          "commit": {
+            "abbreviatedOid": "2a51af5"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-04T18:04:52Z",
+          "updatedAt": "2025-02-04T18:04:52Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86amULj",
+          "commit": {
+            "abbreviatedOid": "2a51af5"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-04T18:35:59Z",
+          "updatedAt": "2025-02-04T18:35:59Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 53,
       "id": "PR_kwDOJ6_NW86JbKe8",
       "title": "Sign key authorization instead of token",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/53",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This changes the challenge method to include a signature of the key authorization, instead of a signature of the token. I also added a corresponding blurb to the security considerations section. Closes #42.",
       "createdAt": "2025-01-29T21:37:04Z",
-      "updatedAt": "2025-01-29T21:37:04Z",
+      "updatedAt": "2025-02-04T17:38:56Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e763d59eb2897bfce13d704dd6c7e06d7ca9b87c",
       "headRepository": "divergentdave/draft-demarco-acme-openid-federation",
       "headRefName": "david/key-auth",
       "headRefOid": "c70a100d8094d7a5f94326c4f0068ad305ad1efe",
+      "closedAt": "2025-02-04T17:38:56Z",
+      "mergedAt": "2025-02-04T17:38:56Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "824ddee9fe8abf6f5ce8f1fbe8a5ed62fadd1b6f"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86aZi1I",
+          "commit": {
+            "abbreviatedOid": "c70a100"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "This is correct usage, LGTM.",
+          "createdAt": "2025-02-03T16:07:54Z",
+          "updatedAt": "2025-02-03T16:07:54Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86acBE1",
+          "commit": {
+            "abbreviatedOid": "c70a100"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-03T21:25:46Z",
+          "updatedAt": "2025-02-03T21:25:46Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "I'm not certain it's necessary to specify \"encoded in UTF-8\". Per RFC 8555 section 8.1 ([1]), a key authorization is `keyAuthorization = token || '.' || base64url(Thumbprint(accountKey))`. In all extant challenge types (including this one), tokens are restricted to the base64url alphabet, and thus a key authorization is already UTF-8. \"encoded in UTF-8\" implies a further encoding step that isn't necessary, I think. \r\n\r\n[1]: https://datatracker.ietf.org/doc/html/rfc8555#section-8.1",
+              "createdAt": "2025-02-03T21:25:46Z",
+              "updatedAt": "2025-02-03T21:25:46Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86acDO3",
+          "commit": {
+            "abbreviatedOid": "c70a100"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-03T21:31:15Z",
+          "updatedAt": "2025-02-03T21:31:16Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "I have some other concerns about this text, but they're orthogonal to this change, and so I am addressing them in #57.",
+              "createdAt": "2025-02-03T21:31:16Z",
+              "updatedAt": "2025-02-03T21:31:16Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86acN6y",
+          "commit": {
+            "abbreviatedOid": "c70a100"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-03T21:53:01Z",
+          "updatedAt": "2025-02-03T21:53:02Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "I think explicitly mentioning the encoding makes sense, because the token is presented to us as a JSON string, (a string of Unicode codepoints) and signature algorithms expect a byte string message input. This would work identically if we said to encode the string into bytes using either UTF-8 or ASCII. As a pathological example, if we used UTF-16 or EBCDIC, we'd get a different to-be-signed message.",
+              "createdAt": "2025-02-03T21:53:02Z",
+              "updatedAt": "2025-02-03T21:53:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86ac6Y8",
+          "commit": {
+            "abbreviatedOid": "c70a100"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-03T22:30:50Z",
+          "updatedAt": "2025-02-03T22:30:50Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "Oh, that's a good point. I agree with your analysis.",
+              "createdAt": "2025-02-03T22:30:50Z",
+              "updatedAt": "2025-02-03T22:30:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86alwnP",
+          "commit": {
+            "abbreviatedOid": "c70a100"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-04T17:38:45Z",
+          "updatedAt": "2025-02-04T17:38:45Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 55,
+      "id": "PR_kwDOJ6_NW86J4Ztv",
+      "title": "CAA is irrelevant",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/55",
+      "state": "MERGED",
+      "author": "jcjones",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We can't check CAA for non-dnsName identifiers. While the Entity Configuration is marked non-normative, having CAA in there will be confusing.",
+      "createdAt": "2025-02-03T17:24:15Z",
+      "updatedAt": "2025-02-04T17:40:21Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "e763d59eb2897bfce13d704dd6c7e06d7ca9b87c",
+      "headRepository": "jcjones/draft-demarco-acme-openid-federation",
+      "headRefName": "no-caa",
+      "headRefOid": "dae15f909cca0413db71a6c38566d3e267386b7d",
+      "closedAt": "2025-02-04T17:40:21Z",
+      "mergedAt": "2025-02-04T17:40:21Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "a2e777b17a733703d803d9ce752ca6e39d44ec23"
+      },
+      "comments": [
+        {
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "body": "For tests to pass, will require rebasing atop https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/56",
+          "createdAt": "2025-02-03T19:09:56Z",
+          "updatedAt": "2025-02-03T19:09:56Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "less is more.",
+          "createdAt": "2025-02-04T17:40:13Z",
+          "updatedAt": "2025-02-04T17:40:13Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86ab3NC",
+          "commit": {
+            "abbreviatedOid": "dae15f9"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM. CAA may still be relevant in a CA that mixes identities of different types, but that's a more advanced application. Plus, `caaIdentities` is optional to begin with, and it wasn't adding anything to this example.",
+          "createdAt": "2025-02-03T21:01:43Z",
+          "updatedAt": "2025-02-03T21:01:43Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86alxSu",
+          "commit": {
+            "abbreviatedOid": "dae15f9"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-04T17:40:01Z",
+          "updatedAt": "2025-02-04T17:40:01Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 56,
+      "id": "PR_kwDOJ6_NW86J5DGt",
+      "title": "Update per https://github.blog/changelog/2024-04-16-deprecation-notice-v3-of-the-artifact-actions/",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/56",
+      "state": "MERGED",
+      "author": "jcjones",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://github.com/martinthomson/internet-draft-template is updated past the deprecated versions, we must update too, and can sync with the parent.\r\n\r\nThis is the result of:\r\n```sh\r\ngit submodule sync\r\ngit submodule update\r\ncp lib/template/.github/workflows/* .github/workflows\r\n```",
+      "createdAt": "2025-02-03T19:00:50Z",
+      "updatedAt": "2025-02-04T18:35:25Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "a2e777b17a733703d803d9ce752ca6e39d44ec23",
+      "headRepository": "jcjones/draft-demarco-acme-openid-federation",
+      "headRefName": "upload-artifact-upgrade",
+      "headRefOid": "c3d30b0334819ce8f21d483445ea018ef1388f29",
+      "closedAt": "2025-02-04T18:35:25Z",
+      "mergedAt": "2025-02-04T18:35:25Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "65a4997e423efd3f13782a0529e5acc7b97e7707"
+      },
+      "comments": [
+        {
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The makefile's insistence about the state of the python venv is real sketchy on MacOS, hence doing it separately, but I _do_ have a Linux box here.",
+          "createdAt": "2025-02-04T18:15:28Z",
+          "updatedAt": "2025-02-04T18:15:28Z"
+        },
+        {
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The auto-tool wanted to updated CODEOWNERS, too, but I stripped that commit.",
+          "createdAt": "2025-02-04T18:27:08Z",
+          "updatedAt": "2025-02-04T18:27:08Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86abSdg",
+          "commit": {
+            "abbreviatedOid": "57db10c"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "FWIW there are also Makefile targets for this in lib/update.mk, but those do git commits as well",
+          "createdAt": "2025-02-03T19:41:59Z",
+          "updatedAt": "2025-02-03T19:41:59Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 57,
+      "id": "PR_kwDOJ6_NW86J5_Aj",
+      "title": "Clarify construction of signed challenge",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/57",
+      "state": "MERGED",
+      "author": "tgeoghegan",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The existing text about how the ACME requestor should sign the ACME issuer's challenge token had several ambiguities and problems. This change is stacked on top of #53: the problems I am describing are orthogonal to that change. Below, I will reference text assuming #53 is merged.\r\n\r\n> a base64url encoding of a JWT\r\n\r\n- \"a base64url encoding\" isn't specific enough. It makes more sense to me to explicitly require JWS Compact Serialization here, which is consistent with the requirement in OpenID Federation ([1]).\r\n- If this is a signature, then presumably what we are constructing is a JWS. A JWS is a JWT, so this wasn't wrong, but it seems more clear to explicitly say JWS, as otherwise it's unclear how the implementation should represent a signature.\r\n\r\n> It is REQUIRED that this JWT include a `kid` claim corresponding to a valid key.\r\n\r\nIf I'm understanding all this correctly, then `sig` is a JWS whose payload is _not_ a JSON object (it's just the UTF-8 string of the keyauth), and thus it doesn't make sense to talk about a `kid` claim. Rather, there should be a `kid` Header Parameter in the JWS.\r\n\r\nFinally, we should use a `typ` Header Parameter to avoid cross-JWT confusion, per RFC 8725 ([2]). I invented `signed-acme-challenge+jwt` but we can probably do better.\r\n\r\n[1]: https://openid.net/specs/openid-federation-1_0-41.html#section-1.1\r\n[2]: https://www.rfc-editor.org/rfc/rfc8725.html#section-3.11",
+      "createdAt": "2025-02-03T21:30:30Z",
+      "updatedAt": "2025-02-04T18:37:28Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "a2e777b17a733703d803d9ce752ca6e39d44ec23",
+      "headRepository": "tgeoghegan/draft-demarco-acme-openid-federation",
+      "headRefName": "signed-challenge-jws",
+      "headRefOid": "3bc54449b529188847eed57b3cfc67847ac467fd",
+      "closedAt": "2025-02-04T18:37:28Z",
+      "mergedAt": "2025-02-04T18:37:28Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "e8ab4baf04b967eb89953ace90dc66c8ff038018"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86amUjo",
+          "commit": {
+            "abbreviatedOid": "3bc5444"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-04T18:36:46Z",
+          "updatedAt": "2025-02-04T18:36:46Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 58,
+      "id": "PR_kwDOJ6_NW86J6-cs",
+      "title": "Remove non-existent response from sequence diagram",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/58",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The diagram shows the requestor POSTing to the challenge at L326, and then the issuer responds at L332 indicating validation has begun. The existing diagram also illustrates a response from issuer to requestor at L372, but that isn't correct: the requestor's request was previously responded to at L332. Validation happens asynchronously from the POST to the challenge, and the requestor learns of its success or failure by polling the authz.\r\n\r\nI'm explaining this rather laboriously so that reviewers can let me know if I've misunderstood how ACME works.",
+      "createdAt": "2025-02-04T00:32:58Z",
+      "updatedAt": "2025-02-04T18:51:41Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "e763d59eb2897bfce13d704dd6c7e06d7ca9b87c",
+      "headRepository": "tgeoghegan/draft-demarco-acme-openid-federation",
+      "headRefName": "post-challenge-response-flow-diagram",
+      "headRefOid": "9c8f79ec5d3492458110f8ff7707a15eda4b76aa",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "each http request must have an http response, the removal of that response introduces an inconsistency in the diag\r\n\r\n",
+          "createdAt": "2025-02-04T17:36:09Z",
+          "updatedAt": "2025-02-04T17:36:09Z"
+        },
+        {
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I view the arrow at line 334 being the response to the POST request, though it could probably use a better label. Thus, this PR is fixing a response arrow that does not have a corresponding request arrow. RFC 8555 says the response should be a 200 OK, with the updated challenge object in the response body.",
+          "createdAt": "2025-02-04T17:58:02Z",
+          "updatedAt": "2025-02-04T17:58:02Z"
+        },
+        {
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Agreed that we need to remove that line, because the following line is the async polling to determine just that result. However, we need to also edit the source in `diagrams/plantuml` (heh, we should rename that now), not just the `.md` file. \r\n\r\n```diff\r\ndiff --git a/diagrams/plantuml b/diagrams/plantuml\r\nindex 72ec16e..2d1bb0d 100644\r\n--- a/diagrams/plantuml\r\n+++ b/diagrams/plantuml\r\n@@ -20,7 +20,6 @@ opt If requestor did not provide Trust Chain\r\n   A <<->> F: Determine Trust Chain\\nfrom Issuer's Trust Anchor to Requestor\\n(OpenID Federation Discovery)\r\n end\r\n A ->> A: Evaluate trust chain\r\n-A -->> RC: Respond to POST with validation success\r\n\r\n\r\n loop Poll until authz status is \"valid\" or \"invalid\"\r\n```",
+          "createdAt": "2025-02-04T18:37:05Z",
+          "updatedAt": "2025-02-04T18:37:05Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86akJTG",
+          "commit": {
+            "abbreviatedOid": "1fdbb35"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-04T15:05:45Z",
+          "updatedAt": "2025-02-04T15:05:45Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86amcn_",
+          "commit": {
+            "abbreviatedOid": "9c8f79e"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-04T18:51:41Z",
+          "updatedAt": "2025-02-04T18:51:41Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
