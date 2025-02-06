@@ -510,10 +510,7 @@ the `acme_requestor` metadata and using the `jwks` metadata parameter.
             "x": "qAOdPQROkHfZY1daGofOmSNQWpYK8c9G2m2Rbkpbd4c",
             "y": "G_7fF-T8n2vONKM15Mzj4KR_shvHBxKGjMosF6FdoPY"
           }
-        ],
-        "iss": "https://requestor.example.com",
-        "sub": "https://requestor.example.com",
-        "iat": 1618410883
+        ]
       }
     }
   }
