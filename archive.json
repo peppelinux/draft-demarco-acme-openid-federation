@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-02-06T00:34:46.808882+00:00",
+  "timestamp": "2025-02-09T00:37:14.316245+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -832,6 +832,69 @@
       "updatedAt": "2025-02-04T00:47:27Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 60,
+      "id": "I_kwDOJ6_NW86pDFKO",
+      "title": "Issuer metadata should contain URI for ACME directory instead of reproducing it",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/60",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Currently, we require the ACME issuer to reproduce the entire ACME directory in its entity configuration:\n\n```\n{\n  \"iss\": \"https://issuer.example.com\",\n  \"sub\": \"https://issuer.example.com\",\n  \"iat\": 1516239022,\n  \"exp\": 1516298022,\n  \"jwks\": {\n    \"keys\": [\n      {\n        \"kty\": \"RSA\",\n        \"alg\": \"RS256\",\n        \"use\": \"sig\",\n        \"kid\": \"NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs\",\n        \"n\": \"pnXBOusEANuug6ewezb9J_...\",\n        \"e\": \"AQAB\"\n      }\n    ]\n  },\n  \"metadata\": {\n    \"acme_provider\": {\n      \"newNonce\": \"https://issuer.example.com/acme/new-nonce\",\n      \"newOrder\": \"https://issuer.example.com/acme/new-order\",\n      \"revokeCert\": \"https://issuer.example.com/acme/revoke-cert\",\n      \"meta\": {\n        \"termsOfService\": \"https://issuer.example.com/acme/terms/2017-5-30\",\n        \"website\": \"https://www.issuer.example.com/\",\n        \"externalAccountRequired\": false\n      }\n    }\n  }\n}\n```\n\nThis seems natural since ACME already defines the directory as a JSON dictionary, but it introduces the risk of disagreement between the directory advertised in the EC and the directory the issuer may advertise over HTTPS. Additionally, it means that every change to the ACME directory requires updating the EC. Some ACME implementations like Boulder [add random entries to their directory](https://community.letsencrypt.org/t/adding-random-entries-to-the-directory/33417) as a form of [protocol GREASE](https://chromestatus.com/feature/6475903378915328), so dynamically generating the directory on each request is not unreasonable.\n\nInstead, we could have `acme_provider` simply contain the URI for the issuer's directory, and then the client would discover the other API endpoints as ACME clients already do.\n\n@divergentdave points out that removing information from OpenID Federation ECs limits the ability of superior entities to [constrain a subordinate's metadata](https://openid.net/specs/openid-federation-1_0-41.html#chain_constraints), but it's not clear how that would work even if the entire directory is present.",
+      "createdAt": "2025-02-06T17:24:39Z",
+      "updatedAt": "2025-02-06T17:24:39Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 61,
+      "id": "I_kwDOJ6_NW86pDH2I",
+      "title": "Allow `acme_requestor` to restrict which CAs may issue for the OIDF entity (CAA equivalent)",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/61",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In #55, we removed mention of CAA, arguing that it's meaningless for non-DNS identifiers. That's true, but we will still want to enable requestors to restrict which CA(s) are permitted to issue for their entity identifier, as otherwise any issuer that ever joins the federation is allowed to issue. If we express such restrictions in `acme_requestor`, then it also becomes possible for federation superiors to construct [restrictions on subordinates](https://openid.net/specs/openid-federation-1_0-41.html#chain_constraints), which is also an attractive feature.\n\nThis could be expressed as a list of entity identifiers, but we could also imagine richer policies, such as only allowing issuers that have a [trust mark](https://openid.net/specs/openid-federation-1_0-41.html#section-7) satisfying some predicate.",
+      "createdAt": "2025-02-06T17:30:14Z",
+      "updatedAt": "2025-02-06T17:30:14Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 62,
+      "id": "I_kwDOJ6_NW86pDMdo",
+      "title": "Should trust marks be reflected in issued certificates?",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/62",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "At its simplest, an X.509 certificate issued by an ACME-OIDF CA attests that its holder has some OIDF identifier. But it might be interesting for the cert to contain more information that reflects the OIDF entity. For example, one or more of the trust marks advertised by the requestor's entity configuration could be translated into a novel [X.509 extension](https://datatracker.ietf.org/doc/html/rfc5280#section-4.2), or perhaps certain trust marks would cause the CA to add certain EKUs to the certificate.",
+      "createdAt": "2025-02-06T17:40:17Z",
+      "updatedAt": "2025-02-07T18:56:40Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think the certificate profiles for EUDIW use cases will likely be spelled out in detail by ETSI standards, so CAs would have to include specific OIDs in various fields. In that case, I think it would make more sense to gate issuance for a predefined certificate profile behind validating a particular trust mark. Directly representing a trust mark in a certificate would require the relying parties on the X.509 side to be at least somewhat aware of OpenID Federation, enough to expect this extension, so adoption would be a problem.",
+          "createdAt": "2025-02-06T17:45:11Z",
+          "updatedAt": "2025-02-06T17:45:11Z"
+        },
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I agree that there's a lot of nuance in how trust marks are represented in the X.509 side, which is why I'm trying not to be prescriptive yet. I like the idea of the issuer gating the use of a profile on the requestor having certain trust marks, but then does that mean we punt the question of what shows up in the X.509 cert to the CA? I suppose that makes sense, since then they can choose something that meets the needs of whatever existing system they're integrating with.",
+          "createdAt": "2025-02-07T18:56:39Z",
+          "updatedAt": "2025-02-07T18:56:39Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -4383,6 +4446,66 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 63,
+      "id": "PR_kwDOJ6_NW86KWUiB",
+      "title": "Fix example acme_requestor JWKS",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/63",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The example of a JWKS included in an acme_requestor metadata block should not include `iss`, `sub` or `iat`. The protocol text says that the JWK set should be published according to OIDF 5.2.1, which describes metadata keys `signed_jwks_uri`, `jwks_uri` and `jwks`. Only in the first case are `iss`, `sub` or `iat` necessary. Including them when the key set is inline in the metadata is just confusing, because they de facto must have the same `sub` as the enclosing entity configuration.",
+      "createdAt": "2025-02-06T23:31:42Z",
+      "updatedAt": "2025-02-06T23:31:42Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "e8ab4baf04b967eb89953ace90dc66c8ff038018",
+      "headRepository": "tgeoghegan/draft-demarco-acme-openid-federation",
+      "headRefName": "acme-requestor-example-jwks",
+      "headRefOid": "3c70bfecdac403217b7366957a3de6da1afca3a6",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 64,
+      "id": "PR_kwDOJ6_NW86KeJS6",
+      "title": "Converge on \"ACME issuer\" rather than \"provider\"",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/64",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 3 helpfully formalizes the notions of ACME issuers and requestors. However, in the issuer metadata (section 6.4.1), we define the OpenID Federation entity type `acme_provider`. There's no need to introduce two notions of \"issuer\" and \"provider\" that are basically synonymous, so in this commit we use \"issuer\" (in prose) or `acme_issuer` (in JSON documents) consistently.",
+      "createdAt": "2025-02-07T21:32:21Z",
+      "updatedAt": "2025-02-07T21:33:28Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "e8ab4baf04b967eb89953ace90dc66c8ff038018",
+      "headRepository": "tgeoghegan/draft-demarco-acme-openid-federation",
+      "headRefName": "acme-issuer",
+      "headRefOid": "e98df4ed8ac88495e197061197435812267039c8",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "My real concern here is using a single, consistent term, and I'm just as happy to use provider/`acme_provider` instead of issuer/`acme_issuer`. It's also possible that I'm missing a valuable, nuanced distinction between an ACME provider and a certificate issuer that is captured by the existing terms.",
+          "createdAt": "2025-02-07T21:33:26Z",
+          "updatedAt": "2025-02-07T21:33:26Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
