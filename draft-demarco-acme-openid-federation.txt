@@ -5,9 +5,9 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                                A. Ghani
-Expires: 8 August 2025                                         B. Pitman
+Expires: 14 August 2025                                        B. Pitman
                                                                     ISRG
-                                                         4 February 2025
+                                                        10 February 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -66,7 +66,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 August 2025.
+   This Internet-Draft will expire on 14 August 2025.
 
 Copyright Notice
 
@@ -236,7 +236,7 @@ Table of Contents
    subdivided in the following phases:
 
    *  *Discovery*, the Requestor obtains the available CAs within a
-      federation, inspecting the ACME provider entity types.
+      federation, inspecting the ACME issuer entity types.
 
    *  *Order request*, the Requestor requests a X.509 Certificate to a
       Certificate Issuer using the ACME protocol.
@@ -258,15 +258,15 @@ Table of Contents
    4.  The Requestor MUST publish the entity type acme_requestor in its
        Entity Configuration, according to Section 6.4.2.
 
-   5.  The Issuer MUST publish the entity type acme_provider in its
-       Entity Configuration, according to Section 6.4.1.
+   5.  The Issuer MUST publish the entity type acme_issuer in its Entity
+       Configuration, according to Section 6.4.1.
 
 6.2.  Discovery
 
    The Requestor's ACME client may either be configured to use a
    particular ACME server, or to automatically discover a Certificate
    Issuer through the federation.  Requestors that use discovery MAY
-   select any entity with an entity type of acme_provider, or they may
+   select any entity with an entity type of acme_issuer, or they may
    additionally require that such entities have a valid Trust Mark with
    a particular Trust Mark Identifier.
 
@@ -445,15 +445,14 @@ Table of Contents
 6.4.1.  Issuer Metadata
 
    The Issuer MUST publish its Entity Configuration including the
-   acme_provider metadata within it.  The body of the acme_provider
-   metadata is the ACME Directory, as defined in Section 7.1.1 of
-   [RFC8555].
+   acme_issuer metadata within it.  The body of the acme_issuer metadata
+   is the ACME Directory, as defined in Section 7.1.1 of [RFC8555].
 
    Requestors MUST use the ACME Directory provided in the Issuer's
    Entity Configuration for client configuration of ACME endpoints.
 
    The following is a non-normative example of an Entity Configuration
-   including the acme_provider metadata:
+   including the acme_issuer metadata:
 
 {
   "iss": "https://issuer.example.com",
@@ -473,7 +472,7 @@ Table of Contents
     ]
   },
   "metadata": {
-    "acme_provider": {
+    "acme_issuer": {
       "newNonce": "https://issuer.example.com/acme/new-nonce",
       "newOrder": "https://issuer.example.com/acme/new-order",
       "revokeCert": "https://issuer.example.com/acme/revoke-cert",
