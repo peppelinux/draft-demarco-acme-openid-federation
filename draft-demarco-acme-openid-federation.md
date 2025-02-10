@@ -215,7 +215,7 @@ This section presents the protocol flow. The protocol flow is subdivided in the
 following phases:
 
 - **Discovery**, the Requestor obtains the available CAs within a federation,
-inspecting the ACME provider entity types.
+inspecting the ACME issuer entity types.
 - **Order request**, the Requestor requests a X.509 Certificate to a Certificate Issuer using
   the ACME protocol.
 
@@ -235,7 +235,7 @@ The protocol requires the following preconditions are met.
 4. The Requestor MUST publish the entity type `acme_requestor` in its Entity
    Configuration, according to {{requestor-metadata}}.
 
-5. The Issuer MUST publish the entity type `acme_provider` in its Entity
+5. The Issuer MUST publish the entity type `acme_issuer` in its Entity
    Configuration, according to {{issuer-metadata}}.
 
 ## Discovery
@@ -244,7 +244,7 @@ The Requestor's ACME client may either be configured to use a particular ACME
 server, or to automatically discover a Certificate Issuer through the
 federation.
 Requestors that use discovery MAY select any entity with an entity type of
-`acme_provider`, or they may additionally require that such entities have a
+`acme_issuer`, or they may additionally require that such entities have a
 valid Trust Mark with a particular Trust Mark Identifier.
 
 ## Overview
@@ -421,15 +421,15 @@ respective Entity Configurations.
 
 ### Issuer Metadata
 
-The Issuer MUST publish its Entity Configuration including the `acme_provider`
-metadata within it. The body of the `acme_provider` metadata is the ACME
+The Issuer MUST publish its Entity Configuration including the `acme_issuer`
+metadata within it. The body of the `acme_issuer` metadata is the ACME
 Directory, as defined in {{Section 7.1.1 of !RFC8555}}.
 
 Requestors MUST use the ACME Directory provided in the Issuer's Entity
 Configuration for client configuration of ACME endpoints.
 
 The following is a non-normative example of an Entity Configuration including
-the `acme_provider` metadata:
+the `acme_issuer` metadata:
 
 ~~~~
 {
@@ -450,7 +450,7 @@ the `acme_provider` metadata:
     ]
   },
   "metadata": {
-    "acme_provider": {
+    "acme_issuer": {
       "newNonce": "https://issuer.example.com/acme/new-nonce",
       "newOrder": "https://issuer.example.com/acme/new-order",
       "revokeCert": "https://issuer.example.com/acme/revoke-cert",
