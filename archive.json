@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-02-09T00:37:14.316245+00:00",
+  "timestamp": "2025-02-11T00:34:46.547270+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -895,6 +895,22 @@
           "updatedAt": "2025-02-07T18:56:39Z"
         }
       ]
+    },
+    {
+      "number": 65,
+      "id": "I_kwDOJ6_NW86pfYsR",
+      "title": "Clarify Publication of the Certificates within the Federation",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/65",
+      "state": "OPEN",
+      "author": "jcjones",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In working on https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/47, considering the TBD text regarding certificate publication:\n\nhttps://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/d8d1268e2b46e048326413777f914b34434d8973/draft-demarco-acme-openid-federation.md?plain=1#L685-L690\n\nWe'd considered ways to rephrase this, first because it's the only remaining usage of `Certificate Issuer` within the body of the document, but it leads to an interesting set of questions:\n\n1. Since it's not required for a Certificate Requestor to be in a subordinate position to a Certificate Issuer, is it acceptable to only publish the certificate in the case where they are Superior/Subordinate?\n2. Given that an entity could have many JWKs in their Subordinate Statement, and could obtain certificates for each, is it a good idea to publish the `x5c` for each? Do we worry about the data size, and the duplicate trust chain entries?\n3. What is the motivation for the certificates being published (if possible) in the federation at all?\n  - When the X.509 certificates are used for TLS, they're transmitted on the wire regardless. \n  - OIDF [makes a point about trusting self-signed X.509 certificates if they're in the Subordinate Statement](https://openid.net/specs/openid-federation-1_0-41.html#section-12.1.1.2-4.2.1), but that's not applicable here.\n  - Is this intended to provide transparency, that the certificates are discoverable without connecting to the holder? If so, perhaps we could encode one or more RFC 6962 Signed Certificate Timestamps instead?\n",
+      "createdAt": "2025-02-10T20:42:58Z",
+      "updatedAt": "2025-02-10T20:42:58Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -4377,24 +4393,26 @@
       "id": "PR_kwDOJ6_NW86J6-cs",
       "title": "Remove non-existent response from sequence diagram",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/58",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "The diagram shows the requestor POSTing to the challenge at L326, and then the issuer responds at L332 indicating validation has begun. The existing diagram also illustrates a response from issuer to requestor at L372, but that isn't correct: the requestor's request was previously responded to at L332. Validation happens asynchronously from the POST to the challenge, and the requestor learns of its success or failure by polling the authz.\r\n\r\nI'm explaining this rather laboriously so that reviewers can let me know if I've misunderstood how ACME works.",
       "createdAt": "2025-02-04T00:32:58Z",
-      "updatedAt": "2025-02-04T18:51:41Z",
+      "updatedAt": "2025-02-10T18:19:42Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e763d59eb2897bfce13d704dd6c7e06d7ca9b87c",
       "headRepository": "tgeoghegan/draft-demarco-acme-openid-federation",
       "headRefName": "post-challenge-response-flow-diagram",
       "headRefOid": "9c8f79ec5d3492458110f8ff7707a15eda4b76aa",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-02-10T18:19:42Z",
+      "mergedAt": "2025-02-10T18:19:42Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "d8d1268e2b46e048326413777f914b34434d8973"
+      },
       "comments": [
         {
           "author": "peppelinux",
@@ -4416,6 +4434,13 @@
           "body": "Agreed that we need to remove that line, because the following line is the async polling to determine just that result. However, we need to also edit the source in `diagrams/plantuml` (heh, we should rename that now), not just the `.md` file. \r\n\r\n```diff\r\ndiff --git a/diagrams/plantuml b/diagrams/plantuml\r\nindex 72ec16e..2d1bb0d 100644\r\n--- a/diagrams/plantuml\r\n+++ b/diagrams/plantuml\r\n@@ -20,7 +20,6 @@ opt If requestor did not provide Trust Chain\r\n   A <<->> F: Determine Trust Chain\\nfrom Issuer's Trust Anchor to Requestor\\n(OpenID Federation Discovery)\r\n end\r\n A ->> A: Evaluate trust chain\r\n-A -->> RC: Respond to POST with validation success\r\n\r\n\r\n loop Poll until authz status is \"valid\" or \"invalid\"\r\n```",
           "createdAt": "2025-02-04T18:37:05Z",
           "updatedAt": "2025-02-04T18:37:05Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "ok, with time and a few more brain I am now able to fully appreciate this PR. thx",
+          "createdAt": "2025-02-10T18:19:37Z",
+          "updatedAt": "2025-02-10T18:19:37Z"
         }
       ],
       "reviews": [
@@ -4452,50 +4477,76 @@
       "id": "PR_kwDOJ6_NW86KWUiB",
       "title": "Fix example acme_requestor JWKS",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/63",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "The example of a JWKS included in an acme_requestor metadata block should not include `iss`, `sub` or `iat`. The protocol text says that the JWK set should be published according to OIDF 5.2.1, which describes metadata keys `signed_jwks_uri`, `jwks_uri` and `jwks`. Only in the first case are `iss`, `sub` or `iat` necessary. Including them when the key set is inline in the metadata is just confusing, because they de facto must have the same `sub` as the enclosing entity configuration.",
       "createdAt": "2025-02-06T23:31:42Z",
-      "updatedAt": "2025-02-06T23:31:42Z",
+      "updatedAt": "2025-02-10T18:17:14Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e8ab4baf04b967eb89953ace90dc66c8ff038018",
       "headRepository": "tgeoghegan/draft-demarco-acme-openid-federation",
       "headRefName": "acme-requestor-example-jwks",
       "headRefOid": "3c70bfecdac403217b7366957a3de6da1afca3a6",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "closedAt": "2025-02-10T18:17:14Z",
+      "mergedAt": "2025-02-10T18:17:14Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "1f8d691946a1bf40a271b16915c79ad8a684c6c3"
+      },
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "fully approved",
+          "createdAt": "2025-02-10T18:17:12Z",
+          "updatedAt": "2025-02-10T18:17:12Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86bYFFB",
+          "commit": {
+            "abbreviatedOid": "3c70bfe"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-10T18:16:42Z",
+          "updatedAt": "2025-02-10T18:16:42Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 64,
       "id": "PR_kwDOJ6_NW86KeJS6",
       "title": "Converge on \"ACME issuer\" rather than \"provider\"",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/64",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Section 3 helpfully formalizes the notions of ACME issuers and requestors. However, in the issuer metadata (section 6.4.1), we define the OpenID Federation entity type `acme_provider`. There's no need to introduce two notions of \"issuer\" and \"provider\" that are basically synonymous, so in this commit we use \"issuer\" (in prose) or `acme_issuer` (in JSON documents) consistently.",
       "createdAt": "2025-02-07T21:32:21Z",
-      "updatedAt": "2025-02-07T21:33:28Z",
+      "updatedAt": "2025-02-10T18:16:01Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e8ab4baf04b967eb89953ace90dc66c8ff038018",
       "headRepository": "tgeoghegan/draft-demarco-acme-openid-federation",
       "headRefName": "acme-issuer",
       "headRefOid": "e98df4ed8ac88495e197061197435812267039c8",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-02-10T18:16:00Z",
+      "mergedAt": "2025-02-10T18:16:00Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "621f48c9bd118bd8c49294e2dcbb4358ee736323"
+      },
       "comments": [
         {
           "author": "tgeoghegan",
@@ -4503,9 +4554,43 @@
           "body": "My real concern here is using a single, consistent term, and I'm just as happy to use provider/`acme_provider` instead of issuer/`acme_issuer`. It's also possible that I'm missing a valuable, nuanced distinction between an ACME provider and a certificate issuer that is captured by the existing terms.",
           "createdAt": "2025-02-07T21:33:26Z",
           "updatedAt": "2025-02-07T21:33:26Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "yeah, good catch",
+          "createdAt": "2025-02-10T18:15:58Z",
+          "updatedAt": "2025-02-10T18:15:58Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86bXMA2",
+          "commit": {
+            "abbreviatedOid": "e98df4e"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "I agree with this. Since the draft uses _issuer_ almost exclusively, naming the entity type the same reduces the number of words used to describe the same entity.",
+          "createdAt": "2025-02-10T16:51:23Z",
+          "updatedAt": "2025-02-10T16:51:23Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86bYEoG",
+          "commit": {
+            "abbreviatedOid": "e98df4e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-10T18:15:48Z",
+          "updatedAt": "2025-02-10T18:15:48Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
