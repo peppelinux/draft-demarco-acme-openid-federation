@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-02-11T00:34:46.547270+00:00",
+  "timestamp": "2025-02-13T00:34:40.132857+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -72,6 +72,11 @@
       "name": "security",
       "description": "",
       "color": "AF5908"
+    },
+    {
+      "name": "discussion-required",
+      "description": "",
+      "color": "C1F678"
     }
   ],
   "issues": [
@@ -908,9 +913,38 @@
       "labels": [],
       "body": "In working on https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/47, considering the TBD text regarding certificate publication:\n\nhttps://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/d8d1268e2b46e048326413777f914b34434d8973/draft-demarco-acme-openid-federation.md?plain=1#L685-L690\n\nWe'd considered ways to rephrase this, first because it's the only remaining usage of `Certificate Issuer` within the body of the document, but it leads to an interesting set of questions:\n\n1. Since it's not required for a Certificate Requestor to be in a subordinate position to a Certificate Issuer, is it acceptable to only publish the certificate in the case where they are Superior/Subordinate?\n2. Given that an entity could have many JWKs in their Subordinate Statement, and could obtain certificates for each, is it a good idea to publish the `x5c` for each? Do we worry about the data size, and the duplicate trust chain entries?\n3. What is the motivation for the certificates being published (if possible) in the federation at all?\n  - When the X.509 certificates are used for TLS, they're transmitted on the wire regardless. \n  - OIDF [makes a point about trusting self-signed X.509 certificates if they're in the Subordinate Statement](https://openid.net/specs/openid-federation-1_0-41.html#section-12.1.1.2-4.2.1), but that's not applicable here.\n  - Is this intended to provide transparency, that the certificates are discoverable without connecting to the holder? If so, perhaps we could encode one or more RFC 6962 Signed Certificate Timestamps instead?\n",
       "createdAt": "2025-02-10T20:42:58Z",
-      "updatedAt": "2025-02-10T20:42:58Z",
+      "updatedAt": "2025-02-11T15:55:24Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "1. they should publish the certificates when the trust framework in use mandate this. we can say this in the specs.\n2. `x5c` when included in the jwks, for the purpose f this specification, must only contain the certificate about the single jwk where it is referred to. It should be published, according to the trust frameworks rules about x509 transparency using federation entity statements.\n3. we have two motivation: one mandatory and another optional. The mandatory one is about using acme_requestor metadata for the issuance process. The second one, is optional, because it would be up to the trust framework mandate or require the publication of the already requested (in the subordinate entity configuration) or already issued (in the superior statement) ones.",
+          "createdAt": "2025-02-11T15:28:22Z",
+          "updatedAt": "2025-02-11T15:28:22Z"
+        },
+        {
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "body": "1. In our discussion on 2025-02-11, we also touched on whether this was about the Subordinate Statement, Entity Configuration, or both, and left that still ambiguous. The current text only refers to placing the issued certificate in the Subordinate Statement, so we need to amend that one way or another.\n2. We also discussed whether the `x5c` should repeat intermediate issuer certificates / be a whole trust chain, with the issue that [RFC7517 defines it as a chain](https://www.rfc-editor.org/rfc/rfc7517.html#section-4.7), so doing anything different with `x5c` could be an issue.\n3. OIDFed is definitely using `x5c` to handle self-signed certificates, so it's not going away completely. Those might just be a special case.\n4. Since publication of the resulting issued certificate is partly motivated by transparency, we should consider using existing Certificate Transparency standards, to avoid inventing a new transparency log type. That would let us put smaller SCTs into the federation metadata statement(s), but still allow auditors to look up every issued certificate. (Note: [ETSI is doing some work w.r.t. CT](https://portal.etsi.org/webapp/WorkProgram/Report_WorkItem.asp?WKI_ID=73788&curItemNr=155&totalNrItems=298&optDisplay=100000&qSORT=TB&qETSI_ALL=&SearchPage=TRUE&qINCLUDE_SUB_TB=True&qINCLUDE_MOVED_ON=&qEND_CURRENT_STATUS_CODE=11+WI%3BM58&qSTOP_FLG=N&qKEYWORD_BOOLEAN=OR&qCLUSTER_BOOLEAN=OR&qCLUSTER=19&qFREQUENCIES_BOOLEAN=OR&qSTOPPING_OUTDATED=&butExpertSearch=Search&includeNonActiveTB=FALSE&includeSubProjectCode=FALSE&qREPORT_TYPE=))",
+          "createdAt": "2025-02-11T15:50:39Z",
+          "updatedAt": "2025-02-11T15:50:39Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "regarding the bullet points:\n- openid federation depends on X.509. At the same time this specs can be used to obtain X.509 certificates to be used for httpd. This might represent a circular dependency. It is up to the trust framework enable a triage phase for new participants, using self issued X.509 certificates, establishing their entity id and the discovery on top of these. Other case might consider this specification for the x.509 certificates used in specialized/legacy application, giving for granted the requirement to the participants to obtain an x.509 certificate before joining in the federation.\n\n- in italy we are also working on a proposal like this: every participant is enabled in issuing self-signed certificates, having a superior statement giving the certificate and the public cryptographic material used to validate the signature of the self signed x5cs. This is not applicable using this specification about acme, since the issuance phase must be implemented using this acme extension.\n\n- I am open to introduce any RFC extending the transparency of X.509 certificates",
+          "createdAt": "2025-02-11T15:53:44Z",
+          "updatedAt": "2025-02-11T15:53:44Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "> We also discussed whether the x5c should repeat intermediate issuer certificates / be a whole trust chain, with the issue that [RFC7517 defines it as a chain](https://www.rfc-editor.org/rfc/rfc7517.html#section-4.7), so doing anything different with x5c could be an issue.\n\na chain could be also a single certificate, having a way to evaluate it as trustworthy (out of band mechanism or distributed chain provided over the federation trust chain). ",
+          "createdAt": "2025-02-11T15:55:23Z",
+          "updatedAt": "2025-02-11T15:55:23Z"
+        }
+      ]
     }
   ],
   "pulls": [
