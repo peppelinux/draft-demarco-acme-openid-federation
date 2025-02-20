@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-02-18T00:34:37.225174+00:00",
+  "timestamp": "2025-02-20T00:35:20.216747+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -814,13 +814,23 @@
       "state": "OPEN",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
-      "assignees": [],
+      "assignees": [
+        "divergentdave"
+      ],
       "labels": [],
       "body": "We should change the requirements on CSRs and certificates regarding the subject's common name and subject alternative name to optional suggestions. This draft should limit itself to defining the new ACME identifier and challenge types, and leave certificate profiles up to individual CAs, depending on the requirements of the PKI they are a part of. For example, a CA in some federation may have a good distinguished name for every federation entity. Then, it could put those names in the subject of certificates it issues, and wouldn't need to use subject alternative names at all. It would still be valuable to define `id-on-OpenIdFederationEntityId` and `OpenIdFederationEntityId` in this document, to provide an easy default for profiles.\n\nThanks to @aarongable for the suggestion.",
       "createdAt": "2025-01-31T14:51:37Z",
-      "updatedAt": "2025-01-31T14:51:37Z",
+      "updatedAt": "2025-02-18T15:26:24Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "During the call of 18 feb 2025, we have decide to go in this direction enabling this binding between the issued X.509 certificates and the identity of the subject deployed using openid federation, as **optional**.\n\nwe want to use a normative verb like \"MAY\" providing implementations considerations, not necessarly in a separate section, about the value of this.",
+          "createdAt": "2025-02-18T15:26:02Z",
+          "updatedAt": "2025-02-18T15:26:02Z"
+        }
+      ]
     },
     {
       "number": 59,
@@ -830,13 +840,23 @@
       "state": "OPEN",
       "author": "tgeoghegan",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "jcjones"
+      ],
       "labels": [],
       "body": "The draft defines a new ACME identifier type `openid-federation`, and a new ACME challenge type `openid-federation-01`, but we don't make it clear that they can only be used together. We should follow the precedent of [RFC 8738 section 4](https://datatracker.ietf.org/doc/html/rfc8738#section-4) and make this explicit. Additionally, the IANA considerations section should add entries similarly to [RFC 8738 section 8.2](https://datatracker.ietf.org/doc/html/rfc8738#section-8.2)",
       "createdAt": "2025-02-04T00:47:27Z",
-      "updatedAt": "2025-02-04T00:47:27Z",
+      "updatedAt": "2025-02-18T15:17:07Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "openid-federation represents the newOrder type identifier, while openid-federation-01 represents the first step after the newOrder, related to the challenge\n\nas discussed during the call of 18 feb 2025, we have decided that we must include noamtive language restricting the use of openid-federation0* challenge type identifier when the newOrder type identifier is openid-federation.\n\n ",
+          "createdAt": "2025-02-18T15:16:23Z",
+          "updatedAt": "2025-02-18T15:16:35Z"
+        }
+      ]
     },
     {
       "number": 60,
@@ -850,9 +870,31 @@
       "labels": [],
       "body": "Currently, we require the ACME issuer to reproduce the entire ACME directory in its entity configuration:\n\n```\n{\n  \"iss\": \"https://issuer.example.com\",\n  \"sub\": \"https://issuer.example.com\",\n  \"iat\": 1516239022,\n  \"exp\": 1516298022,\n  \"jwks\": {\n    \"keys\": [\n      {\n        \"kty\": \"RSA\",\n        \"alg\": \"RS256\",\n        \"use\": \"sig\",\n        \"kid\": \"NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs\",\n        \"n\": \"pnXBOusEANuug6ewezb9J_...\",\n        \"e\": \"AQAB\"\n      }\n    ]\n  },\n  \"metadata\": {\n    \"acme_provider\": {\n      \"newNonce\": \"https://issuer.example.com/acme/new-nonce\",\n      \"newOrder\": \"https://issuer.example.com/acme/new-order\",\n      \"revokeCert\": \"https://issuer.example.com/acme/revoke-cert\",\n      \"meta\": {\n        \"termsOfService\": \"https://issuer.example.com/acme/terms/2017-5-30\",\n        \"website\": \"https://www.issuer.example.com/\",\n        \"externalAccountRequired\": false\n      }\n    }\n  }\n}\n```\n\nThis seems natural since ACME already defines the directory as a JSON dictionary, but it introduces the risk of disagreement between the directory advertised in the EC and the directory the issuer may advertise over HTTPS. Additionally, it means that every change to the ACME directory requires updating the EC. Some ACME implementations like Boulder [add random entries to their directory](https://community.letsencrypt.org/t/adding-random-entries-to-the-directory/33417) as a form of [protocol GREASE](https://chromestatus.com/feature/6475903378915328), so dynamically generating the directory on each request is not unreasonable.\n\nInstead, we could have `acme_provider` simply contain the URI for the issuer's directory, and then the client would discover the other API endpoints as ACME clients already do.\n\n@divergentdave points out that removing information from OpenID Federation ECs limits the ability of superior entities to [constrain a subordinate's metadata](https://openid.net/specs/openid-federation-1_0-41.html#chain_constraints), but it's not clear how that would work even if the entire directory is present.",
       "createdAt": "2025-02-06T17:24:39Z",
-      "updatedAt": "2025-02-06T17:24:39Z",
+      "updatedAt": "2025-02-19T19:04:38Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "In IETF (and also in openid4vci according to IETF) we got this implementative experience about signing the same playload already provided in plaintext and therefore duplicated.\n\nhttps://www.rfc-editor.org/rfc/rfc8414#section-2.1\n\nI agree with @divergentdave and therefore with @tgeoghegan about the apparent non sense of duplicating parameters that would end to not be considered by standards acme implementations.\n\nI want to add that the value of ahving it in the trust chain also represents a feature of non repudiabnility for historical transactions having historical trust chains.",
+          "createdAt": "2025-02-18T15:37:45Z",
+          "updatedAt": "2025-02-18T15:37:45Z"
+        },
+        {
+          "author": "selfissued",
+          "authorAssociation": "NONE",
+          "body": "I'll observe that if we want trust chains to secure the metadata, the metadata has to be in the Entity Configuration.  This also enables non-repudiation of the signatures using the historical keys feature.",
+          "createdAt": "2025-02-19T15:37:25Z",
+          "updatedAt": "2025-02-19T15:37:25Z"
+        },
+        {
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "body": "But why would we need to have trusted signatures over the ACME metadata itself, rather than a pointer to the metadata? I understand the default is to keep everything in the federation, but this feels like a good situation to choose other than the defaults:\nAs @tgeoghegan observed, this would make for a significant divergence from the way existing ACME clients behave, requiring more than an OpenID Federation-aware challenge solver to complete their work, which is going to limit adoption of this specification. \n\nWe should have a solid reason as to why the ACME metadata needs to be signed by (keys trusted by) the federation, rather than delivered over TLS as all other ACME services' metadata do.",
+          "createdAt": "2025-02-19T19:04:36Z",
+          "updatedAt": "2025-02-19T19:04:36Z"
+        }
+      ]
     },
     {
       "number": 61,
@@ -3968,7 +4010,7 @@
       "labels": [],
       "body": "Closes #37.",
       "createdAt": "2025-01-28T14:39:06Z",
-      "updatedAt": "2025-01-28T15:08:18Z",
+      "updatedAt": "2025-02-18T16:58:47Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "f3fc270f4d5b9adfa02b4ac1d363bc3b0304ff48",
@@ -3996,7 +4038,7 @@
       "labels": [],
       "body": "This rewrites the Discovery Preconditions section, splitting it in two and moving some other parts to neighboring sections. The text no longer distinguishes between leaf and intermediate federation entities. The options of no discovery/discovery by entity type alone/discovery with trust marks are laid out in the new discovery section. ACME account creation is moved to the overview section, and the procedure there is cleaned up a bit. Closes #48.",
       "createdAt": "2025-01-29T21:24:09Z",
-      "updatedAt": "2025-02-04T18:36:25Z",
+      "updatedAt": "2025-02-18T16:58:59Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e763d59eb2897bfce13d704dd6c7e06d7ca9b87c",
@@ -4130,7 +4172,7 @@
       "labels": [],
       "body": "This changes the challenge method to include a signature of the key authorization, instead of a signature of the token. I also added a corresponding blurb to the security considerations section. Closes #42.",
       "createdAt": "2025-01-29T21:37:04Z",
-      "updatedAt": "2025-02-04T17:38:56Z",
+      "updatedAt": "2025-02-18T16:59:03Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e763d59eb2897bfce13d704dd6c7e06d7ca9b87c",
@@ -4625,6 +4667,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 66,
+      "id": "PR_kwDOJ6_NW86Ln5bS",
+      "title": "Editorial fixes",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/66",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This makes several small editorial changes throughout the document.",
+      "createdAt": "2025-02-18T16:02:57Z",
+      "updatedAt": "2025-02-18T16:02:58Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "d8d1268e2b46e048326413777f914b34434d8973",
+      "headRepository": "divergentdave/draft-demarco-acme-openid-federation",
+      "headRefName": "david/editorial",
+      "headRefOid": "a7fc286296ce5d3760486f2fb34e9f6cf5f3bd8a",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
