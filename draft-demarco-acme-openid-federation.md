@@ -94,9 +94,8 @@ and technical information related to a specific entity.
 
 This document defines how X.509 certificates associating a given OpenID
 Federation Entity with a key included in that Entity's Configuration can be
-issued by a trust anchor and its intermediates through the ACME protocol to all
-the organizations that are part of a federation built on top of OpenID
-Federation 1.0.
+issued by a Certificate Issuer through the ACME protocol to the organizations
+which are part of a federation built on top of OpenID Federation 1.0.
 
 --- middle
 
