@@ -158,8 +158,8 @@ This specification can be implemented by:
 # Terminology
 
 The terms "Federation Entity", "Trust Anchor", "Entity Configuration",
-"Subordinate Statement", "Trust Mark" and "Trust Chain" used in this
-document are defined in {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2"}.
+"Subordinate Statement", "Superior Entity", "Trust Mark" and "Trust Chain"
+used in this document are defined in {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2"}.
 The term "CSR" used in this document is defined in [RFC2986]. The
 term Certification Authority used in this document is defined in [RFC5280]. The
 terms "ACME Client" and "ACME Server" are defined in [RFC8555].
