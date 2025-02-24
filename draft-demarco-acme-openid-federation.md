@@ -94,8 +94,9 @@ and technical information related to a specific entity.
 
 This document defines how X.509 certificates associating a given OpenID
 Federation Entity with a key included in that Entity's Configuration can be
-issued by a Certificate Issuer through the ACME protocol to the organizations
-which are part of a federation built on top of OpenID Federation 1.0.
+issued by a X.509 Certification Authority through the ACME protocol to the
+organizations which are part of a federation built on top of OpenID
+Federation 1.0.
 
 --- middle
 
@@ -131,8 +132,8 @@ ACME protocol in the following ways:
   `/.well-known/acme-challenge/{token}` endpoint.
 
 - It defines how the OpenID Federation Subordinate Statements can be used for the
-  publication of the X.509 Certificates, by a X.509 Certificate Authority,
-  that were previously issued with ACME.
+  publication of the X.509 Certificates, by a Certification Authority, that
+  were previously issued with ACME.
 
 - It extends the ACME newOrder resource, as defined in
   {{Section 7.4 of !RFC8555}}, defining a new payload identifier type called
@@ -160,7 +161,7 @@ The terms "Federation Entity", "Trust Anchor", "Entity Configuration",
 "Subordinate Statement", "Trust Mark" and "Trust Chain" used in this
 document are defined in {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2"}.
 The term "CSR" used in this document is defined in [RFC2986]. The
-term Certificate Authority used in this document is defined in [RFC5280]. The
+term Certification Authority used in this document is defined in [RFC5280]. The
 terms "ACME Client" and "ACME Server" are defined in [RFC8555].
 
 The specification also defines the following terms:
