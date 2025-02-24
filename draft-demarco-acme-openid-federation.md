@@ -516,13 +516,16 @@ The Issuer MUST only use the Requestor's `acme_requestor` to validate an ACME
 challenge. Therefore, after completing the challenge, the Requestor MAY remove
 the `acme_requestor` metadata from its Entity Configuration.
 
+## OpenID Federation Identifier {#identifier-type}
+
+This document defines a new OpenID Federation identifier, `openid-federation`,
+whose value is the `sub` parameter of the requestor's Entity Configuration,
+as defined in {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2"}.
+
 ## newOrder Request
 
 The Requestor begins certificate issuance by sending a HTTP POST request to the
-Issuer's `newOrder` resource, as specified in {{Section 7.4 of !RFC8555}}. However,
-the request payload uses a new identifier `openid-federation`, whose value is
-the `sub` parameter of the requestor's Entity Configuration, as defined in
-{{Section 1.2 of OPENID-FED}}{: relative="#section-1.2"}.
+Issuer's `newOrder` resource, as specified in {{Section 7.4 of !RFC8555}}.
 
 A non-normative example of an ACME newOrder request:
 
@@ -582,6 +585,12 @@ token (required, string):  A random value that uniquely identifies the
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
 ~~~~
+
+The `openid-federation-01` challenge MUST NOT be used to issue certificates
+for any identifiers except `openid-federation` identifiers.
+
+The `openid-federation` identifier MUST NOT be validated except by the
+`openid-federation-01` challenge.
 
 The Requestor responds with an object with the following format:
 
