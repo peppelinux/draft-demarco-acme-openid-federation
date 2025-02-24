@@ -132,7 +132,7 @@ ACME protocol in the following ways:
   `/.well-known/acme-challenge/{token}` endpoint.
 
 - It defines how the OpenID Federation Subordinate Statements can be used for the
-  publication of the X.509 Certificates, by a Certification Authority, that
+  publication of the X.509 Certificates, by a Superior Entity, that
   were previously issued with ACME.
 
 - It extends the ACME newOrder resource, as defined in
