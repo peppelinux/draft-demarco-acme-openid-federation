@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-02-23T00:38:02.215504+00:00",
+  "timestamp": "2025-02-25T00:36:40.010076+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -594,9 +594,17 @@
       "labels": [],
       "body": "Currently the document requires that orders contain one identifier. We could remove remove this requirement, in order to avoid making unnecessary changes to the ACME protocol beyond its well-defined extension points. While it is unlikely that applications will want to issue an X.509 certificate with two entity identifiers, I don't think this document needs to go out of the way to bar this possibility.\n\nNote that the federation entity to be used when responding to a challenge is still well defined, even if an order includes more than one OpenID Federation identifier. Challenges are looked up from authorization objects and authorization objects include the identifier that all their challenges are related to. Furthermore, because of this, it isn't necessary for challenge responses to include an `entity_identifier`.\n\nAllowing the identifiers array to have a length greater than 1 also opens up the door to more sophisticated certificate profiles that combine different kinds of identifiers. For example, an order could combine an OpenID Federation entity and a DNS name, or an OpenID Federation entity and an email address.",
       "createdAt": "2025-01-16T16:22:00Z",
-      "updatedAt": "2025-01-28T13:09:11Z",
+      "updatedAt": "2025-02-24T22:21:27Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "body": "If/when doing this, we would also want to eliminate the prohibition on additional Subject Alternative Names in the `CSR and Certificate Requirements` section: https://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/d8d1268e2b46e048326413777f914b34434d8973/draft-demarco-acme-openid-federation.md?plain=1#L674-L677",
+          "createdAt": "2025-02-24T22:21:25Z",
+          "updatedAt": "2025-02-24T22:21:25Z"
+        }
+      ]
     },
     {
       "number": 39,
@@ -4680,7 +4688,7 @@
       "labels": [],
       "body": "This makes several small editorial changes throughout the document.",
       "createdAt": "2025-02-18T16:02:57Z",
-      "updatedAt": "2025-02-18T16:02:58Z",
+      "updatedAt": "2025-02-24T23:26:54Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "d8d1268e2b46e048326413777f914b34434d8973",
@@ -4692,7 +4700,180 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86dR0Uo",
+          "commit": {
+            "abbreviatedOid": "a7fc286"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-24T23:26:54Z",
+          "updatedAt": "2025-02-24T23:26:54Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 67,
+      "id": "PR_kwDOJ6_NW86MXOnz",
+      "title": "Clarify Ambiguities between OpenID Federation and RFC 5280",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/67",
+      "state": "OPEN",
+      "author": "jcjones",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #47.\r\n\r\nEarlier reviews we had some stumbles over overloaded uses of Trust Root, Leaf, Issuer, and Intermediate, which all have meanings within OpenID Federation as well as in X.509.\r\n\r\nMost of those have already been refactored out, but this PR catches the last ambiguities I could find.\r\n\r\nTo take them one by one:\r\n-  Replaces the phrase `trust anchor and its intermediates` with `Certification Authority` (prefixed with `X.509` in the _Abstract_, for extra precision), which is a defined term from RFC 5280.\r\n- Updates `certificate authority` to the RFC 5280 term `Certification Authority`.\r\n- Removes the term `Intermediate` from the _Terminology_, as it is no longer used.\r\n- In the Terminology section, changes `Issuer`, which can be confused with a Trust Mark Issuer, to `Certificate Issuer`, which is already how we write it elsewhere in the document.\r\n- Clarifies in the _Publication of the Certificates within the Federation_ section that publication can only be done when the certificate is issued by the `Superior Entity`, not just any Certification Authority.",
+      "createdAt": "2025-02-24T22:51:02Z",
+      "updatedAt": "2025-02-24T23:39:19Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "d8d1268e2b46e048326413777f914b34434d8973",
+      "headRepository": "jcjones/draft-demarco-acme-openid-federation",
+      "headRefName": "47-clarify",
+      "headRefOid": "66aba9b371a333bc1e993f4ac59290690aabc1de",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86dRm5A",
+          "commit": {
+            "abbreviatedOid": "b8e8923"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-24T22:56:32Z",
+          "updatedAt": "2025-02-24T22:59:04Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "I think this might be an incorrect change, as the existing text is talking about how to reflect the X.509 certificates back into OpenID Federation subordinate statements. We could fix this by instead by using the term \"Superior Entity\", defined in OpenID Federation.",
+              "createdAt": "2025-02-24T22:56:32Z",
+              "updatedAt": "2025-02-24T22:59:04Z"
+            },
+            {
+              "originalPosition": 27,
+              "body": "We should add \"Superior Entity\" to this list.",
+              "createdAt": "2025-02-24T22:58:47Z",
+              "updatedAt": "2025-02-24T22:59:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86dR0xt",
+          "commit": {
+            "abbreviatedOid": "b8e8923"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-24T23:28:18Z",
+          "updatedAt": "2025-02-24T23:28:19Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "I don't think it's incorrect, by my understanding, as it would be the CA doing the work to publish after having issued the certificate, but I agree Superior Entity is much better.\r\n```suggestion\r\n  publication of the X.509 Certificates, by a Superior Entity, that\r\n```",
+              "createdAt": "2025-02-24T23:28:18Z",
+              "updatedAt": "2025-02-24T23:28:19Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86dR1wP",
+          "commit": {
+            "abbreviatedOid": "b8e8923"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-24T23:31:01Z",
+          "updatedAt": "2025-02-24T23:31:01Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "In https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/67/commits/66aba9b371a333bc1e993f4ac59290690aabc1de",
+              "createdAt": "2025-02-24T23:31:01Z",
+              "updatedAt": "2025-02-24T23:31:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86dR43g",
+          "commit": {
+            "abbreviatedOid": "66aba9b"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-02-24T23:39:19Z",
+          "updatedAt": "2025-02-24T23:39:19Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 68,
+      "id": "PR_kwDOJ6_NW86MXcMa",
+      "title": "Restrict the OpenID Federation challenge type and identifier to each other.",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/68",
+      "state": "OPEN",
+      "author": "jcjones",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #59.\r\n\r\nThis pulls the definition of `openid-federation`'s Identifier Type into its own heading, moving it slightly up the page, to make it more clear it's there and happening (like with https://datatracker.ietf.org/doc/html/draft-ietf-acme-onion-07#name-identifier and https://datatracker.ietf.org/doc/html/rfc8738#name-ip-identifier).\r\n\r\nThen it adds the necessary `MUST NOT` conditions on usage, taking some inspiration from https://datatracker.ietf.org/doc/html/rfc8738#section-7 and https://datatracker.ietf.org/doc/html/draft-ietf-acme-onion-07#section-3.1.1.",
+      "createdAt": "2025-02-24T23:26:14Z",
+      "updatedAt": "2025-02-25T00:00:57Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "d8d1268e2b46e048326413777f914b34434d8973",
+      "headRepository": "jcjones/draft-demarco-acme-openid-federation",
+      "headRefName": "59-restrict-challenge",
+      "headRefOid": "15bbede136df72983d5e2e6116f18678df419d6c",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86dR9Pt",
+          "commit": {
+            "abbreviatedOid": "77a32c5"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-24T23:51:29Z",
+          "updatedAt": "2025-02-24T23:53:13Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "We should be specific that this is an ACME identifier type.\r\n```suggestion\r\nThis document defines a new ACME identifier type for OpenID Federation entities, `openid-federation`,\r\n```",
+              "createdAt": "2025-02-24T23:51:29Z",
+              "updatedAt": "2025-02-24T23:53:13Z"
+            },
+            {
+              "originalPosition": 4,
+              "body": "We should add a link in the IANA considerations section back up to here.",
+              "createdAt": "2025-02-24T23:52:22Z",
+              "updatedAt": "2025-02-24T23:53:13Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
