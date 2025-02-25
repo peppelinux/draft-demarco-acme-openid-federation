@@ -763,7 +763,7 @@ in {{challenge-type}}:
 
 |Label|Identifier Type|Reference|
 |-----|---------------|---------|
-|openid-federation-01|openIDFederationEntity|this document|
+|openid-federation-01|openid-federation|this document|
 
 ### ACME Error Types
 
