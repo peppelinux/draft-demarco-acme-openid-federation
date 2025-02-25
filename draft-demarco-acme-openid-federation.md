@@ -743,10 +743,10 @@ IANA is kindly asked to make the following updates to registries:
 ## Update ACME Identifier Types
 
 IANA is asked to add to the "ACME Identifier Types"
-registry, defined in {{Section 9.7.7 of !RFC8555}} a label "openid-federation" and reference this document.
+registry, defined in {{Section 9.7.7 of !RFC8555}}, a label "openid-federation" and reference {{identifier-type}} in this document.
 
-IANA is also asked to to the "ACME Validation Methods"
-registry, defined in {{Section 9.7.8 of !RFC8555}} add a label "openid-federation-01" and reference this document.
+IANA is also asked to add to the "ACME Validation Methods"
+registry, defined in {{Section 9.7.8 of !RFC8555}}, a label "openid-federation-01" and reference {{challenge-type}} in this document.
 
 ## Assign X.509 PKIX Other Name
 
