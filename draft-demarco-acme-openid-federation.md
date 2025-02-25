@@ -518,7 +518,7 @@ the `acme_requestor` metadata from its Entity Configuration.
 
 ## OpenID Federation Identifier {#identifier-type}
 
-This document defines a new OpenID Federation identifier, `openid-federation`,
+This document defines a new ACME identifier type for OpenID Federation entities, `openid-federation`,
 whose value is the `sub` parameter of the requestor's Entity Configuration,
 as defined in {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2"}.
 
