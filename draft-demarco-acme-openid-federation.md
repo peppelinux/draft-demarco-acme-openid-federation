@@ -672,7 +672,7 @@ A non-normative example for the challenge object post-validation:
    }
 ~~~~
 
-### CSR and Certificate Requirements
+### CSR and Certificate Requirements {#openidfed-othername-id}
 
 When using this challenge type, both the certificate signing request (CSR)
 and the X.509 Certificate:
@@ -715,7 +715,7 @@ expired cryptographic keys in the Federation Historical Key Registry.
 
 The X.509 Certificate revocation request is defined in {{Section 7.6 of !RFC8555}}.
 
-# Errors
+# Errors {#error-type}
 
 This document defines one new error type URI to be used in problem documents
 {{!RFC9457}}, as described in {{Section 6.7 of !RFC8555}}.
@@ -740,30 +740,50 @@ account key.
 
 IANA is kindly asked to make the following updates to registries:
 
-## Update ACME Identifier Types
+## ACME Registry Group
 
-IANA is asked to add to the "ACME Identifier Types"
-registry, defined in {{Section 9.7.7 of !RFC8555}}, a label "openid-federation" and reference {{identifier-type}} in this document.
+The following updates are all assignments in the "Automated Certificate
+Management Environment (ACME) Protocol" registry group {{IANA-ACME}}.
 
-IANA is also asked to add to the "ACME Validation Methods"
-registry, defined in {{Section 9.7.8 of !RFC8555}}, a label "openid-federation-01" and reference {{challenge-type}} in this document.
+### ACME Identifier Types
 
-## Assign X.509 PKIX Other Name
+IANA is asked to add to the "ACME Identifier Types" registry, defined in
+{{Section 9.7.7 of !RFC8555}}, the entry below, as specified here in
+{{identifier-type}}:
 
-IANA is asked to add a "OpenIdFederationEntityId" otherName in
-the "PKIX Other Name Forms" registry
-([1.3.6.1.5.5.7.8](https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.8))
-and reference this document.
+|Label|Reference|
+|-----|---------|
+|openid-federation|this document|
 
-## ACME Error Types
+### ACME Validation Methods
 
-IANA is asked to add the following assignment to the "ACME Error Types"
-registry, in the "Automated Certificate Management Environment (ACME) Protocol"
-registry group {{IANA-ACME}}.
+IANA is also asked to add to the "ACME Validation Methods" registry, defined
+in {{Section 9.7.8 of !RFC8555}}, the entry below, as specified here
+in {{challenge-type}}:
+
+|Label|Identifier Type|Reference|
+|-----|---------------|---------|
+|openid-federation-01|openIDFederationEntity|this document|
+
+### ACME Error Types
+
+IANA is also asked to add to the "ACME Error Types" registry, defined
+in {{Section 9.7.4 of !RFC8555}}, the entry below, as specified here in
+{{error-type}}:
 
 |Type|Description|Reference|
 |----|-----------|---------|
 |openIDFederationEntity|An error occurred while resolving an OpenID Federation entity|this document|
+
+## Assign X.509 PKIX Other Name
+
+IANA is asked to add to the "PKIX Other Name Forms" registry
+([1.3.6.1.5.5.7.8](https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.8)) the entry below, as
+specified here in {{openidfed-othername-id}}
+
+|Decimal|Description|Reference|
+|-------|-----------|---------|
+|TBA    |id-on-OpenIdFederationEntityId|this document|
 
 --- back
 
