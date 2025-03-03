@@ -552,11 +552,6 @@ A non-normative example of an ACME newOrder request:
    }
 ~~~~
 
-The maximum length of the JSON array contained in the identifiers parameter
-MUST be 1, since there cannot be more than a single URI corresponding to a
-Federation Entity.
-
-
 ## OpenID Federation Challenge Type {#challenge-type}
 
 The OpenID Federation challenge type allows a Requestor to prove control of a
@@ -630,11 +625,8 @@ On receiving a response, the Certificate Issuer retrieves the public keys associ
 the given entity (possibly performing Federation Entity Discovery to do so),
 then:
 
-* Verifies that the requested `openid-federation` value matches the `sub`
-  parameter of the Requestor's Entity Configuration. Since the Entity
-  Configuration MUST contain at most one Entity Identifier, this effectively
-  means this challenge type works with requests for a single Federation Entity
-  only.
+* Verifies that the requested `openid-federation` identifier value matches the `sub`
+  parameter of the Requestor's Entity Configuration.
 
 * Verifies that the `sig` field of the payload includes a valid JWT over the
   key authorization, signed with one of the keys published in the Requestor's
