@@ -666,15 +666,15 @@ A non-normative example for the challenge object post-validation:
 ### CSR and Certificate Requirements
 
 When using this challenge type, both the certificate signing request (CSR)
-and the X.509 Certificate:
+and the X.509 Certificate MUST include a public key corresponding to
+the key used to satisfy the challenge.
 
-* MUST include a public key corresponding to
-  the key used to satisfy the challenge.
-
-* MUST include no Common Name, and must include
-  a single Subject Alternative Name value corresponding to an `otherName` with a `type-id` of `id-on-OpenIdFederationEntityId`, containing an Octet String value corresponding to a UTF-8
-  encoding of the Requestor's Entity ID, that is, the value of the `sub` claim
-  of the Requestor's Entity Configuration.
+Depending on the Certificate Issuer's X.509 certificate profile, the CSR and
+X.509 Certificate MAY associate the certificate to the Federation Entity by
+including a Subject Alternative Name value corresponding to an `otherName` with
+a `type-id` of `id-on-OpenIdFederationEntityId`, containing an Octet String
+value corresponding to a UTF-8 encoding of the Entity ID in the
+`openid-federation` identifier in the `newOrder` request.
 
 ~~~~
    id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
