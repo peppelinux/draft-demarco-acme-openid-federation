@@ -663,10 +663,14 @@ the key used to satisfy the challenge.
 
 Depending on the Certificate Issuer's X.509 certificate profile, the CSR and
 X.509 Certificate MAY associate the certificate to the Federation Entity by
-including a Subject Alternative Name value corresponding to an `otherName` with
-a `type-id` of `id-on-OpenIdFederationEntityId`, containing an Octet String
-value corresponding to a UTF-8 encoding of the Entity ID in the
-`openid-federation` identifier in the `newOrder` request.
+including the Entity ID in the certificate.
+To do so, the Issuer includes a Subject Alternative Name extension
+containing an `otherName` with
+a `type-id` of `id-on-OpenIdFederationEntityId`.
+The value of the name is an Octet String
+containing the UTF-8 encoding of the Entity ID
+(i.e., the URI in the corresponding `openid-federation` identifier
+from the `newOrder` request).
 
 ~~~~
    id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
