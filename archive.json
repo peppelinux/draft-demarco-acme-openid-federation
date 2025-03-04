@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-02T00:38:38.005753+00:00",
+  "timestamp": "2025-03-04T00:36:22.246756+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1002,6 +1002,22 @@
           "updatedAt": "2025-02-11T15:55:23Z"
         }
       ]
+    },
+    {
+      "number": 70,
+      "id": "I_kwDOJ6_NW86sZsxl",
+      "title": "Contradictory requirements on metadata after certificate issuance",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/70",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 6.4.2 says \"The Issuer MUST only use the Requestor's acme_requestor to validate an ACME challenge. Therefore, after completing the challenge, the Requestor MAY remove the acme_requestor metadata from its Entity Configuration.\" Section 8 says \"When a cryptographic public key is removed from the Requestor Entity Configuration the X.509 Certificate related to it SHOULD be revoked by its Credential Issuer, if not expired.\"\n\nContinuous monitoring of validation information post-issuance is not well-suited to the ACME protocol's model. Besides, this sort of recommendation would be a better fit in the policies governing some trust framework than here, in a protocol document.\n\nNote that federation entities could request revocation via the `revokeCert` resource defined by RFC 8555. If control of a federation entity has changed recently, you could create a new order for an identifier, respond to the challenge in the resulting authorization object, never finalize the order, and instead send a revocation request for the certificate you want revoked, reusing the authorization from the above solved challenges.",
+      "createdAt": "2025-03-03T22:00:38Z",
+      "updatedAt": "2025-03-03T22:00:38Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -4973,7 +4989,7 @@
       "labels": [],
       "body": "- Place the ACME updates in a group together.\r\n- Explicitly define each update, so that IANA doesn't have to ask for clarification.\r\n- Backreference each to the appropriate portion of the specification.\r\n\r\nThis builds on https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/68 and specifically from https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/68#discussion_r1968588504.\r\n\r\nBecause I opened these in my fork, I can't base this PR upon my change from #68 while keeping the ultimate destination as the origin. Since now I have access to create branches here, I'll move future work within this repo.\r\n\r\nThe changes in this PR begin at 7f5e645550aa89447d02d260ba638c06c84ad6e8.",
       "createdAt": "2025-02-25T15:55:06Z",
-      "updatedAt": "2025-02-26T00:20:54Z",
+      "updatedAt": "2025-03-03T22:56:35Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "d8d1268e2b46e048326413777f914b34434d8973",
@@ -5038,8 +5054,47 @@
           "createdAt": "2025-02-26T00:20:54Z",
           "updatedAt": "2025-02-26T00:20:54Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86eSDt_",
+          "commit": {
+            "abbreviatedOid": "e88ccc8"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-03T22:56:35Z",
+          "updatedAt": "2025-03-03T22:56:35Z",
+          "comments": []
         }
       ]
+    },
+    {
+      "number": 71,
+      "id": "PR_kwDOJ6_NW86NN3gZ",
+      "title": "Loosen certificate profile",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/71",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This relaxes some restrictions on certificates. Putting the entity ID in a subject alternative name is now optional. The requirement to have only one identifier per order is deleted in two places. Closes #54 and #38.",
+      "createdAt": "2025-03-03T22:16:46Z",
+      "updatedAt": "2025-03-03T22:17:32Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "d8d1268e2b46e048326413777f914b34434d8973",
+      "headRepository": "divergentdave/draft-demarco-acme-openid-federation",
+      "headRefName": "david/loosen-certificate-profile",
+      "headRefOid": "74260a5e0f1c2e4344d9fe3858e389c51f1ab100",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
