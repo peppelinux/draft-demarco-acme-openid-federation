@@ -661,9 +661,9 @@ When using this challenge type, both the certificate signing request (CSR)
 and the X.509 Certificate MUST include a public key corresponding to
 the key used to satisfy the challenge.
 
-Depending on the Certificate Issuer's X.509 certificate profile, the CSR and
-X.509 Certificate MAY associate the certificate to the Federation Entity by
-including the Entity ID in the certificate.
+Depending on the Certificate Issuer's X.509 Certificate profile, the CSR and
+X.509 Certificate MAY associate the X.509 Certificate to the Federation Entity by
+including the Entity ID in the X.509 Certificate.
 To do so, the Issuer includes a Subject Alternative Name extension
 containing an `otherName` with
 a `type-id` of `id-on-OpenIdFederationEntityId`.
