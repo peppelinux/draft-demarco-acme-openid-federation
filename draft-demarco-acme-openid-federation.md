@@ -555,11 +555,6 @@ A non-normative example of an ACME newOrder request:
    }
 ~~~~
 
-The maximum length of the JSON array contained in the identifiers parameter
-MUST be 1, since there cannot be more than a single URI corresponding to a
-Federation Entity.
-
-
 ## OpenID Federation Challenge Type {#challenge-type}
 
 The OpenID Federation challenge type allows a Requestor to prove control of a
@@ -639,11 +634,8 @@ On receiving a challenge response, the Certificate Issuer retrieves the public k
 the given entity (possibly performing Federation Entity Discovery to do so),
 then:
 
-* Verifies that the requested `openid-federation` value matches the `sub`
-  parameter of the Requestor's Entity Configuration. Since the Entity
-  Configuration MUST contain at most one Entity Identifier, this effectively
-  means this challenge type works with requests for a single Federation Entity
-  only.
+* Verifies that the requested `openid-federation` identifier value matches the `sub`
+  parameter of the Requestor's Entity Configuration.
 
 * Verifies that the `sig` field of the payload includes a valid JWT over the
   key authorization, signed with one of the keys published in the Requestor's
@@ -675,15 +667,19 @@ A non-normative example for the challenge object post-validation:
 ### CSR and Certificate Requirements {#openidfed-othername-id}
 
 When using this challenge type, both the certificate signing request (CSR)
-and the X.509 Certificate:
+and the X.509 Certificate MUST include a public key corresponding to
+the key used to satisfy the challenge.
 
-* MUST include a public key corresponding to
-  the key used to satisfy the challenge.
-
-* MUST include no Common Name, and must include
-  a single Subject Alternative Name value corresponding to an `otherName` with a `type-id` of `id-on-OpenIdFederationEntityId`, containing an Octet String value corresponding to a UTF-8
-  encoding of the Requestor's Entity ID, that is, the value of the `sub` claim
-  of the Requestor's Entity Configuration.
+Depending on the Certificate Issuer's X.509 Certificate profile, the CSR and
+X.509 Certificate MAY associate the X.509 Certificate to the Federation Entity by
+including the Entity ID in the X.509 Certificate.
+To do so, the Issuer includes a Subject Alternative Name extension
+containing an `otherName` with
+a `type-id` of `id-on-OpenIdFederationEntityId`.
+The value of the name is an Octet String
+containing the UTF-8 encoding of the Entity ID
+(i.e., the URI in the corresponding `openid-federation` identifier
+from the `newOrder` request).
 
 ~~~~
    id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
