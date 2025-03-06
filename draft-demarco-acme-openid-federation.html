@@ -19,8 +19,8 @@ possession of public keys, protocol specific metadata and various administrative
 and technical information related to a specific entity. 
        This document defines how X.509 certificates associating a given OpenID
 Federation Entity with a key included in that Entity's Configuration can be
-issued by a trust anchor and its intermediates through the ACME protocol to all
-the organizations that are part of a federation built on top of OpenID
+issued by an X.509 Certification Authority through the ACME protocol to the
+organizations which are part of a federation built on top of OpenID
 Federation 1.0. 
     " name="description">
 <meta content="xml2rfc 3.28.0" name="generator">
@@ -1112,8 +1112,8 @@ possession of public keys, protocol specific metadata and various administrative
 and technical information related to a specific entity.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 <p id="section-abstract-3">This document defines how X.509 certificates associating a given OpenID
 Federation Entity with a key included in that Entity's Configuration can be
-issued by a trust anchor and its intermediates through the ACME protocol to all
-the organizations that are part of a federation built on top of OpenID
+issued by an X.509 Certification Authority through the ACME protocol to the
+organizations which are part of a federation built on top of OpenID
 Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
@@ -1316,7 +1316,7 @@ Entity Configuration, that is a signed JWT published in a well-known resource
 </li>
         <li class="normal" id="section-1-4.3">
           <p id="section-1-4.3.1">It defines how the OpenID Federation Subordinate Statements can be used for the
-publication of the X.509 Certificates, by a Trust Anchor or Intermediate, that
+publication of the X.509 Certificates, by a Superior Entity, that
 were previously issued with ACME.<a href="#section-1-4.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-4.4">
@@ -1355,11 +1355,11 @@ defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html
       <h2 id="name-terminology">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
       </h2>
-<p id="section-3-1">The terms "Federation Entity", "Trust Anchor", "Intermediate", "Entity
-Configuration", "Subordinate Statement", "Trust Mark" and "Trust Chain" used in this
-document are defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
+<p id="section-3-1">The terms "Federation Entity", "Trust Anchor", "Entity Configuration",
+"Subordinate Statement", "Superior Entity", "Trust Mark" and "Trust Chain"
+used in this document are defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
 The term "CSR" used in this document is defined in <span>[<a href="#RFC2986" class="cite xref">RFC2986</a>]</span>. The
-term Certificate Authority used in this document is defined in <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>. The
+term Certification Authority used in this document is defined in <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>. The
 terms "ACME Client" and "ACME Server" are defined in <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">The specification also defines the following terms:<a href="#section-3-2" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-3-3">
@@ -1370,7 +1370,7 @@ a web server for hosting its Entity Configuration. It also operates an ACME
 client, extended according to this document.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-3.3">Issuer:</dt>
+<dt id="section-3-3.3">Certificate Issuer:</dt>
         <dd style="margin-left: 1.5em" id="section-3-3.4">
           <p id="section-3-3.4.1">A Federation Entity which issues X.509 certificates. It operates a web server
 for hosting its Entity Configuration. It also operates an ACME server,
@@ -1973,7 +1973,7 @@ of the Requestor's Entity Configuration.<a href="#section-6.7.1-2.2.1" class="pi
       <h2 id="name-publication-of-the-certific">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-publication-of-the-certific" class="section-name selfRef">Publication of the Certificates within the Federation</a>
       </h2>
-<p id="section-7-1"><strong>TBD</strong>, when the Certificate Issuer is the Trust Anchor or Intermediate, the X.509
+<p id="section-7-1">When the Certificate Issuer is the Superior Entity, the X.509
 Certificate linked to JWK in the Subordinate
 Statement related to the Requestor, <span class="bcp14">SHOULD</span> be extended with the claim <code>x5c</code>,
 containing the issued X.509 Certificate.<a href="#section-7-1" class="pilcrow">¶</a></p>
