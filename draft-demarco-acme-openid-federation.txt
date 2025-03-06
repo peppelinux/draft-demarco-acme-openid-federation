@@ -610,8 +610,8 @@ Table of Contents
         "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
       }
 
-   The openid-federation-01 challenge MUST NOT be used to issue
-   certificates for any identifiers except openid-federation
+   The openid-federation-01 challenge MUST NOT be used to issue X.509
+   Certificates for any identifiers except openid-federation
    identifiers.
 
    The openid-federation identifier MUST NOT be validated except by the
