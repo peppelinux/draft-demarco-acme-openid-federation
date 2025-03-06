@@ -5,9 +5,9 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                                A. Ghani
-Expires: 14 August 2025                                        B. Pitman
+Expires: 7 September 2025                                      B. Pitman
                                                                     ISRG
-                                                        10 February 2025
+                                                            6 March 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -25,7 +25,7 @@ Abstract
    OpenID Federation 1.0 defines how to build a trust infrastructure
    using a trusted third-party model.  It uses a trust evaluation
    mechanism to attest the possession of public keys, protocol specific
-   metadata and several administrative and technical information related
+   metadata and various administrative and technical information related
    to a specific entity.
 
    This document defines how X.509 certificates associating a given
@@ -66,7 +66,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 August 2025.
+   This Internet-Draft will expire on 7 September 2025.
 
 Copyright Notice
 
@@ -85,7 +85,7 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction
-   2.  Audience Target and Use Cases
+   2.  Target Audience and Use Cases
    3.  Terminology
    4.  Conventions and Definitions
    5.  Certificates issued using OpenID Federation
@@ -113,16 +113,17 @@ Table of Contents
 
 1.  Introduction
 
-   OpenID Federation 1.0 allows an ACME server to issue X.509
-   Certificates associating a given OpenID Entity to a key included in
-   that Entity's Configuration.  X.509 Certificates can be provided to
-   one or more organizations, without having pre-established any direct
-   relationship or any stipulation of a contract.
+   This document describes extensions to the ACME protocol that
+   integrate with OpenID Federation 1.0, allowing an ACME server to
+   issue X.509 Certificates associating a given OpenID Federation Entity
+   to a key included in its Entity Configuration.  X.509 Certificates
+   can be provided to one or more organizations, without having pre-
+   established any direct relationship or any stipulation of a contract.
 
    In a multilateral federation, composed by thousands of entities
    belonging to different organizations, all the participants adhere to
    the same regulation or trust framework.  OpenID Federation 1.0 allows
-   each participant to recognize the other participant using a trust
+   each participant to recognize other participants using a trust
    evaluation mechanism, with RESTful services and cryptographic
    materials.
 
@@ -142,8 +143,7 @@ Table of Contents
    *  It defines how to use and validate a basic OpenID Federation
       component, called Entity Configuration, that is a signed JWT
       published in a well-known resource (/.well-known/openid-
-      federation) without requiring the /.well-known/acme-
-      challenge/{token} endpoint.
+      federation).
 
    *  It defines how the OpenID Federation Subordinate Statements can be
       used for the publication of the X.509 Certificates, by a Trust
@@ -153,7 +153,7 @@ Table of Contents
       of [RFC8555], defining a new payload identifier type called
       openid-federation.
 
-2.  Audience Target and Use Cases
+2.  Target Audience and Use Cases
 
    The audience of the document are the multilateral federations that
    require automatic issuance of X.509 Certificates using an
@@ -602,7 +602,8 @@ Table of Contents
         "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
       }
 
-   The Requestor responds with an object with the following format:
+   The Requestor responds to the challenge with an object with the
+   following format:
 
    sig (required, string): the compact JSON serialization (as described
    in Section 7.1 of [RFC7515]) of a JWS, signing the key authorization
@@ -642,9 +643,9 @@ Table of Contents
         "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
       }
 
-   On receiving a response, the Certificate Issuer retrieves the public
-   keys associated with the given entity (possibly performing Federation
-   Entity Discovery to do so), then:
+   On receiving a challenge response, the Certificate Issuer retrieves
+   the public keys associated with the given entity (possibly performing
+   Federation Entity Discovery to do so), then:
 
    *  Verifies that the requested openid-federation value matches the
       sub parameter of the Requestor's Entity Configuration.  Since the

@@ -15,7 +15,7 @@ allows server operators to obtain TLS certificates for their websites (HTTPS
 fully-automated challenge/response protocol. 
        OpenID Federation 1.0 defines how to build a trust infrastructure using a
 trusted third-party model. It uses a trust evaluation mechanism to attest the
-possession of public keys, protocol specific metadata and several administrative
+possession of public keys, protocol specific metadata and various administrative
 and technical information related to a specific entity. 
        This document defines how X.509 certificates associating a given OpenID
 Federation Entity with a key included in that Entity's Configuration can be
@@ -23,13 +23,13 @@ issued by a trust anchor and its intermediates through the ACME protocol to all
 the organizations that are part of a federation built on top of OpenID
 Federation 1.0. 
     " name="description">
-<meta content="xml2rfc 3.26.0" name="generator">
+<meta content="xml2rfc 3.28.0" name="generator">
 <meta content="OpenID Federation" name="keyword">
 <meta content="ACME" name="keyword">
 <meta content="draft-demarco-acme-openid-federation-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.26.0
-    Python 3.12.8
+  xml2rfc 3.28.0
+    Python 3.12.9
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
@@ -450,7 +450,7 @@ dl {
     margin-bottom: 0;
   }
 }
-dl > dt {
+dl:not(.dlNewline) > dt {
   float: left;
   margin-right: 2ch;
   min-width: 8ch;
@@ -1059,11 +1059,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ACME OpenID Federation</td>
-<td class="right">February 2025</td>
+<td class="right">March 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">De Marco, et al.</td>
-<td class="center">Expires 14 August 2025</td>
+<td class="center">Expires 7 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1076,12 +1076,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-demarco-acme-openid-federation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-10" class="published">10 February 2025</time>
+<time datetime="2025-03-06" class="published">6 March 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-14">14 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-09-07">7 September 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1108,7 +1108,7 @@ allows server operators to obtain TLS certificates for their websites (HTTPS
 fully-automated challenge/response protocol.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">OpenID Federation 1.0 defines how to build a trust infrastructure using a
 trusted third-party model. It uses a trust evaluation mechanism to attest the
-possession of public keys, protocol specific metadata and several administrative
+possession of public keys, protocol specific metadata and various administrative
 and technical information related to a specific entity.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 <p id="section-abstract-3">This document defines how X.509 certificates associating a given OpenID
 Federation Entity with a key included in that Entity's Configuration can be
@@ -1150,7 +1150,7 @@ Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 14 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1183,7 +1183,7 @@ Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-audience-target-and-use-cas" class="internal xref">Audience Target and Use Cases</a></p>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-target-audience-and-use-cas" class="internal xref">Target Audience and Use Cases</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
@@ -1274,15 +1274,16 @@ Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">OpenID Federation 1.0 allows an ACME server to issue X.509 Certificates
-associating a given OpenID Entity to a key included in that Entity's
+<p id="section-1-1">This document describes extensions to the ACME protocol that integrate with
+OpenID Federation 1.0, allowing an ACME server to issue X.509 Certificates
+associating a given OpenID Federation Entity to a key included in its Entity
 Configuration. X.509 Certificates can be provided to one or more organizations,
 without having pre-established any direct relationship or any stipulation of a
 contract.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">In a multilateral federation, composed by thousands of entities belonging to
 different organizations, all the participants adhere to the same regulation or
-trust framework. OpenID Federation 1.0 allows each participant to recognize the
-other participant using a trust evaluation mechanism, with RESTful services and
+trust framework. OpenID Federation 1.0 allows each participant to recognize
+other participants using a trust evaluation mechanism, with RESTful services and
 cryptographic materials.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">Considering that a requestor is an entity requesting the issuance of an X.509
 Certificate to a server and the issuer is the ACME server that validates the
@@ -1300,8 +1301,7 @@ OpenID Federation 1.0.<a href="#section-1-4.1.1" class="pilcrow">¶</a></p>
         <li class="normal" id="section-1-4.2">
           <p id="section-1-4.2.1">It defines how to use and validate a basic OpenID Federation component, called
 Entity Configuration, that is a signed JWT published in a well-known resource
-(<code>/.well-known/openid-federation</code>) without requiring the
-<code>/.well-known/acme-challenge/{token}</code> endpoint.<a href="#section-1-4.2.1" class="pilcrow">¶</a></p>
+(<code>/.well-known/openid-federation</code>).<a href="#section-1-4.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-4.3">
           <p id="section-1-4.3.1">It defines how the OpenID Federation Subordinate Statements can be used for the
@@ -1316,10 +1316,10 @@ were previously issued with ACME.<a href="#section-1-4.3.1" class="pilcrow">¶</
       </ul>
 </section>
 </div>
-<div id="audience-target-and-use-cases">
+<div id="target-audience-and-use-cases">
 <section id="section-2">
-      <h2 id="name-audience-target-and-use-cas">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-audience-target-and-use-cas" class="section-name selfRef">Audience Target and Use Cases</a>
+      <h2 id="name-target-audience-and-use-cas">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-target-audience-and-use-cas" class="section-name selfRef">Target Audience and Use Cases</a>
       </h2>
 <p id="section-2-1">The audience of the document are the multilateral federations that require
 automatic issuance of X.509 Certificates using an infrastructure of trust based
@@ -1835,7 +1835,7 @@ cryptographic public key published in its OpenID Federation Entity Configuration
    }
 </pre><a href="#section-6.6-5" class="pilcrow">¶</a>
 </div>
-<p id="section-6.6-6">The Requestor responds with an object with the following format:<a href="#section-6.6-6" class="pilcrow">¶</a></p>
+<p id="section-6.6-6">The Requestor responds to the challenge with an object with the following format:<a href="#section-6.6-6" class="pilcrow">¶</a></p>
 <p id="section-6.6-7">sig (required, string):  the compact JSON serialization (as described in
     <span><a href="https://rfc-editor.org/rfc/rfc7515#section-7.1" class="relref">Section 7.1</a> of [<a href="#RFC7515" class="cite xref">RFC7515</a>]</span>) of a JWS, signing the key authorization
     encoded in UTF-8.
@@ -1876,7 +1876,7 @@ trust_chain (optional, array of string):  an array of base64url-encoded bytes
    }
 </pre><a href="#section-6.6-9" class="pilcrow">¶</a>
 </div>
-<p id="section-6.6-10">On receiving a response, the Certificate Issuer retrieves the public keys associated with
+<p id="section-6.6-10">On receiving a challenge response, the Certificate Issuer retrieves the public keys associated with
 the given entity (possibly performing Federation Entity Discovery to do so),
 then:<a href="#section-6.6-10" class="pilcrow">¶</a></p>
 <ul class="normal">
