@@ -684,7 +684,7 @@ and the X.509 Certificate:
 
 # Publication of the Certificates within the Federation
 
-**TBD**, when the Certificate Issuer is the Superior Entity, the X.509
+When the Certificate Issuer is the Superior Entity, the X.509
 Certificate linked to JWK in the Subordinate
 Statement related to the Requestor, SHOULD be extended with the claim `x5c`,
 containing the issued X.509 Certificate.
