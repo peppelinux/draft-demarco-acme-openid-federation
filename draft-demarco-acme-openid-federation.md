@@ -4,7 +4,7 @@ abbrev: "ACME OpenID Federation"
 category: std
 
 docname: draft-demarco-acme-openid-federation-latest
-submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
+submissiontype: IETF
 number:
 date:
 consensus: true
@@ -89,7 +89,7 @@ fully-automated challenge/response protocol.
 
 OpenID Federation 1.0 defines how to build a trust infrastructure using a
 trusted third-party model. It uses a trust evaluation mechanism to attest the
-possession of public keys, protocol specific metadata and several administrative
+possession of public keys, protocol specific metadata and various administrative
 and technical information related to a specific entity.
 
 This document defines how X.509 certificates associating a given OpenID
@@ -102,16 +102,17 @@ Federation 1.0.
 
 # Introduction
 
-OpenID Federation 1.0 allows an ACME server to issue X.509 Certificates
-associating a given OpenID Entity to a key included in that Entity's
+This document describes extensions to the ACME protocol that integrate with
+OpenID Federation 1.0, allowing an ACME server to issue X.509 Certificates
+associating a given OpenID Federation Entity to a key included in its Entity
 Configuration. X.509 Certificates can be provided to one or more organizations,
 without having pre-established any direct relationship or any stipulation of a
 contract.
 
 In a multilateral federation, composed by thousands of entities belonging to
 different organizations, all the participants adhere to the same regulation or
-trust framework. OpenID Federation 1.0 allows each participant to recognize the
-other participant using a trust evaluation mechanism, with RESTful services and
+trust framework. OpenID Federation 1.0 allows each participant to recognize
+other participants using a trust evaluation mechanism, with RESTful services and
 cryptographic materials.
 
 Considering that a requestor is an entity requesting the issuance of an X.509
@@ -128,8 +129,7 @@ ACME protocol in the following ways:
 
 - It defines how to use and validate a basic OpenID Federation component, called
   Entity Configuration, that is a signed JWT published in a well-known resource
-  (`/.well-known/openid-federation`) without requiring the
-  `/.well-known/acme-challenge/{token}` endpoint.
+  (`/.well-known/openid-federation`).
 
 - It defines how the OpenID Federation Subordinate Statements can be used for the
   publication of the X.509 Certificates, by a Trust Anchor or Intermediate, that
@@ -139,7 +139,7 @@ ACME protocol in the following ways:
   {{Section 7.4 of !RFC8555}}, defining a new payload identifier type called
   `openid-federation`.
 
-# Audience Target and Use Cases
+# Target Audience and Use Cases
 
 The audience of the document are the multilateral federations that require
 automatic issuance of X.509 Certificates using an infrastructure of trust based
@@ -592,7 +592,7 @@ for any identifiers except `openid-federation` identifiers.
 The `openid-federation` identifier MUST NOT be validated except by the
 `openid-federation-01` challenge.
 
-The Requestor responds with an object with the following format:
+The Requestor responds to the challenge with an object with the following format:
 
 sig (required, string):  the compact JSON serialization (as described in
     {{Section 7.1 of !RFC7515}}) of a JWS, signing the key authorization
@@ -635,7 +635,7 @@ A non-normative example for an authorization with `trust_chain` specified:
    }
 ~~~~
 
-On receiving a response, the Certificate Issuer retrieves the public keys associated with
+On receiving a challenge response, the Certificate Issuer retrieves the public keys associated with
 the given entity (possibly performing Federation Entity Discovery to do so),
 then:
 
