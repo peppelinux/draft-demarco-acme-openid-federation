@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-04T00:36:22.246756+00:00",
+  "timestamp": "2025-03-06T00:36:25.314542+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -5082,19 +5082,73 @@
       "labels": [],
       "body": "This relaxes some restrictions on certificates. Putting the entity ID in a subject alternative name is now optional. The requirement to have only one identifier per order is deleted in two places. Closes #54 and #38.",
       "createdAt": "2025-03-03T22:16:46Z",
-      "updatedAt": "2025-03-03T22:17:32Z",
+      "updatedAt": "2025-03-05T17:14:37Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "d8d1268e2b46e048326413777f914b34434d8973",
       "headRepository": "divergentdave/draft-demarco-acme-openid-federation",
       "headRefName": "david/loosen-certificate-profile",
-      "headRefOid": "74260a5e0f1c2e4344d9fe3858e389c51f1ab100",
+      "headRefOid": "e20be0e8b6b415e0292484d1345525b892102290",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86edXDA",
+          "commit": {
+            "abbreviatedOid": "74260a5"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-04T17:57:34Z",
+          "updatedAt": "2025-03-04T17:57:42Z",
+          "comments": [
+            {
+              "originalPosition": 47,
+              "body": "nit while we're here: this is a really long sentence.  Maybe we just split it a little bit?\r\n\r\n```suggestion\r\nDepending on the Certificate Issuer's X.509 certificate profile, the CSR and\r\nX.509 Certificate MAY associate the certificate to the Federation Entity.  To do\r\nthat, the Issuer includes a Subject Alternative Name value corresponding to an \r\n`otherName` with a `type-id` of `id-on-OpenIdFederationEntityId`, containing \r\nan Octet String value corresponding to a UTF-8 encoding of the Entity ID in the\r\n`openid-federation` identifier in the `newOrder` request.\r\n```\r\nOr not, is fine either way.",
+              "createdAt": "2025-03-04T17:57:34Z",
+              "updatedAt": "2025-03-04T17:57:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86egRYg",
+          "commit": {
+            "abbreviatedOid": "74260a5"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-04T22:36:58Z",
+          "updatedAt": "2025-03-04T22:36:59Z",
+          "comments": [
+            {
+              "originalPosition": 47,
+              "body": "I did some further wordsmithing",
+              "createdAt": "2025-03-04T22:36:58Z",
+              "updatedAt": "2025-03-04T22:36:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86eqFfi",
+          "commit": {
+            "abbreviatedOid": "e20be0e"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks!",
+          "createdAt": "2025-03-05T17:14:37Z",
+          "updatedAt": "2025-03-05T17:14:37Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
