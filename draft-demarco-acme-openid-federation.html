@@ -1218,13 +1218,16 @@ Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.5">
-                <p id="section-toc.1-1.6.2.5.1"><a href="#section-6.5" class="auto internal xref">6.5</a>.  <a href="#name-neworder-request" class="internal xref">newOrder Request</a></p>
+                <p id="section-toc.1-1.6.2.5.1"><a href="#section-6.5" class="auto internal xref">6.5</a>.  <a href="#name-openid-federation-identifie" class="internal xref">OpenID Federation Identifier</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.6">
-                <p id="section-toc.1-1.6.2.6.1"><a href="#section-6.6" class="auto internal xref">6.6</a>.  <a href="#name-openid-federation-challenge" class="internal xref">OpenID Federation Challenge Type</a></p>
+                <p id="section-toc.1-1.6.2.6.1"><a href="#section-6.6" class="auto internal xref">6.6</a>.  <a href="#name-neworder-request" class="internal xref">newOrder Request</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.7">
+                <p id="section-toc.1-1.6.2.7.1"><a href="#section-6.7" class="auto internal xref">6.7</a>.  <a href="#name-openid-federation-challenge" class="internal xref">OpenID Federation Challenge Type</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.6.2.1">
-                    <p id="section-toc.1-1.6.2.6.2.1.1"><a href="#section-6.6.1" class="auto internal xref">6.6.1</a>.  <a href="#name-csr-and-certificate-require" class="internal xref">CSR and Certificate Requirements</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.7.2.1">
+                    <p id="section-toc.1-1.6.2.7.2.1.1"><a href="#section-6.7.1" class="auto internal xref">6.7.1</a>.  <a href="#name-csr-and-certificate-require" class="internal xref">CSR and Certificate Requirements</a></p>
 </li>
                 </ul>
 </li>
@@ -1246,13 +1249,21 @@ Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
-                <p id="section-toc.1-1.11.2.1.1"><a href="#section-11.1" class="auto internal xref">11.1</a>.  <a href="#name-update-acme-identifier-type" class="internal xref">Update ACME Identifier Types</a></p>
+                <p id="section-toc.1-1.11.2.1.1"><a href="#section-11.1" class="auto internal xref">11.1</a>.  <a href="#name-acme-registry-group" class="internal xref">ACME Registry Group</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1.2.1">
+                    <p id="section-toc.1-1.11.2.1.2.1.1"><a href="#section-11.1.1" class="auto internal xref">11.1.1</a>.  <a href="#name-acme-identifier-types" class="internal xref">ACME Identifier Types</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1.2.2">
+                    <p id="section-toc.1-1.11.2.1.2.2.1"><a href="#section-11.1.2" class="auto internal xref">11.1.2</a>.  <a href="#name-acme-validation-methods" class="internal xref">ACME Validation Methods</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1.2.3">
+                    <p id="section-toc.1-1.11.2.1.2.3.1"><a href="#section-11.1.3" class="auto internal xref">11.1.3</a>.  <a href="#name-acme-error-types" class="internal xref">ACME Error Types</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
                 <p id="section-toc.1-1.11.2.2.1"><a href="#section-11.2" class="auto internal xref">11.2</a>.  <a href="#name-assign-x509-pkix-other-name" class="internal xref">Assign X.509 PKIX Other Name</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.3">
-                <p id="section-toc.1-1.11.2.3.1"><a href="#section-11.3" class="auto internal xref">11.3</a>.  <a href="#name-acme-error-types" class="internal xref">ACME Error Types</a></p>
 </li>
             </ul>
 </li>
@@ -1495,9 +1506,9 @@ as described in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.2" c
           <li id="section-6.3-1.4">
             <p id="section-6.3-1.4.1">The Requestor begins the X.509 Certificate issuance process by sending a HTTP POST
 request to the Certificate Issuer's <code>newOrder</code> resource,
-as described in <a href="#neworder-request" class="auto internal xref">Section 6.5</a>, and follows the remainder of the
+as described in <a href="#neworder-request" class="auto internal xref">Section 6.6</a>, and follows the remainder of the
 ACME protocol as specified in <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>, using the new challenge defined in
-<a href="#challenge-type" class="auto internal xref">Section 6.6</a>.<a href="#section-6.3-1.4.1" class="pilcrow">¶</a></p>
+<a href="#challenge-type" class="auto internal xref">Section 6.7</a>.<a href="#section-6.3-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-6.3-1.5">
             <p id="section-6.3-1.5.1">The Certificate Issuer evaluates the trust to the Requestor by checking if it
@@ -1766,18 +1777,25 @@ the <code>acme_requestor</code> metadata from its Entity Configuration.<a href="
 </div>
 </section>
 </div>
-<div id="neworder-request">
+<div id="identifier-type">
 <section id="section-6.5">
-        <h3 id="name-neworder-request">
-<a href="#section-6.5" class="section-number selfRef">6.5. </a><a href="#name-neworder-request" class="section-name selfRef">newOrder Request</a>
+        <h3 id="name-openid-federation-identifie">
+<a href="#section-6.5" class="section-number selfRef">6.5. </a><a href="#name-openid-federation-identifie" class="section-name selfRef">OpenID Federation Identifier</a>
         </h3>
-<p id="section-6.5-1">The Requestor begins certificate issuance by sending a HTTP POST request to the
-Issuer's <code>newOrder</code> resource, as specified in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.4" class="relref">Section 7.4</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>. However,
-the request payload uses a new identifier <code>openid-federation</code>, whose value is
-the <code>sub</code> parameter of the requestor's Entity Configuration, as defined in
-<span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-6.5-1" class="pilcrow">¶</a></p>
-<p id="section-6.5-2">A non-normative example of an ACME newOrder request:<a href="#section-6.5-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.5-3">
+<p id="section-6.5-1">This document defines a new ACME identifier type for OpenID Federation entities, <code>openid-federation</code>,
+whose value is the <code>sub</code> parameter of the requestor's Entity Configuration,
+as defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-6.5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="neworder-request">
+<section id="section-6.6">
+        <h3 id="name-neworder-request">
+<a href="#section-6.6" class="section-number selfRef">6.6. </a><a href="#name-neworder-request" class="section-name selfRef">newOrder Request</a>
+        </h3>
+<p id="section-6.6-1">The Requestor begins certificate issuance by sending a HTTP POST request to the
+Issuer's <code>newOrder</code> resource, as specified in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.4" class="relref">Section 7.4</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.6-1" class="pilcrow">¶</a></p>
+<p id="section-6.6-2">A non-normative example of an ACME newOrder request:<a href="#section-6.6-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.6-3">
 <pre>
    POST /acme/new-order HTTP/1.1
    Host: issuer.example.com
@@ -1802,30 +1820,30 @@ the <code>sub</code> parameter of the requestor's Entity Configuration, as defin
      }),
      "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
    }
-</pre><a href="#section-6.5-3" class="pilcrow">¶</a>
+</pre><a href="#section-6.6-3" class="pilcrow">¶</a>
 </div>
-<p id="section-6.5-4">The maximum length of the JSON array contained in the identifiers parameter
+<p id="section-6.6-4">The maximum length of the JSON array contained in the identifiers parameter
 <span class="bcp14">MUST</span> be 1, since there cannot be more than a single URI corresponding to a
-Federation Entity.<a href="#section-6.5-4" class="pilcrow">¶</a></p>
+Federation Entity.<a href="#section-6.6-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="challenge-type">
-<section id="section-6.6">
+<section id="section-6.7">
         <h3 id="name-openid-federation-challenge">
-<a href="#section-6.6" class="section-number selfRef">6.6. </a><a href="#name-openid-federation-challenge" class="section-name selfRef">OpenID Federation Challenge Type</a>
+<a href="#section-6.7" class="section-number selfRef">6.7. </a><a href="#name-openid-federation-challenge" class="section-name selfRef">OpenID Federation Challenge Type</a>
         </h3>
-<p id="section-6.6-1">The OpenID Federation challenge type allows a Requestor to prove control of a
+<p id="section-6.7-1">The OpenID Federation challenge type allows a Requestor to prove control of a
 Federation Entity using the trust evaluation mechanism
 provided by <span>[<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>. The Requestor demonstrates control of a
-cryptographic public key published in its OpenID Federation Entity Configuration.<a href="#section-6.6-1" class="pilcrow">¶</a></p>
-<p id="section-6.6-2">The openid-federation-01 ACME challenge object has the following format:<a href="#section-6.6-2" class="pilcrow">¶</a></p>
-<p id="section-6.6-3">type (required, string):  The string "openid-federation-01"<a href="#section-6.6-3" class="pilcrow">¶</a></p>
-<p id="section-6.6-4">token (required, string):  A random value that uniquely identifies the
+cryptographic public key published in its OpenID Federation Entity Configuration.<a href="#section-6.7-1" class="pilcrow">¶</a></p>
+<p id="section-6.7-2">The openid-federation-01 ACME challenge object has the following format:<a href="#section-6.7-2" class="pilcrow">¶</a></p>
+<p id="section-6.7-3">type (required, string):  The string "openid-federation-01"<a href="#section-6.7-3" class="pilcrow">¶</a></p>
+<p id="section-6.7-4">token (required, string):  A random value that uniquely identifies the
     challenge. This value <span class="bcp14">MUST</span> have at least 128 bits of entropy. It <span class="bcp14">MUST NOT</span>
     contain any characters outside the base64url alphabet as described in
     <span><a href="https://rfc-editor.org/rfc/rfc4648#section-5" class="relref">Section 5</a> of [<a href="#RFC4648" class="cite xref">RFC4648</a>]</span>. Trailing '=' padding characters <span class="bcp14">MUST</span> be stripped.
-    See <span>[<a href="#RFC4086" class="cite xref">RFC4086</a>]</span> for additional information on randomness requirements.<a href="#section-6.6-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.6-5">
+    See <span>[<a href="#RFC4086" class="cite xref">RFC4086</a>]</span> for additional information on randomness requirements.<a href="#section-6.7-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.7-5">
 <pre>
    {
      "type": "openid-federation-01",
@@ -1833,10 +1851,14 @@ cryptographic public key published in its OpenID Federation Entity Configuration
      "status": "pending",
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
-</pre><a href="#section-6.6-5" class="pilcrow">¶</a>
+</pre><a href="#section-6.7-5" class="pilcrow">¶</a>
 </div>
-<p id="section-6.6-6">The Requestor responds to the challenge with an object with the following format:<a href="#section-6.6-6" class="pilcrow">¶</a></p>
-<p id="section-6.6-7">sig (required, string):  the compact JSON serialization (as described in
+<p id="section-6.7-6">The <code>openid-federation-01</code> challenge <span class="bcp14">MUST NOT</span> be used to issue certificates
+for any identifiers except <code>openid-federation</code> identifiers.<a href="#section-6.7-6" class="pilcrow">¶</a></p>
+<p id="section-6.7-7">The <code>openid-federation</code> identifier <span class="bcp14">MUST NOT</span> be validated except by the
+<code>openid-federation-01</code> challenge.<a href="#section-6.7-7" class="pilcrow">¶</a></p>
+<p id="section-6.7-8">The Requestor responds to the challenge with an object with the following format:<a href="#section-6.7-8" class="pilcrow">¶</a></p>
+<p id="section-6.7-9">sig (required, string):  the compact JSON serialization (as described in
     <span><a href="https://rfc-editor.org/rfc/rfc7515#section-7.1" class="relref">Section 7.1</a> of [<a href="#RFC7515" class="cite xref">RFC7515</a>]</span>) of a JWS, signing the key authorization
     encoded in UTF-8.
     The key authorization is computed from the token in the challenge and the
@@ -1853,9 +1875,9 @@ trust_chain (optional, array of string):  an array of base64url-encoded bytes
     The Requestor <span class="bcp14">SHOULD</span> use a Trust Anchor it
     has in common with the ACME server. It is <span class="bcp14">RECOMMENDED</span> that the Requestor
     includes this field; otherwise, the ACME server <span class="bcp14">MUST</span> start Federation Entity
-    Discovery to obtain the Trust Chain related to the Requestor.<a href="#section-6.6-7" class="pilcrow">¶</a></p>
-<p id="section-6.6-8">A non-normative example for an authorization with <code>trust_chain</code> specified:<a href="#section-6.6-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.6-9">
+    Discovery to obtain the Trust Chain related to the Requestor.<a href="#section-6.7-9" class="pilcrow">¶</a></p>
+<p id="section-6.7-10">A non-normative example for an authorization with <code>trust_chain</code> specified:<a href="#section-6.7-10" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.7-11">
 <pre>
    POST /acme/chall/prV_B7yEyA4
    Host: issuer.example.com
@@ -1874,36 +1896,36 @@ trust_chain (optional, array of string):  an array of base64url-encoded bytes
      }),
      "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
    }
-</pre><a href="#section-6.6-9" class="pilcrow">¶</a>
+</pre><a href="#section-6.7-11" class="pilcrow">¶</a>
 </div>
-<p id="section-6.6-10">On receiving a challenge response, the Certificate Issuer retrieves the public keys associated with
+<p id="section-6.7-12">On receiving a challenge response, the Certificate Issuer retrieves the public keys associated with
 the given entity (possibly performing Federation Entity Discovery to do so),
-then:<a href="#section-6.6-10" class="pilcrow">¶</a></p>
+then:<a href="#section-6.7-12" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.6-11.1">
-            <p id="section-6.6-11.1.1">Verifies that the requested <code>openid-federation</code> value matches the <code>sub</code>
+<li class="normal" id="section-6.7-13.1">
+            <p id="section-6.7-13.1.1">Verifies that the requested <code>openid-federation</code> value matches the <code>sub</code>
 parameter of the Requestor's Entity Configuration. Since the Entity
 Configuration <span class="bcp14">MUST</span> contain at most one Entity Identifier, this effectively
 means this challenge type works with requests for a single Federation Entity
-only.<a href="#section-6.6-11.1.1" class="pilcrow">¶</a></p>
+only.<a href="#section-6.7-13.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.6-11.2">
-            <p id="section-6.6-11.2.1">Verifies that the <code>sig</code> field of the payload includes a valid JWT over the
+          <li class="normal" id="section-6.7-13.2">
+            <p id="section-6.7-13.2.1">Verifies that the <code>sig</code> field of the payload includes a valid JWT over the
 key authorization, signed with one of the keys published in the Requestor's
 <code>acme_requestor</code> metadata in its Entity Configuration, as specified in
 <a href="#requestor-metadata" class="auto internal xref">Section 6.4.2</a>. The Issuer <span class="bcp14">MUST</span> only consider the key
 whose <code>kid</code> matches the <code>kid</code> claim in the Requestor's challenge response.
 The Issuer also <span class="bcp14">MUST</span> only consider keys published in the Requestor's
-<code>acme_requestor</code> metadata.<a href="#section-6.6-11.2.1" class="pilcrow">¶</a></p>
+<code>acme_requestor</code> metadata.<a href="#section-6.7-13.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-6.6-12">If all of the above verifications succeed, then the validation is successful.
+<p id="section-6.7-14">If all of the above verifications succeed, then the validation is successful.
 Otherwise, it has failed. In either case, the Certificate Issuer responds according to
 <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.5.1" class="relref">Section 7.5.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>. In the event that the verification succeeds, the
 eventual CSR <span class="bcp14">MUST</span> include the public key, attested within the Trust Chain, used
-by the Requestor to satisfy the Certificate Issuer's challenge.<a href="#section-6.6-12" class="pilcrow">¶</a></p>
-<p id="section-6.6-13">A non-normative example for the challenge object post-validation:<a href="#section-6.6-13" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.6-14">
+by the Requestor to satisfy the Certificate Issuer's challenge.<a href="#section-6.7-14" class="pilcrow">¶</a></p>
+<p id="section-6.7-15">A non-normative example for the challenge object post-validation:<a href="#section-6.7-15" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.7-16">
 <pre>
    {
      "type": "openid-federation-01",
@@ -1912,33 +1934,33 @@ by the Requestor to satisfy the Certificate Issuer's challenge.<a href="#section
      "validated": "2024-10-01T12:05:13.72Z",
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
-</pre><a href="#section-6.6-14" class="pilcrow">¶</a>
+</pre><a href="#section-6.7-16" class="pilcrow">¶</a>
 </div>
-<div id="csr-and-certificate-requirements">
-<section id="section-6.6.1">
+<div id="openidfed-othername-id">
+<section id="section-6.7.1">
           <h4 id="name-csr-and-certificate-require">
-<a href="#section-6.6.1" class="section-number selfRef">6.6.1. </a><a href="#name-csr-and-certificate-require" class="section-name selfRef">CSR and Certificate Requirements</a>
+<a href="#section-6.7.1" class="section-number selfRef">6.7.1. </a><a href="#name-csr-and-certificate-require" class="section-name selfRef">CSR and Certificate Requirements</a>
           </h4>
-<p id="section-6.6.1-1">When using this challenge type, both the certificate signing request (CSR)
-and the X.509 Certificate:<a href="#section-6.6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.7.1-1">When using this challenge type, both the certificate signing request (CSR)
+and the X.509 Certificate:<a href="#section-6.7.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.6.1-2.1">
-              <p id="section-6.6.1-2.1.1"><span class="bcp14">MUST</span> include a public key corresponding to
-the key used to satisfy the challenge.<a href="#section-6.6.1-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-6.7.1-2.1">
+              <p id="section-6.7.1-2.1.1"><span class="bcp14">MUST</span> include a public key corresponding to
+the key used to satisfy the challenge.<a href="#section-6.7.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-6.6.1-2.2">
-              <p id="section-6.6.1-2.2.1"><span class="bcp14">MUST</span> include no Common Name, and must include
+            <li class="normal" id="section-6.7.1-2.2">
+              <p id="section-6.7.1-2.2.1"><span class="bcp14">MUST</span> include no Common Name, and must include
 a single Subject Alternative Name value corresponding to an <code>otherName</code> with a <code>type-id</code> of <code>id-on-OpenIdFederationEntityId</code>, containing an Octet String value corresponding to a UTF-8
 encoding of the Requestor's Entity ID, that is, the value of the <code>sub</code> claim
-of the Requestor's Entity Configuration.<a href="#section-6.6.1-2.2.1" class="pilcrow">¶</a></p>
+of the Requestor's Entity Configuration.<a href="#section-6.7.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<div class="alignLeft art-text artwork" id="section-6.6.1-3">
+<div class="alignLeft art-text artwork" id="section-6.7.1-3">
 <pre>
    id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
 
    OpenIdFederationEntityId ::= UTF8String
-</pre><a href="#section-6.6.1-3" class="pilcrow">¶</a>
+</pre><a href="#section-6.7.1-3" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1975,7 +1997,7 @@ expired cryptographic keys in the Federation Historical Key Registry.<a href="#s
 <p id="section-8-4">The X.509 Certificate revocation request is defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.6" class="relref">Section 7.6</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-8-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="errors">
+<div id="error-type">
 <section id="section-9">
       <h2 id="name-errors">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-errors" class="section-name selfRef">Errors</a>
@@ -1997,7 +2019,7 @@ error type <span class="bcp14">SHOULD</span> include an extension member named <
       <h2 id="name-security-considerations">
 <a href="#section-10" class="section-number selfRef">10. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-10-1">The <code>openid-federation-01</code> challenge defined in <a href="#challenge-type" class="auto internal xref">Section 6.6</a> defends
+<p id="section-10-1">The <code>openid-federation-01</code> challenge defined in <a href="#challenge-type" class="auto internal xref">Section 6.7</a> defends
 against replay attacks by malicious ACME servers because the signature in
 challenge responses is over an ACME key authorization, which binds the ACME
 account key.<a href="#section-10-1" class="pilcrow">¶</a></p>
@@ -2009,15 +2031,92 @@ account key.<a href="#section-10-1" class="pilcrow">¶</a></p>
 <a href="#section-11" class="section-number selfRef">11. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
 <p id="section-11-1">IANA is kindly asked to make the following updates to registries:<a href="#section-11-1" class="pilcrow">¶</a></p>
-<div id="update-acme-identifier-types">
+<div id="acme-registry-group">
 <section id="section-11.1">
-        <h3 id="name-update-acme-identifier-type">
-<a href="#section-11.1" class="section-number selfRef">11.1. </a><a href="#name-update-acme-identifier-type" class="section-name selfRef">Update ACME Identifier Types</a>
+        <h3 id="name-acme-registry-group">
+<a href="#section-11.1" class="section-number selfRef">11.1. </a><a href="#name-acme-registry-group" class="section-name selfRef">ACME Registry Group</a>
         </h3>
-<p id="section-11.1-1">IANA is asked to add to the "ACME Identifier Types"
-registry, defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-9.7.7" class="relref">Section 9.7.7</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> a label "openid-federation" and reference this document.<a href="#section-11.1-1" class="pilcrow">¶</a></p>
-<p id="section-11.1-2">IANA is also asked to to the "ACME Validation Methods"
-registry, defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-9.7.8" class="relref">Section 9.7.8</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span> add a label "openid-federation-01" and reference this document.<a href="#section-11.1-2" class="pilcrow">¶</a></p>
+<p id="section-11.1-1">The following updates are all assignments in the "Automated Certificate
+Management Environment (ACME) Protocol" registry group <span>[<a href="#IANA-ACME" class="cite xref">IANA-ACME</a>]</span>.<a href="#section-11.1-1" class="pilcrow">¶</a></p>
+<div id="acme-identifier-types">
+<section id="section-11.1.1">
+          <h4 id="name-acme-identifier-types">
+<a href="#section-11.1.1" class="section-number selfRef">11.1.1. </a><a href="#name-acme-identifier-types" class="section-name selfRef">ACME Identifier Types</a>
+          </h4>
+<p id="section-11.1.1-1">IANA is asked to add to the "ACME Identifier Types" registry, defined in
+<span><a href="https://rfc-editor.org/rfc/rfc8555#section-9.7.7" class="relref">Section 9.7.7</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>, the entry below, as specified here in
+<a href="#identifier-type" class="auto internal xref">Section 6.5</a>:<a href="#section-11.1.1-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+            <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Label</th>
+                <th class="text-left" rowspan="1" colspan="1">Reference</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">openid-federation</td>
+                <td class="text-left" rowspan="1" colspan="1">this document</td>
+              </tr>
+            </tbody>
+          </table>
+</section>
+</div>
+<div id="acme-validation-methods">
+<section id="section-11.1.2">
+          <h4 id="name-acme-validation-methods">
+<a href="#section-11.1.2" class="section-number selfRef">11.1.2. </a><a href="#name-acme-validation-methods" class="section-name selfRef">ACME Validation Methods</a>
+          </h4>
+<p id="section-11.1.2-1">IANA is also asked to add to the "ACME Validation Methods" registry, defined
+in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-9.7.8" class="relref">Section 9.7.8</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>, the entry below, as specified here
+in <a href="#challenge-type" class="auto internal xref">Section 6.7</a>:<a href="#section-11.1.2-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-2">
+            <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Label</th>
+                <th class="text-left" rowspan="1" colspan="1">Identifier Type</th>
+                <th class="text-left" rowspan="1" colspan="1">Reference</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">openid-federation-01</td>
+                <td class="text-left" rowspan="1" colspan="1">openid-federation</td>
+                <td class="text-left" rowspan="1" colspan="1">this document</td>
+              </tr>
+            </tbody>
+          </table>
+</section>
+</div>
+<div id="acme-error-types">
+<section id="section-11.1.3">
+          <h4 id="name-acme-error-types">
+<a href="#section-11.1.3" class="section-number selfRef">11.1.3. </a><a href="#name-acme-error-types" class="section-name selfRef">ACME Error Types</a>
+          </h4>
+<p id="section-11.1.3-1">IANA is also asked to add to the "ACME Error Types" registry, defined
+in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-9.7.4" class="relref">Section 9.7.4</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>, the entry below, as specified here in
+<a href="#error-type" class="auto internal xref">Section 9</a>:<a href="#section-11.1.3-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-3">
+            <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Type</th>
+                <th class="text-left" rowspan="1" colspan="1">Description</th>
+                <th class="text-left" rowspan="1" colspan="1">Reference</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">openIDFederationEntity</td>
+                <td class="text-left" rowspan="1" colspan="1">An error occurred while resolving an OpenID Federation entity</td>
+                <td class="text-left" rowspan="1" colspan="1">this document</td>
+              </tr>
+            </tbody>
+          </table>
+</section>
+</div>
 </section>
 </div>
 <div id="assign-x509-pkix-other-name">
@@ -2025,33 +2124,22 @@ registry, defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-9
         <h3 id="name-assign-x509-pkix-other-name">
 <a href="#section-11.2" class="section-number selfRef">11.2. </a><a href="#name-assign-x509-pkix-other-name" class="section-name selfRef">Assign X.509 PKIX Other Name</a>
         </h3>
-<p id="section-11.2-1">IANA is asked to add a "OpenIdFederationEntityId" otherName in
-the "PKIX Other Name Forms" registry
-(<a href="https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.8">1.3.6.1.5.5.7.8</a>)
-and reference this document.<a href="#section-11.2-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="acme-error-types">
-<section id="section-11.3">
-        <h3 id="name-acme-error-types">
-<a href="#section-11.3" class="section-number selfRef">11.3. </a><a href="#name-acme-error-types" class="section-name selfRef">ACME Error Types</a>
-        </h3>
-<p id="section-11.3-1">IANA is asked to add the following assignment to the "ACME Error Types"
-registry, in the "Automated Certificate Management Environment (ACME) Protocol"
-registry group <span>[<a href="#IANA-ACME" class="cite xref">IANA-ACME</a>]</span>.<a href="#section-11.3-1" class="pilcrow">¶</a></p>
-<table class="center" id="table-1">
-          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<p id="section-11.2-1">IANA is asked to add to the "PKIX Other Name Forms" registry
+(<a href="https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.8">1.3.6.1.5.5.7.8</a>) the entry below, as
+specified here in <a href="#openidfed-othername-id" class="auto internal xref">Section 6.7.1</a><a href="#section-11.2-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-4">
+          <caption><a href="#table-4" class="selfRef">Table 4</a></caption>
 <thead>
             <tr>
-              <th class="text-left" rowspan="1" colspan="1">Type</th>
+              <th class="text-left" rowspan="1" colspan="1">Decimal</th>
               <th class="text-left" rowspan="1" colspan="1">Description</th>
               <th class="text-left" rowspan="1" colspan="1">Reference</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">openIDFederationEntity</td>
-              <td class="text-left" rowspan="1" colspan="1">An error occurred while resolving an OpenID Federation entity</td>
+              <td class="text-left" rowspan="1" colspan="1">TBA</td>
+              <td class="text-left" rowspan="1" colspan="1">id-on-OpenIdFederationEntityId</td>
               <td class="text-left" rowspan="1" colspan="1">this document</td>
             </tr>
           </tbody>
