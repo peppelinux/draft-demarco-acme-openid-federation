@@ -586,7 +586,7 @@ token (required, string):  A random value that uniquely identifies the
    }
 ~~~~
 
-The `openid-federation-01` challenge MUST NOT be used to issue certificates
+The `openid-federation-01` challenge MUST NOT be used to issue X.509 Certificates
 for any identifiers except `openid-federation` identifiers.
 
 The `openid-federation` identifier MUST NOT be validated except by the
