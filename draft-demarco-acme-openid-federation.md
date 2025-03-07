@@ -92,8 +92,8 @@ trusted third-party model. It uses a trust evaluation mechanism to attest the
 possession of public keys, protocol specific metadata and various administrative
 and technical information related to a specific entity.
 
-This document defines how X.509 certificates associating a given OpenID
-Federation Entity with a key included in that Entity's Configuration can be
+This document defines how X.509 certificates associated with a given OpenID
+Federation Entity can be
 issued by an X.509 Certification Authority through the ACME protocol to the
 organizations which are part of a federation built on top of OpenID
 Federation 1.0.
@@ -104,8 +104,8 @@ Federation 1.0.
 
 This document describes extensions to the ACME protocol that integrate with
 OpenID Federation 1.0, allowing an ACME server to issue X.509 Certificates
-associating a given OpenID Federation Entity to a key included in its Entity
-Configuration. X.509 Certificates can be provided to one or more organizations,
+associated with a given OpenID Federation Entity.
+X.509 Certificates can be provided to one or more organizations,
 without having pre-established any direct relationship or any stipulation of a
 contract.
 
@@ -151,9 +151,8 @@ This specification can be implemented by:
   transport to attest themselves as trustworthy, and then retrieve X.509
   Certificates for their official HTTPS Federation Entity ID.
 
-- Federation Entities that want to ask and obtain X.509 Certificate for one or
-  more public cryptographic keys published in their Entity Configuration, as
-  defined in {{Section 3 of OPENID-FED}}{: relative="#section-3"}.
+- Federation Entities that want to ask for and obtain X.509 Certificate for use
+  in other protocols.
 
 # Terminology
 
@@ -191,8 +190,7 @@ Certificates for the identifier configured in the Requestor's Entity
 Configuration.
 
 The cryptographic keys published within the Requestor's Entity Configuration
-are used to satisfy the Certificate Issuer's challenge, and the
-public portion of the keys included in the issued X.509 Certificates.
+are used to satisfy the Certificate Issuer's challenge.
 
 The protocol assumes the following discovery preconditions are met. The
 Issuer has the guarantee that:
@@ -202,12 +200,6 @@ Issuer has the guarantee that:
 
 2. The Requestor controls its identifier, having published the
    Entity Configuration.
-
-The CSR MUST include the public key, attested within the Trust Chain, used by
-the Requestor to satisfy the Certificate Issuer's challenge.
-
-This process may be repeated to request multiple X.509 Certificates related to the
-other cryptographic keys published in the Requestor's Entity Configuration.
 
 # Protocol Flow
 
@@ -464,8 +456,7 @@ the `acme_issuer` metadata:
 The Requestor MUST publish in its Entity Configuration an `acme_requestor`
 metadata containing a JWK set, according to
 {{Section 5.2.1 of OPENID-FED}}{: relative="#section-5.2.1"}.
-The keys in the set represent the keys that the Requestor MAY request
-certificates for.
+The keys in the set are used to respond to ACME challenges.
 
 The following is a non-normative example of an Entity Configuration including
 the `acme_requestor` metadata and using the `jwks` metadata parameter.
@@ -647,10 +638,7 @@ then:
 
 If all of the above verifications succeed, then the validation is successful.
 Otherwise, it has failed. In either case, the Certificate Issuer responds according to
-{{Section 7.5.1 of !RFC8555}}. In the event that the verification succeeds, the
-eventual CSR MUST include the public key, attested within the Trust Chain, used
-by the Requestor to satisfy the Certificate Issuer's challenge.
-
+{{Section 7.5.1 of !RFC8555}}.
 
 A non-normative example for the challenge object post-validation:
 
@@ -664,11 +652,7 @@ A non-normative example for the challenge object post-validation:
    }
 ~~~~
 
-### CSR and Certificate Requirements {#openidfed-othername-id}
-
-When using this challenge type, both the certificate signing request (CSR)
-and the X.509 Certificate MUST include a public key corresponding to
-the key used to satisfy the challenge.
+### CSR and Certificate Fields {#openidfed-othername-id}
 
 Depending on the Certificate Issuer's X.509 Certificate profile, the CSR and
 X.509 Certificate MAY associate the X.509 Certificate to the Federation Entity by
@@ -696,7 +680,8 @@ containing the issued X.509 Certificate.
 
 # Certificate Lifecycle and Revocation
 
-The issued X.509 Certificate is associated with a cryptographic public key
+The identity of the Requestor is verified through proof of possession of a
+private key corresponding to a public key
 attested within a Trust Chain. It is up to the Certificate Issuer to decide
 the expiration time of the X.509 Certificate. In some cases, and when required,
 it MAY be set to match the expiration of the Trust Chain.
@@ -731,6 +716,15 @@ The `openid-federation-01` challenge defined in {{challenge-type}} defends
 against replay attacks by malicious ACME servers because the signature in
 challenge responses is over an ACME key authorization, which binds the ACME
 account key.
+
+The cryptographic keys in the `acme_requestor` metadata SHOULD NOT be reused
+for other purposes than signing responses to `acme-federation-01` challenges.
+For example, the same keys SHOULD NOT be reused in the issued X.509 Certificate.
+If the keys are reused for other purposes, cross-protocol attacks MUST be
+considered.
+
+The cryptographic keys in the `acme_requestor` metadata SHOULD be rotated
+periodically.
 
 # IANA Considerations
 
