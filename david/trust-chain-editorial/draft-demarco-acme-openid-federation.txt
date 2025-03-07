@@ -627,7 +627,7 @@ Table of Contents
    the key authorization and a typ header parameter set to "signed-acme-
    challenge+jwt". trust_chain (optional, array of string): an array of
    strings containing signed JWTs, representing the Trust Chain of the
-   Requestor, See Section 4.3 of [OPENID-FED].  The Requestor SHOULD use
+   Requestor, see Section 4.3 of [OPENID-FED].  The Requestor SHOULD use
    a Trust Anchor it has in common with the ACME server.  It is
    RECOMMENDED that the Requestor includes this field; otherwise, the
    ACME server MUST start Federation Entity Discovery to obtain the
