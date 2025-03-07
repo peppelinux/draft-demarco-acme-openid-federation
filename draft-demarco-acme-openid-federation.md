@@ -701,10 +701,6 @@ attested within a Trust Chain. It is up to the Certificate Issuer to decide
 the expiration time of the X.509 Certificate. In some cases, and when required,
 it MAY be set to match the expiration of the Trust Chain.
 
-When a cryptographic public key is removed from the Requestor Entity Configuration
-the X.509 Certificate related to it
-SHOULD be revoked by its Credential Issuer, if not expired.
-
 A Requestor SHOULD request the revocation of its X.509 Certificate when the related
 cryptographic material is revoked. The Requestor SHOULD publish the revoked or
 expired cryptographic keys in the Federation Historical Key Registry.
