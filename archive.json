@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-06T00:36:25.314542+00:00",
+  "timestamp": "2025-03-09T00:32:07.633325+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -587,15 +587,15 @@
       "id": "I_kwDOJ6_NW86mfQVc",
       "title": "Remove restrictions on number of identifiers",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/38",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Currently the document requires that orders contain one identifier. We could remove remove this requirement, in order to avoid making unnecessary changes to the ACME protocol beyond its well-defined extension points. While it is unlikely that applications will want to issue an X.509 certificate with two entity identifiers, I don't think this document needs to go out of the way to bar this possibility.\n\nNote that the federation entity to be used when responding to a challenge is still well defined, even if an order includes more than one OpenID Federation identifier. Challenges are looked up from authorization objects and authorization objects include the identifier that all their challenges are related to. Furthermore, because of this, it isn't necessary for challenge responses to include an `entity_identifier`.\n\nAllowing the identifiers array to have a length greater than 1 also opens up the door to more sophisticated certificate profiles that combine different kinds of identifiers. For example, an order could combine an OpenID Federation entity and a DNS name, or an OpenID Federation entity and an email address.",
       "createdAt": "2025-01-16T16:22:00Z",
-      "updatedAt": "2025-02-24T22:21:27Z",
-      "closedAt": null,
+      "updatedAt": "2025-03-07T16:18:22Z",
+      "closedAt": "2025-03-07T16:18:21Z",
       "comments": [
         {
           "author": "jcjones",
@@ -603,6 +603,13 @@
           "body": "If/when doing this, we would also want to eliminate the prohibition on additional Subject Alternative Names in the `CSR and Certificate Requirements` section: https://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/d8d1268e2b46e048326413777f914b34434d8973/draft-demarco-acme-openid-federation.md?plain=1#L674-L677",
           "createdAt": "2025-02-24T22:21:25Z",
           "updatedAt": "2025-02-24T22:21:25Z"
+        },
+        {
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closed by #71.",
+          "createdAt": "2025-03-07T16:18:21Z",
+          "updatedAt": "2025-03-07T16:18:21Z"
         }
       ]
     },
@@ -767,7 +774,7 @@
       "id": "I_kwDOJ6_NW86mq_Rf",
       "title": "Clarify all mentions of \"leaf\", \"intermediate\", \"trust root\"",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/47",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -776,8 +783,8 @@
       "labels": [],
       "body": "We should clarify all uses of terms like \"leaf\" and \"intermediate\" that have meanings both in the context of X.509 PKIs and OpenID Federation.",
       "createdAt": "2025-01-17T20:59:02Z",
-      "updatedAt": "2025-01-28T15:21:12Z",
-      "closedAt": null,
+      "updatedAt": "2025-03-06T16:57:38Z",
+      "closedAt": "2025-03-06T16:57:37Z",
       "comments": [
         {
           "author": "jcjones",
@@ -819,7 +826,7 @@
       "id": "I_kwDOJ6_NW86oTm58",
       "title": "Avoid constraining certificate profiles",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/54",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -828,8 +835,8 @@
       "labels": [],
       "body": "We should change the requirements on CSRs and certificates regarding the subject's common name and subject alternative name to optional suggestions. This draft should limit itself to defining the new ACME identifier and challenge types, and leave certificate profiles up to individual CAs, depending on the requirements of the PKI they are a part of. For example, a CA in some federation may have a good distinguished name for every federation entity. Then, it could put those names in the subject of certificates it issues, and wouldn't need to use subject alternative names at all. It would still be valuable to define `id-on-OpenIdFederationEntityId` and `OpenIdFederationEntityId` in this document, to provide an easy default for profiles.\n\nThanks to @aarongable for the suggestion.",
       "createdAt": "2025-01-31T14:51:37Z",
-      "updatedAt": "2025-02-18T15:26:24Z",
-      "closedAt": null,
+      "updatedAt": "2025-03-06T17:09:34Z",
+      "closedAt": "2025-03-06T17:09:33Z",
       "comments": [
         {
           "author": "peppelinux",
@@ -845,7 +852,7 @@
       "id": "I_kwDOJ6_NW86onRKI",
       "title": "Explicitly restrict permitted challenge types for OpenID Federation ACME identifiers",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/59",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tgeoghegan",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [
@@ -854,8 +861,8 @@
       "labels": [],
       "body": "The draft defines a new ACME identifier type `openid-federation`, and a new ACME challenge type `openid-federation-01`, but we don't make it clear that they can only be used together. We should follow the precedent of [RFC 8738 section 4](https://datatracker.ietf.org/doc/html/rfc8738#section-4) and make this explicit. Additionally, the IANA considerations section should add entries similarly to [RFC 8738 section 8.2](https://datatracker.ietf.org/doc/html/rfc8738#section-8.2)",
       "createdAt": "2025-02-04T00:47:27Z",
-      "updatedAt": "2025-02-18T15:17:07Z",
-      "closedAt": null,
+      "updatedAt": "2025-03-06T16:57:01Z",
+      "closedAt": "2025-03-06T16:57:00Z",
       "comments": [
         {
           "author": "peppelinux",
@@ -4704,24 +4711,26 @@
       "id": "PR_kwDOJ6_NW86Ln5bS",
       "title": "Editorial fixes",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/66",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This makes several small editorial changes throughout the document.",
       "createdAt": "2025-02-18T16:02:57Z",
-      "updatedAt": "2025-02-25T23:01:05Z",
+      "updatedAt": "2025-03-06T16:04:13Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "d8d1268e2b46e048326413777f914b34434d8973",
       "headRepository": "divergentdave/draft-demarco-acme-openid-federation",
       "headRefName": "david/editorial",
       "headRefOid": "a7fc286296ce5d3760486f2fb34e9f6cf5f3bd8a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-03-06T16:04:13Z",
+      "mergedAt": "2025-03-06T16:04:13Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "c5ba539e3ae0153b89620f65555fc4ef675b7ec3"
+      },
       "comments": [],
       "reviews": [
         {
@@ -4749,6 +4758,19 @@
           "createdAt": "2025-02-25T23:01:05Z",
           "updatedAt": "2025-02-25T23:01:05Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86e160v",
+          "commit": {
+            "abbreviatedOid": "a7fc286"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-06T16:04:05Z",
+          "updatedAt": "2025-03-06T16:04:05Z",
+          "comments": []
         }
       ]
     },
@@ -4757,24 +4779,26 @@
       "id": "PR_kwDOJ6_NW86MXOnz",
       "title": "Clarify Ambiguities between OpenID Federation and RFC 5280",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/67",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jcjones",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #47.\r\n\r\nEarlier reviews we had some stumbles over overloaded uses of Trust Root, Leaf, Issuer, and Intermediate, which all have meanings within OpenID Federation as well as in X.509.\r\n\r\nMost of those have already been refactored out, but this PR catches the last ambiguities I could find.\r\n\r\nTo take them one by one:\r\n-  Replaces the phrase `trust anchor and its intermediates` with `Certification Authority` (prefixed with `X.509` in the _Abstract_, for extra precision), which is a defined term from RFC 5280.\r\n- Updates `certificate authority` to the RFC 5280 term `Certification Authority`.\r\n- Removes the term `Intermediate` from the _Terminology_, as it is no longer used.\r\n- In the Terminology section, changes `Issuer`, which can be confused with a Trust Mark Issuer, to `Certificate Issuer`, which is already how we write it elsewhere in the document.\r\n- Clarifies in the _Publication of the Certificates within the Federation_ section that publication can only be done when the certificate is issued by the `Superior Entity`, not just any Certification Authority.",
       "createdAt": "2025-02-24T22:51:02Z",
-      "updatedAt": "2025-02-26T17:29:28Z",
+      "updatedAt": "2025-03-06T17:28:55Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "d8d1268e2b46e048326413777f914b34434d8973",
       "headRepository": "jcjones/draft-demarco-acme-openid-federation",
       "headRefName": "47-clarify",
-      "headRefOid": "23825701b5fa30564c461076f8210dfb79c62344",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "ba325005f35e1ada17435a4bf2dbd4982c039f5a",
+      "closedAt": "2025-03-06T16:57:36Z",
+      "mergedAt": "2025-03-06T16:57:36Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "42478455da19f59eb2afe3644833e16a137c4e90"
+      },
       "comments": [],
       "reviews": [
         {
@@ -4875,6 +4899,39 @@
               "updatedAt": "2025-02-26T00:18:25Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86e1-JV",
+          "commit": {
+            "abbreviatedOid": "2382570"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-06T16:07:48Z",
+          "updatedAt": "2025-03-06T16:07:48Z",
+          "comments": [
+            {
+              "originalPosition": 50,
+              "body": "```suggestion\r\nWhen the Certificate Issuer is the Superior Entity, the X.509\r\n```",
+              "createdAt": "2025-03-06T16:07:48Z",
+              "updatedAt": "2025-03-06T16:07:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86e2gWe",
+          "commit": {
+            "abbreviatedOid": "ba32500"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-06T16:57:31Z",
+          "updatedAt": "2025-03-06T16:57:31Z",
+          "comments": []
         }
       ]
     },
@@ -4883,24 +4940,26 @@
       "id": "PR_kwDOJ6_NW86MXcMa",
       "title": "Restrict the OpenID Federation challenge type and identifier to each other.",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/68",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jcjones",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #59.\r\n\r\nThis pulls the definition of `openid-federation`'s Identifier Type into its own heading, moving it slightly up the page, to make it more clear it's there and happening (like with https://datatracker.ietf.org/doc/html/draft-ietf-acme-onion-07#name-identifier and https://datatracker.ietf.org/doc/html/rfc8738#name-ip-identifier).\r\n\r\nThen it adds the necessary `MUST NOT` conditions on usage, taking some inspiration from https://datatracker.ietf.org/doc/html/rfc8738#section-7 and https://datatracker.ietf.org/doc/html/draft-ietf-acme-onion-07#section-3.1.1.",
       "createdAt": "2025-02-24T23:26:14Z",
-      "updatedAt": "2025-02-26T00:19:35Z",
+      "updatedAt": "2025-03-06T17:28:40Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "d8d1268e2b46e048326413777f914b34434d8973",
+      "baseRefOid": "c5ba539e3ae0153b89620f65555fc4ef675b7ec3",
       "headRepository": "jcjones/draft-demarco-acme-openid-federation",
       "headRefName": "59-restrict-challenge",
-      "headRefOid": "7ec9c5e4163599f3b19e6c64446be062fdcefda4",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "6f0f270f4da2be02bc1748ce5a63817e4f268c22",
+      "closedAt": "2025-03-06T16:58:08Z",
+      "mergedAt": "2025-03-06T16:58:08Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "b19abad2486ba749f934172a0d606354a9e46ba0"
+      },
       "comments": [],
       "reviews": [
         {
@@ -4974,6 +5033,39 @@
           "createdAt": "2025-02-26T00:19:35Z",
           "updatedAt": "2025-02-26T00:19:35Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86e1-jp",
+          "commit": {
+            "abbreviatedOid": "7ec9c5e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-06T16:08:25Z",
+          "updatedAt": "2025-03-06T16:08:25Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "```suggestion\r\nThe `openid-federation-01` challenge MUST NOT be used to issue X.509 Certificates\r\n```",
+              "createdAt": "2025-03-06T16:08:25Z",
+              "updatedAt": "2025-03-06T16:08:25Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86e2grv",
+          "commit": {
+            "abbreviatedOid": "6f0f270"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-06T16:58:03Z",
+          "updatedAt": "2025-03-06T16:58:03Z",
+          "comments": []
         }
       ]
     },
@@ -4982,24 +5074,26 @@
       "id": "PR_kwDOJ6_NW86MftaY",
       "title": "Restructure the IANA Considerations section",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/69",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jcjones",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "- Place the ACME updates in a group together.\r\n- Explicitly define each update, so that IANA doesn't have to ask for clarification.\r\n- Backreference each to the appropriate portion of the specification.\r\n\r\nThis builds on https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/68 and specifically from https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/68#discussion_r1968588504.\r\n\r\nBecause I opened these in my fork, I can't base this PR upon my change from #68 while keeping the ultimate destination as the origin. Since now I have access to create branches here, I'll move future work within this repo.\r\n\r\nThe changes in this PR begin at 7f5e645550aa89447d02d260ba638c06c84ad6e8.",
       "createdAt": "2025-02-25T15:55:06Z",
-      "updatedAt": "2025-03-03T22:56:35Z",
+      "updatedAt": "2025-03-06T17:28:30Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "d8d1268e2b46e048326413777f914b34434d8973",
+      "baseRefOid": "c5ba539e3ae0153b89620f65555fc4ef675b7ec3",
       "headRepository": "jcjones/draft-demarco-acme-openid-federation",
       "headRefName": "59-iana-updates",
-      "headRefOid": "e88ccc8462f3ea0274b862c4b01656f258704fbc",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "6b477a0736533729b7c20f4897a742310243ffaf",
+      "closedAt": "2025-03-06T16:56:59Z",
+      "mergedAt": "2025-03-06T16:56:59Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "de6efe59aeee5ea0c13819aecd9eefb63bac9489"
+      },
       "comments": [],
       "reviews": [
         {
@@ -5067,6 +5161,19 @@
           "createdAt": "2025-03-03T22:56:35Z",
           "updatedAt": "2025-03-03T22:56:35Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86e2f7t",
+          "commit": {
+            "abbreviatedOid": "6b477a0"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-06T16:56:52Z",
+          "updatedAt": "2025-03-06T16:56:52Z",
+          "comments": []
         }
       ]
     },
@@ -5075,24 +5182,26 @@
       "id": "PR_kwDOJ6_NW86NN3gZ",
       "title": "Loosen certificate profile",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/71",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This relaxes some restrictions on certificates. Putting the entity ID in a subject alternative name is now optional. The requirement to have only one identifier per order is deleted in two places. Closes #54 and #38.",
       "createdAt": "2025-03-03T22:16:46Z",
-      "updatedAt": "2025-03-05T17:14:37Z",
+      "updatedAt": "2025-03-06T17:09:39Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "d8d1268e2b46e048326413777f914b34434d8973",
       "headRepository": "divergentdave/draft-demarco-acme-openid-federation",
       "headRefName": "david/loosen-certificate-profile",
-      "headRefOid": "e20be0e8b6b415e0292484d1345525b892102290",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "a2b582869f731516b2ffbe9328841d327fbbdc65",
+      "closedAt": "2025-03-06T17:09:32Z",
+      "mergedAt": "2025-03-06T17:09:32Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "e8f0c54b8e2b0ec919baf5f59429e917e99a1a1d"
+      },
       "comments": [],
       "reviews": [
         {
@@ -5146,6 +5255,132 @@
           "body": "Thanks!",
           "createdAt": "2025-03-05T17:14:37Z",
           "updatedAt": "2025-03-05T17:14:37Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86e2hdO",
+          "commit": {
+            "abbreviatedOid": "e20be0e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-06T16:59:14Z",
+          "updatedAt": "2025-03-06T16:59:14Z",
+          "comments": [
+            {
+              "originalPosition": 44,
+              "body": "```suggestion\r\nDepending on the Certificate Issuer's X.509 Certificate profile, the CSR and\r\nX.509 Certificate MAY associate the X.509 Certificate to the Federation Entity by\r\nincluding the Entity ID in the X.509 Certificate.\r\n```",
+              "createdAt": "2025-03-06T16:59:14Z",
+              "updatedAt": "2025-03-06T16:59:14Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 72,
+      "id": "PR_kwDOJ6_NW86NzGn_",
+      "title": "Use different keys for challenge and certificate",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/72",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This closes #32.",
+      "createdAt": "2025-03-07T16:14:39Z",
+      "updatedAt": "2025-03-07T16:14:40Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "e8f0c54b8e2b0ec919baf5f59429e917e99a1a1d",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "david/separate-keypairs",
+      "headRefOid": "29e8a890383fcfedc522846c2b66342fd7736933",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 73,
+      "id": "PR_kwDOJ6_NW86NzIAa",
+      "title": "Don't revoke upon federation metadata change",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/73",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This removes a `SHOULD` that told issuers to monitor entity configuration post-issuance and revoke when keys are removed. Closes #70.",
+      "createdAt": "2025-03-07T16:17:46Z",
+      "updatedAt": "2025-03-07T17:37:52Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "e8f0c54b8e2b0ec919baf5f59429e917e99a1a1d",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "david/remove-revocation-requirement",
+      "headRefOid": "052609fafd80bd2ea5af833b086b4d9fcf747a50",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86fBUWI",
+          "commit": {
+            "abbreviatedOid": "052609f"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Agreed. We could keep a TODO list of things that should go in a policy doc somewhere, if anyone desires -- maybe just an issue.",
+          "createdAt": "2025-03-07T17:37:52Z",
+          "updatedAt": "2025-03-07T17:37:52Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 74,
+      "id": "PR_kwDOJ6_NW86NzSOQ",
+      "title": "Rephrase description of trust chain",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/74",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The strings in the `trust_chain` array are not base64url-encoded data, but compact form JWTs.",
+      "createdAt": "2025-03-07T16:41:31Z",
+      "updatedAt": "2025-03-07T17:36:24Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "e8f0c54b8e2b0ec919baf5f59429e917e99a1a1d",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "david/trust-chain-editorial",
+      "headRefOid": "1c5d0b77226bec778cbe2ccf0520c82fd5f4cd92",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86fBTrO",
+          "commit": {
+            "abbreviatedOid": "1c5d0b7"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-07T17:36:24Z",
+          "updatedAt": "2025-03-07T17:36:24Z",
           "comments": []
         }
       ]
