@@ -591,9 +591,9 @@ sig (required, string):  the compact JSON serialization (as described in
     The JWS MUST include a `kid` header parameter corresponding to the key used
     to sign the key authorization and a `typ` header parameter set to
     "signed-acme-challenge+jwt".
-trust_chain (optional, array of string):  an array of base64url-encoded bytes
-    containing a signed JWT and representing the Trust Chain of the Requestor,
-    See {{Section 4.3 of OPENID-FED}}{: relative="#section-4.3"}.
+trust_chain (optional, array of string):  an array of strings containing signed JWTs,
+    representing the Trust Chain of the Requestor,
+    see {{Section 4.3 of OPENID-FED}}{: relative="#section-4.3"}.
     The Requestor SHOULD use a Trust Anchor it
     has in common with the ACME server. It is RECOMMENDED that the Requestor
     includes this field; otherwise, the ACME server MUST start Federation Entity
