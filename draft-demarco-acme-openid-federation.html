@@ -1970,13 +1970,10 @@ private key corresponding to a public key
 attested within a Trust Chain. It is up to the Certificate Issuer to decide
 the expiration time of the X.509 Certificate. In some cases, and when required,
 it <span class="bcp14">MAY</span> be set to match the expiration of the Trust Chain.<a href="#section-8-1" class="pilcrow">¶</a></p>
-<p id="section-8-2">When a cryptographic public key is removed from the Requestor Entity Configuration
-the X.509 Certificate related to it
-<span class="bcp14">SHOULD</span> be revoked by its Credential Issuer, if not expired.<a href="#section-8-2" class="pilcrow">¶</a></p>
-<p id="section-8-3">A Requestor <span class="bcp14">SHOULD</span> request the revocation of its X.509 Certificate when the related
+<p id="section-8-2">A Requestor <span class="bcp14">SHOULD</span> request the revocation of its X.509 Certificate when the related
 cryptographic material is revoked. The Requestor <span class="bcp14">SHOULD</span> publish the revoked or
-expired cryptographic keys in the Federation Historical Key Registry.<a href="#section-8-3" class="pilcrow">¶</a></p>
-<p id="section-8-4">The X.509 Certificate revocation request is defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.6" class="relref">Section 7.6</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-8-4" class="pilcrow">¶</a></p>
+expired cryptographic keys in the Federation Historical Key Registry.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-3">The X.509 Certificate revocation request is defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.6" class="relref">Section 7.6</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-8-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="error-type">
