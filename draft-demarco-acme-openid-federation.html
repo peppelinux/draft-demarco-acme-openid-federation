@@ -1859,9 +1859,9 @@ for any identifiers except <code>openid-federation</code> identifiers.<a href="#
     The JWS <span class="bcp14">MUST</span> include a <code>kid</code> header parameter corresponding to the key used
     to sign the key authorization and a <code>typ</code> header parameter set to
     "signed-acme-challenge+jwt".
-trust_chain (optional, array of string):  an array of base64url-encoded bytes
-    containing a signed JWT and representing the Trust Chain of the Requestor,
-    See <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-4.3" class="relref">Section 4.3</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
+trust_chain (optional, array of string):  an array of strings containing signed JWTs,
+    representing the Trust Chain of the Requestor,
+    see <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-4.3" class="relref">Section 4.3</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
     The Requestor <span class="bcp14">SHOULD</span> use a Trust Anchor it
     has in common with the ACME server. It is <span class="bcp14">RECOMMENDED</span> that the Requestor
     includes this field; otherwise, the ACME server <span class="bcp14">MUST</span> start Federation Entity
