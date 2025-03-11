@@ -5,9 +5,9 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                                A. Ghani
-Expires: 7 September 2025                                      B. Pitman
+Expires: 12 September 2025                                     B. Pitman
                                                                     ISRG
-                                                            6 March 2025
+                                                           11 March 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -28,11 +28,10 @@ Abstract
    metadata and various administrative and technical information related
    to a specific entity.
 
-   This document defines how X.509 certificates associating a given
-   OpenID Federation Entity with a key included in that Entity's
-   Configuration can be issued by an X.509 Certification Authority
-   through the ACME protocol to the organizations which are part of a
-   federation built on top of OpenID Federation 1.0.
+   This document defines how X.509 certificates associated with a given
+   OpenID Federation Entity can be issued by an X.509 Certification
+   Authority through the ACME protocol to the organizations which are
+   part of a federation built on top of OpenID Federation 1.0.
 
 About This Document
 
@@ -66,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 September 2025.
+   This Internet-Draft will expire on 12 September 2025.
 
 Copyright Notice
 
@@ -99,7 +98,7 @@ Table of Contents
      6.5.  OpenID Federation Identifier
      6.6.  newOrder Request
      6.7.  OpenID Federation Challenge Type
-       6.7.1.  CSR and Certificate Requirements
+       6.7.1.  CSR and Certificate Fields
    7.  Publication of the Certificates within the Federation
    8.  Certificate Lifecycle and Revocation
    9.  Errors
@@ -118,10 +117,10 @@ Table of Contents
 
    This document describes extensions to the ACME protocol that
    integrate with OpenID Federation 1.0, allowing an ACME server to
-   issue X.509 Certificates associating a given OpenID Federation Entity
-   to a key included in its Entity Configuration.  X.509 Certificates
-   can be provided to one or more organizations, without having pre-
-   established any direct relationship or any stipulation of a contract.
+   issue X.509 Certificates associated with a given OpenID Federation
+   Entity.  X.509 Certificates can be provided to one or more
+   organizations, without having pre-established any direct relationship
+   or any stipulation of a contract.
 
    In a multilateral federation, composed by thousands of entities
    belonging to different organizations, all the participants adhere to
@@ -169,9 +168,8 @@ Table of Contents
       retrieve X.509 Certificates for their official HTTPS Federation
       Entity ID.
 
-   *  Federation Entities that want to ask and obtain X.509 Certificate
-      for one or more public cryptographic keys published in their
-      Entity Configuration, as defined in Section 3 of [OPENID-FED].
+   *  Federation Entities that want to ask for and obtain X.509
+      Certificate for use in other protocols.
 
 3.  Terminology
 
@@ -214,9 +212,7 @@ Table of Contents
    Requestor's Entity Configuration.
 
    The cryptographic keys published within the Requestor's Entity
-   Configuration are used to satisfy the Certificate Issuer's challenge,
-   and the public portion of the keys included in the issued X.509
-   Certificates.
+   Configuration are used to satisfy the Certificate Issuer's challenge.
 
    The protocol assumes the following discovery preconditions are met.
    The Issuer has the guarantee that:
@@ -226,13 +222,6 @@ Table of Contents
 
    2.  The Requestor controls its identifier, having published the
        Entity Configuration.
-
-   The CSR MUST include the public key, attested within the Trust Chain,
-   used by the Requestor to satisfy the Certificate Issuer's challenge.
-
-   This process may be repeated to request multiple X.509 Certificates
-   related to the other cryptographic keys published in the Requestor's
-   Entity Configuration.
 
 6.  Protocol Flow
 
@@ -488,8 +477,8 @@ Table of Contents
 
    The Requestor MUST publish in its Entity Configuration an
    acme_requestor metadata containing a JWK set, according to
-   Section 5.2.1 of [OPENID-FED].  The keys in the set represent the
-   keys that the Requestor MAY request certificates for.
+   Section 5.2.1 of [OPENID-FED].  The keys in the set are used to
+   respond to ACME challenges.
 
    The following is a non-normative example of an Entity Configuration
    including the acme_requestor metadata and using the jwks metadata
@@ -673,9 +662,6 @@ Table of Contents
    If all of the above verifications succeed, then the validation is
    successful.  Otherwise, it has failed.  In either case, the
    Certificate Issuer responds according to Section 7.5.1 of [RFC8555].
-   In the event that the verification succeeds, the eventual CSR MUST
-   include the public key, attested within the Trust Chain, used by the
-   Requestor to satisfy the Certificate Issuer's challenge.
 
    A non-normative example for the challenge object post-validation:
 
@@ -687,11 +673,7 @@ Table of Contents
         "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
       }
 
-6.7.1.  CSR and Certificate Requirements
-
-   When using this challenge type, both the certificate signing request
-   (CSR) and the X.509 Certificate MUST include a public key
-   corresponding to the key used to satisfy the challenge.
+6.7.1.  CSR and Certificate Fields
 
    Depending on the Certificate Issuer's X.509 Certificate profile, the
    CSR and X.509 Certificate MAY associate the X.509 Certificate to the
@@ -716,11 +698,11 @@ Table of Contents
 
 8.  Certificate Lifecycle and Revocation
 
-   The issued X.509 Certificate is associated with a cryptographic
-   public key attested within a Trust Chain.  It is up to the
-   Certificate Issuer to decide the expiration time of the X.509
-   Certificate.  In some cases, and when required, it MAY be set to
-   match the expiration of the Trust Chain.
+   The identity of the Requestor is verified through proof of possession
+   of a private key corresponding to a public key attested within a
+   Trust Chain.  It is up to the Certificate Issuer to decide the
+   expiration time of the X.509 Certificate.  In some cases, and when
+   required, it MAY be set to match the expiration of the Trust Chain.
 
    When a cryptographic public key is removed from the Requestor Entity
    Configuration the X.509 Certificate related to it SHOULD be revoked
@@ -755,6 +737,15 @@ Table of Contents
    against replay attacks by malicious ACME servers because the
    signature in challenge responses is over an ACME key authorization,
    which binds the ACME account key.
+
+   The cryptographic keys in the acme_requestor metadata SHOULD NOT be
+   reused for other purposes than signing responses to acme-
+   federation-01 challenges.  For example, the same keys SHOULD NOT be
+   reused in the issued X.509 Certificate.  If the keys are reused for
+   other purposes, cross-protocol attacks MUST be considered.
+
+   The cryptographic keys in the acme_requestor metadata SHOULD be
+   rotated periodically.
 
 11.  IANA Considerations
 
