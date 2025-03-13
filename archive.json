@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-11T00:36:27.364272+00:00",
+  "timestamp": "2025-03-13T00:36:51.002261+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -515,7 +515,7 @@
       "id": "I_kwDOJ6_NW86lTEB4",
       "title": "Allow separate keypairs for challenge and X.509 certificates",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/32",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -525,8 +525,8 @@
       ],
       "body": "Currently, we require that the same public key be used in the `acme_requestor` field of the Entity Configuration, the CSR, and the final X.509 certificate. This requirement seems unnecessarily restrictive to me, and it cuts against some cryptographic best practices. I suggest we remove the requirement that the public key in the CSR match the `acme_requestor` metadata. This will both allow users to use different private keys for different purposes, eliminating any concerns of cross-protocol attacks, and make it trivial to rotate keys when requesting a new X.509 certificate. The main thing we'd lose is that any Superior Entity above the Requestor would no longer get any say on the algorithm of public keys in X.509 certificates, or the public keys themselves, but I don't see why that would be useful in practice.\r\n\r\nGenerally, defending against cross-protocol attacks requires that it be infeasibly difficult to get a message that is signed in one protocol to be reinterpreted as a valid message in another protocol. This can be solved with domain separation, but simply using different private keys for different protocols is a foolproof defense. I think the domain separation argument that JWT-X.509 private key reuse would probably lean on the JWT claims set message starting with either `{` or whitespace, and the X.509 message starting with 0x30 0x82 (or 0x30 0x81, or 0x30 0x83) to denote a SEQUENCE, assuming it's a tbsCertificate/tbsCertList/tbsResponseData/etc. We'd also have to consider key reuse between JWT and TLS.\r\n\r\nIt is currently the norm for many ACME clients to generate a new keypair whenever they renew certificates. This is good for security because it limits the impact of point-in-time private key compromises to just the one certificate's remaining validity period. If we require that the X.509 certificate's public key match the OpenID Federation metadata, then ACME clients that support this challenge type would need a separate mode where they only use a provided private key to sign CSRs, rather than generating fresh keys as needed. Furthermore, users deploying this system would need to develop their own way to rotate keys, starting with changing their Entity Configuration.\r\n\r\nRemoving this requirement that JWT and X.509 public keys match would also make implementation easier, because we wouldn't have to develop mappings between JWT signature algorithms and X.509 signature algorithms, etc.\r\n\r\nEdit: note to self: we'll have to revise the last paragraph of the abstract, and remove mention of the key in the Entity Configuration.",
       "createdAt": "2025-01-07T16:18:19Z",
-      "updatedAt": "2025-02-04T01:10:02Z",
-      "closedAt": null,
+      "updatedAt": "2025-03-11T14:08:24Z",
+      "closedAt": "2025-03-11T14:08:24Z",
       "comments": [
         {
           "author": "jcjones",
@@ -977,7 +977,7 @@
       "labels": [],
       "body": "In working on https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/47, considering the TBD text regarding certificate publication:\n\nhttps://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/d8d1268e2b46e048326413777f914b34434d8973/draft-demarco-acme-openid-federation.md?plain=1#L685-L690\n\nWe'd considered ways to rephrase this, first because it's the only remaining usage of `Certificate Issuer` within the body of the document, but it leads to an interesting set of questions:\n\n1. Since it's not required for a Certificate Requestor to be in a subordinate position to a Certificate Issuer, is it acceptable to only publish the certificate in the case where they are Superior/Subordinate?\n2. Given that an entity could have many JWKs in their Subordinate Statement, and could obtain certificates for each, is it a good idea to publish the `x5c` for each? Do we worry about the data size, and the duplicate trust chain entries?\n3. What is the motivation for the certificates being published (if possible) in the federation at all?\n  - When the X.509 certificates are used for TLS, they're transmitted on the wire regardless. \n  - OIDF [makes a point about trusting self-signed X.509 certificates if they're in the Subordinate Statement](https://openid.net/specs/openid-federation-1_0-41.html#section-12.1.1.2-4.2.1), but that's not applicable here.\n  - Is this intended to provide transparency, that the certificates are discoverable without connecting to the holder? If so, perhaps we could encode one or more RFC 6962 Signed Certificate Timestamps instead?\n",
       "createdAt": "2025-02-10T20:42:58Z",
-      "updatedAt": "2025-02-11T15:55:24Z",
+      "updatedAt": "2025-03-11T15:36:06Z",
       "closedAt": null,
       "comments": [
         {
@@ -1007,6 +1007,20 @@
           "body": "> We also discussed whether the x5c should repeat intermediate issuer certificates / be a whole trust chain, with the issue that [RFC7517 defines it as a chain](https://www.rfc-editor.org/rfc/rfc7517.html#section-4.7), so doing anything different with x5c could be an issue.\n\na chain could be also a single certificate, having a way to evaluate it as trustworthy (out of band mechanism or distributed chain provided over the federation trust chain). ",
           "createdAt": "2025-02-11T15:55:23Z",
           "updatedAt": "2025-02-11T15:55:23Z"
+        },
+        {
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@jcjones will work up a proposed PR for including SCT(s) from a RFC 6962 transparency log.",
+          "createdAt": "2025-03-11T14:19:34Z",
+          "updatedAt": "2025-03-11T14:31:57Z"
+        },
+        {
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Between having the x5c represent a single certificate or a certificate chain, I think it would be preferable to list the full chain. Only including one certificate per x5c, and directing consumers to build a chain from the x5cs in each subordinate statement in the OIDF trust chain, would introduce a tight coupling between the OIDF hierarchy and the X.509 hierarchy. If it is ever necessary to add another layer of intermediate CAs in the X.509 PKI, then this could become an obstacle, since the OIDF entities would have to be changed as well in order to represent the certificates consistently. Alternatively, including the whole chain in the x5c parameter is both more flexible, and more in line with existing standards.\n\nOnce we address transparency use cases with an informative reference to CT, we could consider removing this suggestion regarding subordinate statements. Once requestors receive their certificate via ACME, they can turn around and use it in other protocols (like OpenID4VCI). Reflecting the X.509 certificate into subordinate statements doesn't let us do anything we couldn't do otherwise. If the role of an ACME-OIDF CA is to act as a bridge from OIDF to an X.509 PKI, then we shouldn't expect the ecosystem on the X.509 side to be aware of OIDF enough to fetch certificates from it. Furthermore, it would be operationally more difficult to enable the ACME server to update OIDF subordinate statements than to simply evaluate trust chains.",
+          "createdAt": "2025-03-11T15:36:05Z",
+          "updatedAt": "2025-03-11T15:36:05Z"
         }
       ]
     },
@@ -1015,14 +1029,30 @@
       "id": "I_kwDOJ6_NW86sZsxl",
       "title": "Contradictory requirements on metadata after certificate issuance",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/70",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Section 6.4.2 says \"The Issuer MUST only use the Requestor's acme_requestor to validate an ACME challenge. Therefore, after completing the challenge, the Requestor MAY remove the acme_requestor metadata from its Entity Configuration.\" Section 8 says \"When a cryptographic public key is removed from the Requestor Entity Configuration the X.509 Certificate related to it SHOULD be revoked by its Credential Issuer, if not expired.\"\n\nContinuous monitoring of validation information post-issuance is not well-suited to the ACME protocol's model. Besides, this sort of recommendation would be a better fit in the policies governing some trust framework than here, in a protocol document.\n\nNote that federation entities could request revocation via the `revokeCert` resource defined by RFC 8555. If control of a federation entity has changed recently, you could create a new order for an identifier, respond to the challenge in the resulting authorization object, never finalize the order, and instead send a revocation request for the certificate you want revoked, reusing the authorization from the above solved challenges.",
       "createdAt": "2025-03-03T22:00:38Z",
-      "updatedAt": "2025-03-03T22:00:38Z",
+      "updatedAt": "2025-03-11T14:13:01Z",
+      "closedAt": "2025-03-11T14:13:01Z",
+      "comments": []
+    },
+    {
+      "number": 75,
+      "id": "I_kwDOJ6_NW86ti3ip",
+      "title": "Add directives to RFC Editor",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/75",
+      "state": "OPEN",
+      "author": "jcjones",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Not necessary for the first drafts, but as we progress it, we'll want to start putting explicit `(RFC EDITOR: Replace \"XXXX\" with the RFC number assigned to this document.)` sorts of things in the document.",
+      "createdAt": "2025-03-11T19:05:19Z",
+      "updatedAt": "2025-03-11T19:05:19Z",
       "closedAt": null,
       "comments": []
     }
@@ -5284,50 +5314,68 @@
       "id": "PR_kwDOJ6_NW86NzGn_",
       "title": "Use different keys for challenge and certificate",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/72",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This closes #32.",
       "createdAt": "2025-03-07T16:14:39Z",
-      "updatedAt": "2025-03-07T16:14:40Z",
+      "updatedAt": "2025-03-11T14:08:23Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e8f0c54b8e2b0ec919baf5f59429e917e99a1a1d",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "david/separate-keypairs",
       "headRefOid": "29e8a890383fcfedc522846c2b66342fd7736933",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-03-11T14:08:23Z",
+      "mergedAt": "2025-03-11T14:08:23Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "148b999f3522fef8a8b18b25f33aa6c2ca5db7da"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86fbJa4",
+          "commit": {
+            "abbreviatedOid": "29e8a89"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-11T14:08:07Z",
+          "updatedAt": "2025-03-11T14:08:07Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 73,
       "id": "PR_kwDOJ6_NW86NzIAa",
       "title": "Don't revoke upon federation metadata change",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/73",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This removes a `SHOULD` that told issuers to monitor entity configuration post-issuance and revoke when keys are removed. Closes #70.",
       "createdAt": "2025-03-07T16:17:46Z",
-      "updatedAt": "2025-03-07T17:37:52Z",
+      "updatedAt": "2025-03-11T14:13:01Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e8f0c54b8e2b0ec919baf5f59429e917e99a1a1d",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "david/remove-revocation-requirement",
       "headRefOid": "052609fafd80bd2ea5af833b086b4d9fcf747a50",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-03-11T14:13:00Z",
+      "mergedAt": "2025-03-11T14:13:00Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "718d704732c87f1e777ef47285a758d86f347eb5"
+      },
       "comments": [],
       "reviews": [
         {
@@ -5342,6 +5390,32 @@
           "createdAt": "2025-03-07T17:37:52Z",
           "updatedAt": "2025-03-07T17:37:52Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86fbKnn",
+          "commit": {
+            "abbreviatedOid": "052609f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-11T14:09:16Z",
+          "updatedAt": "2025-03-11T14:09:16Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86fbPCt",
+          "commit": {
+            "abbreviatedOid": "052609f"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-11T14:12:52Z",
+          "updatedAt": "2025-03-11T14:12:52Z",
+          "comments": []
         }
       ]
     },
@@ -5350,24 +5424,26 @@
       "id": "PR_kwDOJ6_NW86NzSOQ",
       "title": "Rephrase description of trust chain",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/74",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The strings in the `trust_chain` array are not base64url-encoded data, but compact form JWTs.",
       "createdAt": "2025-03-07T16:41:31Z",
-      "updatedAt": "2025-03-07T17:36:24Z",
+      "updatedAt": "2025-03-11T14:14:24Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e8f0c54b8e2b0ec919baf5f59429e917e99a1a1d",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "david/trust-chain-editorial",
       "headRefOid": "1c5d0b77226bec778cbe2ccf0520c82fd5f4cd92",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-03-11T14:14:24Z",
+      "mergedAt": "2025-03-11T14:14:23Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "6330d456a0ad2c8b95cfa300ed41711a3c5a062b"
+      },
       "comments": [],
       "reviews": [
         {
@@ -5381,6 +5457,19 @@
           "body": "",
           "createdAt": "2025-03-07T17:36:24Z",
           "updatedAt": "2025-03-07T17:36:24Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86fbQ8c",
+          "commit": {
+            "abbreviatedOid": "1c5d0b7"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-11T14:14:16Z",
+          "updatedAt": "2025-03-11T14:14:16Z",
           "comments": []
         }
       ]
