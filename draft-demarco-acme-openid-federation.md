@@ -673,10 +673,10 @@ from the `newOrder` request).
 
 # Publication of the Certificates within the Federation
 
-When the Certificate Issuer is the Superior Entity, the X.509
-Certificate linked to JWK in the Subordinate
-Statement related to the Requestor, SHOULD be extended with the claim `x5c`,
-containing the issued X.509 Certificate.
+All X.509 Certificates issued SHOULD be published to one or more Certificate
+Transparency logs {{!RFC9162}}. Selection of those logs, their versions, and
+embedding or discovery of Signed Certificate Timestamps, are policy decisions
+and are out of scope for this document.
 
 # Certificate Lifecycle and Revocation
 
