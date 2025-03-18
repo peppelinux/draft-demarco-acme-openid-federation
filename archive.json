@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-16T00:40:04.675027+00:00",
+  "timestamp": "2025-03-18T00:36:45.685198+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -977,7 +977,7 @@
       "labels": [],
       "body": "In working on https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/47, considering the TBD text regarding certificate publication:\n\nhttps://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/d8d1268e2b46e048326413777f914b34434d8973/draft-demarco-acme-openid-federation.md?plain=1#L685-L690\n\nWe'd considered ways to rephrase this, first because it's the only remaining usage of `Certificate Issuer` within the body of the document, but it leads to an interesting set of questions:\n\n1. Since it's not required for a Certificate Requestor to be in a subordinate position to a Certificate Issuer, is it acceptable to only publish the certificate in the case where they are Superior/Subordinate?\n2. Given that an entity could have many JWKs in their Subordinate Statement, and could obtain certificates for each, is it a good idea to publish the `x5c` for each? Do we worry about the data size, and the duplicate trust chain entries?\n3. What is the motivation for the certificates being published (if possible) in the federation at all?\n  - When the X.509 certificates are used for TLS, they're transmitted on the wire regardless. \n  - OIDF [makes a point about trusting self-signed X.509 certificates if they're in the Subordinate Statement](https://openid.net/specs/openid-federation-1_0-41.html#section-12.1.1.2-4.2.1), but that's not applicable here.\n  - Is this intended to provide transparency, that the certificates are discoverable without connecting to the holder? If so, perhaps we could encode one or more RFC 6962 Signed Certificate Timestamps instead?\n",
       "createdAt": "2025-02-10T20:42:58Z",
-      "updatedAt": "2025-03-11T15:36:06Z",
+      "updatedAt": "2025-03-17T17:57:35Z",
       "closedAt": null,
       "comments": [
         {
@@ -1021,6 +1021,13 @@
           "body": "Between having the x5c represent a single certificate or a certificate chain, I think it would be preferable to list the full chain. Only including one certificate per x5c, and directing consumers to build a chain from the x5cs in each subordinate statement in the OIDF trust chain, would introduce a tight coupling between the OIDF hierarchy and the X.509 hierarchy. If it is ever necessary to add another layer of intermediate CAs in the X.509 PKI, then this could become an obstacle, since the OIDF entities would have to be changed as well in order to represent the certificates consistently. Alternatively, including the whole chain in the x5c parameter is both more flexible, and more in line with existing standards.\n\nOnce we address transparency use cases with an informative reference to CT, we could consider removing this suggestion regarding subordinate statements. Once requestors receive their certificate via ACME, they can turn around and use it in other protocols (like OpenID4VCI). Reflecting the X.509 certificate into subordinate statements doesn't let us do anything we couldn't do otherwise. If the role of an ACME-OIDF CA is to act as a bridge from OIDF to an X.509 PKI, then we shouldn't expect the ecosystem on the X.509 side to be aware of OIDF enough to fetch certificates from it. Furthermore, it would be operationally more difficult to enable the ACME server to update OIDF subordinate statements than to simply evaluate trust chains.",
           "createdAt": "2025-03-11T15:36:05Z",
           "updatedAt": "2025-03-11T15:36:05Z"
+        },
+        {
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "body": "It's also much more correct for it to be the full chain.\n\nThat aside, the text says now `X.509 Certificate linked to JWK in the Subordinate Statement related to the Requestor`, which is sensible in that the private key used for the cert would be in the public key JWKS, but [OpenID Fed says](https://openid.net/specs/openid-federation-1_0.html#name-entity-statement), for the JWKs in the Entity Statement:\n\n>  These Federation Entity Keys SHOULD NOT be used in other protocols. (Keys to be used in other protocols, such as OpenID Connect, are conveyed in the metadata elements for the protocol's Entity Type Identifiers, such as the metadata under the openid_provider and openid_relying_party Entity Type Identifiers.)\n\nSo then we have a mismatch here as we'd want to associate the issued certificate with the entity key, but it shouldn't go there?\n\nThis makes moving the transparency aspect of this out of the doc even more preferable, imo",
+          "createdAt": "2025-03-17T17:57:33Z",
+          "updatedAt": "2025-03-17T17:57:33Z"
         }
       ]
     },
@@ -5473,6 +5480,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 76,
+      "id": "PR_kwDOJ6_NW86O-XeM",
+      "title": "Revise publication to rely on Certificate Transparency",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/76",
+      "state": "OPEN",
+      "author": "jcjones",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This moves responsibility for publication of certificates from the OIDFed hierarchy to RFC6962/RFC9162 certificate transparency logs, and otherwise marks it as out-of-scope.\r\n\r\nI am hoping this is unambiguous that how a Certificate Issuer does it is for policy, to include whether they submit pre-certificates or final certificates, or if they embed SCTs or transmit them some other way, or even use CTv1 vs CTv2.\r\n\r\nFixes #65.",
+      "createdAt": "2025-03-17T18:11:53Z",
+      "updatedAt": "2025-03-17T18:11:53Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "6330d456a0ad2c8b95cfa300ed41711a3c5a062b",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "65-use-ct",
+      "headRefOid": "4c55e016852b9c08705e2136bdfd48c3cc2793d8",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
