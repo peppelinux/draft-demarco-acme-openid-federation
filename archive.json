@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-18T00:36:45.685198+00:00",
+  "timestamp": "2025-03-20T00:36:23.492289+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -977,7 +977,7 @@
       "labels": [],
       "body": "In working on https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/47, considering the TBD text regarding certificate publication:\n\nhttps://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/d8d1268e2b46e048326413777f914b34434d8973/draft-demarco-acme-openid-federation.md?plain=1#L685-L690\n\nWe'd considered ways to rephrase this, first because it's the only remaining usage of `Certificate Issuer` within the body of the document, but it leads to an interesting set of questions:\n\n1. Since it's not required for a Certificate Requestor to be in a subordinate position to a Certificate Issuer, is it acceptable to only publish the certificate in the case where they are Superior/Subordinate?\n2. Given that an entity could have many JWKs in their Subordinate Statement, and could obtain certificates for each, is it a good idea to publish the `x5c` for each? Do we worry about the data size, and the duplicate trust chain entries?\n3. What is the motivation for the certificates being published (if possible) in the federation at all?\n  - When the X.509 certificates are used for TLS, they're transmitted on the wire regardless. \n  - OIDF [makes a point about trusting self-signed X.509 certificates if they're in the Subordinate Statement](https://openid.net/specs/openid-federation-1_0-41.html#section-12.1.1.2-4.2.1), but that's not applicable here.\n  - Is this intended to provide transparency, that the certificates are discoverable without connecting to the holder? If so, perhaps we could encode one or more RFC 6962 Signed Certificate Timestamps instead?\n",
       "createdAt": "2025-02-10T20:42:58Z",
-      "updatedAt": "2025-03-17T17:57:35Z",
+      "updatedAt": "2025-03-18T09:06:29Z",
       "closedAt": null,
       "comments": [
         {
@@ -1028,6 +1028,13 @@
           "body": "It's also much more correct for it to be the full chain.\n\nThat aside, the text says now `X.509 Certificate linked to JWK in the Subordinate Statement related to the Requestor`, which is sensible in that the private key used for the cert would be in the public key JWKS, but [OpenID Fed says](https://openid.net/specs/openid-federation-1_0.html#name-entity-statement), for the JWKs in the Entity Statement:\n\n>  These Federation Entity Keys SHOULD NOT be used in other protocols. (Keys to be used in other protocols, such as OpenID Connect, are conveyed in the metadata elements for the protocol's Entity Type Identifiers, such as the metadata under the openid_provider and openid_relying_party Entity Type Identifiers.)\n\nSo then we have a mismatch here as we'd want to associate the issued certificate with the entity key, but it shouldn't go there?\n\nThis makes moving the transparency aspect of this out of the doc even more preferable, imo",
           "createdAt": "2025-03-17T17:57:33Z",
           "updatedAt": "2025-03-17T17:57:33Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "> It's also much more correct for it to be the full chain.\n\nI thought about this. A federation entity statement is signed and can be linked to any superior entity statement, belonging to one or more superior entity. Any superior statement have in common at least two things:\n\n- subject identifier\n- public cryptographic material, the so called federation entity keys, in possession on the subject\n\nthis is very similar about any X.509 certificate. Now, supposing to have the following federations\n\nTA.1 -> INT.1 -> Leaf.A\nTA.2 -> INT.2 ____|\nTA.3 ____|             \nTA.4 ___________|\n\nAll the superiors would optionally provide the x.509 certificate issued for their subordinates in their x5c, only the certificate issued by themselves. TA.1 publishes the x5c about INT.1 and INT.1 the ones about Leaf.A. Things became more interesting about INT.2, since to enable a consistent X509Chain, INT.2 for signingn the certificate about Leaf.A should use the cryptographic material for which both TA.3 and TA.2 have issued a certificate for INT.2.\n\nThe challenge is to enable some sort of dinamic x5c linkability, with the full respect of any number of above superiors and their configurations.\n\nI want to enable the possibility for the implementation to include x5c making them aware of this and leaving up to them the possibility to include the full chain or enable the linkability using single, linkable, certificates. There might be the possibility to use full chains and at the same time make them splittable using different paths, therefore using chunks of them with different superiors, as long the crytographic binding would be consistent and valid.\n\n> So then we have a mismatch here as we'd want to associate the issued certificate with the entity key, but it shouldn't go there?\n\nthis is why I was in favour of enabling `metadata.$metadata_type.jwk.keys[n].x5c`",
+          "createdAt": "2025-03-18T09:05:52Z",
+          "updatedAt": "2025-03-18T09:06:23Z"
         }
       ]
     },
