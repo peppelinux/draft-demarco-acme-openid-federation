@@ -5,9 +5,9 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                                A. Ghani
-Expires: 18 September 2025                                     B. Pitman
+Expires: 26 September 2025                                     B. Pitman
                                                                     ISRG
-                                                           17 March 2025
+                                                           25 March 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 September 2025.
+   This Internet-Draft will expire on 26 September 2025.
 
 Copyright Notice
 
@@ -696,6 +696,14 @@ Table of Contents
    their versions, and embedding or discovery of Signed Certificate
    Timestamps, are policy decisions and are out of scope for this
    document.
+
+   The X.509 Certificates issued by Federation Immediate Superior
+   Entities pertaining to one or more Federation Entity Keys in control
+   of their Subordinates MAY publish this information by including the
+   x5c member in each JWK contained within the matching Subordinate
+   Statement.  The contents of the published x5c member, including
+   whether it contains a full or partial Trust Chain, and if so, to what
+   Trust Anchor, are policy decisions out of scope for this document.
 
 8.  Certificate Lifecycle and Revocation
 

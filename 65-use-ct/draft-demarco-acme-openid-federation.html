@@ -33,7 +33,7 @@ Federation 1.0.
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.5
+    Jinja2 3.1.6
     lxml 5.3.0
     platformdirs 4.3.6
     pycountry 24.6.1
@@ -1063,7 +1063,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">De Marco, et al.</td>
-<td class="center">Expires 18 September 2025</td>
+<td class="center">Expires 26 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1076,12 +1076,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-demarco-acme-openid-federation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-03-17" class="published">17 March 2025</time>
+<time datetime="2025-03-25" class="published">25 March 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-09-18">18 September 2025</time></dd>
+<dd class="expires"><time datetime="2025-09-26">26 September 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1150,7 +1150,7 @@ Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 26 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1958,6 +1958,13 @@ from the <code>newOrder</code> request).<a href="#section-6.7.1-1" class="pilcro
 Transparency logs <span>[<a href="#RFC9162" class="cite xref">RFC9162</a>]</span>. Selection of those logs, their versions, and
 embedding or discovery of Signed Certificate Timestamps, are policy decisions
 and are out of scope for this document.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">The X.509 Certificates issued by Federation Immediate Superior Entities
+pertaining to one or more Federation Entity Keys in control of their
+Subordinates <span class="bcp14">MAY</span> publish this information by including the <code>x5c</code> member
+in each JWK contained within the matching Subordinate Statement. The contents
+of the published <code>x5c</code> member, including whether it contains a full or
+partial Trust Chain, and if so, to what Trust Anchor, are policy decisions
+out of scope for this document.<a href="#section-7-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="certificate-lifecycle-and-revocation">
