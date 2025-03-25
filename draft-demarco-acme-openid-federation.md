@@ -678,9 +678,13 @@ Transparency logs {{!RFC9162}}. Selection of those logs, their versions, and
 embedding or discovery of Signed Certificate Timestamps, are policy decisions
 and are out of scope for this document.
 
-Federation Immediate Superior Entities having issued X.509 Certificates pertaining to one or more Federation Entity Keys in control of their Subordinates MAY evidence this information by including in each JWK contained within the Subordinate Statement the member `x5c`. When this happens, it's up to the implementation to decide if the `x5c` should contain the entire X.509 Certificate Chain, from the CA to the Subordinate, or only the X.509 Certificate about the Subordinate. 
-
-Please note that multiple Immediate Superior Entities above the Subordinate Statement Issuer (such as other Intermediates or Trust Anchors) may have produced cryptographically verifiable X.509 Certificates about the Subordinate Statement Issuer, making the single `x5c` verifiable using more than a single X.509 Certificate about its issuer, signed by more than a single Immediate Superior. This is similar to the federation Trust Chain, where a single Entity Statement can be linked to one or more Subordinate Statements.
+The X.509 Certificates issued by Federation Immediate Superior Entities
+pertaining to one or more Federation Entity Keys in control of their
+Subordinates MAY publish this information by including the `x5c` member
+in each JWK contained within the matching Subordinate Statement. The contents
+of the published `x5c` member, including whether it contains a full or
+partial Trust Chain, and if so, to what Trust Anchor, are policy decisions
+out of scope for this document.
 
 # Certificate Lifecycle and Revocation
 
