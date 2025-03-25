@@ -1355,8 +1355,9 @@ in other protocols.<a href="#section-2-3.2.1" class="pilcrow">¶</a></p>
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
       </h2>
 <p id="section-3-1">The terms "Federation Entity", "Trust Anchor", "Entity Configuration",
-"Subordinate Statement", "Superior Entity", "Trust Mark" and "Trust Chain"
-used in this document are defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
+"Subordinate Statement", "Superior Entity", "Immediate Superior Entity",
+"Federation Entity Keys", "Trust Mark" and "Trust Chain" used in this
+document are defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
 The term "CSR" used in this document is defined in <span>[<a href="#RFC2986" class="cite xref">RFC2986</a>]</span>. The
 term Certification Authority used in this document is defined in <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>. The
 terms "ACME Client" and "ACME Server" are defined in <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
@@ -1958,7 +1959,7 @@ from the <code>newOrder</code> request).<a href="#section-6.7.1-1" class="pilcro
 Transparency logs <span>[<a href="#RFC9162" class="cite xref">RFC9162</a>]</span>. Selection of those logs, their versions, and
 embedding or discovery of Signed Certificate Timestamps, are policy decisions
 and are out of scope for this document.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">The X.509 Certificates issued by Federation Immediate Superior Entities
+<p id="section-7-2">The X.509 Certificates issued by federation Immediate Superior Entities
 pertaining to one or more Federation Entity Keys in control of their
 Subordinates <span class="bcp14">MAY</span> publish this information by including the <code>x5c</code> member
 in each JWK contained within the matching Subordinate Statement. The contents
