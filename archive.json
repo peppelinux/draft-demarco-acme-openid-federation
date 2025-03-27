@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-25T00:37:22.905183+00:00",
+  "timestamp": "2025-03-27T00:37:14.274911+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -5500,19 +5500,48 @@
       "labels": [],
       "body": "This moves responsibility for publication of certificates from the OIDFed hierarchy to RFC6962/RFC9162 certificate transparency logs, and otherwise marks it as out-of-scope.\r\n\r\nI am hoping this is unambiguous that how a Certificate Issuer does it is for policy, to include whether they submit pre-certificates or final certificates, or if they embed SCTs or transmit them some other way, or even use CTv1 vs CTv2.\r\n\r\nFixes #65.",
       "createdAt": "2025-03-17T18:11:53Z",
-      "updatedAt": "2025-03-17T18:11:53Z",
+      "updatedAt": "2025-03-25T23:23:04Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "6330d456a0ad2c8b95cfa300ed41711a3c5a062b",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "65-use-ct",
-      "headRefOid": "4c55e016852b9c08705e2136bdfd48c3cc2793d8",
+      "headRefOid": "02cf5584a277e40b4463f70d703712b41caf264a",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "please add a ref about the Immediate Superior Entities within the defined terms section",
+          "createdAt": "2025-03-25T14:17:01Z",
+          "updatedAt": "2025-03-25T14:17:01Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86hwcrP",
+          "commit": {
+            "abbreviatedOid": "4c55e01"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-25T13:44:54Z",
+          "updatedAt": "2025-03-25T13:44:55Z",
+          "comments": [
+            {
+              "originalPosition": 11,
+              "body": "```suggestion\r\nand are out of scope for this document.\r\n\r\nFederation Immediate Superior Entities having issued X.509 Certificates pertaining to one or more Federation Entity Keys in control of their Subordinates MAY evidence this information by including in each JWK contained within the Subordinate Statement the member `x5c`. When this happens, it's up to the implementation to decide if the `x5c` should contain the entire X.509 Certificate Chain, from the CA to the Subordinate, or only the X.509 Certificate about the Subordinate. \r\n\r\nPlease note that multiple Immediate Superior Entities above the Subordinate Statement Issuer (such as other Intermediates or Trust Anchors) may have produced cryptographically verifiable X.509 Certificates about the Subordinate Statement Issuer, making the single `x5c` verifiable using more than a single X.509 Certificate about its issuer, signed by more than a single Immediate Superior. This is similar to the federation Trust Chain, where a single Entity Statement can be linked to one or more Subordinate Statements.\r\n```",
+              "createdAt": "2025-03-25T13:44:54Z",
+              "updatedAt": "2025-03-25T14:13:55Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
