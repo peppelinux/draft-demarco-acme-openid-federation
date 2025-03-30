@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-27T00:37:14.274911+00:00",
+  "timestamp": "2025-03-30T00:41:09.139707+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -970,15 +970,15 @@
       "id": "I_kwDOJ6_NW86pfYsR",
       "title": "Clarify Publication of the Certificates within the Federation",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/65",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "jcjones",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "In working on https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/47, considering the TBD text regarding certificate publication:\n\nhttps://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/d8d1268e2b46e048326413777f914b34434d8973/draft-demarco-acme-openid-federation.md?plain=1#L685-L690\n\nWe'd considered ways to rephrase this, first because it's the only remaining usage of `Certificate Issuer` within the body of the document, but it leads to an interesting set of questions:\n\n1. Since it's not required for a Certificate Requestor to be in a subordinate position to a Certificate Issuer, is it acceptable to only publish the certificate in the case where they are Superior/Subordinate?\n2. Given that an entity could have many JWKs in their Subordinate Statement, and could obtain certificates for each, is it a good idea to publish the `x5c` for each? Do we worry about the data size, and the duplicate trust chain entries?\n3. What is the motivation for the certificates being published (if possible) in the federation at all?\n  - When the X.509 certificates are used for TLS, they're transmitted on the wire regardless. \n  - OIDF [makes a point about trusting self-signed X.509 certificates if they're in the Subordinate Statement](https://openid.net/specs/openid-federation-1_0-41.html#section-12.1.1.2-4.2.1), but that's not applicable here.\n  - Is this intended to provide transparency, that the certificates are discoverable without connecting to the holder? If so, perhaps we could encode one or more RFC 6962 Signed Certificate Timestamps instead?\n",
       "createdAt": "2025-02-10T20:42:58Z",
-      "updatedAt": "2025-03-18T09:06:29Z",
-      "closedAt": null,
+      "updatedAt": "2025-03-27T19:02:28Z",
+      "closedAt": "2025-03-27T19:02:28Z",
       "comments": [
         {
           "author": "peppelinux",
@@ -5493,24 +5493,26 @@
       "id": "PR_kwDOJ6_NW86O-XeM",
       "title": "Revise publication to rely on Certificate Transparency",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/76",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jcjones",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This moves responsibility for publication of certificates from the OIDFed hierarchy to RFC6962/RFC9162 certificate transparency logs, and otherwise marks it as out-of-scope.\r\n\r\nI am hoping this is unambiguous that how a Certificate Issuer does it is for policy, to include whether they submit pre-certificates or final certificates, or if they embed SCTs or transmit them some other way, or even use CTv1 vs CTv2.\r\n\r\nFixes #65.",
       "createdAt": "2025-03-17T18:11:53Z",
-      "updatedAt": "2025-03-25T23:23:04Z",
+      "updatedAt": "2025-03-27T19:02:27Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "6330d456a0ad2c8b95cfa300ed41711a3c5a062b",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "65-use-ct",
       "headRefOid": "02cf5584a277e40b4463f70d703712b41caf264a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-03-27T19:02:27Z",
+      "mergedAt": "2025-03-27T19:02:27Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "0573f04f6a1fe50b01358abc3288dfff32a33c6c"
+      },
       "comments": [
         {
           "author": "peppelinux",
@@ -5540,6 +5542,32 @@
               "updatedAt": "2025-03-25T14:13:55Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86iT74F",
+          "commit": {
+            "abbreviatedOid": "02cf558"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-03-27T19:01:35Z",
+          "updatedAt": "2025-03-27T19:01:35Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86iT8OA",
+          "commit": {
+            "abbreviatedOid": "02cf558"
+          },
+          "author": "selfissued",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "I believe that the paragraph starting \"The X.509 Certificates issued by federation...\" captures the essence of the issue.",
+          "createdAt": "2025-03-27T19:02:14Z",
+          "updatedAt": "2025-03-27T19:02:14Z",
+          "comments": []
         }
       ]
     }
