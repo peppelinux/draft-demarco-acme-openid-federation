@@ -28,13 +28,14 @@ author:
     organization: independent
     email: demarcog83@gmail.com
  -
+    name: Brandon Pitman
+    email: bran@bran.land
+
+contributor:
+ -
     name: Ameer Ghani
     org: ISRG
     email: inahga@divviup.org
- -
-    name: Brandon Pitman
-    org: ISRG
-    email: bran@bran.land
 
 normative:
   RFC2818: RFC2818
@@ -781,8 +782,3 @@ specified here in {{openidfed-othername-id}}
 |TBA    |id-on-OpenIdFederationEntityId|this document|
 
 --- back
-
-# Acknowledgments
-{:numbered="false"}
-
-TODO acknowledge.
