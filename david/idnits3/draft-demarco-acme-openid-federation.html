@@ -9,33 +9,33 @@
 <meta content="Ameer Ghani" name="author">
 <meta content="Brandon Pitman" name="author">
 <meta content="
-       The Automatic Certificate Management Environment (ACME) protocol  
-allows server operators to obtain TLS certificates for their websites (HTTPS
- ), based on a demonstration of control over the website's domain via a
+       The Automatic Certificate Management Environment (ACME) protocol
+allows server operators to obtain TLS certificates for their websites,
+based on a demonstration of control over the website's domain via a
 fully-automated challenge/response protocol. 
        OpenID Federation 1.0 defines how to build a trust infrastructure using a
 trusted third-party model. It uses a trust evaluation mechanism to attest the
 possession of public keys, protocol specific metadata and various administrative
 and technical information related to a specific entity. 
-       This document defines how X.509 certificates associating a given OpenID
-Federation Entity with a key included in that Entity's Configuration can be
+       This document defines how X.509 certificates associated with a given OpenID
+Federation Entity can be
 issued by an X.509 Certification Authority through the ACME protocol to the
 organizations which are part of a federation built on top of OpenID
 Federation 1.0. 
     " name="description">
-<meta content="xml2rfc 3.28.0" name="generator">
+<meta content="xml2rfc 3.28.1" name="generator">
 <meta content="OpenID Federation" name="keyword">
 <meta content="ACME" name="keyword">
 <meta content="draft-demarco-acme-openid-federation-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.28.0
-    Python 3.12.9
+  xml2rfc 3.28.1
+    Python 3.12.10
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.5
+    Jinja2 3.1.6
     lxml 5.3.0
-    platformdirs 4.3.6
+    platformdirs 4.3.7
     pycountry 24.6.1
     PyYAML 6.0.2
     requests 2.32.3
@@ -1059,11 +1059,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ACME OpenID Federation</td>
-<td class="right">March 2025</td>
+<td class="right">April 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">De Marco, et al.</td>
-<td class="center">Expires 8 September 2025</td>
+<td class="center">Expires 31 October 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1076,12 +1076,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-demarco-acme-openid-federation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-03-07" class="published">7 March 2025</time>
+<time datetime="2025-04-29" class="published">29 April 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-09-08">8 September 2025</time></dd>
+<dd class="expires"><time datetime="2025-10-31">31 October 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1102,16 +1102,16 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">Automatic Certificate Management Environment (ACME) with OpenID Federation 1.0</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">The Automatic Certificate Management Environment (ACME) protocol <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>
-allows server operators to obtain TLS certificates for their websites (HTTPS
-<span>[<a href="#RFC2818" class="cite xref">RFC2818</a>]</span>), based on a demonstration of control over the website's domain via a
+<p id="section-abstract-1">The Automatic Certificate Management Environment (ACME) protocol
+allows server operators to obtain TLS certificates for their websites,
+based on a demonstration of control over the website's domain via a
 fully-automated challenge/response protocol.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">OpenID Federation 1.0 defines how to build a trust infrastructure using a
 trusted third-party model. It uses a trust evaluation mechanism to attest the
 possession of public keys, protocol specific metadata and various administrative
 and technical information related to a specific entity.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
-<p id="section-abstract-3">This document defines how X.509 certificates associating a given OpenID
-Federation Entity with a key included in that Entity's Configuration can be
+<p id="section-abstract-3">This document defines how X.509 certificates associated with a given OpenID
+Federation Entity can be
 issued by an X.509 Certification Authority through the ACME protocol to the
 organizations which are part of a federation built on top of OpenID
 Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
@@ -1150,7 +1150,7 @@ Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 8 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 31 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1227,7 +1227,7 @@ Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
                 <p id="section-toc.1-1.6.2.7.1"><a href="#section-6.7" class="auto internal xref">6.7</a>.  <a href="#name-openid-federation-challenge" class="internal xref">OpenID Federation Challenge Type</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.7.2.1">
-                    <p id="section-toc.1-1.6.2.7.2.1.1"><a href="#section-6.7.1" class="auto internal xref">6.7.1</a>.  <a href="#name-csr-and-certificate-require" class="internal xref">CSR and Certificate Requirements</a></p>
+                    <p id="section-toc.1-1.6.2.7.2.1.1"><a href="#section-6.7.1" class="auto internal xref">6.7.1</a>.  <a href="#name-csr-and-certificate-fields" class="internal xref">CSR and Certificate Fields</a></p>
 </li>
                 </ul>
 </li>
@@ -1287,8 +1287,8 @@ Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
       </h2>
 <p id="section-1-1">This document describes extensions to the ACME protocol that integrate with
 OpenID Federation 1.0, allowing an ACME server to issue X.509 Certificates
-associating a given OpenID Federation Entity to a key included in its Entity
-Configuration. X.509 Certificates can be provided to one or more organizations,
+associated with a given OpenID Federation Entity.
+X.509 Certificates can be provided to one or more organizations,
 without having pre-established any direct relationship or any stipulation of a
 contract.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">In a multilateral federation, composed by thousands of entities belonging to
@@ -1343,9 +1343,8 @@ transport to attest themselves as trustworthy, and then retrieve X.509
 Certificates for their official HTTPS Federation Entity ID.<a href="#section-2-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-3.2">
-          <p id="section-2-3.2.1">Federation Entities that want to ask and obtain X.509 Certificate for one or
-more public cryptographic keys published in their Entity Configuration, as
-defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-3" class="relref">Section 3</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-2-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-2-3.2.1">Federation Entities that want to ask for and obtain X.509 Certificate for use
+in other protocols.<a href="#section-2-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -1356,8 +1355,9 @@ defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
       </h2>
 <p id="section-3-1">The terms "Federation Entity", "Trust Anchor", "Entity Configuration",
-"Subordinate Statement", "Superior Entity", "Trust Mark" and "Trust Chain"
-used in this document are defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
+"Subordinate Statement", "Superior Entity", "Immediate Superior Entity",
+"Federation Entity Keys", "Trust Mark" and "Trust Chain" used in this
+document are defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
 The term "CSR" used in this document is defined in <span>[<a href="#RFC2986" class="cite xref">RFC2986</a>]</span>. The
 term Certification Authority used in this document is defined in <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>. The
 terms "ACME Client" and "ACME Server" are defined in <span>[<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
@@ -1403,8 +1403,7 @@ Configuration.<a href="#section-5-1" class="pilcrow">¶</a></p>
 Certificates for the identifier configured in the Requestor's Entity
 Configuration.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">The cryptographic keys published within the Requestor's Entity Configuration
-are used to satisfy the Certificate Issuer's challenge, and the
-public portion of the keys included in the issued X.509 Certificates.<a href="#section-5-3" class="pilcrow">¶</a></p>
+are used to satisfy the Certificate Issuer's challenge.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <p id="section-5-4">The protocol assumes the following discovery preconditions are met. The
 Issuer has the guarantee that:<a href="#section-5-4" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-5-5">
@@ -1417,10 +1416,6 @@ in its Entity Configuration.<a href="#section-5-5.1.1" class="pilcrow">¶</a></p
 Entity Configuration.<a href="#section-5-5.2.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
-<p id="section-5-6">The CSR <span class="bcp14">MUST</span> include the public key, attested within the Trust Chain, used by
-the Requestor to satisfy the Certificate Issuer's challenge.<a href="#section-5-6" class="pilcrow">¶</a></p>
-<p id="section-5-7">This process may be repeated to request multiple X.509 Certificates related to the
-other cryptographic keys published in the Requestor's Entity Configuration.<a href="#section-5-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="protocol-flow">
@@ -1723,8 +1718,7 @@ the <code>acme_issuer</code> metadata:<a href="#section-6.4.1-3" class="pilcrow"
 <p id="section-6.4.2-1">The Requestor <span class="bcp14">MUST</span> publish in its Entity Configuration an <code>acme_requestor</code>
 metadata containing a JWK set, according to
 <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-5.2.1" class="relref">Section 5.2.1</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
-The keys in the set represent the keys that the Requestor <span class="bcp14">MAY</span> request
-certificates for.<a href="#section-6.4.2-1" class="pilcrow">¶</a></p>
+The keys in the set are used to respond to ACME challenges.<a href="#section-6.4.2-1" class="pilcrow">¶</a></p>
 <p id="section-6.4.2-2">The following is a non-normative example of an Entity Configuration including
 the <code>acme_requestor</code> metadata and using the <code>jwks</code> metadata parameter.<a href="#section-6.4.2-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-6.4.2-3">
@@ -1915,9 +1909,7 @@ The Issuer also <span class="bcp14">MUST</span> only consider keys published in 
         </ul>
 <p id="section-6.7-14">If all of the above verifications succeed, then the validation is successful.
 Otherwise, it has failed. In either case, the Certificate Issuer responds according to
-<span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.5.1" class="relref">Section 7.5.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>. In the event that the verification succeeds, the
-eventual CSR <span class="bcp14">MUST</span> include the public key, attested within the Trust Chain, used
-by the Requestor to satisfy the Certificate Issuer's challenge.<a href="#section-6.7-14" class="pilcrow">¶</a></p>
+<span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.5.1" class="relref">Section 7.5.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.7-14" class="pilcrow">¶</a></p>
 <p id="section-6.7-15">A non-normative example for the challenge object post-validation:<a href="#section-6.7-15" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-6.7-16">
 <pre>
@@ -1932,13 +1924,10 @@ by the Requestor to satisfy the Certificate Issuer's challenge.<a href="#section
 </div>
 <div id="openidfed-othername-id">
 <section id="section-6.7.1">
-          <h4 id="name-csr-and-certificate-require">
-<a href="#section-6.7.1" class="section-number selfRef">6.7.1. </a><a href="#name-csr-and-certificate-require" class="section-name selfRef">CSR and Certificate Requirements</a>
+          <h4 id="name-csr-and-certificate-fields">
+<a href="#section-6.7.1" class="section-number selfRef">6.7.1. </a><a href="#name-csr-and-certificate-fields" class="section-name selfRef">CSR and Certificate Fields</a>
           </h4>
-<p id="section-6.7.1-1">When using this challenge type, both the certificate signing request (CSR)
-and the X.509 Certificate <span class="bcp14">MUST</span> include a public key corresponding to
-the key used to satisfy the challenge.<a href="#section-6.7.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.7.1-2">Depending on the Certificate Issuer's X.509 Certificate profile, the CSR and
+<p id="section-6.7.1-1">Depending on the Certificate Issuer's X.509 Certificate profile, the CSR and
 X.509 Certificate <span class="bcp14">MAY</span> associate the X.509 Certificate to the Federation Entity by
 including the Entity ID in the X.509 Certificate.
 To do so, the Issuer includes a Subject Alternative Name extension
@@ -1947,13 +1936,13 @@ a <code>type-id</code> of <code>id-on-OpenIdFederationEntityId</code>.
 The value of the name is an Octet String
 containing the UTF-8 encoding of the Entity ID
 (i.e., the URI in the corresponding <code>openid-federation</code> identifier
-from the <code>newOrder</code> request).<a href="#section-6.7.1-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.7.1-3">
+from the <code>newOrder</code> request).<a href="#section-6.7.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.7.1-2">
 <pre>
    id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
 
    OpenIdFederationEntityId ::= UTF8String
-</pre><a href="#section-6.7.1-3" class="pilcrow">¶</a>
+</pre><a href="#section-6.7.1-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1966,10 +1955,17 @@ from the <code>newOrder</code> request).<a href="#section-6.7.1-2" class="pilcro
       <h2 id="name-publication-of-the-certific">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-publication-of-the-certific" class="section-name selfRef">Publication of the Certificates within the Federation</a>
       </h2>
-<p id="section-7-1">When the Certificate Issuer is the Superior Entity, the X.509
-Certificate linked to JWK in the Subordinate
-Statement related to the Requestor, <span class="bcp14">SHOULD</span> be extended with the claim <code>x5c</code>,
-containing the issued X.509 Certificate.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">All X.509 Certificates issued <span class="bcp14">SHOULD</span> be published to one or more Certificate
+Transparency logs <span>[<a href="#RFC9162" class="cite xref">RFC9162</a>]</span>. Selection of those logs, their versions, and
+embedding or discovery of Signed Certificate Timestamps, are policy decisions
+and are out of scope for this document.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">The X.509 Certificates issued by federation Immediate Superior Entities
+pertaining to one or more Federation Entity Keys in control of their
+Subordinates <span class="bcp14">MAY</span> publish this information by including the <code>x5c</code> member
+in each JWK contained within the matching Subordinate Statement. The contents
+of the published <code>x5c</code> member, including whether it contains a full or
+partial Trust Chain, and if so, to what Trust Anchor, are policy decisions
+out of scope for this document.<a href="#section-7-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="certificate-lifecycle-and-revocation">
@@ -1977,17 +1973,15 @@ containing the issued X.509 Certificate.<a href="#section-7-1" class="pilcrow">�
       <h2 id="name-certificate-lifecycle-and-r">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-certificate-lifecycle-and-r" class="section-name selfRef">Certificate Lifecycle and Revocation</a>
       </h2>
-<p id="section-8-1">The issued X.509 Certificate is associated with a cryptographic public key
+<p id="section-8-1">The identity of the Requestor is verified through proof of possession of a
+private key corresponding to a public key
 attested within a Trust Chain. It is up to the Certificate Issuer to decide
 the expiration time of the X.509 Certificate. In some cases, and when required,
 it <span class="bcp14">MAY</span> be set to match the expiration of the Trust Chain.<a href="#section-8-1" class="pilcrow">¶</a></p>
-<p id="section-8-2">When a cryptographic public key is removed from the Requestor Entity Configuration
-the X.509 Certificate related to it
-<span class="bcp14">SHOULD</span> be revoked by its Credential Issuer, if not expired.<a href="#section-8-2" class="pilcrow">¶</a></p>
-<p id="section-8-3">A Requestor <span class="bcp14">SHOULD</span> request the revocation of its X.509 Certificate when the related
+<p id="section-8-2">A Requestor <span class="bcp14">SHOULD</span> request the revocation of its X.509 Certificate when the related
 cryptographic material is revoked. The Requestor <span class="bcp14">SHOULD</span> publish the revoked or
-expired cryptographic keys in the Federation Historical Key Registry.<a href="#section-8-3" class="pilcrow">¶</a></p>
-<p id="section-8-4">The X.509 Certificate revocation request is defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.6" class="relref">Section 7.6</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-8-4" class="pilcrow">¶</a></p>
+expired cryptographic keys in the Federation Historical Key Registry.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-3">The X.509 Certificate revocation request is defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.6" class="relref">Section 7.6</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-8-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="error-type">
@@ -2016,6 +2010,13 @@ error type <span class="bcp14">SHOULD</span> include an extension member named <
 against replay attacks by malicious ACME servers because the signature in
 challenge responses is over an ACME key authorization, which binds the ACME
 account key.<a href="#section-10-1" class="pilcrow">¶</a></p>
+<p id="section-10-2">The cryptographic keys in the <code>acme_requestor</code> metadata <span class="bcp14">SHOULD NOT</span> be reused
+for other purposes than signing responses to <code>acme-federation-01</code> challenges.
+For example, the same keys <span class="bcp14">SHOULD NOT</span> be reused in the issued X.509 Certificate.
+If the keys are reused for other purposes, cross-protocol attacks <span class="bcp14">MUST</span> be
+considered.<a href="#section-10-2" class="pilcrow">¶</a></p>
+<p id="section-10-3">The cryptographic keys in the <code>acme_requestor</code> metadata <span class="bcp14">SHOULD</span> be rotated
+periodically.<a href="#section-10-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -2163,10 +2164,6 @@ specified here in <a href="#openidfed-othername-id" class="auto internal xref">S
       <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC2818">[RFC2818]</dt>
-      <dd>
-<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"HTTP Over TLS"</span>, <span class="seriesInfo">RFC 2818</span>, <span class="seriesInfo">DOI 10.17487/RFC2818</span>, <time datetime="2000-05" class="refDate">May 2000</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2818">https://www.rfc-editor.org/rfc/rfc2818</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC2986">[RFC2986]</dt>
       <dd>
 <span class="refAuthor">Nystrom, M.</span> and <span class="refAuthor">B. Kaliski</span>, <span class="refTitle">"PKCS #10: Certification Request Syntax Specification Version 1.7"</span>, <span class="seriesInfo">RFC 2986</span>, <span class="seriesInfo">DOI 10.17487/RFC2986</span>, <time datetime="2000-11" class="refDate">November 2000</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2986">https://www.rfc-editor.org/rfc/rfc2986</a>&gt;</span>. </dd>
@@ -2194,6 +2191,10 @@ specified here in <a href="#openidfed-othername-id" class="auto internal xref">S
 <dt id="RFC8555">[RFC8555]</dt>
       <dd>
 <span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Hoffman-Andrews, J.</span>, <span class="refAuthor">McCarney, D.</span>, and <span class="refAuthor">J. Kasten</span>, <span class="refTitle">"Automatic Certificate Management Environment (ACME)"</span>, <span class="seriesInfo">RFC 8555</span>, <span class="seriesInfo">DOI 10.17487/RFC8555</span>, <time datetime="2019-03" class="refDate">March 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8555">https://www.rfc-editor.org/rfc/rfc8555</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9162">[RFC9162]</dt>
+      <dd>
+<span class="refAuthor">Laurie, B.</span>, <span class="refAuthor">Messeri, E.</span>, and <span class="refAuthor">R. Stradling</span>, <span class="refTitle">"Certificate Transparency Version 2.0"</span>, <span class="seriesInfo">RFC 9162</span>, <span class="seriesInfo">DOI 10.17487/RFC9162</span>, <time datetime="2021-12" class="refDate">December 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9162">https://www.rfc-editor.org/rfc/rfc9162</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9457">[RFC9457]</dt>
     <dd>

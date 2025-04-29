@@ -5,9 +5,9 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                                A. Ghani
-Expires: 8 September 2025                                      B. Pitman
+Expires: 31 October 2025                                       B. Pitman
                                                                     ISRG
-                                                            7 March 2025
+                                                           29 April 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -17,10 +17,9 @@ Expires: 8 September 2025                                      B. Pitman
 Abstract
 
    The Automatic Certificate Management Environment (ACME) protocol
-   [RFC8555] allows server operators to obtain TLS certificates for
-   their websites (HTTPS [RFC2818]), based on a demonstration of control
-   over the website's domain via a fully-automated challenge/response
-   protocol.
+   allows server operators to obtain TLS certificates for their
+   websites, based on a demonstration of control over the website's
+   domain via a fully-automated challenge/response protocol.
 
    OpenID Federation 1.0 defines how to build a trust infrastructure
    using a trusted third-party model.  It uses a trust evaluation
@@ -65,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 September 2025.
+   This Internet-Draft will expire on 31 October 2025.
 
 Copyright Notice
 
@@ -174,12 +173,13 @@ Table of Contents
 3.  Terminology
 
    The terms "Federation Entity", "Trust Anchor", "Entity
-   Configuration", "Subordinate Statement", "Superior Entity", "Trust
-   Mark" and "Trust Chain" used in this document are defined in
-   Section 1.2 of [OPENID-FED].  The term "CSR" used in this document is
-   defined in [RFC2986].  The term Certification Authority used in this
-   document is defined in [RFC5280].  The terms "ACME Client" and "ACME
-   Server" are defined in [RFC8555].
+   Configuration", "Subordinate Statement", "Superior Entity",
+   "Immediate Superior Entity", "Federation Entity Keys", "Trust Mark"
+   and "Trust Chain" used in this document are defined in Section 1.2 of
+   [OPENID-FED].  The term "CSR" used in this document is defined in
+   [RFC2986].  The term Certification Authority used in this document is
+   defined in [RFC5280].  The terms "ACME Client" and "ACME Server" are
+   defined in [RFC8555].
 
    The specification also defines the following terms:
 
@@ -615,12 +615,12 @@ Table of Contents
    include a kid header parameter corresponding to the key used to sign
    the key authorization and a typ header parameter set to "signed-acme-
    challenge+jwt". trust_chain (optional, array of string): an array of
-   base64url-encoded bytes containing a signed JWT and representing the
-   Trust Chain of the Requestor, See Section 4.3 of [OPENID-FED].  The
-   Requestor SHOULD use a Trust Anchor it has in common with the ACME
-   server.  It is RECOMMENDED that the Requestor includes this field;
-   otherwise, the ACME server MUST start Federation Entity Discovery to
-   obtain the Trust Chain related to the Requestor.
+   strings containing signed JWTs, representing the Trust Chain of the
+   Requestor, see Section 4.3 of [OPENID-FED].  The Requestor SHOULD use
+   a Trust Anchor it has in common with the ACME server.  It is
+   RECOMMENDED that the Requestor includes this field; otherwise, the
+   ACME server MUST start Federation Entity Discovery to obtain the
+   Trust Chain related to the Requestor.
 
    A non-normative example for an authorization with trust_chain
    specified:
@@ -691,10 +691,19 @@ Table of Contents
 
 7.  Publication of the Certificates within the Federation
 
-   When the Certificate Issuer is the Superior Entity, the X.509
-   Certificate linked to JWK in the Subordinate Statement related to the
-   Requestor, SHOULD be extended with the claim x5c, containing the
-   issued X.509 Certificate.
+   All X.509 Certificates issued SHOULD be published to one or more
+   Certificate Transparency logs [RFC9162].  Selection of those logs,
+   their versions, and embedding or discovery of Signed Certificate
+   Timestamps, are policy decisions and are out of scope for this
+   document.
+
+   The X.509 Certificates issued by federation Immediate Superior
+   Entities pertaining to one or more Federation Entity Keys in control
+   of their Subordinates MAY publish this information by including the
+   x5c member in each JWK contained within the matching Subordinate
+   Statement.  The contents of the published x5c member, including
+   whether it contains a full or partial Trust Chain, and if so, to what
+   Trust Anchor, are policy decisions out of scope for this document.
 
 8.  Certificate Lifecycle and Revocation
 
@@ -703,10 +712,6 @@ Table of Contents
    Trust Chain.  It is up to the Certificate Issuer to decide the
    expiration time of the X.509 Certificate.  In some cases, and when
    required, it MAY be set to match the expiration of the Trust Chain.
-
-   When a cryptographic public key is removed from the Requestor Entity
-   Configuration the X.509 Certificate related to it SHOULD be revoked
-   by its Credential Issuer, if not expired.
 
    A Requestor SHOULD request the revocation of its X.509 Certificate
    when the related cryptographic material is revoked.  The Requestor
@@ -837,10 +842,6 @@ Table of Contents
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
 
-   [RFC2818]  Rescorla, E., "HTTP Over TLS", RFC 2818,
-              DOI 10.17487/RFC2818, May 2000,
-              <https://www.rfc-editor.org/rfc/rfc2818>.
-
    [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
               Request Syntax Specification Version 1.7", RFC 2986,
               DOI 10.17487/RFC2986, November 2000,
@@ -873,6 +874,10 @@ Table of Contents
               Kasten, "Automatic Certificate Management Environment
               (ACME)", RFC 8555, DOI 10.17487/RFC8555, March 2019,
               <https://www.rfc-editor.org/rfc/rfc8555>.
+
+   [RFC9162]  Laurie, B., Messeri, E., and R. Stradling, "Certificate
+              Transparency Version 2.0", RFC 9162, DOI 10.17487/RFC9162,
+              December 2021, <https://www.rfc-editor.org/rfc/rfc9162>.
 
    [RFC9457]  Nottingham, M., Wilde, E., and S. Dalal, "Problem Details
               for HTTP APIs", RFC 9457, DOI 10.17487/RFC9457, July 2023,
