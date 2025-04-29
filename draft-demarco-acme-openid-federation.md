@@ -37,7 +37,6 @@ author:
     email: bran@bran.land
 
 normative:
-  RFC2818: RFC2818
   RFC2986: RFC2986
   RFC5280: RFC5280
 
