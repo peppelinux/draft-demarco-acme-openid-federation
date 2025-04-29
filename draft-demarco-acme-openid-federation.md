@@ -82,9 +82,9 @@ informative:
 
 --- abstract
 
-The Automatic Certificate Management Environment (ACME) protocol [RFC8555]
-allows server operators to obtain TLS certificates for their websites (HTTPS
-[RFC2818]), based on a demonstration of control over the website's domain via a
+The Automatic Certificate Management Environment (ACME) protocol
+allows server operators to obtain TLS certificates for their websites,
+based on a demonstration of control over the website's domain via a
 fully-automated challenge/response protocol.
 
 OpenID Federation 1.0 defines how to build a trust infrastructure using a
