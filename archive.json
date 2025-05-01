@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-01T00:43:17.573264+00:00",
+  "timestamp": "2025-05-01T00:44:10.754584+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -4762,7 +4762,7 @@
       "labels": [],
       "body": "This makes several small editorial changes throughout the document.",
       "createdAt": "2025-02-18T16:02:57Z",
-      "updatedAt": "2025-03-06T16:04:13Z",
+      "updatedAt": "2025-04-29T15:12:00Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "d8d1268e2b46e048326413777f914b34434d8973",
@@ -5335,7 +5335,7 @@
       "labels": [],
       "body": "This closes #32.",
       "createdAt": "2025-03-07T16:14:39Z",
-      "updatedAt": "2025-03-11T14:08:23Z",
+      "updatedAt": "2025-04-29T15:12:07Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e8f0c54b8e2b0ec919baf5f59429e917e99a1a1d",
@@ -5377,7 +5377,7 @@
       "labels": [],
       "body": "This removes a `SHOULD` that told issuers to monitor entity configuration post-issuance and revoke when keys are removed. Closes #70.",
       "createdAt": "2025-03-07T16:17:46Z",
-      "updatedAt": "2025-03-11T14:13:01Z",
+      "updatedAt": "2025-04-29T15:12:11Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e8f0c54b8e2b0ec919baf5f59429e917e99a1a1d",
@@ -5445,7 +5445,7 @@
       "labels": [],
       "body": "The strings in the `trust_chain` array are not base64url-encoded data, but compact form JWTs.",
       "createdAt": "2025-03-07T16:41:31Z",
-      "updatedAt": "2025-03-11T14:14:24Z",
+      "updatedAt": "2025-04-29T15:12:59Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "e8f0c54b8e2b0ec919baf5f59429e917e99a1a1d",
@@ -5567,6 +5567,99 @@
           "body": "I believe that the paragraph starting \"The X.509 Certificates issued by federation...\" captures the essence of the issue.",
           "createdAt": "2025-03-27T19:02:14Z",
           "updatedAt": "2025-03-27T19:02:14Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 77,
+      "id": "PR_kwDOJ6_NW86UYEbb",
+      "title": "Fix idnits",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/77",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I ran the draft through the idnits and idnits3 tools, and fixed some of the issues it flagged.\r\n\r\n* I removed references from the abstract section\r\n* After doing so, we no longer use RFC2818. Besides, RFC 2818 has been obsoleted by RFC 9110. This isn't directly important to the draft, so I deleted the reference.\r\n* I fixed some references that were using Markdown links instead of the double curly brace syntax. These seem to look the same in text and HTML form, but they were producing a warning about the XML reference's text form.",
+      "createdAt": "2025-04-29T16:02:07Z",
+      "updatedAt": "2025-04-29T20:24:49Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "0573f04f6a1fe50b01358abc3288dfff32a33c6c",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "david/idnits3",
+      "headRefOid": "a8075e603122051e0c35e139191f5fd708e1f77a",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86nMJNz",
+          "commit": {
+            "abbreviatedOid": "a8075e6"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Looks right to me. Thanks!",
+          "createdAt": "2025-04-29T20:24:49Z",
+          "updatedAt": "2025-04-29T20:24:49Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 78,
+      "id": "PR_kwDOJ6_NW86UYvfK",
+      "title": "Update authors list",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/78",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This updates the authors list per discussions with Ameer and Bran, ahead of our first submission to the IETF Datatracker.\r\n\r\ncc @inahga @branlwyd",
+      "createdAt": "2025-04-29T17:29:47Z",
+      "updatedAt": "2025-04-29T21:01:15Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "0573f04f6a1fe50b01358abc3288dfff32a33c6c",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "david/update-authors",
+      "headRefOid": "174556b7ba191dd7a29ac7c1308681b6ceec1cb7",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86nKnRq",
+          "commit": {
+            "abbreviatedOid": "174556b"
+          },
+          "author": "branlwyd",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-04-29T18:18:37Z",
+          "updatedAt": "2025-04-29T18:18:37Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86nMhbR",
+          "commit": {
+            "abbreviatedOid": "174556b"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "I'd add yourself in there, @divergentdave.",
+          "createdAt": "2025-04-29T21:01:15Z",
+          "updatedAt": "2025-04-29T21:01:15Z",
           "comments": []
         }
       ]
