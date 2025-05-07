@@ -564,12 +564,24 @@ token (required, string):  A random value that uniquely identifies the
     {{Section 5 of !RFC4648}}. Trailing '=' padding characters MUST be stripped.
     See {{!RFC4086}} for additional information on randomness requirements.
 
+trust_anchors (optional, array of string):  An array of strings containing
+    Entity Identifiers of the Issuer's trust anchors. When solving the
+    challenge, the Requestor can construct a trust chain from itself to one of
+    these trust anchors. It is RECOMMENDED that the Issuer includes this field
+    to make it easier for the Requestor to construct a trust chain.
+
+A non-normative example of a challenge with `trust_anchors` specified:
+
 ~~~~
    {
      "type": "openid-federation-01",
      "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
      "status": "pending",
-     "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
+     "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0",
+     "trust_anchors": [
+       "https://trust-anchor-1.example.com",
+       "https://trust-anchor-2.example.com"
+     ]
    }
 ~~~~
 
@@ -592,13 +604,14 @@ sig (required, string):  the compact JSON serialization (as described in
     The JWS MUST include a `kid` header parameter corresponding to the key used
     to sign the key authorization and a `typ` header parameter set to
     "signed-acme-challenge+jwt".
-trust_chain (optional, array of string):  an array of strings containing signed JWTs,
-    representing the Trust Chain of the Requestor,
-    see {{Section 4.3 of OPENID-FED}}{: relative="#section-4.3"}.
-    The Requestor SHOULD use a Trust Anchor it
-    has in common with the ACME server. It is RECOMMENDED that the Requestor
-    includes this field; otherwise, the ACME server MUST start Federation Entity
-    Discovery to obtain the Trust Chain related to the Requestor.
+
+trust_chain (optional, array of string):  an array of strings containing signed
+    JWTs, representing a Trust Chain from the Requestor to one of the Issuer's
+    trust anchors (see
+    {{Section 4.3 of OPENID-FED}}{: relative="#section-4.3"}). It is RECOMMENDED
+    that the Requestor includes this field; otherwise, the ACME server MUST
+    start Federation Entity Discovery to obtain the Trust Chain related to the
+    Requestor.
 
 A non-normative example for an authorization with `trust_chain` specified:
 
