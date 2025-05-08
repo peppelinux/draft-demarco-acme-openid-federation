@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-01T00:44:10.754584+00:00",
+  "timestamp": "2025-05-08T00:40:18.765256+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1067,6 +1067,22 @@
       "body": "Not necessary for the first drafts, but as we progress it, we'll want to start putting explicit `(RFC EDITOR: Replace \"XXXX\" with the RFC number assigned to this document.)` sorts of things in the document.",
       "createdAt": "2025-03-11T19:05:19Z",
       "updatedAt": "2025-03-11T19:05:19Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 79,
+      "id": "I_kwDOJ6_NW861odyW",
+      "title": "Allow issuer to include its OIDF trust anchors in `openid-federation-01` challenge",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/79",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The `openid-federation-01` challenge consists of a token, which the requestor must sign to prove possession of one of the keys in the `acme_requestor` metadata. The challenge response can optionally contain a trust chain, to save the ACME issuer the trouble of resolving trust in the requestor. Makes sense, but the question is: a chain to what trust anchor?\n\nThe protocol text says: [\"The Requestor SHOULD use a Trust Anchor it has in common with the ACME server.\"](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6.7-9)\n\nBut it's not clear to me how the requestor is supposed to know what TAs it has in common with the issuer. An OpenID Fed entity doesn't advertise its trust anchors anywhere (`authority_hints` has to be immediate superiors). The best the requestor could do would be to try resolving the issuer up to each of its own TAs and use the first trust chain it can resolve. But I think we can do better.\n\nWhat if the challenge object that the issuer presents to the requester optionally included the issuer's TAs, so that then the requestor could intersect that with its own TAs and do a single resolve to get a trust chain? e.g.\n\n```json\n{\n  \"type\": \"openid-federation-01\",\n  \"url\": \"https://issuer.example.com/acme/chall/prV_B7yEyA4\",\n  \"status\": \"pending\",\n  \"token\": \"LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0\",\n  \"trust-anchors\": [\"https://example.org/\", \"https://another-ta.org/\"]\n}\n```",
+      "createdAt": "2025-05-07T22:13:37Z",
+      "updatedAt": "2025-05-07T22:13:37Z",
       "closedAt": null,
       "comments": []
     }
@@ -5663,6 +5679,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 80,
+      "id": "PR_kwDOJ6_NW86VWKuh",
+      "title": "Allow issuer to provide TAs to requestor",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/80",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "When solving an `openid-federation-01` challenge, the requestor may provide a trust chain from itself to a trust anchor trusted by the issuer, to save the issuer the trouble of doing a resolve. However it's not clear how the requestor is supposed to know what TAs the issuer trusts.\r\n\r\nThis commit adds an optional field `trust_anchors` to the challenge object. The requestor can use that to construct a trust chain that the issuer will accept.\r\n\r\nAdditionally, this removes the sentence \"The Requestor SHOULD use a Trust Anchor it has in common with the ACME server.\"\r\n\r\nFirst, I don't think it's the right requirement. What matters is that (1) the trust anchor be trusted by the issuer and (2) there be some path from the requestor to the trust anchor. Those can be true even if the requestor doesn't trust the TA! To illustrate:\r\n\r\n```\r\ntrust_anchor_1           trust_anchor_2\r\n     |________________________|\r\n                  |\r\n            intermediate\r\n                  |\r\n     +------------+-----------+\r\n     |                        |\r\n  issuer                 requestor\r\n```\r\n\r\nIf issuer trusts trust_anchor_1 but not _2, and requestor trusts trust_anchor_2 but not _1, then trust_anchor_1->intermediate->requestor is a valid trust chain for solving a challenge even if requestor wouldn't trust it.\r\n\r\nSecond, it makes more sense as a MUST than a SHOULD. I rewrote it to make it explicit that the trust chain must end in one of the issuer's trust anchors.\r\n\r\nResolves #79",
+      "createdAt": "2025-05-07T22:47:47Z",
+      "updatedAt": "2025-05-07T22:47:47Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "0573f04f6a1fe50b01358abc3288dfff32a33c6c",
+      "headRepository": "tgeoghegan/draft-demarco-acme-openid-federation",
+      "headRefName": "issuer-tas-hint",
+      "headRefOid": "063a75e64f1e624637a9d9ec95d207d9a3744b34",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
