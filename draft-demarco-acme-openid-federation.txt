@@ -5,9 +5,9 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                                A. Ghani
-Expires: 28 September 2025                                     B. Pitman
+Expires: 14 November 2025                                      B. Pitman
                                                                     ISRG
-                                                           27 March 2025
+                                                             13 May 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -17,10 +17,9 @@ Expires: 28 September 2025                                     B. Pitman
 Abstract
 
    The Automatic Certificate Management Environment (ACME) protocol
-   [RFC8555] allows server operators to obtain TLS certificates for
-   their websites (HTTPS [RFC2818]), based on a demonstration of control
-   over the website's domain via a fully-automated challenge/response
-   protocol.
+   allows server operators to obtain TLS certificates for their
+   websites, based on a demonstration of control over the website's
+   domain via a fully-automated challenge/response protocol.
 
    OpenID Federation 1.0 defines how to build a trust infrastructure
    using a trusted third-party model.  It uses a trust evaluation
@@ -65,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 September 2025.
+   This Internet-Draft will expire on 14 November 2025.
 
 Copyright Notice
 
@@ -842,10 +841,6 @@ Table of Contents
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
-
-   [RFC2818]  Rescorla, E., "HTTP Over TLS", RFC 2818,
-              DOI 10.17487/RFC2818, May 2000,
-              <https://www.rfc-editor.org/rfc/rfc2818>.
 
    [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
               Request Syntax Specification Version 1.7", RFC 2986,
