@@ -33,9 +33,17 @@ author:
 
 contributor:
  -
+    name: David Cook
+    org: ISRG
+    email: divergentdave@gmail.com
+ -
     name: Ameer Ghani
     org: ISRG
     email: inahga@divviup.org
+ -
+    name: J.C. Jones
+    org: ISRG
+    email: ietf@insufficient.coffee
 
 normative:
   RFC2818: RFC2818
