@@ -37,7 +37,6 @@ author:
     email: bran@bran.land
 
 normative:
-  RFC2818: RFC2818
   RFC2986: RFC2986
   RFC5280: RFC5280
 
@@ -82,9 +81,9 @@ informative:
 
 --- abstract
 
-The Automatic Certificate Management Environment (ACME) protocol [RFC8555]
-allows server operators to obtain TLS certificates for their websites (HTTPS
-[RFC2818]), based on a demonstration of control over the website's domain via a
+The Automatic Certificate Management Environment (ACME) protocol
+allows server operators to obtain TLS certificates for their websites,
+based on a demonstration of control over the website's domain via a
 fully-automated challenge/response protocol.
 
 OpenID Federation 1.0 defines how to build a trust infrastructure using a
@@ -160,9 +159,9 @@ The terms "Federation Entity", "Trust Anchor", "Entity Configuration",
 "Subordinate Statement", "Superior Entity", "Immediate Superior Entity",
 "Federation Entity Keys", "Trust Mark" and "Trust Chain" used in this
 document are defined in {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2"}.
-The term "CSR" used in this document is defined in [RFC2986]. The
-term Certification Authority used in this document is defined in [RFC5280]. The
-terms "ACME Client" and "ACME Server" are defined in [RFC8555].
+The term "CSR" used in this document is defined in {{RFC2986}}. The
+term Certification Authority used in this document is defined in {{RFC5280}}. The
+terms "ACME Client" and "ACME Server" are defined in {{!RFC8555}}.
 
 The specification also defines the following terms:
 
