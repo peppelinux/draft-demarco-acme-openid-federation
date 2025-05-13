@@ -39,7 +39,7 @@ contributor:
  -
     name: Ameer Ghani
     org: ISRG
-    email: inahga@divviup.org
+    email: inahga@letsencrypt.org
  -
     name: J.C. Jones
     org: ISRG
