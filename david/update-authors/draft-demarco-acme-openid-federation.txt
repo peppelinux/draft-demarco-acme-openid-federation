@@ -895,7 +895,7 @@ Contributors
 
    Ameer Ghani
    ISRG
-   Email: inahga@divviup.org
+   Email: inahga@letsencrypt.org
 
 
    J.C. Jones
