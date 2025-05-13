@@ -28,13 +28,22 @@ author:
     organization: independent
     email: demarcog83@gmail.com
  -
+    name: Brandon Pitman
+    email: bran@bran.land
+
+contributor:
+ -
+    name: David Cook
+    org: ISRG
+    email: divergentdave@gmail.com
+ -
     name: Ameer Ghani
     org: ISRG
-    email: inahga@divviup.org
+    email: inahga@letsencrypt.org
  -
-    name: Brandon Pitman
+    name: J.C. Jones
     org: ISRG
-    email: bran@bran.land
+    email: ietf@insufficient.coffee
 
 normative:
   RFC2986: RFC2986
@@ -780,8 +789,3 @@ specified here in {{openidfed-othername-id}}
 |TBA    |id-on-OpenIdFederationEntityId|this document|
 
 --- back
-
-# Acknowledgments
-{:numbered="false"}
-
-TODO acknowledge.
