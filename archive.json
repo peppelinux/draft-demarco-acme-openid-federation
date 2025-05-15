@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-08T00:40:18.765256+00:00",
+  "timestamp": "2025-05-15T00:39:11.671300+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -5592,24 +5592,26 @@
       "id": "PR_kwDOJ6_NW86UYEbb",
       "title": "Fix idnits",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/77",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "I ran the draft through the idnits and idnits3 tools, and fixed some of the issues it flagged.\r\n\r\n* I removed references from the abstract section\r\n* After doing so, we no longer use RFC2818. Besides, RFC 2818 has been obsoleted by RFC 9110. This isn't directly important to the draft, so I deleted the reference.\r\n* I fixed some references that were using Markdown links instead of the double curly brace syntax. These seem to look the same in text and HTML form, but they were producing a warning about the XML reference's text form.",
       "createdAt": "2025-04-29T16:02:07Z",
-      "updatedAt": "2025-04-29T20:24:49Z",
+      "updatedAt": "2025-05-13T14:09:06Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "0573f04f6a1fe50b01358abc3288dfff32a33c6c",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "david/idnits3",
       "headRefOid": "a8075e603122051e0c35e139191f5fd708e1f77a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-05-13T14:08:35Z",
+      "mergedAt": "2025-05-13T14:08:35Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "3a828bc99b8db7ebf4be0cf54250fa9e92d1acbf"
+      },
       "comments": [],
       "reviews": [
         {
@@ -5623,6 +5625,19 @@
           "body": "Looks right to me. Thanks!",
           "createdAt": "2025-04-29T20:24:49Z",
           "updatedAt": "2025-04-29T20:24:49Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86pGGV9",
+          "commit": {
+            "abbreviatedOid": "a8075e6"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-05-13T14:08:27Z",
+          "updatedAt": "2025-05-13T14:08:27Z",
           "comments": []
         }
       ]
@@ -5639,13 +5654,13 @@
       "labels": [],
       "body": "This updates the authors list per discussions with Ameer and Bran, ahead of our first submission to the IETF Datatracker.\r\n\r\ncc @inahga @branlwyd",
       "createdAt": "2025-04-29T17:29:47Z",
-      "updatedAt": "2025-04-29T21:01:15Z",
+      "updatedAt": "2025-05-13T15:01:59Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "0573f04f6a1fe50b01358abc3288dfff32a33c6c",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "david/update-authors",
-      "headRefOid": "174556b7ba191dd7a29ac7c1308681b6ceec1cb7",
+      "headRefOid": "cb7b67e19dca1d1f30116771a98fffc33663d549",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -5677,6 +5692,79 @@
           "createdAt": "2025-04-29T21:01:15Z",
           "updatedAt": "2025-04-29T21:01:15Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86pGGAn",
+          "commit": {
+            "abbreviatedOid": "174556b"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2025-05-13T14:08:03Z",
+          "updatedAt": "2025-05-13T14:08:08Z",
+          "comments": [
+            {
+              "originalPosition": 28,
+              "body": "please add ppl, here\r\n\r\ndon't be shy, ppl like @jcjones for instance must be included ",
+              "createdAt": "2025-05-13T14:08:03Z",
+              "updatedAt": "2025-05-13T14:08:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86pGMxd",
+          "commit": {
+            "abbreviatedOid": "98dac2a"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-13T14:15:49Z",
+          "updatedAt": "2025-05-13T14:15:50Z",
+          "comments": [
+            {
+              "originalPosition": 28,
+              "body": "I'm using the `contributor` block in the front matter, which gets rendered at the end of the document. Added myself and J.C. there.",
+              "createdAt": "2025-05-13T14:15:49Z",
+              "updatedAt": "2025-05-13T14:15:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86pGnNl",
+          "commit": {
+            "abbreviatedOid": "98dac2a"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-05-13T14:42:34Z",
+          "updatedAt": "2025-05-13T14:42:34Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86pGwQa",
+          "commit": {
+            "abbreviatedOid": "98dac2a"
+          },
+          "author": "inahga",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-13T14:52:28Z",
+          "updatedAt": "2025-05-13T14:52:38Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "```suggestion\r\n    email: inahga@letsencrypt.org\r\n```",
+              "createdAt": "2025-05-13T14:52:28Z",
+              "updatedAt": "2025-05-13T14:52:38Z"
+            }
+          ]
         }
       ]
     },
@@ -5692,7 +5780,7 @@
       "labels": [],
       "body": "When solving an `openid-federation-01` challenge, the requestor may provide a trust chain from itself to a trust anchor trusted by the issuer, to save the issuer the trouble of doing a resolve. However it's not clear how the requestor is supposed to know what TAs the issuer trusts.\r\n\r\nThis commit adds an optional field `trust_anchors` to the challenge object. The requestor can use that to construct a trust chain that the issuer will accept.\r\n\r\nAdditionally, this removes the sentence \"The Requestor SHOULD use a Trust Anchor it has in common with the ACME server.\"\r\n\r\nFirst, I don't think it's the right requirement. What matters is that (1) the trust anchor be trusted by the issuer and (2) there be some path from the requestor to the trust anchor. Those can be true even if the requestor doesn't trust the TA! To illustrate:\r\n\r\n```\r\ntrust_anchor_1           trust_anchor_2\r\n     |________________________|\r\n                  |\r\n            intermediate\r\n                  |\r\n     +------------+-----------+\r\n     |                        |\r\n  issuer                 requestor\r\n```\r\n\r\nIf issuer trusts trust_anchor_1 but not _2, and requestor trusts trust_anchor_2 but not _1, then trust_anchor_1->intermediate->requestor is a valid trust chain for solving a challenge even if requestor wouldn't trust it.\r\n\r\nSecond, it makes more sense as a MUST than a SHOULD. I rewrote it to make it explicit that the trust chain must end in one of the issuer's trust anchors.\r\n\r\nResolves #79",
       "createdAt": "2025-05-07T22:47:47Z",
-      "updatedAt": "2025-05-07T22:47:47Z",
+      "updatedAt": "2025-05-13T14:27:14Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "0573f04f6a1fe50b01358abc3288dfff32a33c6c",
@@ -5704,7 +5792,21 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86pGXdH",
+          "commit": {
+            "abbreviatedOid": "063a75e"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-05-13T14:27:14Z",
+          "updatedAt": "2025-05-13T14:27:14Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
