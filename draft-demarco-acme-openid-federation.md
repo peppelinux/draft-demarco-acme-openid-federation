@@ -605,7 +605,7 @@ sig (required, string):  the compact JSON serialization (as described in
     to sign the key authorization and a `typ` header parameter set to
     "signed-acme-challenge+jwt".
 
-trust_chain (optional, array of string):  an array of strings containing signed
+trustChain (optional, array of string):  an array of strings containing signed
     JWTs, representing a Trust Chain from the Requestor to one of the Issuer's
     trust anchors (see
     {{Section 4.3 of OPENID-FED}}{: relative="#section-4.3"}). It is RECOMMENDED
@@ -613,7 +613,7 @@ trust_chain (optional, array of string):  an array of strings containing signed
     start Federation Entity Discovery to obtain the Trust Chain related to the
     Requestor.
 
-A non-normative example for an authorization with `trust_chain` specified:
+A non-normative example for an authorization with `trustChain` specified:
 
 ~~~~
    POST /acme/chall/prV_B7yEyA4
@@ -629,7 +629,7 @@ A non-normative example for an authorization with `trust_chain` specified:
      }),
      "payload": base64url({
       "sig": "wQAvHlPV1tVxRW0vZUa4BQ...",
-      "trust_chain": ["eyJhbGciOiJFU...", "eyJhbGci..."]
+      "trustChain": ["eyJhbGciOiJFU...", "eyJhbGci..."]
      }),
      "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
    }
