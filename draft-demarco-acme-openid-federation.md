@@ -564,13 +564,13 @@ token (required, string):  A random value that uniquely identifies the
     {{Section 5 of !RFC4648}}. Trailing '=' padding characters MUST be stripped.
     See {{!RFC4086}} for additional information on randomness requirements.
 
-trust_anchors (optional, array of string):  An array of strings containing
+trustAnchors (optional, array of string):  An array of strings containing
     Entity Identifiers of the Issuer's trust anchors. When solving the
     challenge, the Requestor can construct a trust chain from itself to one of
     these trust anchors. It is RECOMMENDED that the Issuer includes this field
     to make it easier for the Requestor to construct a trust chain.
 
-A non-normative example of a challenge with `trust_anchors` specified:
+A non-normative example of a challenge with `trustAnchors` specified:
 
 ~~~~
    {
@@ -578,7 +578,7 @@ A non-normative example of a challenge with `trust_anchors` specified:
      "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
      "status": "pending",
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0",
-     "trust_anchors": [
+     "trustAnchors": [
        "https://trust-anchor-1.example.com",
        "https://trust-anchor-2.example.com"
      ]
