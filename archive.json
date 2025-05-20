@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-15T00:39:11.671300+00:00",
+  "timestamp": "2025-05-20T00:41:01.004063+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1082,9 +1082,31 @@
       "labels": [],
       "body": "The `openid-federation-01` challenge consists of a token, which the requestor must sign to prove possession of one of the keys in the `acme_requestor` metadata. The challenge response can optionally contain a trust chain, to save the ACME issuer the trouble of resolving trust in the requestor. Makes sense, but the question is: a chain to what trust anchor?\n\nThe protocol text says: [\"The Requestor SHOULD use a Trust Anchor it has in common with the ACME server.\"](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6.7-9)\n\nBut it's not clear to me how the requestor is supposed to know what TAs it has in common with the issuer. An OpenID Fed entity doesn't advertise its trust anchors anywhere (`authority_hints` has to be immediate superiors). The best the requestor could do would be to try resolving the issuer up to each of its own TAs and use the first trust chain it can resolve. But I think we can do better.\n\nWhat if the challenge object that the issuer presents to the requester optionally included the issuer's TAs, so that then the requestor could intersect that with its own TAs and do a single resolve to get a trust chain? e.g.\n\n```json\n{\n  \"type\": \"openid-federation-01\",\n  \"url\": \"https://issuer.example.com/acme/chall/prV_B7yEyA4\",\n  \"status\": \"pending\",\n  \"token\": \"LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0\",\n  \"trust-anchors\": [\"https://example.org/\", \"https://another-ta.org/\"]\n}\n```",
       "createdAt": "2025-05-07T22:13:37Z",
-      "updatedAt": "2025-05-07T22:13:37Z",
+      "updatedAt": "2025-05-19T17:19:21Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Looking at RFC 8555, there seems to be a preference for JSON keys to be in `bumpyCase` rather than `snake_case`, so I think `trustAnchors` would be more appropriate than `trust-anchors`.",
+          "createdAt": "2025-05-19T16:32:18Z",
+          "updatedAt": "2025-05-19T16:32:18Z"
+        },
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think another thing is missing here: besides checking that some trust path exists from the requestor to one of the issuer's trust anchors, I think the issuer needs to make sure that the trust chain allows the requestor to have the `acme_requestor` entity type.\n\nBasically, I think we want to guard against a scenario where the requestor's EC contains entity type `acme_requestor` (ECs are self-signed so they can claim anything they want), but the ES does not, perhaps because the particular federation's policy forbids it.\n\nI'm not sure if the existing text implies that the issuer should check for this. All it says is that either the requestor should provide \"an array of strings containing signed JWTs, representing the Trust Chain of the Requestor, see [Section 4.3](https://openid.net/specs/openid-federation-1_0-41.html#section-4.3) of [[OPENID-FED](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#OPENID-FED)]\" or in the absence of the trust chain, that the issuer \"MUST start Federation Entity Discovery to obtain the Trust Chain related to the Requestor\".\n\nWe should probably have a specific reference to \"Federation Entity Discovery\" in the OIDF draft. In my implementation, I use the resolve endpoint (8.3). I think also we should explicitly spell out that the leaf ES in the trust chain must have `acme_requestor` metadata in it. And the text should either require the issuer to check that the `acme_requestor` metadata in the requestor EC is consistent with the leaf ES of the trust chain, or that only the leaf ES should be used to validate token signatures.",
+          "createdAt": "2025-05-19T17:16:12Z",
+          "updatedAt": "2025-05-19T17:16:12Z"
+        },
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Also, what if the requestor can't construct a trust chain, say because none of the trust anchors provided by the issuer trust it? Should it fail to solve the challenge? Or should it still sign the token and construct a challenge response without `trustChain` so that the issuer can try resolving trust?",
+          "createdAt": "2025-05-19T17:19:20Z",
+          "updatedAt": "2025-05-19T17:19:20Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -5780,13 +5802,13 @@
       "labels": [],
       "body": "When solving an `openid-federation-01` challenge, the requestor may provide a trust chain from itself to a trust anchor trusted by the issuer, to save the issuer the trouble of doing a resolve. However it's not clear how the requestor is supposed to know what TAs the issuer trusts.\r\n\r\nThis commit adds an optional field `trust_anchors` to the challenge object. The requestor can use that to construct a trust chain that the issuer will accept.\r\n\r\nAdditionally, this removes the sentence \"The Requestor SHOULD use a Trust Anchor it has in common with the ACME server.\"\r\n\r\nFirst, I don't think it's the right requirement. What matters is that (1) the trust anchor be trusted by the issuer and (2) there be some path from the requestor to the trust anchor. Those can be true even if the requestor doesn't trust the TA! To illustrate:\r\n\r\n```\r\ntrust_anchor_1           trust_anchor_2\r\n     |________________________|\r\n                  |\r\n            intermediate\r\n                  |\r\n     +------------+-----------+\r\n     |                        |\r\n  issuer                 requestor\r\n```\r\n\r\nIf issuer trusts trust_anchor_1 but not _2, and requestor trusts trust_anchor_2 but not _1, then trust_anchor_1->intermediate->requestor is a valid trust chain for solving a challenge even if requestor wouldn't trust it.\r\n\r\nSecond, it makes more sense as a MUST than a SHOULD. I rewrote it to make it explicit that the trust chain must end in one of the issuer's trust anchors.\r\n\r\nResolves #79",
       "createdAt": "2025-05-07T22:47:47Z",
-      "updatedAt": "2025-05-13T14:27:14Z",
+      "updatedAt": "2025-05-19T19:06:25Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "0573f04f6a1fe50b01358abc3288dfff32a33c6c",
       "headRepository": "tgeoghegan/draft-demarco-acme-openid-federation",
       "headRefName": "issuer-tas-hint",
-      "headRefOid": "063a75e64f1e624637a9d9ec95d207d9a3744b34",
+      "headRefOid": "7de67309b607eda50f0cc1b1dc73b66dc6d35a68",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -5804,6 +5826,59 @@
           "body": "",
           "createdAt": "2025-05-13T14:27:14Z",
           "updatedAt": "2025-05-13T14:27:14Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86p9yPO",
+          "commit": {
+            "abbreviatedOid": "50ea0ab"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-19T17:28:30Z",
+          "updatedAt": "2025-05-19T17:28:36Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "Should we use dromedary-case here, too?",
+              "createdAt": "2025-05-19T17:28:30Z",
+              "updatedAt": "2025-05-19T17:28:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86p92dw",
+          "commit": {
+            "abbreviatedOid": "50ea0ab"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-19T17:36:07Z",
+          "updatedAt": "2025-05-19T17:36:07Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "Yeah, since this object is in the ACME-object-domain rather than the OIDF-JWT domain (which appears to prefer `snake_case`.",
+              "createdAt": "2025-05-19T17:36:07Z",
+              "updatedAt": "2025-05-19T17:36:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86p-i_m",
+          "commit": {
+            "abbreviatedOid": "7de6730"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-05-19T19:06:25Z",
+          "updatedAt": "2025-05-19T19:06:25Z",
           "comments": []
         }
       ]
