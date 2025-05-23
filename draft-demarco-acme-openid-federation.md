@@ -314,8 +314,8 @@ ACME account with the Issuer.
         |                  |<- - - - - - - - - - - - - - - - -                           |
         |                  |                                 |                           |
         |                  ----.                             |                           |
-        |                      | Sign challenge token        |                           |
-        |                      | with private key            |                           |
+        |                  |   | Sign challenge token        |                           |
+        |                  |   | with private key            |                           |
         |                  <---'                             |                           |
         |                  |                                 |                           |
         |                  | POST /acme/chall/[chall-id]     |                           |
@@ -334,6 +334,20 @@ ACME account with the Issuer.
         |           Requestor's Entity Configuration         |                           |
         | - - -  - - - - - - - - - - - - - - - - - - - - - - >                           |
         |                  |                                 |                           |
+        |                  |           ______________________________________________________
+        |                  |           ! OPT  /  If requestor didn't provide Trust Chain |  !
+        |                  |           !_____/               |                           |  !
+        |                  |           !                     |  Determine Trust Chain    |  !
+        |                  |           !                     |  from Issuer's            |  !
+        |                  |           !                     |  Trust Anchor to Requestor|  !
+        |                  |           !                     |  (Federation Discovery)   |  !
+        |                  |           !                     | <------------------------>|  !
+        |                  |           !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!
+        |                  |                                 |                           |
+        |                  |                                 |----.                      |
+        |                  |                                 |    | Evaluate Trust Chain |
+        |                  |                                 |<---'                      |
+        |                  |                                 |                           |
         |                  |                                 |----.                      |
         |                  |                                 |    | Check                |
         |                  |                                 |    | Entity Configuration |
@@ -347,22 +361,6 @@ ACME account with the Issuer.
         |                  |                                 |    | sig is signed        |
         |                  |                                 |    | with key in          |
         |                  |                                 |<---' Entity Configuration |
-        |                  |                                 |                           |
-        |                  |                                 |                           |
-        |                  |                                 |                           |
-        |                  |           ______________________________________________________
-        |                  |           ! OPT  /  If requestor didn't provide Trust Chain |  !
-        |                  |           !_____/               |                           |  !
-        |                  |           !                     |  Determine Trust Chain    |  !
-        |                  |           !                     |  from Issuer's            |  !
-        |                  |           !                     |  Trust Anchor to Requestor|  !
-        |                  |           !                     |  (Federation Discovery)   |  !
-        |                  |           !                     | <------------------------>|  !
-        |                  |           !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!
-        |                  |                                 |                           |
-        |                  |                                 |----.                      |
-        |                  |                                 |    | Evaluate trust chain |
-        |                  |                                 |<---'                      |
         |                  |                                 |                           |
         |  _________________________________________________________________________     |
         |  ! LOOP  /  Poll until authz status                |                      !    |
@@ -558,9 +556,9 @@ A non-normative example of an ACME newOrder request:
 ## OpenID Federation Challenge Type {#challenge-type}
 
 The OpenID Federation challenge type allows a Requestor to prove control of a
-Federation Entity using the trust evaluation mechanism
-provided by {{OPENID-FED}}. The Requestor demonstrates control of a
-cryptographic public key published in its OpenID Federation Entity Configuration.
+Federation Entity using the trust evaluation mechanism provided by
+{{OPENID-FED}}. The Requestor demonstrates control of a cryptographic public key
+published in its OpenID Federation Entity Configuration.
 
 The openid-federation-01 ACME challenge object has the following format:
 
@@ -616,9 +614,11 @@ sig (required, string):  the compact JSON serialization (as described in
 trustChain (optional, array of string):  an array of strings containing signed
     JWTs, representing a Trust Chain from the Requestor to one of the Issuer's
     Trust Anchors (see {{Section 4 of OPENID-FED}}{: relative="#section-4"}).
-    It is RECOMMENDED that the Requestor includes this field; otherwise the ACME
-    server MUST start Federation Entity Discovery to obtain the Trust Chain
-    related to the Requestor.
+    The Entity Configuration of the Trust Chain subject MUST contain
+    `acme_requestor` metadata that is valid under the Trust Chain's resolved
+    metadata policy ({{Section 6.1 of OPENID-FED}}{: relative="#section-6.1"})
+    and which contains the key used to compute `sig`.
+    It is RECOMMENDED that the Requestor includes this field.
     If the Requestor cannot construct a Trust Chain to one of the Trust Anchors
     indicated by the Issuer, or if no Trust Anchors were indicated, it MAY use
     some other Trust Anchor that it believes the Issuer trusts.
@@ -647,24 +647,31 @@ A non-normative example for an authorization with `trustChain` specified:
    }
 ~~~~
 
-On receiving a challenge response, the Certificate Issuer retrieves the public keys associated with
-the given entity (possibly performing Federation Entity Discovery to do so),
-then:
+On receiving a challenge response, the Certificate Issuer verifies that the
+Requestor is trusted. If the Requestor did not provide a `trustChain`, the
+Issuer MUST perform Federation Entity Discovery to obtain a Trust Chain for the
+Requestor.
 
-* Verifies that the requested `openid-federation` identifier value matches the `sub`
+Once it has obtained a Trust Chain, the Issuer verifies:
+
+* That the Requestor's `acme_requestor` metadata is valid under the Trust
+  Chain's resolved metadata policy
+  ({{Section 6.1 of OPENID-FED}}}: relative="#section-6.1"}).
+
+* That the requested `openid-federation` identifier value matches the `sub`
   parameter of the Requestor's Entity Configuration.
 
-* Verifies that the `sig` field of the payload includes a valid JWT over the
-  key authorization, signed with one of the keys published in the Requestor's
-  `acme_requestor` metadata in its Entity Configuration, as specified in
-  {{requestor-metadata}}. The Issuer MUST only consider the key
-  whose `kid` matches the `kid` claim in the Requestor's challenge response.
-  The Issuer also MUST only consider keys published in the Requestor's
+* That the `sig` field of the payload is a compact JSON serialization of a JWS
+  signing the key authorization, signed with one of the keys published in the
+  Requestor's `acme_requestor` metadata in its Entity Configuration, as
+  specified in {{requestor-metadata}}. The Issuer MUST only consider the key
+  whose `kid` matches the `kid` claim in the Requestor's challenge response. The
+  Issuer also MUST only consider keys published in the Requestor's
   `acme_requestor` metadata.
 
 If all of the above verifications succeed, then the validation is successful.
-Otherwise, it has failed. In either case, the Certificate Issuer responds according to
-{{Section 7.5.1 of !RFC8555}}.
+Otherwise, it has failed. In either case, the Certificate Issuer responds
+according to {{Section 7.5.1 of !RFC8555}}.
 
 A non-normative example for the challenge object post-validation:
 

@@ -14,12 +14,12 @@ A -->> RC: Challenge validation beginning
 
 A ->> RF: GET /.well-known/openid-federation
 RF -->> A: Requestor's Entity Configuration
-A ->> A: Check Entity Configuration sub matches\nEntity identifier in the order
-A ->> A: Check challenge sig is signed\nwith key in Entity Configuration
 opt If requestor did not provide Trust Chain
   A <<->> F: Determine Trust Chain\nfrom Issuer's Trust Anchor to Requestor\n(OpenID Federation Discovery)
 end
 A ->> A: Evaluate trust chain
+A ->> A: Check Entity Configuration sub matches\nEntity identifier in the order
+A ->> A: Check challenge sig is signed\nwith key in Entity Configuration
 
 loop Poll until authz status is "valid" or "invalid"
 RC ->> A: POST-as-GET /acme/authz/[authz-id]
