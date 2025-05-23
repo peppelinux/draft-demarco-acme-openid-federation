@@ -566,9 +566,9 @@ token (required, string):  A random value that uniquely identifies the
 
 trustAnchors (optional, array of string):  An array of strings containing
     Entity Identifiers of the Issuer's trust anchors. When solving the
-    challenge, the Requestor can construct a trust chain from itself to one of
-    these trust anchors. It is RECOMMENDED that the Issuer includes this field
-    to make it easier for the Requestor to construct a trust chain.
+    challenge, the Requestor can construct a Trust Chain from itself to one of
+    these Trust Anchors. It is RECOMMENDED that the Issuer includes this field
+    to make it easier for the Requestor to construct a Trust Chain.
 
 A non-normative example of a challenge with `trustAnchors` specified:
 
@@ -607,11 +607,15 @@ sig (required, string):  the compact JSON serialization (as described in
 
 trustChain (optional, array of string):  an array of strings containing signed
     JWTs, representing a Trust Chain from the Requestor to one of the Issuer's
-    trust anchors (see
-    {{Section 4.3 of OPENID-FED}}{: relative="#section-4.3"}). It is RECOMMENDED
-    that the Requestor includes this field; otherwise, the ACME server MUST
-    start Federation Entity Discovery to obtain the Trust Chain related to the
-    Requestor.
+    Trust Anchors (see {{Section 4 of OPENID-FED}}{: relative="#section-4"}).
+    It is RECOMMENDED that the Requestor includes this field; otherwise the ACME
+    server MUST start Federation Entity Discovery to obtain the Trust Chain
+    related to the Requestor.
+    If the Requestor cannot construct a Trust Chain to one of the Trust Anchors
+    indicated by the Issuer, or if no Trust Anchors were indicated, it MAY use
+    some other Trust Anchor that it believes the Issuer trusts.
+    If the Requestor cannot construct a Trust Chain to any Trust Anchor, it MAY
+    omit the `trustChain` field from the challenge response.
 
 A non-normative example for an authorization with `trustChain` specified:
 
