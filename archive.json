@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-20T00:41:01.004063+00:00",
+  "timestamp": "2025-05-25T00:44:46.708157+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -5802,18 +5802,26 @@
       "labels": [],
       "body": "When solving an `openid-federation-01` challenge, the requestor may provide a trust chain from itself to a trust anchor trusted by the issuer, to save the issuer the trouble of doing a resolve. However it's not clear how the requestor is supposed to know what TAs the issuer trusts.\r\n\r\nThis commit adds an optional field `trust_anchors` to the challenge object. The requestor can use that to construct a trust chain that the issuer will accept.\r\n\r\nAdditionally, this removes the sentence \"The Requestor SHOULD use a Trust Anchor it has in common with the ACME server.\"\r\n\r\nFirst, I don't think it's the right requirement. What matters is that (1) the trust anchor be trusted by the issuer and (2) there be some path from the requestor to the trust anchor. Those can be true even if the requestor doesn't trust the TA! To illustrate:\r\n\r\n```\r\ntrust_anchor_1           trust_anchor_2\r\n     |________________________|\r\n                  |\r\n            intermediate\r\n                  |\r\n     +------------+-----------+\r\n     |                        |\r\n  issuer                 requestor\r\n```\r\n\r\nIf issuer trusts trust_anchor_1 but not _2, and requestor trusts trust_anchor_2 but not _1, then trust_anchor_1->intermediate->requestor is a valid trust chain for solving a challenge even if requestor wouldn't trust it.\r\n\r\nSecond, it makes more sense as a MUST than a SHOULD. I rewrote it to make it explicit that the trust chain must end in one of the issuer's trust anchors.\r\n\r\nResolves #79",
       "createdAt": "2025-05-07T22:47:47Z",
-      "updatedAt": "2025-05-19T19:06:25Z",
+      "updatedAt": "2025-05-23T17:06:35Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "0573f04f6a1fe50b01358abc3288dfff32a33c6c",
       "headRepository": "tgeoghegan/draft-demarco-acme-openid-federation",
       "headRefName": "issuer-tas-hint",
-      "headRefOid": "7de67309b607eda50f0cc1b1dc73b66dc6d35a68",
+      "headRefOid": "468fc824c5e75d8bae8033f63cc3d76bae84b302",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I added a commit here to address https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/79#issuecomment-2891752148.",
+          "createdAt": "2025-05-23T17:06:34Z",
+          "updatedAt": "2025-05-23T17:06:34Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOJ6_NW86pGXdH",
@@ -5882,6 +5890,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 81,
+      "id": "PR_kwDOJ6_NW86Xa8Sh",
+      "title": "Clarify trust chain metadata validation",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/81",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "# Stacked on #80 \r\n\r\n- Fix sequence diagram: trust is established before verifying key authorizaton\r\n- Clarify that the `acme_requestor` metadata has to be valid under Federation policy\r\n\r\nThis addresses outstanding observations in https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/79#issuecomment-2891744187. I also wanted to provide a more clear reference into OPENID-FED for \"Federation Entity Discovery\", but no such specification exists.\r\n\r\nOnly the last commit differs from #80.",
+      "createdAt": "2025-05-23T17:04:47Z",
+      "updatedAt": "2025-05-23T17:07:24Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "3a828bc99b8db7ebf4be0cf54250fa9e92d1acbf",
+      "headRepository": "tgeoghegan/draft-demarco-acme-openid-federation",
+      "headRefName": "clarify-trust-chain",
+      "headRefOid": "666f0bdde78e51cc29b293b5bc0daf4c56330e87",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
