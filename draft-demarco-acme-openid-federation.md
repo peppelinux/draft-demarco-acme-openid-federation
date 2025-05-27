@@ -656,7 +656,7 @@ Once it has obtained a Trust Chain, the Issuer verifies:
 
 * That the Requestor's `acme_requestor` metadata is valid under the Trust
   Chain's resolved metadata policy
-  ({{Section 6.1 of OPENID-FED}}}: relative="#section-6.1"}).
+  ({{Section 6.1 of OPENID-FED}}{: relative="#section-6.1"}).
 
 * That the requested `openid-federation` identifier value matches the `sub`
   parameter of the Requestor's Entity Configuration.
