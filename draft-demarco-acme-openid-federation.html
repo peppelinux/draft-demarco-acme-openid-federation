@@ -1551,8 +1551,8 @@ ACME account with the Issuer.<a href="#section-6.3-4" class="pilcrow">¶</a></p>
         |                  |&lt;- - - - - - - - - - - - - - - - -                           |
         |                  |                                 |                           |
         |                  ----.                             |                           |
-        |                      | Sign challenge token        |                           |
-        |                      | with private key            |                           |
+        |                  |   | Sign challenge token        |                           |
+        |                  |   | with private key            |                           |
         |                  &lt;---'                             |                           |
         |                  |                                 |                           |
         |                  | POST /acme/chall/[chall-id]     |                           |
@@ -1571,6 +1571,20 @@ ACME account with the Issuer.<a href="#section-6.3-4" class="pilcrow">¶</a></p>
         |           Requestor's Entity Configuration         |                           |
         | - - -  - - - - - - - - - - - - - - - - - - - - - - &gt;                           |
         |                  |                                 |                           |
+        |                  |           ______________________________________________________
+        |                  |           ! OPT  /  If requestor didn't provide Trust Chain |  !
+        |                  |           !_____/               |                           |  !
+        |                  |           !                     |  Determine Trust Chain    |  !
+        |                  |           !                     |  from Issuer's            |  !
+        |                  |           !                     |  Trust Anchor to Requestor|  !
+        |                  |           !                     |  (Federation Discovery)   |  !
+        |                  |           !                     | &lt;------------------------&gt;|  !
+        |                  |           !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!
+        |                  |                                 |                           |
+        |                  |                                 |----.                      |
+        |                  |                                 |    | Evaluate Trust Chain |
+        |                  |                                 |&lt;---'                      |
+        |                  |                                 |                           |
         |                  |                                 |----.                      |
         |                  |                                 |    | Check                |
         |                  |                                 |    | Entity Configuration |
@@ -1584,22 +1598,6 @@ ACME account with the Issuer.<a href="#section-6.3-4" class="pilcrow">¶</a></p>
         |                  |                                 |    | sig is signed        |
         |                  |                                 |    | with key in          |
         |                  |                                 |&lt;---' Entity Configuration |
-        |                  |                                 |                           |
-        |                  |                                 |                           |
-        |                  |                                 |                           |
-        |                  |           ______________________________________________________
-        |                  |           ! OPT  /  If requestor didn't provide Trust Chain |  !
-        |                  |           !_____/               |                           |  !
-        |                  |           !                     |  Determine Trust Chain    |  !
-        |                  |           !                     |  from Issuer's            |  !
-        |                  |           !                     |  Trust Anchor to Requestor|  !
-        |                  |           !                     |  (Federation Discovery)   |  !
-        |                  |           !                     | &lt;------------------------&gt;|  !
-        |                  |           !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!
-        |                  |                                 |                           |
-        |                  |                                 |----.                      |
-        |                  |                                 |    | Evaluate trust chain |
-        |                  |                                 |&lt;---'                      |
         |                  |                                 |                           |
         |  _________________________________________________________________________     |
         |  ! LOOP  /  Poll until authz status                |                      !    |
@@ -1818,9 +1816,9 @@ Issuer's <code>newOrder</code> resource, as specified in <span><a href="https://
 <a href="#section-6.7" class="section-number selfRef">6.7. </a><a href="#name-openid-federation-challenge" class="section-name selfRef">OpenID Federation Challenge Type</a>
         </h3>
 <p id="section-6.7-1">The OpenID Federation challenge type allows a Requestor to prove control of a
-Federation Entity using the trust evaluation mechanism
-provided by <span>[<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>. The Requestor demonstrates control of a
-cryptographic public key published in its OpenID Federation Entity Configuration.<a href="#section-6.7-1" class="pilcrow">¶</a></p>
+Federation Entity using the trust evaluation mechanism provided by
+<span>[<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>. The Requestor demonstrates control of a cryptographic public key
+published in its OpenID Federation Entity Configuration.<a href="#section-6.7-1" class="pilcrow">¶</a></p>
 <p id="section-6.7-2">The openid-federation-01 ACME challenge object has the following format:<a href="#section-6.7-2" class="pilcrow">¶</a></p>
 <p id="section-6.7-3">type (required, string):  The string "openid-federation-01"<a href="#section-6.7-3" class="pilcrow">¶</a></p>
 <p id="section-6.7-4">token (required, string):  A random value that uniquely identifies the
@@ -1867,9 +1865,11 @@ for any identifiers except <code>openid-federation</code> identifiers.<a href="#
 <p id="section-6.7-12">trustChain (optional, array of string):  an array of strings containing signed
     JWTs, representing a Trust Chain from the Requestor to one of the Issuer's
     Trust Anchors (see <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-4" class="relref">Section 4</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>).
-    It is <span class="bcp14">RECOMMENDED</span> that the Requestor includes this field; otherwise the ACME
-    server <span class="bcp14">MUST</span> start Federation Entity Discovery to obtain the Trust Chain
-    related to the Requestor.
+    The Entity Configuration of the Trust Chain subject <span class="bcp14">MUST</span> contain
+    <code>acme_requestor</code> metadata that is valid under the Trust Chain's resolved
+    metadata policy (<span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-6.1" class="relref">Section 6.1</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>)
+    and contains the key used to compute <code>sig</code>.
+    It is <span class="bcp14">RECOMMENDED</span> that the Requestor includes this field.
     If the Requestor cannot construct a Trust Chain to one of the Trust Anchors
     indicated by the Issuer, or if no Trust Anchors were indicated, it <span class="bcp14">MAY</span> use
     some other Trust Anchor that it believes the Issuer trusts.
@@ -1897,29 +1897,34 @@ for any identifiers except <code>openid-federation</code> identifiers.<a href="#
    }
 </pre><a href="#section-6.7-14" class="pilcrow">¶</a>
 </div>
-<p id="section-6.7-15">On receiving a challenge response, the Certificate Issuer retrieves the public keys associated with
-the given entity (possibly performing Federation Entity Discovery to do so),
-then:<a href="#section-6.7-15" class="pilcrow">¶</a></p>
+<p id="section-6.7-15">On receiving a challenge response, the Certificate Issuer verifies that the
+Requestor is trusted. If the Requestor did not provide a <code>trustChain</code>, the
+Issuer <span class="bcp14">MUST</span> perform Federation Entity Discovery
+(<span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-10" class="relref">Section 10</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>) to obtain a Trust Chain
+for the Requestor.<a href="#section-6.7-15" class="pilcrow">¶</a></p>
+<p id="section-6.7-16">Once it has obtained a Trust Chain, the Issuer verifies:<a href="#section-6.7-16" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.7-16.1">
-            <p id="section-6.7-16.1.1">Verifies that the requested <code>openid-federation</code> identifier value matches the <code>sub</code>
-parameter of the Requestor's Entity Configuration.<a href="#section-6.7-16.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-6.7-17.1">
+            <p id="section-6.7-17.1.1">That the Requestor's <code>acme_requestor</code> metadata is valid under the Trust
+Chain's resolved metadata policy
+(<span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-6.1" class="relref">Section 6.1</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>).<a href="#section-6.7-17.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.7-16.2">
-            <p id="section-6.7-16.2.1">Verifies that the <code>sig</code> field of the payload includes a valid JWT over the
-key authorization, signed with one of the keys published in the Requestor's
-<code>acme_requestor</code> metadata in its Entity Configuration, as specified in
-<a href="#requestor-metadata" class="auto internal xref">Section 6.4.2</a>. The Issuer <span class="bcp14">MUST</span> only consider the key
-whose <code>kid</code> matches the <code>kid</code> claim in the Requestor's challenge response.
-The Issuer also <span class="bcp14">MUST</span> only consider keys published in the Requestor's
-<code>acme_requestor</code> metadata.<a href="#section-6.7-16.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-6.7-17.2">
+            <p id="section-6.7-17.2.1">That the requested <code>openid-federation</code> identifier value matches the <code>sub</code>
+parameter of the Requestor's Entity Configuration.<a href="#section-6.7-17.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.7-17.3">
+            <p id="section-6.7-17.3.1">That the <code>sig</code> field of the payload is the compact JSON serialization of a JWS
+signing the key authorization, signed with a key from the Requestor's
+<code>acme_requestor</code> metadata (<a href="#requestor-metadata" class="auto internal xref">Section 6.4.2</a>) whose <code>kid</code> matches the
+<code>kid</code> claim in the challenge response.<a href="#section-6.7-17.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-6.7-17">If all of the above verifications succeed, then the validation is successful.
-Otherwise, it has failed. In either case, the Certificate Issuer responds according to
-<span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.5.1" class="relref">Section 7.5.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.7-17" class="pilcrow">¶</a></p>
-<p id="section-6.7-18">A non-normative example for the challenge object post-validation:<a href="#section-6.7-18" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.7-19">
+<p id="section-6.7-18">If all of the above verifications succeed, then the validation is successful.
+Otherwise, it has failed. In either case, the Certificate Issuer responds
+according to <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.5.1" class="relref">Section 7.5.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.7-18" class="pilcrow">¶</a></p>
+<p id="section-6.7-19">A non-normative example for the challenge object post-validation:<a href="#section-6.7-19" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.7-20">
 <pre>
    {
      "type": "openid-federation-01",
@@ -1928,7 +1933,7 @@ Otherwise, it has failed. In either case, the Certificate Issuer responds accord
      "validated": "2024-10-01T12:05:13.72Z",
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
-</pre><a href="#section-6.7-19" class="pilcrow">¶</a>
+</pre><a href="#section-6.7-20" class="pilcrow">¶</a>
 </div>
 <div id="openidfed-othername-id">
 <section id="section-6.7.1">
