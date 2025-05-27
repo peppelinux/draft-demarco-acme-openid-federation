@@ -565,7 +565,7 @@ token (required, string):  A random value that uniquely identifies the
     See {{!RFC4086}} for additional information on randomness requirements.
 
 trustAnchors (optional, array of string):  An array of strings containing
-    Entity Identifiers of the Issuer's trust anchors. When solving the
+    Entity Identifiers of the Issuer's Trust Anchors. When solving the
     challenge, the Requestor can construct a Trust Chain from itself to one of
     these Trust Anchors. It is RECOMMENDED that the Issuer includes this field
     to make it easier for the Requestor to construct a Trust Chain.
