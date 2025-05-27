@@ -1828,22 +1828,32 @@ cryptographic public key published in its OpenID Federation Entity Configuration
     contain any characters outside the base64url alphabet as described in
     <span><a href="https://rfc-editor.org/rfc/rfc4648#section-5" class="relref">Section 5</a> of [<a href="#RFC4648" class="cite xref">RFC4648</a>]</span>. Trailing '=' padding characters <span class="bcp14">MUST</span> be stripped.
     See <span>[<a href="#RFC4086" class="cite xref">RFC4086</a>]</span> for additional information on randomness requirements.<a href="#section-6.7-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.7-5">
+<p id="section-6.7-5">trustAnchors (optional, array of string):  An array of strings containing
+    Entity Identifiers of the Issuer's Trust Anchors. When solving the
+    challenge, the Requestor can construct a Trust Chain from itself to one of
+    these Trust Anchors. It is <span class="bcp14">RECOMMENDED</span> that the Issuer includes this field
+    to make it easier for the Requestor to construct a Trust Chain.<a href="#section-6.7-5" class="pilcrow">¶</a></p>
+<p id="section-6.7-6">A non-normative example of a challenge with <code>trustAnchors</code> specified:<a href="#section-6.7-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.7-7">
 <pre>
    {
      "type": "openid-federation-01",
      "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
      "status": "pending",
-     "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
+     "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0",
+     "trustAnchors": [
+       "https://trust-anchor-1.example.com",
+       "https://trust-anchor-2.example.com"
+     ]
    }
-</pre><a href="#section-6.7-5" class="pilcrow">¶</a>
+</pre><a href="#section-6.7-7" class="pilcrow">¶</a>
 </div>
-<p id="section-6.7-6">The <code>openid-federation-01</code> challenge <span class="bcp14">MUST NOT</span> be used to issue X.509 Certificates
-for any identifiers except <code>openid-federation</code> identifiers.<a href="#section-6.7-6" class="pilcrow">¶</a></p>
-<p id="section-6.7-7">The <code>openid-federation</code> identifier <span class="bcp14">MUST NOT</span> be validated except by the
-<code>openid-federation-01</code> challenge.<a href="#section-6.7-7" class="pilcrow">¶</a></p>
-<p id="section-6.7-8">The Requestor responds to the challenge with an object with the following format:<a href="#section-6.7-8" class="pilcrow">¶</a></p>
-<p id="section-6.7-9">sig (required, string):  the compact JSON serialization (as described in
+<p id="section-6.7-8">The <code>openid-federation-01</code> challenge <span class="bcp14">MUST NOT</span> be used to issue X.509 Certificates
+for any identifiers except <code>openid-federation</code> identifiers.<a href="#section-6.7-8" class="pilcrow">¶</a></p>
+<p id="section-6.7-9">The <code>openid-federation</code> identifier <span class="bcp14">MUST NOT</span> be validated except by the
+<code>openid-federation-01</code> challenge.<a href="#section-6.7-9" class="pilcrow">¶</a></p>
+<p id="section-6.7-10">The Requestor responds to the challenge with an object with the following format:<a href="#section-6.7-10" class="pilcrow">¶</a></p>
+<p id="section-6.7-11">sig (required, string):  the compact JSON serialization (as described in
     <span><a href="https://rfc-editor.org/rfc/rfc7515#section-7.1" class="relref">Section 7.1</a> of [<a href="#RFC7515" class="cite xref">RFC7515</a>]</span>) of a JWS, signing the key authorization
     encoded in UTF-8.
     The key authorization is computed from the token in the challenge and the
@@ -1853,16 +1863,20 @@ for any identifiers except <code>openid-federation</code> identifiers.<a href="#
     <a href="#requestor-metadata" class="auto internal xref">Section 6.4.2</a>.
     The JWS <span class="bcp14">MUST</span> include a <code>kid</code> header parameter corresponding to the key used
     to sign the key authorization and a <code>typ</code> header parameter set to
-    "signed-acme-challenge+jwt".
-trust_chain (optional, array of string):  an array of strings containing signed JWTs,
-    representing the Trust Chain of the Requestor,
-    see <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-4.3" class="relref">Section 4.3</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
-    The Requestor <span class="bcp14">SHOULD</span> use a Trust Anchor it
-    has in common with the ACME server. It is <span class="bcp14">RECOMMENDED</span> that the Requestor
-    includes this field; otherwise, the ACME server <span class="bcp14">MUST</span> start Federation Entity
-    Discovery to obtain the Trust Chain related to the Requestor.<a href="#section-6.7-9" class="pilcrow">¶</a></p>
-<p id="section-6.7-10">A non-normative example for an authorization with <code>trust_chain</code> specified:<a href="#section-6.7-10" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.7-11">
+    "signed-acme-challenge+jwt".<a href="#section-6.7-11" class="pilcrow">¶</a></p>
+<p id="section-6.7-12">trustChain (optional, array of string):  an array of strings containing signed
+    JWTs, representing a Trust Chain from the Requestor to one of the Issuer's
+    Trust Anchors (see <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-4" class="relref">Section 4</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>).
+    It is <span class="bcp14">RECOMMENDED</span> that the Requestor includes this field; otherwise the ACME
+    server <span class="bcp14">MUST</span> start Federation Entity Discovery to obtain the Trust Chain
+    related to the Requestor.
+    If the Requestor cannot construct a Trust Chain to one of the Trust Anchors
+    indicated by the Issuer, or if no Trust Anchors were indicated, it <span class="bcp14">MAY</span> use
+    some other Trust Anchor that it believes the Issuer trusts.
+    If the Requestor cannot construct a Trust Chain to any Trust Anchor, it <span class="bcp14">MAY</span>
+    omit the <code>trustChain</code> field from the challenge response.<a href="#section-6.7-12" class="pilcrow">¶</a></p>
+<p id="section-6.7-13">A non-normative example for an authorization with <code>trustChain</code> specified:<a href="#section-6.7-13" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.7-14">
 <pre>
    POST /acme/chall/prV_B7yEyA4
    Host: issuer.example.com
@@ -1877,35 +1891,35 @@ trust_chain (optional, array of string):  an array of strings containing signed 
      }),
      "payload": base64url({
       "sig": "wQAvHlPV1tVxRW0vZUa4BQ...",
-      "trust_chain": ["eyJhbGciOiJFU...", "eyJhbGci..."]
+      "trustChain": ["eyJhbGciOiJFU...", "eyJhbGci..."]
      }),
      "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
    }
-</pre><a href="#section-6.7-11" class="pilcrow">¶</a>
+</pre><a href="#section-6.7-14" class="pilcrow">¶</a>
 </div>
-<p id="section-6.7-12">On receiving a challenge response, the Certificate Issuer retrieves the public keys associated with
+<p id="section-6.7-15">On receiving a challenge response, the Certificate Issuer retrieves the public keys associated with
 the given entity (possibly performing Federation Entity Discovery to do so),
-then:<a href="#section-6.7-12" class="pilcrow">¶</a></p>
+then:<a href="#section-6.7-15" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.7-13.1">
-            <p id="section-6.7-13.1.1">Verifies that the requested <code>openid-federation</code> identifier value matches the <code>sub</code>
-parameter of the Requestor's Entity Configuration.<a href="#section-6.7-13.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-6.7-16.1">
+            <p id="section-6.7-16.1.1">Verifies that the requested <code>openid-federation</code> identifier value matches the <code>sub</code>
+parameter of the Requestor's Entity Configuration.<a href="#section-6.7-16.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.7-13.2">
-            <p id="section-6.7-13.2.1">Verifies that the <code>sig</code> field of the payload includes a valid JWT over the
+          <li class="normal" id="section-6.7-16.2">
+            <p id="section-6.7-16.2.1">Verifies that the <code>sig</code> field of the payload includes a valid JWT over the
 key authorization, signed with one of the keys published in the Requestor's
 <code>acme_requestor</code> metadata in its Entity Configuration, as specified in
 <a href="#requestor-metadata" class="auto internal xref">Section 6.4.2</a>. The Issuer <span class="bcp14">MUST</span> only consider the key
 whose <code>kid</code> matches the <code>kid</code> claim in the Requestor's challenge response.
 The Issuer also <span class="bcp14">MUST</span> only consider keys published in the Requestor's
-<code>acme_requestor</code> metadata.<a href="#section-6.7-13.2.1" class="pilcrow">¶</a></p>
+<code>acme_requestor</code> metadata.<a href="#section-6.7-16.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-6.7-14">If all of the above verifications succeed, then the validation is successful.
+<p id="section-6.7-17">If all of the above verifications succeed, then the validation is successful.
 Otherwise, it has failed. In either case, the Certificate Issuer responds according to
-<span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.5.1" class="relref">Section 7.5.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.7-14" class="pilcrow">¶</a></p>
-<p id="section-6.7-15">A non-normative example for the challenge object post-validation:<a href="#section-6.7-15" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.7-16">
+<span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.5.1" class="relref">Section 7.5.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.7-17" class="pilcrow">¶</a></p>
+<p id="section-6.7-18">A non-normative example for the challenge object post-validation:<a href="#section-6.7-18" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.7-19">
 <pre>
    {
      "type": "openid-federation-01",
@@ -1914,7 +1928,7 @@ Otherwise, it has failed. In either case, the Certificate Issuer responds accord
      "validated": "2024-10-01T12:05:13.72Z",
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
-</pre><a href="#section-6.7-16" class="pilcrow">¶</a>
+</pre><a href="#section-6.7-19" class="pilcrow">¶</a>
 </div>
 <div id="openidfed-othername-id">
 <section id="section-6.7.1">
