@@ -617,7 +617,7 @@ trustChain (optional, array of string):  an array of strings containing signed
     The Entity Configuration of the Trust Chain subject MUST contain
     `acme_requestor` metadata that is valid under the Trust Chain's resolved
     metadata policy ({{Section 6.1 of OPENID-FED}}{: relative="#section-6.1"})
-    and which contains the key used to compute `sig`.
+    and contains the key used to compute `sig`.
     It is RECOMMENDED that the Requestor includes this field.
     If the Requestor cannot construct a Trust Chain to one of the Trust Anchors
     indicated by the Issuer, or if no Trust Anchors were indicated, it MAY use
@@ -649,8 +649,9 @@ A non-normative example for an authorization with `trustChain` specified:
 
 On receiving a challenge response, the Certificate Issuer verifies that the
 Requestor is trusted. If the Requestor did not provide a `trustChain`, the
-Issuer MUST perform Federation Entity Discovery to obtain a Trust Chain for the
-Requestor.
+Issuer MUST perform Federation Entity Discovery
+({{Section 10 of OPENID-FED}}{: relative="#section-10"}) to obtain a Trust Chain
+for the Requestor.
 
 Once it has obtained a Trust Chain, the Issuer verifies:
 
@@ -661,13 +662,10 @@ Once it has obtained a Trust Chain, the Issuer verifies:
 * That the requested `openid-federation` identifier value matches the `sub`
   parameter of the Requestor's Entity Configuration.
 
-* That the `sig` field of the payload is a compact JSON serialization of a JWS
-  signing the key authorization, signed with one of the keys published in the
-  Requestor's `acme_requestor` metadata in its Entity Configuration, as
-  specified in {{requestor-metadata}}. The Issuer MUST only consider the key
-  whose `kid` matches the `kid` claim in the Requestor's challenge response. The
-  Issuer also MUST only consider keys published in the Requestor's
-  `acme_requestor` metadata.
+* That the `sig` field of the payload is the compact JSON serialization of a JWS
+  signing the key authorization, signed with a key from the Requestor's
+  `acme_requestor` metadata ({{requestor-metadata}}) whose `kid` matches the
+  `kid` claim in the challenge response.
 
 If all of the above verifications succeed, then the validation is successful.
 Otherwise, it has failed. In either case, the Certificate Issuer responds
