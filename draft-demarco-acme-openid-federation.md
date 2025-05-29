@@ -183,67 +183,23 @@ Certificate Issuer (or Issuer):
 
 {::boilerplate bcp14-tagged}
 
-# Certificates issued using OpenID Federation
-
-The Certificate Issuer establishes if a Federation Entity is eligible to obtain X.509
-Certificates for the identifier configured in the Requestor's Entity
-Configuration.
-
-The cryptographic keys published within the Requestor's Entity Configuration
-are used to satisfy the Certificate Issuer's challenge.
-
 # Protocol Flow
 
-This section presents the protocol flow. The protocol flow is subdivided in the
-following phases:
+The protocol flow consists of the following phases:
 
-- **Discovery**, the Requestor discovers the available Certificate Issuers
-  within a federation, inspecting the ACME issuer entity types.
-- **Issuance**, the Requestor requests a X.509 Certificate from a Certificate
-  Issuer using the ACME protocol.
-
-## Preconditions
-
-The protocol requires the following preconditions are met.
-
-1. The Requestor and the Issuer MUST publish their Entity Configuration as
-   defined in {{Section 9 of OPENID-FED}}{: relative="#section-9"}.
-
-2. The Issuer MUST implement an ACME server, extended according to this document.
-
-3. The Requestor MUST publish the entity type `acme_requestor` in its Entity
-   Configuration, according to {{requestor-metadata}}.
-
-4. The Issuer MUST publish the entity type `acme_issuer` in its Entity
-   Configuration, according to {{issuer-metadata}}.
-
-## Discovery
-
-The Requestor's ACME client may either be configured to use a particular ACME
-server, or to automatically discover a Certificate Issuer through the
-federation.
-
-Requestors that use discovery MAY select any entity with an entity type of
-`acme_issuer`, or they may additionally require that such entities have a
-valid Trust Mark with a particular Trust Mark Identifier.
-
-## Overview
-
-1. The Requestor checks if its superior Federation Entity supports the ACME
-   protocol for OpenID Federation 1.0. If not, the Requestor starts the
-   discovery process to find Issuers within the federation.
-
-2. The Requestor begins the X.509 Certificate issuance process as specified in
-   {{!RFC8555}}, but with an order as described in {{neworder-request}}.
-
-3. The Certificate Issuer verifies if the Requestor is part of its Federation by
-   issuing and validating a challenge as described in {{challenge-type}}.
+- **Discovery**: the Requestor discovers the available Certificate Issuers
+  within a federation, inspecting the ACME issuer Entity types. This is
+  discussed in {{discovery}}.
+- **Issuance**: the Requestor requests a X.509 Certificate from a Certificate
+  Issuer using the ACME protocol. The necessary extensions to ACME orders and
+  challenges are discussed in {{neworder-request}} and {{challenge-type}},
+  respectively.
 
 There are two ways the Certificate Issuer is able to check if a Requestor is
 part of the federation:
 
-- The Requestor provides a Trust Chain when solving the ACME challenge. This
-  option is RECOMMENDED since it reduces the effort of the Certificate Issuer in
+- The Requestor provides a Trust Chain when solving the ACME challenge. This is
+  RECOMMENDED since it reduces the effort of the Certificate Issuer in
   evaluating the trust to the Requestor.
 
 - The Requestor doesn't provide a Trust Chain in the challenge solution. The
@@ -371,6 +327,31 @@ ACME account with the Issuer.
 | Web Server      |  `-----------'
 `-----------------'
 ~~~~
+
+## Preconditions
+
+The protocol requires the following preconditions are met.
+
+1. The Requestor and the Issuer MUST publish their Entity Configuration as
+   defined in {{Section 9 of OPENID-FED}}{: relative="#section-9"}.
+
+2. The Issuer MUST implement an ACME server, extended according to this document.
+
+3. The Requestor MUST publish the entity type `acme_requestor` in its Entity
+   Configuration, according to {{requestor-metadata}}.
+
+4. The Issuer MUST publish the entity type `acme_issuer` in its Entity
+   Configuration, according to {{issuer-metadata}}.
+
+## Discovery
+
+The Requestor's ACME client may either be configured to use a particular ACME
+server, or to automatically discover a Certificate Issuer through the
+federation.
+
+Requestors that use discovery MAY select any Entity with an Entity type of
+`acme_issuer`, or they may additionally require that such entities have a
+valid Trust Mark with a particular Trust Mark Identifier.
 
 ## Entity Configuration Metadata
 
