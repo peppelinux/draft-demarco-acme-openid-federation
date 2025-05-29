@@ -46,9 +46,6 @@ contributor:
     email: ietf@insufficient.coffee
 
 normative:
-  RFC2986: RFC2986
-  RFC5280: RFC5280
-
   OPENID-FED:
     title: "OpenID Federation 1.0 - draft 41"
     target: https://openid.net/specs/openid-federation-1_0-41.html
@@ -151,10 +148,6 @@ on OpenID Federation 1.0.
 
 This specification can be implemented by:
 
-// Edit: I don't think we should talk about bootstrapping trust from HTTP,
-// because I am extremely skeptical that it would be possible to operate OPENID-FED
-// over HTTP, or that this specification would let you bootstrap into HTTPS. It
-// may still be possible, but we don't need to make that promise here.
 - Federation Entities that join a federation to attest themselves as
   trustworthy, and then retrieve X.509 Certificates for their official HTTPS
   Federation Entity ID.
@@ -649,7 +642,8 @@ Otherwise, it has failed. In either case, the Certificate Issuer responds
 according to {{Section 7.5.1 of !RFC8555}}. If the Issuer fails to verify OpenID
 Federation trust, the problem document SHOULD contain a subproblem of type
 `urn:ietf:params:acme:error:openIDFederationEntity` and the error code
-`invalid_trust_chain` ({{Section 8.9 of OPENID-FED}}).
+`invalid_trust_chain`
+({{Section 8.9 of OPENID-FED}}{: relative="#section-8.9"}).
 
 A non-normative example for the challenge object post-validation:
 
