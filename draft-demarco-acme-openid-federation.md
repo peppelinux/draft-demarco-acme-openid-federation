@@ -131,7 +131,6 @@ ACME protocol in the following ways:
   since the authentication and authorization of the requestor is asserted with
   OpenID Federation 1.0.
 
-
 - It defines how the OpenID Federation Subordinate Statements can be used for the
   publication of the X.509 Certificates, by a Superior Entity, that
   were previously issued with ACME.
@@ -186,14 +185,12 @@ Certificate Issuer (or Issuer):
 
 # Certificates issued using OpenID Federation
 
-
 The Certificate Issuer establishes if a Federation Entity is eligible to obtain X.509
 Certificates for the identifier configured in the Requestor's Entity
 Configuration.
 
 The cryptographic keys published within the Requestor's Entity Configuration
 are used to satisfy the Certificate Issuer's challenge.
-
 
 # Protocol Flow
 
@@ -211,7 +208,6 @@ The protocol requires the following preconditions are met.
 
 1. The Requestor and the Issuer MUST publish their Entity Configuration as
    defined in {{Section 9 of OPENID-FED}}{: relative="#section-9"}.
-
 
 2. The Issuer MUST implement an ACME server, extended according to this document.
 
@@ -242,8 +238,6 @@ valid Trust Mark with a particular Trust Mark Identifier.
 
 3. The Certificate Issuer verifies if the Requestor is part of its Federation by
    issuing and validating a challenge as described in {{challenge-type}}.
-
-
 
 There are two ways the Certificate Issuer is able to check if a Requestor is
 part of the federation:
