@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-25T00:44:46.708157+00:00",
+  "timestamp": "2025-05-29T00:40:22.713219+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -880,12 +880,14 @@
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/60",
       "state": "OPEN",
       "author": "tgeoghegan",
-      "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "jcjones"
+      ],
       "labels": [],
       "body": "Currently, we require the ACME issuer to reproduce the entire ACME directory in its entity configuration:\n\n```\n{\n  \"iss\": \"https://issuer.example.com\",\n  \"sub\": \"https://issuer.example.com\",\n  \"iat\": 1516239022,\n  \"exp\": 1516298022,\n  \"jwks\": {\n    \"keys\": [\n      {\n        \"kty\": \"RSA\",\n        \"alg\": \"RS256\",\n        \"use\": \"sig\",\n        \"kid\": \"NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs\",\n        \"n\": \"pnXBOusEANuug6ewezb9J_...\",\n        \"e\": \"AQAB\"\n      }\n    ]\n  },\n  \"metadata\": {\n    \"acme_provider\": {\n      \"newNonce\": \"https://issuer.example.com/acme/new-nonce\",\n      \"newOrder\": \"https://issuer.example.com/acme/new-order\",\n      \"revokeCert\": \"https://issuer.example.com/acme/revoke-cert\",\n      \"meta\": {\n        \"termsOfService\": \"https://issuer.example.com/acme/terms/2017-5-30\",\n        \"website\": \"https://www.issuer.example.com/\",\n        \"externalAccountRequired\": false\n      }\n    }\n  }\n}\n```\n\nThis seems natural since ACME already defines the directory as a JSON dictionary, but it introduces the risk of disagreement between the directory advertised in the EC and the directory the issuer may advertise over HTTPS. Additionally, it means that every change to the ACME directory requires updating the EC. Some ACME implementations like Boulder [add random entries to their directory](https://community.letsencrypt.org/t/adding-random-entries-to-the-directory/33417) as a form of [protocol GREASE](https://chromestatus.com/feature/6475903378915328), so dynamically generating the directory on each request is not unreasonable.\n\nInstead, we could have `acme_provider` simply contain the URI for the issuer's directory, and then the client would discover the other API endpoints as ACME clients already do.\n\n@divergentdave points out that removing information from OpenID Federation ECs limits the ability of superior entities to [constrain a subordinate's metadata](https://openid.net/specs/openid-federation-1_0-41.html#chain_constraints), but it's not clear how that would work even if the entire directory is present.",
       "createdAt": "2025-02-06T17:24:39Z",
-      "updatedAt": "2025-02-27T17:54:31Z",
+      "updatedAt": "2025-05-27T20:37:51Z",
       "closedAt": null,
       "comments": [
         {
@@ -1075,36 +1077,67 @@
       "id": "I_kwDOJ6_NW861odyW",
       "title": "Allow issuer to include its OIDF trust anchors in `openid-federation-01` challenge",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/79",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tgeoghegan",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The `openid-federation-01` challenge consists of a token, which the requestor must sign to prove possession of one of the keys in the `acme_requestor` metadata. The challenge response can optionally contain a trust chain, to save the ACME issuer the trouble of resolving trust in the requestor. Makes sense, but the question is: a chain to what trust anchor?\n\nThe protocol text says: [\"The Requestor SHOULD use a Trust Anchor it has in common with the ACME server.\"](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6.7-9)\n\nBut it's not clear to me how the requestor is supposed to know what TAs it has in common with the issuer. An OpenID Fed entity doesn't advertise its trust anchors anywhere (`authority_hints` has to be immediate superiors). The best the requestor could do would be to try resolving the issuer up to each of its own TAs and use the first trust chain it can resolve. But I think we can do better.\n\nWhat if the challenge object that the issuer presents to the requester optionally included the issuer's TAs, so that then the requestor could intersect that with its own TAs and do a single resolve to get a trust chain? e.g.\n\n```json\n{\n  \"type\": \"openid-federation-01\",\n  \"url\": \"https://issuer.example.com/acme/chall/prV_B7yEyA4\",\n  \"status\": \"pending\",\n  \"token\": \"LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0\",\n  \"trust-anchors\": [\"https://example.org/\", \"https://another-ta.org/\"]\n}\n```",
       "createdAt": "2025-05-07T22:13:37Z",
-      "updatedAt": "2025-05-19T17:19:21Z",
-      "closedAt": null,
+      "updatedAt": "2025-05-27T14:22:11Z",
+      "closedAt": "2025-05-27T14:22:11Z",
       "comments": [
         {
           "author": "tgeoghegan",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "body": "Looking at RFC 8555, there seems to be a preference for JSON keys to be in `bumpyCase` rather than `snake_case`, so I think `trustAnchors` would be more appropriate than `trust-anchors`.",
           "createdAt": "2025-05-19T16:32:18Z",
           "updatedAt": "2025-05-19T16:32:18Z"
         },
         {
           "author": "tgeoghegan",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "body": "I think another thing is missing here: besides checking that some trust path exists from the requestor to one of the issuer's trust anchors, I think the issuer needs to make sure that the trust chain allows the requestor to have the `acme_requestor` entity type.\n\nBasically, I think we want to guard against a scenario where the requestor's EC contains entity type `acme_requestor` (ECs are self-signed so they can claim anything they want), but the ES does not, perhaps because the particular federation's policy forbids it.\n\nI'm not sure if the existing text implies that the issuer should check for this. All it says is that either the requestor should provide \"an array of strings containing signed JWTs, representing the Trust Chain of the Requestor, see [Section 4.3](https://openid.net/specs/openid-federation-1_0-41.html#section-4.3) of [[OPENID-FED](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#OPENID-FED)]\" or in the absence of the trust chain, that the issuer \"MUST start Federation Entity Discovery to obtain the Trust Chain related to the Requestor\".\n\nWe should probably have a specific reference to \"Federation Entity Discovery\" in the OIDF draft. In my implementation, I use the resolve endpoint (8.3). I think also we should explicitly spell out that the leaf ES in the trust chain must have `acme_requestor` metadata in it. And the text should either require the issuer to check that the `acme_requestor` metadata in the requestor EC is consistent with the leaf ES of the trust chain, or that only the leaf ES should be used to validate token signatures.",
           "createdAt": "2025-05-19T17:16:12Z",
           "updatedAt": "2025-05-19T17:16:12Z"
         },
         {
           "author": "tgeoghegan",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "body": "Also, what if the requestor can't construct a trust chain, say because none of the trust anchors provided by the issuer trust it? Should it fail to solve the challenge? Or should it still sign the token and construct a challenge response without `trustChain` so that the issuer can try resolving trust?",
           "createdAt": "2025-05-19T17:19:20Z",
           "updatedAt": "2025-05-19T17:19:20Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "@tgeoghegan unfortunately, if the acme provider cannot resolve the requestor under a known trust anchor, the process should fail. Be this a fake/invalid trust chain provided by requestor or a failed discovery process thrown by acme provider.\n\nIn general, any inconsistency in the trust evaluation process about an entity about it self or an entity about its audience must return an error and therefore fail the process.",
+          "createdAt": "2025-05-27T14:21:50Z",
+          "updatedAt": "2025-05-27T14:21:50Z"
+        }
+      ]
+    },
+    {
+      "number": 82,
+      "id": "I_kwDOJ6_NW864bJgR",
+      "title": "Be consistent on use of snake_case vs camelCase",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/82",
+      "state": "OPEN",
+      "author": "jcjones",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The ACME RFC uses camelCase for JSON members, while OpenID Fed prefers snake_case. \n* For the parts of this which are an ACME extension, we should adopt the ACME RFC's naming for ACME data structures. \n* For the parts of this which are an OpenID Federation extension, we should adopt the OpenID spec's naming.\n\nIt's quite possible this is a no-op, but I want to do a check before deciding.",
+      "createdAt": "2025-05-27T14:20:31Z",
+      "updatedAt": "2025-05-27T14:24:39Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "Considering the use of Camel case in ACME specs, it would make sense to align this draft and the interop flow using Camel case.\n\ninterop flow are about ACME requests/responses \n\nmetadata as sort of extension of the openid federation em,tadata types, should keep their snake cases, according to ietf/openid foundation specs.",
+          "createdAt": "2025-05-27T14:23:10Z",
+          "updatedAt": "2025-05-27T14:24:38Z"
         }
       ]
     }
@@ -5669,24 +5702,26 @@
       "id": "PR_kwDOJ6_NW86UYvfK",
       "title": "Update authors list",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/78",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This updates the authors list per discussions with Ameer and Bran, ahead of our first submission to the IETF Datatracker.\r\n\r\ncc @inahga @branlwyd",
       "createdAt": "2025-04-29T17:29:47Z",
-      "updatedAt": "2025-05-13T15:01:59Z",
+      "updatedAt": "2025-05-27T14:04:44Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "0573f04f6a1fe50b01358abc3288dfff32a33c6c",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "david/update-authors",
       "headRefOid": "cb7b67e19dca1d1f30116771a98fffc33663d549",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-05-27T14:04:44Z",
+      "mergedAt": "2025-05-27T14:04:44Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "c04bc3fdfe4a786ee93a4f7fd736ae9ef8fde30d"
+      },
       "comments": [],
       "reviews": [
         {
@@ -5787,6 +5822,19 @@
               "updatedAt": "2025-05-13T14:52:38Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86rI46v",
+          "commit": {
+            "abbreviatedOid": "cb7b67e"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-05-27T14:04:29Z",
+          "updatedAt": "2025-05-27T14:04:29Z",
+          "comments": []
         }
       ]
     },
@@ -5795,28 +5843,30 @@
       "id": "PR_kwDOJ6_NW86VWKuh",
       "title": "Allow issuer to provide TAs to requestor",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/80",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "When solving an `openid-federation-01` challenge, the requestor may provide a trust chain from itself to a trust anchor trusted by the issuer, to save the issuer the trouble of doing a resolve. However it's not clear how the requestor is supposed to know what TAs the issuer trusts.\r\n\r\nThis commit adds an optional field `trust_anchors` to the challenge object. The requestor can use that to construct a trust chain that the issuer will accept.\r\n\r\nAdditionally, this removes the sentence \"The Requestor SHOULD use a Trust Anchor it has in common with the ACME server.\"\r\n\r\nFirst, I don't think it's the right requirement. What matters is that (1) the trust anchor be trusted by the issuer and (2) there be some path from the requestor to the trust anchor. Those can be true even if the requestor doesn't trust the TA! To illustrate:\r\n\r\n```\r\ntrust_anchor_1           trust_anchor_2\r\n     |________________________|\r\n                  |\r\n            intermediate\r\n                  |\r\n     +------------+-----------+\r\n     |                        |\r\n  issuer                 requestor\r\n```\r\n\r\nIf issuer trusts trust_anchor_1 but not _2, and requestor trusts trust_anchor_2 but not _1, then trust_anchor_1->intermediate->requestor is a valid trust chain for solving a challenge even if requestor wouldn't trust it.\r\n\r\nSecond, it makes more sense as a MUST than a SHOULD. I rewrote it to make it explicit that the trust chain must end in one of the issuer's trust anchors.\r\n\r\nResolves #79",
       "createdAt": "2025-05-07T22:47:47Z",
-      "updatedAt": "2025-05-23T17:06:35Z",
+      "updatedAt": "2025-05-27T14:22:10Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "0573f04f6a1fe50b01358abc3288dfff32a33c6c",
       "headRepository": "tgeoghegan/draft-demarco-acme-openid-federation",
       "headRefName": "issuer-tas-hint",
-      "headRefOid": "468fc824c5e75d8bae8033f63cc3d76bae84b302",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "cd60c2d5388f60a8e5aa2635a0b7fbf860fade65",
+      "closedAt": "2025-05-27T14:22:10Z",
+      "mergedAt": "2025-05-27T14:22:10Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "f9b5aa27ddec8fef0ef247652c02bf99e29e5ef2"
+      },
       "comments": [
         {
           "author": "tgeoghegan",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "body": "I added a commit here to address https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/79#issuecomment-2891752148.",
           "createdAt": "2025-05-23T17:06:34Z",
           "updatedAt": "2025-05-23T17:06:34Z"
@@ -5862,7 +5912,7 @@
             "abbreviatedOid": "50ea0ab"
           },
           "author": "tgeoghegan",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2025-05-19T17:36:07Z",
@@ -5888,6 +5938,39 @@
           "createdAt": "2025-05-19T19:06:25Z",
           "updatedAt": "2025-05-19T19:06:25Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86rI7IE",
+          "commit": {
+            "abbreviatedOid": "468fc82"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-27T14:06:33Z",
+          "updatedAt": "2025-05-27T14:06:34Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\n    Entity Identifiers of the Issuer's Trust Anchors. When solving the\r\n```",
+              "createdAt": "2025-05-27T14:06:33Z",
+              "updatedAt": "2025-05-27T14:06:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86rI8yl",
+          "commit": {
+            "abbreviatedOid": "468fc82"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-05-27T14:07:58Z",
+          "updatedAt": "2025-05-27T14:07:58Z",
+          "comments": []
         }
       ]
     },
@@ -5896,26 +5979,110 @@
       "id": "PR_kwDOJ6_NW86Xa8Sh",
       "title": "Clarify trust chain metadata validation",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/81",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
-      "body": "# Stacked on #80 \r\n\r\n- Fix sequence diagram: trust is established before verifying key authorizaton\r\n- Clarify that the `acme_requestor` metadata has to be valid under Federation policy\r\n\r\nThis addresses outstanding observations in https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/79#issuecomment-2891744187. I also wanted to provide a more clear reference into OPENID-FED for \"Federation Entity Discovery\", but no such specification exists.\r\n\r\nOnly the last commit differs from #80.",
+      "body": "- Fix sequence diagram: trust is established before verifying key authorizaton\r\n- Clarify that the `acme_requestor` metadata has to be valid under Federation policy\r\n\r\nThis addresses outstanding observations in https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/79#issuecomment-2891744187. I also wanted to provide a more clear reference into OPENID-FED for \"Federation Entity Discovery\", but no such specification exists.",
       "createdAt": "2025-05-23T17:04:47Z",
-      "updatedAt": "2025-05-23T17:07:24Z",
+      "updatedAt": "2025-05-27T21:53:53Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "3a828bc99b8db7ebf4be0cf54250fa9e92d1acbf",
+      "baseRefOid": "f9b5aa27ddec8fef0ef247652c02bf99e29e5ef2",
       "headRepository": "tgeoghegan/draft-demarco-acme-openid-federation",
       "headRefName": "clarify-trust-chain",
-      "headRefOid": "666f0bdde78e51cc29b293b5bc0daf4c56330e87",
+      "headRefOid": "b7f0e2d44fa4f5fdeddf1d0f35263abc4dc72dd3",
+      "closedAt": "2025-05-27T21:53:53Z",
+      "mergedAt": "2025-05-27T21:53:53Z",
+      "mergedBy": "tgeoghegan",
+      "mergeCommit": {
+        "oid": "37224b81f92825ca878d13571c690a402954b28b"
+      },
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "@tgeoghegan the discovery process is detailed here: https://openid.github.io/federation/main.html#section-10",
+          "createdAt": "2025-05-27T14:29:14Z",
+          "updatedAt": "2025-05-27T14:29:14Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86rJPWo",
+          "commit": {
+            "abbreviatedOid": "666f0bd"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-27T14:27:06Z",
+          "updatedAt": "2025-05-27T14:27:06Z",
+          "comments": [
+            {
+              "originalPosition": 148,
+              "body": "This link is missing a brace\r\n```suggestion\r\n  ({{Section 6.1 of OPENID-FED}}{: relative=\"#section-6.1\"}).\r\n```",
+              "createdAt": "2025-05-27T14:27:06Z",
+              "updatedAt": "2025-05-27T14:27:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86rO2bX",
+          "commit": {
+            "abbreviatedOid": "b7f0e2d"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-05-27T21:46:52Z",
+          "updatedAt": "2025-05-27T21:46:52Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 83,
+      "id": "PR_kwDOJ6_NW86X3X2f",
+      "title": "Change the definition of acme_issuer to be the URL to the ACME directory",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/83",
+      "state": "OPEN",
+      "author": "jcjones",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As described in Issue #60, this PR removes the duplication of ACME Directory information from the issuer's Entity Configuration, favoring instead the URL to the ACME Directory as defined in RFC 8555.\r\n\r\nDoing this removes the ability to identify changes in the ACME Directory information via the Entity Configuration, in exchange for simplification across the stack for clients and issuers. It's still possible to identify changes via the Directory directly. \r\n\r\nA point-by-point analysis of the consequences of this change is posted in https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/60#issuecomment-2688694461. Further commentary is welcome.\r\n\r\n@peppelinux @selfissued\r\n\r\nFixes #60. ",
+      "createdAt": "2025-05-27T23:17:32Z",
+      "updatedAt": "2025-05-28T21:17:46Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "37224b81f92825ca878d13571c690a402954b28b",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "jcj/60-directory-indirectory",
+      "headRefOid": "77320b7e79dddb4798f0aa91912bbeb46a0c1706",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86rc2wV",
+          "commit": {
+            "abbreviatedOid": "77320b7"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-05-28T21:17:46Z",
+          "updatedAt": "2025-05-28T21:17:46Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
