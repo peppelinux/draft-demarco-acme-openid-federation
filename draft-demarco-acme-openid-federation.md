@@ -119,13 +119,10 @@ trust framework. OpenID Federation 1.0 allows each participant to recognize
 other participants using a trust evaluation mechanism, with RESTful services and
 cryptographic materials.
 
-Considering that a requestor is an entity requesting the issuance of an X.509
-Certificate to a server and the issuer is the ACME server that validates the
-entitlements of the requestor before issuing the X.509 Certificate, this
-specification defines how ACME and OpenID Federation 1.0 can be integrated to
-allow efficient issuance of X.509 Certificates to a requestor via the
-introduction of a new ACME challenge type. The new challenge type extends the
-ACME protocol in the following ways:
+The new ACME challenge type defined in this document facilitates automated
+issuance of X.509 Certificates to requestors that can prove to a certificate
+issuer that they are trusted OpenID Federation 1.0 entities. The new challenge
+type extends the ACME protocol in the following ways:
 
 - It associates a cryptographic key with an OpenID Entity, rather than a domain,
   since the authentication and authorization of the requestor is asserted with
