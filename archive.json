@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-05-29T00:40:22.713219+00:00",
+  "timestamp": "2025-06-01T00:51:52.201086+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1140,6 +1140,86 @@
           "updatedAt": "2025-05-27T14:24:38Z"
         }
       ]
+    },
+    {
+      "number": 84,
+      "id": "I_kwDOJ6_NW8640yld",
+      "title": "\"Discovery\" is under-specified",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/84",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The start of [section 6 \"Protocol Flow\"](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6) tells us that there are two major phases, discovery and \"order request\". But then [section 6.2 Discovery](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6.2) doesn't really say much about how to do discovery. Is there a section in OPENID-FED we could point to that explains how to look for entities of a certain type in a federation? I don't think there's anything especially clever implementations can do here (they either have to be handed an issuer's identifier or walk the tree of the federation) but it seems odd to me that we make such a big deal of discovery but then say so little about it.",
+      "createdAt": "2025-05-29T16:26:53Z",
+      "updatedAt": "2025-05-29T18:17:13Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[The first bullet under 6.3 Overview](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6.3-1.1.1) also contradicts 6.2 Discovery:\n\n```\n1. The Requestor checks if its superior Federation Entity supports the ACME\n   protocol for OpenID Federation 1.0. If not, the Requestor starts the\n   discovery process to find Issuers within the federation.\n```\n\nI don't think it's wise for this document to assert that requestors should prefer their immediate federation superior over other `acme_issuer`s in the federation. We don't know enough about why X.509 certs are being issued to say that. For example, my superior might be an X.509 CA that is trusted to issue credentials to talk to system A, but what I'm trying to do is get creds to talk to system B, which can only be issued by some other issuer in the federation.\n\nedit: this specific point is addressed in #89 by deleting the line in question but we should still think about whether we can say any more useful stuff about issuer discovery.",
+          "createdAt": "2025-05-29T16:29:42Z",
+          "updatedAt": "2025-05-29T18:17:12Z"
+        }
+      ]
+    },
+    {
+      "number": 85,
+      "id": "I_kwDOJ6_NW8641G4M",
+      "title": "Use of `urn:ietf:params:acme:error:openIDFederationEntity` is awkward",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/85",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We have [a single reference ](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6.3-1.5.1) to this problem type we define and there's a few problems here:\n\n- it's only mentioned in the overview which isn't a great place for normative text\n- it talks about a \"CSR request\" which is hard to parse because lots of things could go wrong before the requestor sends a CSR\n- it's hard to reconcile with RFC 8555, which will occasionally say you MUST use a specific error URN\n- it's not helpful for errors to tell you something went wrong w.r.t. an `openIDFederationEntity`, because you already know you were doing OIDF stuff because that's the kind of order you constructed\n- it mandates a single `error_code` value, though the OPENID-FED section referred to enumerates about a dozen things that could go wrong with OIDF\n\nI think we should instead guide implementations to include an error of this type as a _sub_problem and allow for a variety of `error_code` values.",
+      "createdAt": "2025-05-29T16:59:26Z",
+      "updatedAt": "2025-05-29T16:59:26Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 86,
+      "id": "I_kwDOJ6_NW8641KbT",
+      "title": "Certificate Transparency advice is bad",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/86",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[Section 7](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-7):\n\n> All X.509 Certificates issued SHOULD be published to one or more Certificate Transparency logs {{!RFC9162}}.\n\nThis is bad advice and doing this would sorely annoy web PKI CT log operators. Certificates that aren't for TLS in the web PKI should not be submitted to web PKI logs. I think we try to acknowledge this in the next sentence:\n\n> Selection of those logs, their versions, and embedding or discovery of Signed Certificate Timestamps, are policy decisions and are out of scope for this document.\n\nBut on balance I believe we'd be better off saying nothing about CT. There are other documents out there that explain when it's appropriate or required for certificates to be submitted to logs.\n",
+      "createdAt": "2025-05-29T17:05:59Z",
+      "updatedAt": "2025-05-29T17:17:45Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I don't see Web PKI CT log operators even accepting these certificates. \n\nWhen I wrote that passage, it was to provide a notice that _someone_ should run suitable CT logs and accept these, but OK, your point about that being entirely out-of-scope seems valid too.",
+          "createdAt": "2025-05-29T17:17:44Z",
+          "updatedAt": "2025-05-29T17:17:44Z"
+        }
+      ]
+    },
+    {
+      "number": 87,
+      "id": "I_kwDOJ6_NW8641TTs",
+      "title": "\"Overview\" should come first and subsume other sections",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/87",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The purpose of an overview is to ease the reader into the complex topics the document will cover, and provide a framework of understanding that will be filled in by later sections of the document that have all the fine details in them.\n\nThe \"Overview\" we have in 6.2 is helpful (especially the sequence diagram), but:\n\n- it comes surprisingly late in the document, after some sections like \"Discovery\" and \"Preconditions\" that contain normative text (MUSTs)\n- it seems like it overlaps with some things stated in [Section 5](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-5) and the [header of Section 6](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6).\n\nI think we should reorganize to move the overview up and collapse redundant sections into it.",
+      "createdAt": "2025-05-29T17:21:14Z",
+      "updatedAt": "2025-05-29T17:21:14Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -6080,6 +6160,228 @@
           "body": "",
           "createdAt": "2025-05-28T21:17:46Z",
           "updatedAt": "2025-05-28T21:17:46Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 88,
+      "id": "PR_kwDOJ6_NW86YKLHq",
+      "title": "Editorial pass",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/88",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "See inline comments for justification and context",
+      "createdAt": "2025-05-29T17:33:57Z",
+      "updatedAt": "2025-05-31T19:57:12Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "37224b81f92825ca878d13571c690a402954b28b",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "timg-misc-edits",
+      "headRefOid": "da027cb1dda9768d452f3b9e5a20548df9cc21bf",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86rm5Wv",
+          "commit": {
+            "abbreviatedOid": "9f36390"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-29T17:39:12Z",
+          "updatedAt": "2025-05-29T17:46:22Z",
+          "comments": [
+            {
+              "originalPosition": 51,
+              "body": "I don't agree with this statement: this document does not describe how to construct, validate or advertise an entity configuration. OPENID-FED does that.",
+              "createdAt": "2025-05-29T17:39:12Z",
+              "updatedAt": "2025-05-29T17:46:22Z"
+            },
+            {
+              "originalPosition": 72,
+              "body": "I don't think we should talk about bootstrapping trust from HTTP (without S), because I am skeptical that this specification would let you bootstrap into HTTPS, since ACME requires HTTPS. It may still be possible but we don't need to make that promise here.",
+              "createdAt": "2025-05-29T17:41:10Z",
+              "updatedAt": "2025-05-29T17:46:22Z"
+            },
+            {
+              "originalPosition": 113,
+              "body": "This is redundant with the next sentence, AFAICT",
+              "createdAt": "2025-05-29T17:41:34Z",
+              "updatedAt": "2025-05-29T17:46:22Z"
+            },
+            {
+              "originalPosition": 128,
+              "body": "Both of these points are made redundant by the preconditions listed below in {{preconditions}}, which include that both entities have to publish an OPENID-FED EC. By definition, those prove possession of a private key and control of the identifier.",
+              "createdAt": "2025-05-29T17:42:20Z",
+              "updatedAt": "2025-05-29T17:46:22Z"
+            },
+            {
+              "originalPosition": 141,
+              "body": "\"Order request\" is one specific part of ACME, but issuing one of thee certs could use more than just that interaction. \"Issuance\" better captures everything that might happen.",
+              "createdAt": "2025-05-29T17:42:59Z",
+              "updatedAt": "2025-05-29T17:46:22Z"
+            },
+            {
+              "originalPosition": 152,
+              "body": "This is not a precondition to the protocol being runnable. The protocol is designed to handle the case where a trust chain cannot be built (issuance fails in a well-defined manner). Additionally I think it's wrong to say that trust must be bidirectional: it's perfectly OK for a requestor to ask for a cert from an issuer it doesn't trust. Maybe it's trying to get a cert it can show to someone else who *does* trust the issuer.",
+              "createdAt": "2025-05-29T17:43:58Z",
+              "updatedAt": "2025-05-29T17:46:22Z"
+            },
+            {
+              "originalPosition": 193,
+              "body": "These items were (1) restating several details of RFC 8555 (getting a nonce, making an account) when we should just reference that document and (2) overly specific and normative for an overview",
+              "createdAt": "2025-05-29T17:45:00Z",
+              "updatedAt": "2025-05-29T17:46:22Z"
+            },
+            {
+              "originalPosition": 199,
+              "body": "This is too specific and normative for an overview. See also my points in #85",
+              "createdAt": "2025-05-29T17:45:24Z",
+              "updatedAt": "2025-05-29T17:46:22Z"
+            },
+            {
+              "originalPosition": 236,
+              "body": "This implements one of the things I think we should do enumerated in #85. There may be other spots where we need to mandate the use of error `openIDFederationEntity`.",
+              "createdAt": "2025-05-29T17:46:17Z",
+              "updatedAt": "2025-05-29T17:46:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86r1ECa",
+          "commit": {
+            "abbreviatedOid": "158b0b0"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-30T22:33:26Z",
+          "updatedAt": "2025-05-30T22:33:26Z",
+          "comments": [
+            {
+              "originalPosition": 152,
+              "body": "It feels like this might be worth saying somewhere explicitly, perhaps as a use case?",
+              "createdAt": "2025-05-30T22:33:26Z",
+              "updatedAt": "2025-05-30T22:33:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86r7eaz",
+          "commit": {
+            "abbreviatedOid": "9f36390"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-31T19:47:15Z",
+          "updatedAt": "2025-05-31T19:47:15Z",
+          "comments": [
+            {
+              "originalPosition": 152,
+              "body": "Yeah, that's reasonable. In da027cb, I rewrote a paragraph in the introduction to be clear about what the new ACME challenge type proves. At the same time, I don't want to be as prescriptive as this item which I deleted, because (1) OPENID-FED does a perfectly good job of explaining how trust works, so there's no need to get into the fine details of Trust Anchors and Trust Chains here and (2) the text here was wrong again, in implying that Trust Chains go between the Requestor and Issuer, which isn't really how that works.",
+              "createdAt": "2025-05-31T19:47:15Z",
+              "updatedAt": "2025-05-31T19:59:09Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 89,
+      "id": "PR_kwDOJ6_NW86YKe6j",
+      "title": "reorganize protocol overview",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/89",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "# Stacked on #88\r\n\r\nMoves \"Overview\" up to the header section of \"Protocol Flow\" and collapses some redundant sections into it.",
+      "createdAt": "2025-05-29T18:11:39Z",
+      "updatedAt": "2025-05-29T18:16:17Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "timg-misc-edits",
+      "baseRefOid": "158b0b0aa74355a96c2dc9988b1b7346e66e0ba4",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "timg-overview-refactor",
+      "headRefOid": "100e86cacd45ea361bdfbf49db7283e97e4685e8",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86rnPpb",
+          "commit": {
+            "abbreviatedOid": "100e86c"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-05-29T18:13:17Z",
+          "updatedAt": "2025-05-29T18:13:17Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "I wound up effectively deleting this section. All it was doing is restating what validation an issuer does for an OIDF identifier, which is already covered elsewhere. Was the intent for this section to explain what a certificate issued by this mechanism attests to? I don't think this document can do that, since the Open ID identifier SAN is optional, and we allow arbitrary cert profiles. Meaning that the certs issued could in fact contain absolutely anything and thus attest to absolutely anything.",
+              "createdAt": "2025-05-29T18:13:17Z",
+              "updatedAt": "2025-05-29T18:13:17Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 90,
+      "id": "PR_kwDOJ6_NW86YKg9w",
+      "title": "Say nothing about Certificate Transparency",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/90",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Resolves #86",
+      "createdAt": "2025-05-29T18:16:02Z",
+      "updatedAt": "2025-05-30T18:45:08Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "37224b81f92825ca878d13571c690a402954b28b",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "timg-be-silent-on-ct",
+      "headRefOid": "7dca9f4d661daa0f9e1b1b6e7c90cda6158cc4c0",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86ryxI-",
+          "commit": {
+            "abbreviatedOid": "7dca9f4"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-05-30T18:45:08Z",
+          "updatedAt": "2025-05-30T18:45:08Z",
           "comments": []
         }
       ]
