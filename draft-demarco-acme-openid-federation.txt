@@ -5,7 +5,7 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 28 November 2025                                    27 May 2025
+Expires: 4 December 2025                                     2 June 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 November 2025.
+   This Internet-Draft will expire on 4 December 2025.
 
 Copyright Notice
 
@@ -712,12 +712,6 @@ Table of Contents
 
 7.  Publication of the Certificates within the Federation
 
-   All X.509 Certificates issued SHOULD be published to one or more
-   Certificate Transparency logs [RFC9162].  Selection of those logs,
-   their versions, and embedding or discovery of Signed Certificate
-   Timestamps, are policy decisions and are out of scope for this
-   document.
-
    The X.509 Certificates issued by federation Immediate Superior
    Entities pertaining to one or more Federation Entity Keys in control
    of their Subordinates MAY publish this information by including the
@@ -895,10 +889,6 @@ Table of Contents
               Kasten, "Automatic Certificate Management Environment
               (ACME)", RFC 8555, DOI 10.17487/RFC8555, March 2019,
               <https://www.rfc-editor.org/rfc/rfc8555>.
-
-   [RFC9162]  Laurie, B., Messeri, E., and R. Stradling, "Certificate
-              Transparency Version 2.0", RFC 9162, DOI 10.17487/RFC9162,
-              December 2021, <https://www.rfc-editor.org/rfc/rfc9162>.
 
    [RFC9457]  Nottingham, M., Wilde, E., and S. Dalal, "Problem Details
               for HTTP APIs", RFC 9457, DOI 10.17487/RFC9457, July 2023,
