@@ -5,7 +5,7 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 28 November 2025                                    27 May 2025
+Expires: 4 December 2025                                     2 June 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 November 2025.
+   This Internet-Draft will expire on 4 December 2025.
 
 Copyright Notice
 
@@ -431,8 +431,9 @@ Table of Contents
 6.4.1.  Issuer Metadata
 
    The Issuer MUST publish its Entity Configuration including the
-   acme_issuer metadata within it.  The acme_issuer is the URL of the
-   ACME Directory, as defined in Section 7.1.1 of [RFC8555].
+   acme_issuer Entity Type metadata within it.  The acme_issuer object
+   contains a policy, directory_url, which is the URL of the ACME
+   Directory, as defined in Section 7.1.1 of [RFC8555].
 
    Requestors MUST use the ACME Directory provided in the Issuer's
    Entity Configuration for client configuration of ACME endpoints.
@@ -458,7 +459,9 @@ Table of Contents
        ]
      },
      "metadata": {
-       "acme_issuer": "https://issuer.example.com/acme/directory"
+       "acme_issuer": {
+         "directory_url": "https://issuer.example.com/acme/directory"
+       }
      }
    }
 
