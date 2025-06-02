@@ -704,11 +704,6 @@ from the `newOrder` request).
 
 # Publication of the Certificates within the Federation
 
-All X.509 Certificates issued SHOULD be published to one or more Certificate
-Transparency logs {{!RFC9162}}. Selection of those logs, their versions, and
-embedding or discovery of Signed Certificate Timestamps, are policy decisions
-and are out of scope for this document.
-
 The X.509 Certificates issued by federation Immediate Superior Entities
 pertaining to one or more Federation Entity Keys in control of their
 Subordinates MAY publish this information by including the `x5c` member
