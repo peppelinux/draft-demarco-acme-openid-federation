@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-01T00:51:52.201086+00:00",
+  "timestamp": "2025-06-03T00:41:41.505283+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1186,15 +1186,15 @@
       "id": "I_kwDOJ6_NW8641KbT",
       "title": "Certificate Transparency advice is bad",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/86",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "[Section 7](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-7):\n\n> All X.509 Certificates issued SHOULD be published to one or more Certificate Transparency logs {{!RFC9162}}.\n\nThis is bad advice and doing this would sorely annoy web PKI CT log operators. Certificates that aren't for TLS in the web PKI should not be submitted to web PKI logs. I think we try to acknowledge this in the next sentence:\n\n> Selection of those logs, their versions, and embedding or discovery of Signed Certificate Timestamps, are policy decisions and are out of scope for this document.\n\nBut on balance I believe we'd be better off saying nothing about CT. There are other documents out there that explain when it's appropriate or required for certificates to be submitted to logs.\n",
       "createdAt": "2025-05-29T17:05:59Z",
-      "updatedAt": "2025-05-29T17:17:45Z",
-      "closedAt": null,
+      "updatedAt": "2025-06-02T21:00:18Z",
+      "closedAt": "2025-06-02T21:00:18Z",
       "comments": [
         {
           "author": "jcjones",
@@ -6136,13 +6136,13 @@
       "labels": [],
       "body": "As described in Issue #60, this PR removes the duplication of ACME Directory information from the issuer's Entity Configuration, favoring instead the URL to the ACME Directory as defined in RFC 8555.\r\n\r\nDoing this removes the ability to identify changes in the ACME Directory information via the Entity Configuration, in exchange for simplification across the stack for clients and issuers. It's still possible to identify changes via the Directory directly. \r\n\r\nA point-by-point analysis of the consequences of this change is posted in https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/60#issuecomment-2688694461. Further commentary is welcome.\r\n\r\n@peppelinux @selfissued\r\n\r\nFixes #60. ",
       "createdAt": "2025-05-27T23:17:32Z",
-      "updatedAt": "2025-05-28T21:17:46Z",
+      "updatedAt": "2025-06-02T22:13:00Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "37224b81f92825ca878d13571c690a402954b28b",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "jcj/60-directory-indirectory",
-      "headRefOid": "77320b7e79dddb4798f0aa91912bbeb46a0c1706",
+      "headRefOid": "4486c61b1250496aec4b2f59656923d737abdc1c",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -6161,6 +6161,105 @@
           "createdAt": "2025-05-28T21:17:46Z",
           "updatedAt": "2025-05-28T21:17:46Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sP9-g",
+          "commit": {
+            "abbreviatedOid": "77320b7"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2025-06-02T20:39:00Z",
+          "updatedAt": "2025-06-02T20:41:19Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "I think the metadata under our entity type identifier ought to be a JSON object, and not just a bare string. See https://openid.net/specs/openid-federation-1_0-42.html#section-3-6.14.1. The description of metadata policies also assumes that there is a second layer of objects, see https://openid.net/specs/openid-federation-1_0-42.html#section-6.1.2-2.2.2. This would also allow for future extensibility.",
+              "createdAt": "2025-06-02T20:39:00Z",
+              "updatedAt": "2025-06-02T20:41:19Z"
+            },
+            {
+              "originalPosition": 23,
+              "body": "Per above:\r\n```suggestion\r\n    \"acme_issuer\": {\r\n      \"directory_url\": \"https://issuer.example.com/acme/directory\"\r\n    }\r\n```",
+              "createdAt": "2025-06-02T20:39:24Z",
+              "updatedAt": "2025-06-02T20:41:19Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sQMNU",
+          "commit": {
+            "abbreviatedOid": "77320b7"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-02T21:00:07Z",
+          "updatedAt": "2025-06-02T21:00:08Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "I wondered the same thing, but wasn't sure whether a string counts as a \"JSON object\". But I suppose I'm swayed by the extensibility argument.",
+              "createdAt": "2025-06-02T21:00:07Z",
+              "updatedAt": "2025-06-02T21:00:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sQoBp",
+          "commit": {
+            "abbreviatedOid": "77320b7"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-02T21:49:28Z",
+          "updatedAt": "2025-06-02T21:49:28Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "See what you think of https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/83/commits/30ca7267a196bef8b7f83443f32c09048a2b1da6.",
+              "createdAt": "2025-06-02T21:49:28Z",
+              "updatedAt": "2025-06-02T21:49:28Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sQqlW",
+          "commit": {
+            "abbreviatedOid": "30ca726"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-02T21:55:18Z",
+          "updatedAt": "2025-06-02T21:55:27Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "Judging by other definitions of entity types, I think we should say \"parameter\" instead of \"policy\".\r\n```suggestion\r\nEntity Type metadata within it. The `acme_issuer` metadata contains one parameter,\r\n```",
+              "createdAt": "2025-06-02T21:55:19Z",
+              "updatedAt": "2025-06-02T21:55:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sQxYP",
+          "commit": {
+            "abbreviatedOid": "4486c61"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-06-02T22:13:00Z",
+          "updatedAt": "2025-06-02T22:13:00Z",
+          "comments": []
         }
       ]
     },
@@ -6176,7 +6275,7 @@
       "labels": [],
       "body": "See inline comments for justification and context",
       "createdAt": "2025-05-29T17:33:57Z",
-      "updatedAt": "2025-05-31T19:57:12Z",
+      "updatedAt": "2025-06-02T22:55:06Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "37224b81f92825ca878d13571c690a402954b28b",
@@ -6296,6 +6395,39 @@
               "updatedAt": "2025-05-31T19:59:09Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sNCsD",
+          "commit": {
+            "abbreviatedOid": "da027cb"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks for these. I like the changes.",
+          "createdAt": "2025-06-02T16:11:05Z",
+          "updatedAt": "2025-06-02T16:11:05Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sRADh",
+          "commit": {
+            "abbreviatedOid": "da027cb"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-06-02T22:51:09Z",
+          "updatedAt": "2025-06-02T22:55:06Z",
+          "comments": [
+            {
+              "originalPosition": 57,
+              "body": "Further clarification\r\n```suggestion\r\nissuer that they are trusted OpenID Federation 1.0 entities. This document\r\nextends the ACME protocol in the following ways:\r\n```",
+              "createdAt": "2025-06-02T22:51:09Z",
+              "updatedAt": "2025-06-02T22:55:06Z"
+            }
+          ]
         }
       ]
     },
@@ -6311,7 +6443,7 @@
       "labels": [],
       "body": "# Stacked on #88\r\n\r\nMoves \"Overview\" up to the header section of \"Protocol Flow\" and collapses some redundant sections into it.",
       "createdAt": "2025-05-29T18:11:39Z",
-      "updatedAt": "2025-05-29T18:16:17Z",
+      "updatedAt": "2025-06-02T22:57:14Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "timg-misc-edits",
       "baseRefOid": "158b0b0aa74355a96c2dc9988b1b7346e66e0ba4",
@@ -6343,6 +6475,32 @@
               "updatedAt": "2025-05-29T18:13:17Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sOLnp",
+          "commit": {
+            "abbreviatedOid": "100e86c"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "I've gone through this version of the document twice and I agree with the section delete and reorganize. If we get questions later regarding something here being less clear, we can resurrect some text from the change history.\r\n\r\nThanks for this!",
+          "createdAt": "2025-06-02T17:45:01Z",
+          "updatedAt": "2025-06-02T17:45:01Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sRDXi",
+          "commit": {
+            "abbreviatedOid": "100e86c"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-06-02T22:57:14Z",
+          "updatedAt": "2025-06-02T22:57:14Z",
+          "comments": []
         }
       ]
     },
@@ -6351,24 +6509,26 @@
       "id": "PR_kwDOJ6_NW86YKg9w",
       "title": "Say nothing about Certificate Transparency",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/90",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Resolves #86",
       "createdAt": "2025-05-29T18:16:02Z",
-      "updatedAt": "2025-05-30T18:45:08Z",
+      "updatedAt": "2025-06-02T21:00:17Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "37224b81f92825ca878d13571c690a402954b28b",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg-be-silent-on-ct",
       "headRefOid": "7dca9f4d661daa0f9e1b1b6e7c90cda6158cc4c0",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-06-02T21:00:17Z",
+      "mergedAt": "2025-06-02T21:00:17Z",
+      "mergedBy": "tgeoghegan",
+      "mergeCommit": {
+        "oid": "0ff5f3a3e86a12d003c4fd594b625ad5b9e8f3be"
+      },
       "comments": [],
       "reviews": [
         {
@@ -6382,6 +6542,19 @@
           "body": "",
           "createdAt": "2025-05-30T18:45:08Z",
           "updatedAt": "2025-05-30T18:45:08Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sQAGn",
+          "commit": {
+            "abbreviatedOid": "7dca9f4"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-06-02T20:42:11Z",
+          "updatedAt": "2025-06-02T20:42:11Z",
           "comments": []
         }
       ]
