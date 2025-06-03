@@ -416,8 +416,9 @@ respective Entity Configurations.
 ### Issuer Metadata
 
 The Issuer MUST publish its Entity Configuration including the `acme_issuer`
-metadata within it. The body of the `acme_issuer` metadata is the ACME
-Directory, as defined in {{Section 7.1.1 of !RFC8555}}.
+Entity Type metadata within it. The `acme_issuer` metadata contains one parameter,
+`directory_url`, which is the URL of the ACME Directory, as defined in
+{{Section 7.1.1 of !RFC8555}}.
 
 Requestors MUST use the ACME Directory provided in the Issuer's Entity
 Configuration for client configuration of ACME endpoints.
@@ -445,14 +446,7 @@ the `acme_issuer` metadata:
   },
   "metadata": {
     "acme_issuer": {
-      "newNonce": "https://issuer.example.com/acme/new-nonce",
-      "newOrder": "https://issuer.example.com/acme/new-order",
-      "revokeCert": "https://issuer.example.com/acme/revoke-cert",
-      "meta": {
-        "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
-        "website": "https://www.issuer.example.com/",
-        "externalAccountRequired": false
-      }
+      "directory_url": "https://issuer.example.com/acme/directory"
     }
   }
 }
