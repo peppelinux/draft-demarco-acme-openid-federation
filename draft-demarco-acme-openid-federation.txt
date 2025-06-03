@@ -5,7 +5,7 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 4 December 2025                                     2 June 2025
+Expires: 5 December 2025                                     3 June 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 December 2025.
+   This Internet-Draft will expire on 5 December 2025.
 
 Copyright Notice
 
@@ -429,8 +429,9 @@ Table of Contents
 6.4.1.  Issuer Metadata
 
    The Issuer MUST publish its Entity Configuration including the
-   acme_issuer metadata within it.  The body of the acme_issuer metadata
-   is the ACME Directory, as defined in Section 7.1.1 of [RFC8555].
+   acme_issuer Entity Type metadata within it.  The acme_issuer metadata
+   contains one parameter, directory_url, which is the URL of the ACME
+   Directory, as defined in Section 7.1.1 of [RFC8555].
 
    Requestors MUST use the ACME Directory provided in the Issuer's
    Entity Configuration for client configuration of ACME endpoints.
@@ -438,36 +439,29 @@ Table of Contents
    The following is a non-normative example of an Entity Configuration
    including the acme_issuer metadata:
 
-{
-  "iss": "https://issuer.example.com",
-  "sub": "https://issuer.example.com",
-  "iat": 1516239022,
-  "exp": 1516298022,
-  "jwks": {
-    "keys": [
-      {
-        "kty": "RSA",
-        "alg": "RS256",
-        "use": "sig",
-        "kid": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs",
-        "n": "pnXBOusEANuug6ewezb9J_...",
-        "e": "AQAB"
-      }
-    ]
-  },
-  "metadata": {
-    "acme_issuer": {
-      "newNonce": "https://issuer.example.com/acme/new-nonce",
-      "newOrder": "https://issuer.example.com/acme/new-order",
-      "revokeCert": "https://issuer.example.com/acme/revoke-cert",
-      "meta": {
-        "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
-        "website": "https://www.issuer.example.com/",
-        "externalAccountRequired": false
-      }
-    }
-  }
-}
+   {
+     "iss": "https://issuer.example.com",
+     "sub": "https://issuer.example.com",
+     "iat": 1516239022,
+     "exp": 1516298022,
+     "jwks": {
+       "keys": [
+         {
+           "kty": "RSA",
+           "alg": "RS256",
+           "use": "sig",
+           "kid": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs",
+           "n": "pnXBOusEANuug6ewezb9J_...",
+           "e": "AQAB"
+         }
+       ]
+     },
+     "metadata": {
+       "acme_issuer": {
+         "directory_url": "https://issuer.example.com/acme/directory"
+       }
+     }
+   }
 
 6.4.2.  Requestor Metadata
 

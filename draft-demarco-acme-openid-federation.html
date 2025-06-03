@@ -33,12 +33,12 @@ Federation 1.0.
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
-    lxml 5.3.0
+    lxml 5.3.1
     platformdirs 4.3.8
     pycountry 24.6.1
     PyYAML 6.0.2
     requests 2.32.3
-    setuptools 70.3.0
+    setuptools 80.9.0
     wcwidth 0.2.13
 -->
 <link href="draft-demarco-acme-openid-federation.xml" rel="alternate" type="application/rfc+xml">
@@ -1062,7 +1062,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">De Marco &amp; Pitman</td>
-<td class="center">Expires 4 December 2025</td>
+<td class="center">Expires 5 December 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1075,12 +1075,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-demarco-acme-openid-federation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-06-02" class="published">2 June 2025</time>
+<time datetime="2025-06-03" class="published">3 June 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-12-04">4 December 2025</time></dd>
+<dd class="expires"><time datetime="2025-12-05">5 December 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1144,7 +1144,7 @@ Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 4 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 5 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1660,8 +1660,9 @@ respective Entity Configurations.<a href="#section-6.4-1" class="pilcrow">¶</a>
 <a href="#section-6.4.1" class="section-number selfRef">6.4.1. </a><a href="#name-issuer-metadata" class="section-name selfRef">Issuer Metadata</a>
           </h4>
 <p id="section-6.4.1-1">The Issuer <span class="bcp14">MUST</span> publish its Entity Configuration including the <code>acme_issuer</code>
-metadata within it. The body of the <code>acme_issuer</code> metadata is the ACME
-Directory, as defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.1.1" class="relref">Section 7.1.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.4.1-1" class="pilcrow">¶</a></p>
+Entity Type metadata within it. The <code>acme_issuer</code> metadata contains one parameter,
+<code>directory_url</code>, which is the URL of the ACME Directory, as defined in
+<span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.1.1" class="relref">Section 7.1.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-6.4.1-1" class="pilcrow">¶</a></p>
 <p id="section-6.4.1-2">Requestors <span class="bcp14">MUST</span> use the ACME Directory provided in the Issuer's Entity
 Configuration for client configuration of ACME endpoints.<a href="#section-6.4.1-2" class="pilcrow">¶</a></p>
 <p id="section-6.4.1-3">The following is a non-normative example of an Entity Configuration including
@@ -1687,14 +1688,7 @@ the <code>acme_issuer</code> metadata:<a href="#section-6.4.1-3" class="pilcrow"
   },
   "metadata": {
     "acme_issuer": {
-      "newNonce": "https://issuer.example.com/acme/new-nonce",
-      "newOrder": "https://issuer.example.com/acme/new-order",
-      "revokeCert": "https://issuer.example.com/acme/revoke-cert",
-      "meta": {
-        "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
-        "website": "https://www.issuer.example.com/",
-        "externalAccountRequired": false
-      }
+      "directory_url": "https://issuer.example.com/acme/directory"
     }
   }
 }
