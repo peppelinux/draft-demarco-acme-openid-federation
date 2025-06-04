@@ -5,7 +5,7 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 2 December 2025                                     31 May 2025
+Expires: 6 December 2025                                     4 June 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 December 2025.
+   This Internet-Draft will expire on 6 December 2025.
 
 Copyright Notice
 
@@ -127,11 +127,18 @@ Table of Contents
    evaluation mechanism, with RESTful services and cryptographic
    materials.
 
+   Federation members declare what kind Entities they are using a basic
+   OpenID Federation component called an Entity Configuration, a signed
+   JSON Web Token published in a well-known resource.  This document
+   defines new OpenID Federation Entity Types for certificate requestors
+   and issuers, facilitating automated discovery of an issuer's ACME
+   API.
+
    The new ACME challenge type defined in this document facilitates
    automated issuance of X.509 Certificates to requestors that can prove
    to a certificate issuer that they are trusted OpenID Federation 1.0
-   entities.  The new challenge type extends the ACME protocol in the
-   following ways:
+   entities.  This document extends the ACME protocol in the following
+   ways:
 
    *  It associates a cryptographic key with an OpenID Entity, rather
       than a domain, since the authentication and authorization of the
