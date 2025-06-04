@@ -44,6 +44,10 @@ contributor:
     name: J.C. Jones
     org: ISRG
     email: ietf@insufficient.coffee
+ -
+    name: Tim Geoghegan
+    org: ISRG
+    email: timgeog+ietf@gmail.com
 
 normative:
   RFC2986: RFC2986
