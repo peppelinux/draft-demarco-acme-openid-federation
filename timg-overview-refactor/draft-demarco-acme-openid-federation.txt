@@ -5,7 +5,7 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 30 November 2025                                    29 May 2025
+Expires: 6 December 2025                                     4 June 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 November 2025.
+   This Internet-Draft will expire on 6 December 2025.
 
 Copyright Notice
 
@@ -200,7 +200,7 @@ Table of Contents
    The protocol flow consists of the following phases:
 
    *  *Discovery*: the Requestor discovers the available Certificate
-      Issuers within a federation, inspecting the ACME issuer entity
+      Issuers within a federation, inspecting the ACME issuer Entity
       types.  This is discussed in Section 5.2.
 
    *  *Issuance*: the Requestor requests a X.509 Certificate from a
@@ -361,7 +361,7 @@ Table of Contents
    particular ACME server, or to automatically discover a Certificate
    Issuer through the federation.
 
-   Requestors that use discovery MAY select any entity with an entity
+   Requestors that use discovery MAY select any Entity with an Entity
    type of acme_issuer, or they may additionally require that such
    entities have a valid Trust Mark with a particular Trust Mark
    Identifier.
