@@ -119,10 +119,16 @@ trust framework. OpenID Federation 1.0 allows each participant to recognize
 other participants using a trust evaluation mechanism, with RESTful services and
 cryptographic materials.
 
+Federation members declare what kind Entities they are using a basic OpenID
+Federation component called an Entity Configuration, a signed JSON Web Token
+published in a well-known resource. This document defines new OpenID Federation
+Entity Types for certificate requestors and issuers, facilitating automated
+discovery of an issuer's ACME API.
+
 The new ACME challenge type defined in this document facilitates automated
 issuance of X.509 Certificates to requestors that can prove to a certificate
-issuer that they are trusted OpenID Federation 1.0 entities. The new challenge
-type extends the ACME protocol in the following ways:
+issuer that they are trusted OpenID Federation 1.0 entities. This document
+extends the ACME protocol in the following ways:
 
 - It associates a cryptographic key with an OpenID Entity, rather than a domain,
   since the authentication and authorization of the requestor is asserted with
