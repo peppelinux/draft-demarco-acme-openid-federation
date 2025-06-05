@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-03T00:41:41.505283+00:00",
+  "timestamp": "2025-06-05T00:40:59.349100+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -878,7 +878,7 @@
       "id": "I_kwDOJ6_NW86pDFKO",
       "title": "Issuer metadata should contain URI for ACME directory instead of reproducing it",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/60",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -887,8 +887,8 @@
       "labels": [],
       "body": "Currently, we require the ACME issuer to reproduce the entire ACME directory in its entity configuration:\n\n```\n{\n  \"iss\": \"https://issuer.example.com\",\n  \"sub\": \"https://issuer.example.com\",\n  \"iat\": 1516239022,\n  \"exp\": 1516298022,\n  \"jwks\": {\n    \"keys\": [\n      {\n        \"kty\": \"RSA\",\n        \"alg\": \"RS256\",\n        \"use\": \"sig\",\n        \"kid\": \"NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs\",\n        \"n\": \"pnXBOusEANuug6ewezb9J_...\",\n        \"e\": \"AQAB\"\n      }\n    ]\n  },\n  \"metadata\": {\n    \"acme_provider\": {\n      \"newNonce\": \"https://issuer.example.com/acme/new-nonce\",\n      \"newOrder\": \"https://issuer.example.com/acme/new-order\",\n      \"revokeCert\": \"https://issuer.example.com/acme/revoke-cert\",\n      \"meta\": {\n        \"termsOfService\": \"https://issuer.example.com/acme/terms/2017-5-30\",\n        \"website\": \"https://www.issuer.example.com/\",\n        \"externalAccountRequired\": false\n      }\n    }\n  }\n}\n```\n\nThis seems natural since ACME already defines the directory as a JSON dictionary, but it introduces the risk of disagreement between the directory advertised in the EC and the directory the issuer may advertise over HTTPS. Additionally, it means that every change to the ACME directory requires updating the EC. Some ACME implementations like Boulder [add random entries to their directory](https://community.letsencrypt.org/t/adding-random-entries-to-the-directory/33417) as a form of [protocol GREASE](https://chromestatus.com/feature/6475903378915328), so dynamically generating the directory on each request is not unreasonable.\n\nInstead, we could have `acme_provider` simply contain the URI for the issuer's directory, and then the client would discover the other API endpoints as ACME clients already do.\n\n@divergentdave points out that removing information from OpenID Federation ECs limits the ability of superior entities to [constrain a subordinate's metadata](https://openid.net/specs/openid-federation-1_0-41.html#chain_constraints), but it's not clear how that would work even if the entire directory is present.",
       "createdAt": "2025-02-06T17:24:39Z",
-      "updatedAt": "2025-05-27T20:37:51Z",
-      "closedAt": null,
+      "updatedAt": "2025-06-03T14:17:19Z",
+      "closedAt": "2025-06-03T14:17:19Z",
       "comments": [
         {
           "author": "peppelinux",
@@ -1210,14 +1210,38 @@
       "id": "I_kwDOJ6_NW8641TTs",
       "title": "\"Overview\" should come first and subsume other sections",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/87",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The purpose of an overview is to ease the reader into the complex topics the document will cover, and provide a framework of understanding that will be filled in by later sections of the document that have all the fine details in them.\n\nThe \"Overview\" we have in 6.2 is helpful (especially the sequence diagram), but:\n\n- it comes surprisingly late in the document, after some sections like \"Discovery\" and \"Preconditions\" that contain normative text (MUSTs)\n- it seems like it overlaps with some things stated in [Section 5](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-5) and the [header of Section 6](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6).\n\nI think we should reorganize to move the overview up and collapse redundant sections into it.",
       "createdAt": "2025-05-29T17:21:14Z",
-      "updatedAt": "2025-05-29T17:21:14Z",
+      "updatedAt": "2025-06-04T16:38:07Z",
+      "closedAt": "2025-06-04T16:38:06Z",
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Resolved by #89 ",
+          "createdAt": "2025-06-04T16:38:06Z",
+          "updatedAt": "2025-06-04T16:38:06Z"
+        }
+      ]
+    },
+    {
+      "number": 92,
+      "id": "I_kwDOJ6_NW8656V5K",
+      "title": "Consider revising name of ACME Identifier Type",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/92",
+      "state": "OPEN",
+      "author": "jcjones",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "For ACME Identifier Types, we use `openid-federation`, but that would be the first hyphenated identifier there, while [RFC 9448](https://www.rfc-editor.org/rfc/rfc9448.html) use PascalCase for TNAuthList:  https://www.iana.org/assignments/acme/acme.xhtml#acme-identifier-types\n\nThis is arguably a mismatch, and we should consider using something else. `openidFederation` looks more like the 8555/8738 examples.\n\nOr we could just go with what we have, arguing that it matches everything _except_ 9448, including all the \"Auto-Renewal Fields\".",
+      "createdAt": "2025-06-04T20:50:07Z",
+      "updatedAt": "2025-06-04T20:50:07Z",
       "closedAt": null,
       "comments": []
     }
@@ -6129,25 +6153,42 @@
       "id": "PR_kwDOJ6_NW86X3X2f",
       "title": "Change the definition of acme_issuer to be the URL to the ACME directory",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/83",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "jcjones",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "As described in Issue #60, this PR removes the duplication of ACME Directory information from the issuer's Entity Configuration, favoring instead the URL to the ACME Directory as defined in RFC 8555.\r\n\r\nDoing this removes the ability to identify changes in the ACME Directory information via the Entity Configuration, in exchange for simplification across the stack for clients and issuers. It's still possible to identify changes via the Directory directly. \r\n\r\nA point-by-point analysis of the consequences of this change is posted in https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/60#issuecomment-2688694461. Further commentary is welcome.\r\n\r\n@peppelinux @selfissued\r\n\r\nFixes #60. ",
       "createdAt": "2025-05-27T23:17:32Z",
-      "updatedAt": "2025-06-02T22:13:00Z",
+      "updatedAt": "2025-06-03T14:17:18Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "37224b81f92825ca878d13571c690a402954b28b",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "jcj/60-directory-indirectory",
       "headRefOid": "4486c61b1250496aec4b2f59656923d737abdc1c",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "closedAt": "2025-06-03T14:17:18Z",
+      "mergedAt": "2025-06-03T14:17:18Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "35dbd2fc880044fd4a92c36c1804e55d8977700b"
+      },
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "I agree that we really need to avoid overlapping information distributed in different ways.\r\n\r\nAt the same time using federation trust chain we satisfy the requirement of non repudiation.\r\n\r\nhaving an external ref,  such as the directory url makes sense, but unfortunately this doesn't bring any evidence about the parameters used during the issuance of the x5c at time of issuance within a veriafiable trust chain.",
+          "createdAt": "2025-06-03T14:12:42Z",
+          "updatedAt": "2025-06-03T14:12:42Z"
+        },
+        {
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Referring back to https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/60#issuecomment-2688694461, I don't think that non-repudiation of the particular pieces of information in the ACME directory furthers useful security goals. Many of the fields are themselves URLs, which also act as external references, some are informational, etc.",
+          "createdAt": "2025-06-03T14:16:45Z",
+          "updatedAt": "2025-06-03T14:16:45Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOJ6_NW86rc2wV",
@@ -6260,6 +6301,19 @@
           "createdAt": "2025-06-02T22:13:00Z",
           "updatedAt": "2025-06-02T22:13:00Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sai_J",
+          "commit": {
+            "abbreviatedOid": "4486c61"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-06-03T14:17:10Z",
+          "updatedAt": "2025-06-03T14:17:10Z",
+          "comments": []
         }
       ]
     },
@@ -6275,13 +6329,13 @@
       "labels": [],
       "body": "See inline comments for justification and context",
       "createdAt": "2025-05-29T17:33:57Z",
-      "updatedAt": "2025-06-02T22:55:06Z",
+      "updatedAt": "2025-06-04T16:37:35Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "37224b81f92825ca878d13571c690a402954b28b",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg-misc-edits",
-      "headRefOid": "da027cb1dda9768d452f3b9e5a20548df9cc21bf",
+      "headRefOid": "284f5f71f6e61d1127d3e1327f70da94bb1473e1",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -6428,6 +6482,86 @@
               "updatedAt": "2025-06-02T22:55:06Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sas04",
+          "commit": {
+            "abbreviatedOid": "da027cb"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-03T14:23:27Z",
+          "updatedAt": "2025-06-03T14:23:27Z",
+          "comments": [
+            {
+              "originalPosition": 51,
+              "body": "however, we want to give some help to newcomers implkementing this draft without not having the necessary understanding of openid federation, trying to give them the basic elements to get them aware and prepared with the study of opneid federation.\r\n\r\nMay I ask you to do any further editorial improvement to give this help to newcomers?",
+              "createdAt": "2025-06-03T14:23:27Z",
+              "updatedAt": "2025-06-03T14:23:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sau1a",
+          "commit": {
+            "abbreviatedOid": "da027cb"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-03T14:24:55Z",
+          "updatedAt": "2025-06-03T14:24:55Z",
+          "comments": [
+            {
+              "originalPosition": 72,
+              "body": "ok",
+              "createdAt": "2025-06-03T14:24:55Z",
+              "updatedAt": "2025-06-03T14:24:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sax_w",
+          "commit": {
+            "abbreviatedOid": "da027cb"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-03T14:27:08Z",
+          "updatedAt": "2025-06-03T14:27:08Z",
+          "comments": [
+            {
+              "originalPosition": 128,
+              "body": "yeah, they could sound very obvious according to the openid federation specification.",
+              "createdAt": "2025-06-03T14:27:08Z",
+              "updatedAt": "2025-06-03T14:27:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86ssund",
+          "commit": {
+            "abbreviatedOid": "da027cb"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-04T16:33:21Z",
+          "updatedAt": "2025-06-04T16:33:21Z",
+          "comments": [
+            {
+              "originalPosition": 51,
+              "body": "Sure! This particular bullet list enumerates extensions to ACME, though, so I don't think it's an appropriate place to introduce the notion of ECs. I added a paragraph above explaining how this document defines new entity types used in issuance. Is there any other basic information you think the introduction should cover?",
+              "createdAt": "2025-06-04T16:33:21Z",
+              "updatedAt": "2025-06-04T16:33:21Z"
+            }
+          ]
         }
       ]
     },
@@ -6436,24 +6570,26 @@
       "id": "PR_kwDOJ6_NW86YKe6j",
       "title": "reorganize protocol overview",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/89",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "# Stacked on #88\r\n\r\nMoves \"Overview\" up to the header section of \"Protocol Flow\" and collapses some redundant sections into it.",
       "createdAt": "2025-05-29T18:11:39Z",
-      "updatedAt": "2025-06-02T22:57:14Z",
+      "updatedAt": "2025-06-04T16:37:33Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "timg-misc-edits",
-      "baseRefOid": "158b0b0aa74355a96c2dc9988b1b7346e66e0ba4",
+      "baseRefOid": "d5b565b0f13a9958d07dd66fdea945f302b4665e",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg-overview-refactor",
-      "headRefOid": "100e86cacd45ea361bdfbf49db7283e97e4685e8",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "01ff981f42ed777415a12c1ae4dbe4549ffdd731",
+      "closedAt": "2025-06-04T16:37:33Z",
+      "mergedAt": "2025-06-04T16:37:33Z",
+      "mergedBy": "tgeoghegan",
+      "mergeCommit": {
+        "oid": "284f5f71f6e61d1127d3e1327f70da94bb1473e1"
+      },
       "comments": [],
       "reviews": [
         {
@@ -6501,6 +6637,99 @@
           "createdAt": "2025-06-02T22:57:14Z",
           "updatedAt": "2025-06-02T22:57:14Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sa2LO",
+          "commit": {
+            "abbreviatedOid": "100e86c"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-03T14:29:52Z",
+          "updatedAt": "2025-06-03T14:29:52Z",
+          "comments": [
+            {
+              "originalPosition": 61,
+              "body": "```suggestion\r\n- **Discovery**: the Requestor discovers the available Certificate Issuers\r\n  within a federation, inspecting the ACME issuer Entity types. This is\r\n```",
+              "createdAt": "2025-06-03T14:29:52Z",
+              "updatedAt": "2025-06-03T14:29:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sa3sa",
+          "commit": {
+            "abbreviatedOid": "100e86c"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-03T14:30:44Z",
+          "updatedAt": "2025-06-03T14:30:45Z",
+          "comments": [
+            {
+              "originalPosition": 103,
+              "body": "```suggestion\r\nRequestors that use discovery MAY select any Entity with an Entity type of\r\n```",
+              "createdAt": "2025-06-03T14:30:44Z",
+              "updatedAt": "2025-06-03T14:30:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sa4u-",
+          "commit": {
+            "abbreviatedOid": "100e86c"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-03T14:31:24Z",
+          "updatedAt": "2025-06-03T14:31:24Z",
+          "comments": [
+            {
+              "originalPosition": 104,
+              "body": "```suggestion\r\n`acme_issuer`, or they may additionally require that such Entities have a\r\n```\r\n\r\nDid I assume well that this `may` is not normative?",
+              "createdAt": "2025-06-03T14:31:24Z",
+              "updatedAt": "2025-06-03T14:31:24Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sa5Qe",
+          "commit": {
+            "abbreviatedOid": "100e86c"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-06-03T14:31:46Z",
+          "updatedAt": "2025-06-03T14:31:46Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86sswKe",
+          "commit": {
+            "abbreviatedOid": "100e86c"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-04T16:35:44Z",
+          "updatedAt": "2025-06-04T16:35:45Z",
+          "comments": [
+            {
+              "originalPosition": 104,
+              "body": "Honestly, I'm not sure. I also don't really recall why I made the MAY on the previous line an RFC 2119 word. I think that even with this PR, the discovery section is rather meager (#84) but I'm not sure what to do about that. Which is to say: I think we should discuss discovery more and revisit this section anyway.",
+              "createdAt": "2025-06-04T16:35:44Z",
+              "updatedAt": "2025-06-04T16:36:06Z"
+            }
+          ]
         }
       ]
     },
@@ -6516,7 +6745,7 @@
       "labels": [],
       "body": "Resolves #86",
       "createdAt": "2025-05-29T18:16:02Z",
-      "updatedAt": "2025-06-02T21:00:17Z",
+      "updatedAt": "2025-06-03T14:07:40Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "37224b81f92825ca878d13571c690a402954b28b",
@@ -6529,7 +6758,15 @@
       "mergeCommit": {
         "oid": "0ff5f3a3e86a12d003c4fd594b625ad5b9e8f3be"
       },
-      "comments": [],
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "ok",
+          "createdAt": "2025-06-03T14:07:39Z",
+          "updatedAt": "2025-06-03T14:07:39Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOJ6_NW86ryxI-",
@@ -6558,6 +6795,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 91,
+      "id": "PR_kwDOJ6_NW86ZDq73",
+      "title": "add self as contributor",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/91",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-06-04T16:40:17Z",
+      "updatedAt": "2025-06-04T16:40:19Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "35dbd2fc880044fd4a92c36c1804e55d8977700b",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "timg-contributor",
+      "headRefOid": "4c694242198cb2946c50ad62767dbcbd1832edc6",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
