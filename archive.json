@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-05T00:40:59.349100+00:00",
+  "timestamp": "2025-06-08T00:45:36.140481+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1242,6 +1242,22 @@
       "body": "For ACME Identifier Types, we use `openid-federation`, but that would be the first hyphenated identifier there, while [RFC 9448](https://www.rfc-editor.org/rfc/rfc9448.html) use PascalCase for TNAuthList:  https://www.iana.org/assignments/acme/acme.xhtml#acme-identifier-types\n\nThis is arguably a mismatch, and we should consider using something else. `openidFederation` looks more like the 8555/8738 examples.\n\nOr we could just go with what we have, arguing that it matches everything _except_ 9448, including all the \"Auto-Renewal Fields\".",
       "createdAt": "2025-06-04T20:50:07Z",
       "updatedAt": "2025-06-04T20:50:07Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 93,
+      "id": "I_kwDOJ6_NW866Q051",
+      "title": "Update OpenID Federation reference to draft 43",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/93",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Draft 43 of OpenID Federation was just published a few days ago. https://openid.net/specs/openid-federation-1_0-43.html#name-document-history Among other things, this makes changes to trust marks and defines the term \"Resolved Metadata\", referring to the result of applying all metadata policies to the Entity Configuration.\n\nWe should update the document reference, update section numbers as needed, and make use of the term \"Resolved Metadata\" when talking about how to get metadata parameters.",
+      "createdAt": "2025-06-06T14:35:17Z",
+      "updatedAt": "2025-06-06T14:35:17Z",
       "closedAt": null,
       "comments": []
     }
