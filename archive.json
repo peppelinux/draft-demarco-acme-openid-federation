@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-08T00:45:36.140481+00:00",
+  "timestamp": "2025-06-10T00:41:08.510985+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -6817,26 +6817,42 @@
       "id": "PR_kwDOJ6_NW86ZDq73",
       "title": "add self as contributor",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/91",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-06-04T16:40:17Z",
-      "updatedAt": "2025-06-04T16:40:19Z",
+      "updatedAt": "2025-06-08T21:14:39Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "35dbd2fc880044fd4a92c36c1804e55d8977700b",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg-contributor",
       "headRefOid": "4c694242198cb2946c50ad62767dbcbd1832edc6",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-06-08T21:14:38Z",
+      "mergedAt": "2025-06-08T21:14:38Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "9176ac395c1994a37c273acc26101505ba14f9df"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86tXk1v",
+          "commit": {
+            "abbreviatedOid": "4c69424"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-06-08T21:14:34Z",
+          "updatedAt": "2025-06-08T21:14:34Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
