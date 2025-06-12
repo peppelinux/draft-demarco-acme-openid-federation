@@ -5,7 +5,7 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 6 December 2025                                     4 June 2025
+Expires: 14 December 2025                                   12 June 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 December 2025.
+   This Internet-Draft will expire on 14 December 2025.
 
 Copyright Notice
 
@@ -125,14 +125,18 @@ Table of Contents
    evaluation mechanism, with RESTful services and cryptographic
    materials.
 
-   Considering that a requestor is an entity requesting the issuance of
-   an X.509 Certificate to a server and the issuer is the ACME server
-   that validates the entitlements of the requestor before issuing the
-   X.509 Certificate, this specification defines how ACME and OpenID
-   Federation 1.0 can be integrated to allow efficient issuance of X.509
-   Certificates to a requestor via the introduction of a new ACME
-   challenge type.  The new challenge type extends the ACME protocol in
-   the following ways:
+   Federation members declare what kind Entities they are using a basic
+   OpenID Federation component called an Entity Configuration, a signed
+   JSON Web Token published in a well-known resource.  This document
+   defines new OpenID Federation Entity Types for certificate requestors
+   and issuers, facilitating automated discovery of an issuer's ACME
+   API.
+
+   The new ACME challenge type defined in this document facilitates
+   automated issuance of X.509 Certificates to requestors that can prove
+   to a certificate issuer that they are trusted OpenID Federation 1.0
+   entities.  This document extends the ACME protocol in the following
+   ways:
 
    *  It associates a cryptographic key with an OpenID Entity, rather
       than a domain, since the authentication and authorization of the
@@ -374,8 +378,9 @@ Table of Contents
 5.3.1.  Issuer Metadata
 
    The Issuer MUST publish its Entity Configuration including the
-   acme_issuer metadata within it.  The body of the acme_issuer metadata
-   is the ACME Directory, as defined in Section 7.1.1 of [RFC8555].
+   acme_issuer Entity Type metadata within it.  The acme_issuer metadata
+   contains one parameter, directory_url, which is the URL of the ACME
+   Directory, as defined in Section 7.1.1 of [RFC8555].
 
    Requestors MUST use the ACME Directory provided in the Issuer's
    Entity Configuration for client configuration of ACME endpoints.
@@ -383,36 +388,29 @@ Table of Contents
    The following is a non-normative example of an Entity Configuration
    including the acme_issuer metadata:
 
-{
-  "iss": "https://issuer.example.com",
-  "sub": "https://issuer.example.com",
-  "iat": 1516239022,
-  "exp": 1516298022,
-  "jwks": {
-    "keys": [
-      {
-        "kty": "RSA",
-        "alg": "RS256",
-        "use": "sig",
-        "kid": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs",
-        "n": "pnXBOusEANuug6ewezb9J_...",
-        "e": "AQAB"
-      }
-    ]
-  },
-  "metadata": {
-    "acme_issuer": {
-      "newNonce": "https://issuer.example.com/acme/new-nonce",
-      "newOrder": "https://issuer.example.com/acme/new-order",
-      "revokeCert": "https://issuer.example.com/acme/revoke-cert",
-      "meta": {
-        "termsOfService": "https://issuer.example.com/acme/terms/2017-5-30",
-        "website": "https://www.issuer.example.com/",
-        "externalAccountRequired": false
-      }
-    }
-  }
-}
+   {
+     "iss": "https://issuer.example.com",
+     "sub": "https://issuer.example.com",
+     "iat": 1516239022,
+     "exp": 1516298022,
+     "jwks": {
+       "keys": [
+         {
+           "kty": "RSA",
+           "alg": "RS256",
+           "use": "sig",
+           "kid": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs",
+           "n": "pnXBOusEANuug6ewezb9J_...",
+           "e": "AQAB"
+         }
+       ]
+     },
+     "metadata": {
+       "acme_issuer": {
+         "directory_url": "https://issuer.example.com/acme/directory"
+       }
+     }
+   }
 
 5.3.2.  Requestor Metadata
 
@@ -661,12 +659,6 @@ Table of Contents
 
 6.  Publication of the Certificates within the Federation
 
-   All X.509 Certificates issued SHOULD be published to one or more
-   Certificate Transparency logs [RFC9162].  Selection of those logs,
-   their versions, and embedding or discovery of Signed Certificate
-   Timestamps, are policy decisions and are out of scope for this
-   document.
-
    The X.509 Certificates issued by federation Immediate Superior
    Entities pertaining to one or more Federation Entity Keys in control
    of their Subordinates MAY publish this information by including the
@@ -845,10 +837,6 @@ Table of Contents
               (ACME)", RFC 8555, DOI 10.17487/RFC8555, March 2019,
               <https://www.rfc-editor.org/rfc/rfc8555>.
 
-   [RFC9162]  Laurie, B., Messeri, E., and R. Stradling, "Certificate
-              Transparency Version 2.0", RFC 9162, DOI 10.17487/RFC9162,
-              December 2021, <https://www.rfc-editor.org/rfc/rfc9162>.
-
    [RFC9457]  Nottingham, M., Wilde, E., and S. Dalal, "Problem Details
               for HTTP APIs", RFC 9457, DOI 10.17487/RFC9457, July 2023,
               <https://www.rfc-editor.org/rfc/rfc9457>.
@@ -868,6 +856,11 @@ Contributors
    J.C. Jones
    ISRG
    Email: ietf@insufficient.coffee
+
+
+   Tim Geoghegan
+   ISRG
+   Email: timgeog+ietf@gmail.com
 
 
 Authors' Addresses
