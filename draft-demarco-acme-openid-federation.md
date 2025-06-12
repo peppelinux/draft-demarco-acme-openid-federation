@@ -3,7 +3,7 @@ title: "Automatic Certificate Management Environment (ACME) with OpenID Federati
 abbrev: "ACME OpenID Federation"
 category: std
 
-docname: draft-demarco-acme-openid-federation-01
+docname: draft-demarco-acme-openid-federation-latest
 submissiontype: IETF
 number:
 date:
