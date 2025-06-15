@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-10T00:41:08.510985+00:00",
+  "timestamp": "2025-06-15T00:46:17.699159+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -693,7 +693,7 @@
       "labels": [],
       "body": "We need to write a security considerations section.",
       "createdAt": "2025-01-17T15:39:05Z",
-      "updatedAt": "2025-01-28T15:30:25Z",
+      "updatedAt": "2025-06-12T12:16:04Z",
       "closedAt": null,
       "comments": [
         {
@@ -6338,24 +6338,26 @@
       "id": "PR_kwDOJ6_NW86YKLHq",
       "title": "Editorial pass",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/88",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "See inline comments for justification and context",
       "createdAt": "2025-05-29T17:33:57Z",
-      "updatedAt": "2025-06-04T16:37:35Z",
+      "updatedAt": "2025-06-12T18:17:18Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "37224b81f92825ca878d13571c690a402954b28b",
+      "baseRefOid": "6851628b4fe71eb743407a1051f32b185df86b4d",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg-misc-edits",
-      "headRefOid": "284f5f71f6e61d1127d3e1327f70da94bb1473e1",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "4df2916180c39f1abc38458037baadc5099d1512",
+      "closedAt": "2025-06-12T18:17:18Z",
+      "mergedAt": "2025-06-12T18:17:18Z",
+      "mergedBy": "tgeoghegan",
+      "mergeCommit": {
+        "oid": "a0e7a16a7fd0c9a59e5339c6fb43baa00e2b1022"
+      },
       "comments": [],
       "reviews": [
         {
@@ -6593,7 +6595,7 @@
       "labels": [],
       "body": "# Stacked on #88\r\n\r\nMoves \"Overview\" up to the header section of \"Protocol Flow\" and collapses some redundant sections into it.",
       "createdAt": "2025-05-29T18:11:39Z",
-      "updatedAt": "2025-06-04T16:37:33Z",
+      "updatedAt": "2025-06-12T18:19:11Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "timg-misc-edits",
       "baseRefOid": "d5b565b0f13a9958d07dd66fdea945f302b4665e",
@@ -6606,7 +6608,15 @@
       "mergeCommit": {
         "oid": "284f5f71f6e61d1127d3e1327f70da94bb1473e1"
       },
-      "comments": [],
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Oops, I merged this into the wrong place. Re-created as #94.",
+          "createdAt": "2025-06-12T18:19:11Z",
+          "updatedAt": "2025-06-12T18:19:11Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOJ6_NW86rnPpb",
@@ -6850,6 +6860,61 @@
           "body": "",
           "createdAt": "2025-06-08T21:14:34Z",
           "updatedAt": "2025-06-08T21:14:34Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 94,
+      "id": "PR_kwDOJ6_NW86aRHGG",
+      "title": "reorganize protocol overview",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/94",
+      "state": "MERGED",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Moves \"Overview\" up to the header section of \"Protocol Flow\" and collapses some redundant sections into it.",
+      "createdAt": "2025-06-12T18:18:47Z",
+      "updatedAt": "2025-06-13T08:19:39Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "a0e7a16a7fd0c9a59e5339c6fb43baa00e2b1022",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "timg-overview-refactor",
+      "headRefOid": "ed9152441d84e6255574aebff4398266c897d7cd",
+      "closedAt": "2025-06-12T20:02:10Z",
+      "mergedAt": "2025-06-12T20:02:10Z",
+      "mergedBy": "tgeoghegan",
+      "mergeCommit": {
+        "oid": "04148c5da1a9a66126760edab219fe708a2fa878"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86uLonB",
+          "commit": {
+            "abbreviatedOid": "ed91524"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-06-12T18:57:32Z",
+          "updatedAt": "2025-06-12T18:57:32Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86uRf7A",
+          "commit": {
+            "abbreviatedOid": "ed91524"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "approved.",
+          "createdAt": "2025-06-13T08:19:39Z",
+          "updatedAt": "2025-06-13T08:19:39Z",
           "comments": []
         }
       ]
