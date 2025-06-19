@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-15T00:46:17.699159+00:00",
+  "timestamp": "2025-06-19T00:41:35.129280+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -927,14 +927,31 @@
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/61",
       "state": "OPEN",
       "author": "tgeoghegan",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "discussion-required"
+      ],
       "body": "In #55, we removed mention of CAA, arguing that it's meaningless for non-DNS identifiers. That's true, but we will still want to enable requestors to restrict which CA(s) are permitted to issue for their entity identifier, as otherwise any issuer that ever joins the federation is allowed to issue. If we express such restrictions in `acme_requestor`, then it also becomes possible for federation superiors to construct [restrictions on subordinates](https://openid.net/specs/openid-federation-1_0-41.html#chain_constraints), which is also an attractive feature.\n\nThis could be expressed as a list of entity identifiers, but we could also imagine richer policies, such as only allowing issuers that have a [trust mark](https://openid.net/specs/openid-federation-1_0-41.html#section-7) satisfying some predicate.",
       "createdAt": "2025-02-06T17:30:14Z",
-      "updatedAt": "2025-02-06T17:30:14Z",
+      "updatedAt": "2025-06-17T14:35:35Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "since it is up to the requestor decide which acme issuer/provider to use and since it is not required that the requestor must know all the acme issuers present in one or more federations, I would not go for this restrictions\n\nthe requestor decide which issuer to use, it only needs the \"first good and available acme issuer\"",
+          "createdAt": "2025-06-17T14:18:38Z",
+          "updatedAt": "2025-06-17T14:18:38Z"
+        },
+        {
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "body": "A CAA-style mechanism would be more for the benefit of the downstream X.509 PKI. Requiring a trust mark before issuing a certificate sounds like a reasonable policy choice that such a PKI could make. The web PKI's CAA mechanism is only enforced through policy, and not through technical means, so similarly any PKI using this document could define their own policies limiting which certificates may be issued.\n\nPutting any further parameters in the `acme_requestor` metadata type towards this end seems redundant though -- a party that can control the resolved metadata for an entity to set the public key used in challenges can likely set any CAA-like parameter, and issuance can only be initiated by parties controlling the corresponding private key.\n\nI suggest we close and do nothing, until there is a more concrete need from a proposed PKI.",
+          "createdAt": "2025-06-17T14:35:35Z",
+          "updatedAt": "2025-06-17T14:35:35Z"
+        }
+      ]
     },
     {
       "number": 62,
@@ -943,12 +960,14 @@
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/62",
       "state": "OPEN",
       "author": "tgeoghegan",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "COLLABORATOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "discussion-required"
+      ],
       "body": "At its simplest, an X.509 certificate issued by an ACME-OIDF CA attests that its holder has some OIDF identifier. But it might be interesting for the cert to contain more information that reflects the OIDF entity. For example, one or more of the trust marks advertised by the requestor's entity configuration could be translated into a novel [X.509 extension](https://datatracker.ietf.org/doc/html/rfc5280#section-4.2), or perhaps certain trust marks would cause the CA to add certain EKUs to the certificate.",
       "createdAt": "2025-02-06T17:40:17Z",
-      "updatedAt": "2025-02-07T18:56:40Z",
+      "updatedAt": "2025-06-17T14:15:03Z",
       "closedAt": null,
       "comments": [
         {
@@ -960,10 +979,17 @@
         },
         {
           "author": "tgeoghegan",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "COLLABORATOR",
           "body": "I agree that there's a lot of nuance in how trust marks are represented in the X.509 side, which is why I'm trying not to be prescriptive yet. I like the idea of the issuer gating the use of a profile on the requestor having certain trust marks, but then does that mean we punt the question of what shows up in the X.509 cert to the CA? I suppose that makes sense, since then they can choose something that meets the needs of whatever existing system they're integrating with.",
           "createdAt": "2025-02-07T18:56:39Z",
           "updatedAt": "2025-02-07T18:56:39Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "I would say that if the acme provider is ETSI compliant, therefore the certificates would be issued in compliance with ETSI X.Y compliances\n\nI would not introduce any particular certificate profiles within the current draft, I would therefore facilitate the definition of certificate profiles outside of this draft that only aims to give the basic protocol and extension to work with acme and federation",
+          "createdAt": "2025-06-17T14:14:54Z",
+          "updatedAt": "2025-06-17T14:14:54Z"
         }
       ]
     },
@@ -1064,11 +1090,13 @@
       "state": "OPEN",
       "author": "jcjones",
       "authorAssociation": "COLLABORATOR",
-      "assignees": [],
+      "assignees": [
+        "jcjones"
+      ],
       "labels": [],
       "body": "Not necessary for the first drafts, but as we progress it, we'll want to start putting explicit `(RFC EDITOR: Replace \"XXXX\" with the RFC number assigned to this document.)` sorts of things in the document.",
       "createdAt": "2025-03-11T19:05:19Z",
-      "updatedAt": "2025-03-11T19:05:19Z",
+      "updatedAt": "2025-06-17T14:12:08Z",
       "closedAt": null,
       "comments": []
     },
@@ -1125,11 +1153,13 @@
       "state": "OPEN",
       "author": "jcjones",
       "authorAssociation": "COLLABORATOR",
-      "assignees": [],
+      "assignees": [
+        "jcjones"
+      ],
       "labels": [],
       "body": "The ACME RFC uses camelCase for JSON members, while OpenID Fed prefers snake_case. \n* For the parts of this which are an ACME extension, we should adopt the ACME RFC's naming for ACME data structures. \n* For the parts of this which are an OpenID Federation extension, we should adopt the OpenID spec's naming.\n\nIt's quite possible this is a no-op, but I want to do a check before deciding.",
       "createdAt": "2025-05-27T14:20:31Z",
-      "updatedAt": "2025-05-27T14:24:39Z",
+      "updatedAt": "2025-06-17T14:11:39Z",
       "closedAt": null,
       "comments": [
         {
@@ -1153,7 +1183,7 @@
       "labels": [],
       "body": "The start of [section 6 \"Protocol Flow\"](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6) tells us that there are two major phases, discovery and \"order request\". But then [section 6.2 Discovery](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6.2) doesn't really say much about how to do discovery. Is there a section in OPENID-FED we could point to that explains how to look for entities of a certain type in a federation? I don't think there's anything especially clever implementations can do here (they either have to be handed an issuer's identifier or walk the tree of the federation) but it seems odd to me that we make such a big deal of discovery but then say so little about it.",
       "createdAt": "2025-05-29T16:26:53Z",
-      "updatedAt": "2025-05-29T18:17:13Z",
+      "updatedAt": "2025-06-17T14:10:55Z",
       "closedAt": null,
       "comments": [
         {
@@ -1162,6 +1192,13 @@
           "body": "[The first bullet under 6.3 Overview](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6.3-1.1.1) also contradicts 6.2 Discovery:\n\n```\n1. The Requestor checks if its superior Federation Entity supports the ACME\n   protocol for OpenID Federation 1.0. If not, the Requestor starts the\n   discovery process to find Issuers within the federation.\n```\n\nI don't think it's wise for this document to assert that requestors should prefer their immediate federation superior over other `acme_issuer`s in the federation. We don't know enough about why X.509 certs are being issued to say that. For example, my superior might be an X.509 CA that is trusted to issue credentials to talk to system A, but what I'm trying to do is get creds to talk to system B, which can only be issued by some other issuer in the federation.\n\nedit: this specific point is addressed in #89 by deleting the line in question but we should still think about whether we can say any more useful stuff about issuer discovery.",
           "createdAt": "2025-05-29T16:29:42Z",
           "updatedAt": "2025-05-29T18:17:12Z"
+        },
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "> I don't think it's wise for this document to assert that requestors should prefer their immediate federation superior over other acme_issuers in the federation\n\nSure, I agree. It could give some benefits and have sense but it is not required nor recommended to the implementations.\n\nI woulkd go for a no-action  for this issuer, therefore close it since it seems to me that PR 89 simplifies the text while the concept of discovery is implicitly exemplified in the current draft.\n\n@tgeoghegan are you suggesting to create a specific section about different discovery paths and considerations?",
+          "createdAt": "2025-06-17T14:10:55Z",
+          "updatedAt": "2025-06-17T14:10:55Z"
         }
       ]
     },
@@ -1173,13 +1210,23 @@
       "state": "OPEN",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
-      "assignees": [],
+      "assignees": [
+        "tgeoghegan"
+      ],
       "labels": [],
       "body": "We have [a single reference ](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6.3-1.5.1) to this problem type we define and there's a few problems here:\n\n- it's only mentioned in the overview which isn't a great place for normative text\n- it talks about a \"CSR request\" which is hard to parse because lots of things could go wrong before the requestor sends a CSR\n- it's hard to reconcile with RFC 8555, which will occasionally say you MUST use a specific error URN\n- it's not helpful for errors to tell you something went wrong w.r.t. an `openIDFederationEntity`, because you already know you were doing OIDF stuff because that's the kind of order you constructed\n- it mandates a single `error_code` value, though the OPENID-FED section referred to enumerates about a dozen things that could go wrong with OIDF\n\nI think we should instead guide implementations to include an error of this type as a _sub_problem and allow for a variety of `error_code` values.",
       "createdAt": "2025-05-29T16:59:26Z",
-      "updatedAt": "2025-05-29T16:59:26Z",
+      "updatedAt": "2025-06-17T14:07:14Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "I agree that we really have to imporove that error section\n\nI also noticied that the normative language used over there sound quite ambiguous (\"can\" is used)",
+          "createdAt": "2025-06-17T14:06:43Z",
+          "updatedAt": "2025-06-17T14:06:43Z"
+        }
+      ]
     },
     {
       "number": 86,
@@ -1237,13 +1284,23 @@
       "state": "OPEN",
       "author": "jcjones",
       "authorAssociation": "COLLABORATOR",
-      "assignees": [],
+      "assignees": [
+        "jcjones"
+      ],
       "labels": [],
       "body": "For ACME Identifier Types, we use `openid-federation`, but that would be the first hyphenated identifier there, while [RFC 9448](https://www.rfc-editor.org/rfc/rfc9448.html) use PascalCase for TNAuthList:  https://www.iana.org/assignments/acme/acme.xhtml#acme-identifier-types\n\nThis is arguably a mismatch, and we should consider using something else. `openidFederation` looks more like the 8555/8738 examples.\n\nOr we could just go with what we have, arguing that it matches everything _except_ 9448, including all the \"Auto-Renewal Fields\".",
       "createdAt": "2025-06-04T20:50:07Z",
-      "updatedAt": "2025-06-04T20:50:07Z",
+      "updatedAt": "2025-06-17T14:07:40Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "I am ok with `openidFederation`",
+          "createdAt": "2025-06-17T14:03:26Z",
+          "updatedAt": "2025-06-17T14:03:26Z"
+        }
+      ]
     },
     {
       "number": 93,
@@ -1253,11 +1310,13 @@
       "state": "OPEN",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
-      "assignees": [],
+      "assignees": [
+        "peppelinux"
+      ],
       "labels": [],
       "body": "Draft 43 of OpenID Federation was just published a few days ago. https://openid.net/specs/openid-federation-1_0-43.html#name-document-history Among other things, this makes changes to trust marks and defines the term \"Resolved Metadata\", referring to the result of applying all metadata policies to the Entity Configuration.\n\nWe should update the document reference, update section numbers as needed, and make use of the term \"Resolved Metadata\" when talking about how to get metadata parameters.",
       "createdAt": "2025-06-06T14:35:17Z",
-      "updatedAt": "2025-06-06T14:35:17Z",
+      "updatedAt": "2025-06-17T14:07:25Z",
       "closedAt": null,
       "comments": []
     }
