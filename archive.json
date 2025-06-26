@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-19T00:41:35.129280+00:00",
+  "timestamp": "2025-06-26T00:41:41.687759+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -925,7 +925,7 @@
       "id": "I_kwDOJ6_NW86pDH2I",
       "title": "Allow `acme_requestor` to restrict which CAs may issue for the OIDF entity (CAA equivalent)",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/61",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -934,8 +934,8 @@
       ],
       "body": "In #55, we removed mention of CAA, arguing that it's meaningless for non-DNS identifiers. That's true, but we will still want to enable requestors to restrict which CA(s) are permitted to issue for their entity identifier, as otherwise any issuer that ever joins the federation is allowed to issue. If we express such restrictions in `acme_requestor`, then it also becomes possible for federation superiors to construct [restrictions on subordinates](https://openid.net/specs/openid-federation-1_0-41.html#chain_constraints), which is also an attractive feature.\n\nThis could be expressed as a list of entity identifiers, but we could also imagine richer policies, such as only allowing issuers that have a [trust mark](https://openid.net/specs/openid-federation-1_0-41.html#section-7) satisfying some predicate.",
       "createdAt": "2025-02-06T17:30:14Z",
-      "updatedAt": "2025-06-17T14:35:35Z",
-      "closedAt": null,
+      "updatedAt": "2025-06-25T19:25:04Z",
+      "closedAt": "2025-06-25T19:25:04Z",
       "comments": [
         {
           "author": "peppelinux",
@@ -950,6 +950,13 @@
           "body": "A CAA-style mechanism would be more for the benefit of the downstream X.509 PKI. Requiring a trust mark before issuing a certificate sounds like a reasonable policy choice that such a PKI could make. The web PKI's CAA mechanism is only enforced through policy, and not through technical means, so similarly any PKI using this document could define their own policies limiting which certificates may be issued.\n\nPutting any further parameters in the `acme_requestor` metadata type towards this end seems redundant though -- a party that can control the resolved metadata for an entity to set the public key used in challenges can likely set any CAA-like parameter, and issuance can only be initiated by parties controlling the corresponding private key.\n\nI suggest we close and do nothing, until there is a more concrete need from a proposed PKI.",
           "createdAt": "2025-06-17T14:35:35Z",
           "updatedAt": "2025-06-17T14:35:35Z"
+        },
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I agree with David: this draft spells out a minimal mechanism for issuers to check requestor control of an OIDF entity, but does not preclude issuers from imposing whatever additional policy checks they want, which could include CAA-style things. And those could be defined in terms of a further OIDF entity type advertised alongside the `acme_requestor`, which means that this specification doesn't need to say anything about it. So let's close this.",
+          "createdAt": "2025-06-25T19:25:04Z",
+          "updatedAt": "2025-06-25T19:25:04Z"
         }
       ]
     },
@@ -1176,15 +1183,15 @@
       "id": "I_kwDOJ6_NW8640yld",
       "title": "\"Discovery\" is under-specified",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/84",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "The start of [section 6 \"Protocol Flow\"](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6) tells us that there are two major phases, discovery and \"order request\". But then [section 6.2 Discovery](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6.2) doesn't really say much about how to do discovery. Is there a section in OPENID-FED we could point to that explains how to look for entities of a certain type in a federation? I don't think there's anything especially clever implementations can do here (they either have to be handed an issuer's identifier or walk the tree of the federation) but it seems odd to me that we make such a big deal of discovery but then say so little about it.",
       "createdAt": "2025-05-29T16:26:53Z",
-      "updatedAt": "2025-06-17T14:10:55Z",
-      "closedAt": null,
+      "updatedAt": "2025-06-25T19:09:02Z",
+      "closedAt": "2025-06-25T19:09:02Z",
       "comments": [
         {
           "author": "tgeoghegan",
@@ -1199,6 +1206,13 @@
           "body": "> I don't think it's wise for this document to assert that requestors should prefer their immediate federation superior over other acme_issuers in the federation\n\nSure, I agree. It could give some benefits and have sense but it is not required nor recommended to the implementations.\n\nI woulkd go for a no-action  for this issuer, therefore close it since it seems to me that PR 89 simplifies the text while the concept of discovery is implicitly exemplified in the current draft.\n\n@tgeoghegan are you suggesting to create a specific section about different discovery paths and considerations?",
           "createdAt": "2025-06-17T14:10:55Z",
           "updatedAt": "2025-06-17T14:10:55Z"
+        },
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Reviewing the current text, I don't think there's anything else for us to do here. Closing.",
+          "createdAt": "2025-06-25T19:09:02Z",
+          "updatedAt": "2025-06-25T19:09:02Z"
         }
       ]
     },
@@ -6974,6 +6988,46 @@
           "body": "approved.",
           "createdAt": "2025-06-13T08:19:39Z",
           "updatedAt": "2025-06-13T08:19:39Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 95,
+      "id": "PR_kwDOJ6_NW86cHQje",
+      "title": "improve discussion of new error type URN",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/95",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Some of #85 was addressed in #88. This commit addresses my remaining gripes:\r\n\r\n- allow a `urn:ietf:params:acme:error:openIDFederationEntity` error to contain any `error_code` allowed by OPENID-FED, not just `invalid_trust_chain`\r\n- Refer to OPENID-FED for permitted error codes, rather than IANA-OAUTH. OPENID-FED adds a dozen or so error codes to those in IANA-OAUTH ([1]).\r\n- `:openIDFederationEntity` errors SHOULD include `error_code`, but if they do, `error_code` MUST be one of the ones defined in OPENID-FED.\r\n\r\n[1]: https://openid.net/specs/openid-federation-1_0.html#section-8.9\r\n\r\nResolves #85",
+      "createdAt": "2025-06-25T19:20:44Z",
+      "updatedAt": "2025-06-25T20:16:55Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "04148c5da1a9a66126760edab219fe708a2fa878",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "timg-error-type",
+      "headRefOid": "71659c7aead4d4df726d6552f08b88f05a14038e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86wZuZG",
+          "commit": {
+            "abbreviatedOid": "71659c7"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-06-25T20:16:55Z",
+          "updatedAt": "2025-06-25T20:16:55Z",
           "comments": []
         }
       ]
