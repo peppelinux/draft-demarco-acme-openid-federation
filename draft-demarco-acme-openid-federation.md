@@ -51,9 +51,9 @@ contributor:
 
 normative:
   OPENID-FED:
-    title: "OpenID Federation 1.0 - draft 41"
-    target: https://openid.net/specs/openid-federation-1_0-41.html
-    date: 2024-12-04
+    title: "OpenID Federation 1.0 - draft 43"
+    target: https://openid.net/specs/openid-federation-1_0-43.html
+    date: 2025-06-02
     author:
       -
         ins: R. Hedberg
