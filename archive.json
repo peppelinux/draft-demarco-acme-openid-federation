@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-26T00:41:41.687759+00:00",
+  "timestamp": "2025-07-01T00:48:45.603786+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -7031,6 +7031,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 96,
+      "id": "PR_kwDOJ6_NW86cxIWN",
+      "title": "Update OpenID Federation reference, make use of Resolved Metadata term",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/96",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This firstly updates the OpenID Federation 1.0 reference to draft-43. None of the section deep links needed renumbering.\r\n\r\nI also rewrote the validation procedure to refer to the Resolved Metadata of an entity, rather than talking about validating the Entity Configuration against metadata policies. This term was added to the terminology section in draft-43. I think the existing language was misleading because the Resolved Metadata could be different than the metadata in the Entity Configuration itself. Since policies can both modify metadata and produce errors, checking if the \"metadata is valid under the Trust Chain's resolved metadata policy\" is incomplete and inconsistent. For example, the \"value\" and \"add\" metadata policy operators both modify metadata.\r\n\r\nCloses #93.",
+      "createdAt": "2025-06-30T20:58:49Z",
+      "updatedAt": "2025-06-30T20:58:50Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "04148c5da1a9a66126760edab219fe708a2fa878",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "david/update-oidf-ref",
+      "headRefOid": "387ce390b382e621e82203b2ed647f96f622209e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
