@@ -5,7 +5,7 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 14 December 2025                                   12 June 2025
+Expires: 4 January 2026                                      3 July 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 December 2025.
+   This Internet-Draft will expire on 4 January 2026.
 
 Copyright Notice
 
@@ -170,8 +170,9 @@ Table of Contents
    The terms "Federation Entity", "Trust Anchor", "Entity
    Configuration", "Subordinate Statement", "Superior Entity",
    "Immediate Superior Entity", "Federation Entity Keys", "Federation
-   Entity Discovery", "Trust Mark" and "Trust Chain" used in this
-   document are defined in Section 1.2 of [OPENID-FED].
+   Entity Discovery", "Trust Mark", "Trust Chain", and "Resolved
+   Metadata" used in this document are defined in Section 1.2 of
+   [OPENID-FED].
 
    The term "Certificate Signing Request" (CSR) used in this document is
    defined as a "Certification Request" in [RFC2986].  The term
@@ -571,16 +572,14 @@ Table of Contents
    trustChain (optional, array of string): an array of strings
    containing signed JWTs, representing a Trust Chain from the Requestor
    to one of the Issuer's Trust Anchors (see Section 4 of [OPENID-FED]).
-   The Entity Configuration of the Trust Chain subject MUST contain
-   acme_requestor metadata that is valid under the Trust Chain's
-   resolved metadata policy (Section 6.1 of [OPENID-FED]) and contains
-   the key used to compute sig.  It is RECOMMENDED that the Requestor
-   includes this field.  If the Requestor cannot construct a Trust Chain
-   to one of the Trust Anchors indicated by the Issuer, or if no Trust
-   Anchors were indicated, it MAY use some other Trust Anchor that it
-   believes the Issuer trusts.  If the Requestor cannot construct a
-   Trust Chain to any Trust Anchor, it MAY omit the trustChain field
-   from the challenge response.
+   The Resolved Metadata of the Trust Chain subject MUST contain
+   acme_requestor metadata that contains the key used to compute sig.
+   It is RECOMMENDED that the Requestor includes this field.  If the
+   Requestor cannot construct a Trust Chain to one of the Trust Anchors
+   indicated by the Issuer, or if no Trust Anchors were indicated, it
+   MAY use some other Trust Anchor that it believes the Issuer trusts.
+   If the Requestor cannot construct a Trust Chain to any Trust Anchor,
+   it MAY omit the trustChain field from the challenge response.
 
    A non-normative example for an authorization with trustChain
    specified:
@@ -609,19 +608,19 @@ Table of Contents
    (Section 10 of [OPENID-FED]) to obtain a Trust Chain for the
    Requestor.
 
-   Once it has obtained a Trust Chain, the Issuer verifies:
-
-   *  That the Requestor's acme_requestor metadata is valid under the
-      Trust Chain's resolved metadata policy (Section 6.1 of
-      [OPENID-FED]).
+   Once it has obtained a Trust Chain, the Issuer evaluates the entity's
+   Resolved Metadata, and verifies:
 
    *  That the requested openid-federation identifier value matches the
       sub parameter of the Requestor's Entity Configuration.
 
+   *  That there is a key in the acme_requestor metadata (Section 5.3.2)
+      of the Requestor's Resolved Metadata with a kid matching the kid
+      claim in the challenge response.
+
    *  That the sig field of the payload is the compact JSON
-      serialization of a JWS signing the key authorization, signed with
-      a key from the Requestor's acme_requestor metadata (Section 5.3.2)
-      whose kid matches the kid claim in the challenge response.
+      serialization of a valid JWS signing the key authorization, using
+      the above public key.
 
    If all of the above checks succeed, then the validation is
    successful.  Otherwise, it has failed.  In either case, the
@@ -796,8 +795,8 @@ Table of Contents
    [OPENID-FED]
               Hedberg, R., Jones, M. B., Solberg, A. Å., Bradley, J., De
               Marco, G., and V. Dzhuvinov, "OpenID Federation 1.0 -
-              draft 41", 4 December 2024,
-              <https://openid.net/specs/openid-federation-1_0-41.html>.
+              draft 43", 2 June 2025,
+              <https://openid.net/specs/openid-federation-1_0-43.html>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,

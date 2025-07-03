@@ -21,13 +21,13 @@ Federation Entity can be issued by an X.509 Certification Authority through the
 ACME protocol to the organizations which are part of a federation built on top
 of OpenID Federation 1.0. 
     " name="description">
-<meta content="xml2rfc 3.28.1" name="generator">
+<meta content="xml2rfc 3.29.0" name="generator">
 <meta content="OpenID Federation" name="keyword">
 <meta content="ACME" name="keyword">
 <meta content="draft-demarco-acme-openid-federation-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.28.1
-    Python 3.12.10
+  xml2rfc 3.29.0
+    Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
@@ -36,7 +36,7 @@ of OpenID Federation 1.0.
     platformdirs 4.3.8
     pycountry 24.6.1
     PyYAML 6.0.2
-    requests 2.32.3
+    requests 2.32.4
     setuptools 80.9.0
     wcwidth 0.2.13
 -->
@@ -1057,11 +1057,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ACME OpenID Federation</td>
-<td class="right">June 2025</td>
+<td class="right">July 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">De Marco &amp; Pitman</td>
-<td class="center">Expires 14 December 2025</td>
+<td class="center">Expires 4 January 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1074,12 +1074,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-demarco-acme-openid-federation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-06-12" class="published">12 June 2025</time>
+<time datetime="2025-07-03" class="published">3 July 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-12-14">14 December 2025</time></dd>
+<dd class="expires"><time datetime="2026-01-04">4 January 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1142,7 +1142,7 @@ of OpenID Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 14 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1338,9 +1338,9 @@ in other protocols.<a href="#section-2-3.2.1" class="pilcrow">¶</a></p>
       </h2>
 <p id="section-3-1">The terms "Federation Entity", "Trust Anchor", "Entity Configuration",
 "Subordinate Statement", "Superior Entity", "Immediate Superior Entity",
-"Federation Entity Keys", "Federation Entity Discovery", "Trust Mark" and "Trust
-Chain" used in this document are defined in
-<span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
+"Federation Entity Keys", "Federation Entity Discovery", "Trust Mark", "Trust
+Chain", and "Resolved Metadata" used in this document are defined in
+<span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">The term "Certificate Signing Request" (CSR) used in this document is defined as
 a "Certification Request" in <span>[<a href="#RFC2986" class="cite xref">RFC2986</a>]</span>. The term "Certification Authority"
 used in this document is defined in <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>. The terms "ACME Client" and
@@ -1405,7 +1405,7 @@ evaluating the trust to the Requestor.<a href="#section-5-4.1.1" class="pilcrow"
         <li class="normal" id="section-5-4.2">
           <p id="section-5-4.2.1">The Requestor doesn't provide a Trust Chain in the challenge solution. The
 Certificate Issuer <span class="bcp14">MUST</span> start Federation Entity Discovery as described in
-<span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-9" class="relref">Section 9</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-5-4.2.1" class="pilcrow">¶</a></p>
+<span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-9" class="relref">Section 9</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-5-4.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-5-5">The following diagram illustrates a successful interaction between Issuer and
@@ -1539,7 +1539,7 @@ ACME account with the Issuer.<a href="#section-5-5" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-5.1-2">
 <li id="section-5.1-2.1">
             <p id="section-5.1-2.1.1">The Requestor and the Issuer <span class="bcp14">MUST</span> publish their Entity Configuration as
-defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-9" class="relref">Section 9</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-5.1-2.1.1" class="pilcrow">¶</a></p>
+defined in <span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-9" class="relref">Section 9</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-5.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-5.1-2.2">
             <p id="section-5.1-2.2.1">The Issuer <span class="bcp14">MUST</span> implement an ACME server, extended according to this document.<a href="#section-5.1-2.2.1" class="pilcrow">¶</a></p>
@@ -1624,7 +1624,7 @@ the <code>acme_issuer</code> metadata:<a href="#section-5.3.1-3" class="pilcrow"
           </h4>
 <p id="section-5.3.2-1">The Requestor <span class="bcp14">MUST</span> publish in its Entity Configuration an <code>acme_requestor</code>
 metadata containing a JWK set, according to
-<span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-5.2.1" class="relref">Section 5.2.1</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
+<span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-5.2.1" class="relref">Section 5.2.1</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.
 The keys in the set are used to respond to ACME challenges.<a href="#section-5.3.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.3.2-2">The following is a non-normative example of an Entity Configuration including
 the <code>acme_requestor</code> metadata and using the <code>jwks</code> metadata parameter.<a href="#section-5.3.2-2" class="pilcrow">¶</a></p>
@@ -1685,7 +1685,7 @@ the <code>acme_requestor</code> metadata from its Entity Configuration.<a href="
         </h3>
 <p id="section-5.4-1">This document defines a new ACME identifier type for OpenID Federation entities, <code>openid-federation</code>,
 whose value is the <code>sub</code> parameter of the requestor's Entity Configuration,
-as defined in <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+as defined in <span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="neworder-request">
@@ -1779,11 +1779,9 @@ for any identifiers except <code>openid-federation</code> identifiers.<a href="#
     "signed-acme-challenge+jwt".<a href="#section-5.6-11" class="pilcrow">¶</a></p>
 <p id="section-5.6-12">trustChain (optional, array of string):  an array of strings containing signed
     JWTs, representing a Trust Chain from the Requestor to one of the Issuer's
-    Trust Anchors (see <span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-4" class="relref">Section 4</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>).
-    The Entity Configuration of the Trust Chain subject <span class="bcp14">MUST</span> contain
-    <code>acme_requestor</code> metadata that is valid under the Trust Chain's resolved
-    metadata policy (<span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-6.1" class="relref">Section 6.1</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>)
-    and contains the key used to compute <code>sig</code>.
+    Trust Anchors (see <span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-4" class="relref">Section 4</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>).
+    The Resolved Metadata of the Trust Chain subject <span class="bcp14">MUST</span> contain
+    <code>acme_requestor</code> metadata that contains the key used to compute <code>sig</code>.
     It is <span class="bcp14">RECOMMENDED</span> that the Requestor includes this field.
     If the Requestor cannot construct a Trust Chain to one of the Trust Anchors
     indicated by the Issuer, or if no Trust Anchors were indicated, it <span class="bcp14">MAY</span> use
@@ -1815,24 +1813,23 @@ for any identifiers except <code>openid-federation</code> identifiers.<a href="#
 <p id="section-5.6-15">On receiving a challenge response, the Certificate Issuer verifies that the
 Requestor is trusted. If the Requestor did not provide a <code>trustChain</code>, the
 Issuer <span class="bcp14">MUST</span> perform Federation Entity Discovery
-(<span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-10" class="relref">Section 10</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>) to obtain a Trust Chain
+(<span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-10" class="relref">Section 10</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>) to obtain a Trust Chain
 for the Requestor.<a href="#section-5.6-15" class="pilcrow">¶</a></p>
-<p id="section-5.6-16">Once it has obtained a Trust Chain, the Issuer verifies:<a href="#section-5.6-16" class="pilcrow">¶</a></p>
+<p id="section-5.6-16">Once it has obtained a Trust Chain, the Issuer evaluates the entity's Resolved
+Metadata, and verifies:<a href="#section-5.6-16" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5.6-17.1">
-            <p id="section-5.6-17.1.1">That the Requestor's <code>acme_requestor</code> metadata is valid under the Trust
-Chain's resolved metadata policy
-(<span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-6.1" class="relref">Section 6.1</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>).<a href="#section-5.6-17.1.1" class="pilcrow">¶</a></p>
+            <p id="section-5.6-17.1.1">That the requested <code>openid-federation</code> identifier value matches the <code>sub</code>
+parameter of the Requestor's Entity Configuration.<a href="#section-5.6-17.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.6-17.2">
-            <p id="section-5.6-17.2.1">That the requested <code>openid-federation</code> identifier value matches the <code>sub</code>
-parameter of the Requestor's Entity Configuration.<a href="#section-5.6-17.2.1" class="pilcrow">¶</a></p>
+            <p id="section-5.6-17.2.1">That there is a key in the <code>acme_requestor</code> metadata (<a href="#requestor-metadata" class="auto internal xref">Section 5.3.2</a>)
+of the Requestor's Resolved Metadata with a <code>kid</code> matching the <code>kid</code> claim in
+the challenge response.<a href="#section-5.6-17.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.6-17.3">
-            <p id="section-5.6-17.3.1">That the <code>sig</code> field of the payload is the compact JSON serialization of a JWS
-signing the key authorization, signed with a key from the Requestor's
-<code>acme_requestor</code> metadata (<a href="#requestor-metadata" class="auto internal xref">Section 5.3.2</a>) whose <code>kid</code> matches the
-<code>kid</code> claim in the challenge response.<a href="#section-5.6-17.3.1" class="pilcrow">¶</a></p>
+            <p id="section-5.6-17.3.1">That the <code>sig</code> field of the payload is the compact JSON serialization of a
+valid JWS signing the key authorization, using the above public key.<a href="#section-5.6-17.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-5.6-18">If all of the above checks succeed, then the validation is successful.
@@ -1841,7 +1838,7 @@ according to <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.5.1" cl
 Federation trust, the problem document <span class="bcp14">SHOULD</span> contain a subproblem of type
 <code>urn:ietf:params:acme:error:openIDFederationEntity</code> and the error code
 <code>invalid_trust_chain</code>
-(<span><a href="https://openid.net/specs/openid-federation-1_0-41.html#section-8.9" class="relref">Section 8.9</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>).<a href="#section-5.6-18" class="pilcrow">¶</a></p>
+(<span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-8.9" class="relref">Section 8.9</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>).<a href="#section-5.6-18" class="pilcrow">¶</a></p>
 <p id="section-5.6-19">A non-normative example for the challenge object post-validation:<a href="#section-5.6-19" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.6-20">
 <pre>
@@ -2086,7 +2083,7 @@ specified here in <a href="#openidfed-othername-id" class="auto internal xref">S
 <dd class="break"></dd>
 <dt id="OPENID-FED">[OPENID-FED]</dt>
       <dd>
-<span class="refAuthor">Hedberg, R.</span>, <span class="refAuthor">Jones, M. B.</span>, <span class="refAuthor">Solberg, A. Å.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">De Marco, G.</span>, and <span class="refAuthor">V. Dzhuvinov</span>, <span class="refTitle">"OpenID Federation 1.0 - draft 41"</span>, <time datetime="2024-12-04" class="refDate">4 December 2024</time>, <span>&lt;<a href="https://openid.net/specs/openid-federation-1_0-41.html">https://openid.net/specs/openid-federation-1_0-41.html</a>&gt;</span>. </dd>
+<span class="refAuthor">Hedberg, R.</span>, <span class="refAuthor">Jones, M. B.</span>, <span class="refAuthor">Solberg, A. Å.</span>, <span class="refAuthor">Bradley, J.</span>, <span class="refAuthor">De Marco, G.</span>, and <span class="refAuthor">V. Dzhuvinov</span>, <span class="refTitle">"OpenID Federation 1.0 - draft 43"</span>, <time datetime="2025-06-02" class="refDate">2 June 2025</time>, <span>&lt;<a href="https://openid.net/specs/openid-federation-1_0-43.html">https://openid.net/specs/openid-federation-1_0-43.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
       <dd>
