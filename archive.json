@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-01T00:48:45.603786+00:00",
+  "timestamp": "2025-07-03T00:41:44.283529+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -7004,7 +7004,7 @@
       "labels": [],
       "body": "Some of #85 was addressed in #88. This commit addresses my remaining gripes:\r\n\r\n- allow a `urn:ietf:params:acme:error:openIDFederationEntity` error to contain any `error_code` allowed by OPENID-FED, not just `invalid_trust_chain`\r\n- Refer to OPENID-FED for permitted error codes, rather than IANA-OAUTH. OPENID-FED adds a dozen or so error codes to those in IANA-OAUTH ([1]).\r\n- `:openIDFederationEntity` errors SHOULD include `error_code`, but if they do, `error_code` MUST be one of the ones defined in OPENID-FED.\r\n\r\n[1]: https://openid.net/specs/openid-federation-1_0.html#section-8.9\r\n\r\nResolves #85",
       "createdAt": "2025-06-25T19:20:44Z",
-      "updatedAt": "2025-06-25T20:16:55Z",
+      "updatedAt": "2025-07-02T21:26:44Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "04148c5da1a9a66126760edab219fe708a2fa878",
@@ -7029,6 +7029,19 @@
           "createdAt": "2025-06-25T20:16:55Z",
           "updatedAt": "2025-06-25T20:16:55Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86xqZM4",
+          "commit": {
+            "abbreviatedOid": "71659c7"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "This is an improvement over my version, and thank you for the catch that the IANA registry isn't as up-to-date as it should be.\r\n\r\nThere's a reasonable chance that we'll be asked to go back to IANA instead during an RFC Editor pass, but that isn't difficult. ",
+          "createdAt": "2025-07-02T21:26:44Z",
+          "updatedAt": "2025-07-02T21:26:44Z",
+          "comments": []
         }
       ]
     },
@@ -7044,7 +7057,7 @@
       "labels": [],
       "body": "This firstly updates the OpenID Federation 1.0 reference to draft-43. None of the section deep links needed renumbering.\r\n\r\nI also rewrote the validation procedure to refer to the Resolved Metadata of an entity, rather than talking about validating the Entity Configuration against metadata policies. This term was added to the terminology section in draft-43. I think the existing language was misleading because the Resolved Metadata could be different than the metadata in the Entity Configuration itself. Since policies can both modify metadata and produce errors, checking if the \"metadata is valid under the Trust Chain's resolved metadata policy\" is incomplete and inconsistent. For example, the \"value\" and \"add\" metadata policy operators both modify metadata.\r\n\r\nCloses #93.",
       "createdAt": "2025-06-30T20:58:49Z",
-      "updatedAt": "2025-06-30T20:58:50Z",
+      "updatedAt": "2025-07-02T22:20:31Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "04148c5da1a9a66126760edab219fe708a2fa878",
@@ -7056,7 +7069,34 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86xnsn0",
+          "commit": {
+            "abbreviatedOid": "387ce39"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-02T17:00:07Z",
+          "updatedAt": "2025-07-02T17:00:07Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86xq1xa",
+          "commit": {
+            "abbreviatedOid": "387ce39"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-02T22:20:31Z",
+          "updatedAt": "2025-07-02T22:20:31Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
