@@ -51,9 +51,9 @@ contributor:
 
 normative:
   OPENID-FED:
-    title: "OpenID Federation 1.0 - draft 41"
-    target: https://openid.net/specs/openid-federation-1_0-41.html
-    date: 2024-12-04
+    title: "OpenID Federation 1.0 - draft 43"
+    target: https://openid.net/specs/openid-federation-1_0-43.html
+    date: 2025-06-02
     author:
       -
         ins: R. Hedberg
@@ -165,8 +165,8 @@ This specification can be implemented by:
 
 The terms "Federation Entity", "Trust Anchor", "Entity Configuration",
 "Subordinate Statement", "Superior Entity", "Immediate Superior Entity",
-"Federation Entity Keys", "Federation Entity Discovery", "Trust Mark" and "Trust
-Chain" used in this document are defined in
+"Federation Entity Keys", "Federation Entity Discovery", "Trust Mark", "Trust
+Chain", and "Resolved Metadata" used in this document are defined in
 {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2"}.
 
 The term "Certificate Signing Request" (CSR) used in this document is defined as
@@ -560,10 +560,8 @@ sig (required, string):  the compact JSON serialization (as described in
 trustChain (optional, array of string):  an array of strings containing signed
     JWTs, representing a Trust Chain from the Requestor to one of the Issuer's
     Trust Anchors (see {{Section 4 of OPENID-FED}}{: relative="#section-4"}).
-    The Entity Configuration of the Trust Chain subject MUST contain
-    `acme_requestor` metadata that is valid under the Trust Chain's resolved
-    metadata policy ({{Section 6.1 of OPENID-FED}}{: relative="#section-6.1"})
-    and contains the key used to compute `sig`.
+    The Resolved Metadata of the Trust Chain subject MUST contain
+    `acme_requestor` metadata that contains the key used to compute `sig`.
     It is RECOMMENDED that the Requestor includes this field.
     If the Requestor cannot construct a Trust Chain to one of the Trust Anchors
     indicated by the Issuer, or if no Trust Anchors were indicated, it MAY use
@@ -599,19 +597,18 @@ Issuer MUST perform Federation Entity Discovery
 ({{Section 10 of OPENID-FED}}{: relative="#section-10"}) to obtain a Trust Chain
 for the Requestor.
 
-Once it has obtained a Trust Chain, the Issuer verifies:
-
-* That the Requestor's `acme_requestor` metadata is valid under the Trust
-  Chain's resolved metadata policy
-  ({{Section 6.1 of OPENID-FED}}{: relative="#section-6.1"}).
+Once it has obtained a Trust Chain, the Issuer evaluates the entity's Resolved
+Metadata, and verifies:
 
 * That the requested `openid-federation` identifier value matches the `sub`
   parameter of the Requestor's Entity Configuration.
 
-* That the `sig` field of the payload is the compact JSON serialization of a JWS
-  signing the key authorization, signed with a key from the Requestor's
-  `acme_requestor` metadata ({{requestor-metadata}}) whose `kid` matches the
-  `kid` claim in the challenge response.
+* That there is a key in the `acme_requestor` metadata ({{requestor-metadata}})
+  of the Requestor's Resolved Metadata with a `kid` matching the `kid` claim in
+  the challenge response.
+
+* That the `sig` field of the payload is the compact JSON serialization of a
+  valid JWS signing the key authorization, using the above public key.
 
 If all of the above checks succeed, then the validation is successful.
 Otherwise, it has failed. In either case, the Certificate Issuer responds
