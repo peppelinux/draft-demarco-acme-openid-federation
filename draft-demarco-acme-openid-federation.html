@@ -1836,9 +1836,8 @@ valid JWS signing the key authorization, using the above public key.<a href="#se
 Otherwise, it has failed. In either case, the Certificate Issuer responds
 according to <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.5.1" class="relref">Section 7.5.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>. If the Issuer fails to verify OpenID
 Federation trust, the problem document <span class="bcp14">SHOULD</span> contain a subproblem of type
-<code>urn:ietf:params:acme:error:openIDFederationEntity</code> and the error code
-<code>invalid_trust_chain</code>
-(<span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-8.9" class="relref">Section 8.9</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>).<a href="#section-5.6-18" class="pilcrow">¶</a></p>
+<code>urn:ietf:params:acme:error:openIDFederationEntity</code> constructed as discussed in
+<a href="#error-type" class="auto internal xref">Section 8</a>.<a href="#section-5.6-18" class="pilcrow">¶</a></p>
 <p id="section-5.6-19">A non-normative example for the challenge object post-validation:<a href="#section-5.6-19" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.6-20">
 <pre>
@@ -1916,14 +1915,14 @@ expired cryptographic keys in the Federation Historical Key Registry.<a href="#s
       </h2>
 <p id="section-8-1">This document defines one new error type URI to be used in problem documents
 <span>[<a href="#RFC9457" class="cite xref">RFC9457</a>]</span>, as described in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-6.7" class="relref">Section 6.7</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-8-1" class="pilcrow">¶</a></p>
-<p id="section-8-2">The error type <code>urn:ietf:params:acme:error:openIDFederationEntity</code> can
-be used to encapsulate any OAuth error code returned while resolving OpenID
-Federation Entities. The title of this error type is "OpenID Federation Error".
-The <code>detail</code> member of the problem document <span class="bcp14">MAY</span> include the description of the
+<p id="section-8-2">The error type <code>urn:ietf:params:acme:error:openIDFederationEntity</code> is used to
+encapsulate any OAuth error code returned while resolving OpenID Federation
+Entities. The title of this error type is "OpenID Federation Error". The
+<code>detail</code> member of the problem document <span class="bcp14">MAY</span> include the description of the
 particular OAuth error code that caused the error. The problem document for this
-error type <span class="bcp14">SHOULD</span> include an extension member named <code>error_code</code>. The
-<code>error_code</code> member <span class="bcp14">SHOULD</span> be set to the OAuth error code, taken from the IANA
-"OAuth Extensions Error Registry" <span>[<a href="#IANA-OAUTH" class="cite xref">IANA-OAUTH</a>]</span>.<a href="#section-8-2" class="pilcrow">¶</a></p>
+error type <span class="bcp14">SHOULD</span> include an extension member named <code>error_code</code>, which <span class="bcp14">MUST</span> be
+set to the OAuth error code, taken from the error codes defined in
+<span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-8.9" class="relref">Section 8.9</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-8-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
