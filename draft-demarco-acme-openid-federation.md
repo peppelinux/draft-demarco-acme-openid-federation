@@ -614,9 +614,8 @@ If all of the above checks succeed, then the validation is successful.
 Otherwise, it has failed. In either case, the Certificate Issuer responds
 according to {{Section 7.5.1 of !RFC8555}}. If the Issuer fails to verify OpenID
 Federation trust, the problem document SHOULD contain a subproblem of type
-`urn:ietf:params:acme:error:openIDFederationEntity` and the error code
-`invalid_trust_chain`
-({{Section 8.9 of OPENID-FED}}{: relative="#section-8.9"}).
+`urn:ietf:params:acme:error:openIDFederationEntity` constructed as discussed in
+{{error-type}}.
 
 A non-normative example for the challenge object post-validation:
 
@@ -678,14 +677,14 @@ The X.509 Certificate revocation request is defined in {{Section 7.6 of !RFC8555
 This document defines one new error type URI to be used in problem documents
 {{!RFC9457}}, as described in {{Section 6.7 of !RFC8555}}.
 
-The error type `urn:ietf:params:acme:error:openIDFederationEntity` can
-be used to encapsulate any OAuth error code returned while resolving OpenID
-Federation Entities. The title of this error type is "OpenID Federation Error".
-The `detail` member of the problem document MAY include the description of the
+The error type `urn:ietf:params:acme:error:openIDFederationEntity` is used to
+encapsulate any OAuth error code returned while resolving OpenID Federation
+Entities. The title of this error type is "OpenID Federation Error". The
+`detail` member of the problem document MAY include the description of the
 particular OAuth error code that caused the error. The problem document for this
-error type SHOULD include an extension member named `error_code`. The
-`error_code` member SHOULD be set to the OAuth error code, taken from the IANA
-"OAuth Extensions Error Registry" {{IANA-OAUTH}}.
+error type SHOULD include an extension member named `error_code`, which MUST be
+set to the OAuth error code, taken from the error codes defined in
+{{Section 8.9 of OPENID-FED}}{: relative="#section-8.9"}.
 
 # Security Considerations
 
