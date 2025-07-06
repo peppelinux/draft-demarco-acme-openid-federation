@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-03T00:41:44.283529+00:00",
+  "timestamp": "2025-07-06T00:46:45.559490+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1221,7 +1221,7 @@
       "id": "I_kwDOJ6_NW8641G4M",
       "title": "Use of `urn:ietf:params:acme:error:openIDFederationEntity` is awkward",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/85",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -1230,8 +1230,8 @@
       "labels": [],
       "body": "We have [a single reference ](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-6.3-1.5.1) to this problem type we define and there's a few problems here:\n\n- it's only mentioned in the overview which isn't a great place for normative text\n- it talks about a \"CSR request\" which is hard to parse because lots of things could go wrong before the requestor sends a CSR\n- it's hard to reconcile with RFC 8555, which will occasionally say you MUST use a specific error URN\n- it's not helpful for errors to tell you something went wrong w.r.t. an `openIDFederationEntity`, because you already know you were doing OIDF stuff because that's the kind of order you constructed\n- it mandates a single `error_code` value, though the OPENID-FED section referred to enumerates about a dozen things that could go wrong with OIDF\n\nI think we should instead guide implementations to include an error of this type as a _sub_problem and allow for a variety of `error_code` values.",
       "createdAt": "2025-05-29T16:59:26Z",
-      "updatedAt": "2025-06-17T14:07:14Z",
-      "closedAt": null,
+      "updatedAt": "2025-07-03T08:03:46Z",
+      "closedAt": "2025-07-03T08:03:46Z",
       "comments": [
         {
           "author": "peppelinux",
@@ -1321,7 +1321,7 @@
       "id": "I_kwDOJ6_NW866Q051",
       "title": "Update OpenID Federation reference to draft 43",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/93",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -1330,8 +1330,8 @@
       "labels": [],
       "body": "Draft 43 of OpenID Federation was just published a few days ago. https://openid.net/specs/openid-federation-1_0-43.html#name-document-history Among other things, this makes changes to trust marks and defines the term \"Resolved Metadata\", referring to the result of applying all metadata policies to the Entity Configuration.\n\nWe should update the document reference, update section numbers as needed, and make use of the term \"Resolved Metadata\" when talking about how to get metadata parameters.",
       "createdAt": "2025-06-06T14:35:17Z",
-      "updatedAt": "2025-06-17T14:07:25Z",
-      "closedAt": null,
+      "updatedAt": "2025-07-03T08:02:42Z",
+      "closedAt": "2025-07-03T08:02:42Z",
       "comments": []
     }
   ],
@@ -6997,24 +6997,26 @@
       "id": "PR_kwDOJ6_NW86cHQje",
       "title": "improve discussion of new error type URN",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/95",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Some of #85 was addressed in #88. This commit addresses my remaining gripes:\r\n\r\n- allow a `urn:ietf:params:acme:error:openIDFederationEntity` error to contain any `error_code` allowed by OPENID-FED, not just `invalid_trust_chain`\r\n- Refer to OPENID-FED for permitted error codes, rather than IANA-OAUTH. OPENID-FED adds a dozen or so error codes to those in IANA-OAUTH ([1]).\r\n- `:openIDFederationEntity` errors SHOULD include `error_code`, but if they do, `error_code` MUST be one of the ones defined in OPENID-FED.\r\n\r\n[1]: https://openid.net/specs/openid-federation-1_0.html#section-8.9\r\n\r\nResolves #85",
       "createdAt": "2025-06-25T19:20:44Z",
-      "updatedAt": "2025-07-02T21:26:44Z",
+      "updatedAt": "2025-07-03T08:03:45Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "04148c5da1a9a66126760edab219fe708a2fa878",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg-error-type",
       "headRefOid": "71659c7aead4d4df726d6552f08b88f05a14038e",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-07-03T08:03:45Z",
+      "mergedAt": "2025-07-03T08:03:45Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "234a0d8c1de94c3acc1c0b223b319880978d8444"
+      },
       "comments": [],
       "reviews": [
         {
@@ -7042,6 +7044,19 @@
           "createdAt": "2025-07-02T21:26:44Z",
           "updatedAt": "2025-07-02T21:26:44Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86xwCVT",
+          "commit": {
+            "abbreviatedOid": "71659c7"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-03T08:03:28Z",
+          "updatedAt": "2025-07-03T08:03:28Z",
+          "comments": []
         }
       ]
     },
@@ -7050,24 +7065,26 @@
       "id": "PR_kwDOJ6_NW86cxIWN",
       "title": "Update OpenID Federation reference, make use of Resolved Metadata term",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/96",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This firstly updates the OpenID Federation 1.0 reference to draft-43. None of the section deep links needed renumbering.\r\n\r\nI also rewrote the validation procedure to refer to the Resolved Metadata of an entity, rather than talking about validating the Entity Configuration against metadata policies. This term was added to the terminology section in draft-43. I think the existing language was misleading because the Resolved Metadata could be different than the metadata in the Entity Configuration itself. Since policies can both modify metadata and produce errors, checking if the \"metadata is valid under the Trust Chain's resolved metadata policy\" is incomplete and inconsistent. For example, the \"value\" and \"add\" metadata policy operators both modify metadata.\r\n\r\nCloses #93.",
       "createdAt": "2025-06-30T20:58:49Z",
-      "updatedAt": "2025-07-02T22:20:31Z",
+      "updatedAt": "2025-07-03T08:02:40Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "04148c5da1a9a66126760edab219fe708a2fa878",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "david/update-oidf-ref",
       "headRefOid": "387ce390b382e621e82203b2ed647f96f622209e",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-07-03T08:02:40Z",
+      "mergedAt": "2025-07-03T08:02:40Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "2fb24c439f160511e7681e5522f559315ef9da9e"
+      },
       "comments": [],
       "reviews": [
         {
@@ -7094,6 +7111,19 @@
           "body": "",
           "createdAt": "2025-07-02T22:20:31Z",
           "updatedAt": "2025-07-02T22:20:31Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86xwBoM",
+          "commit": {
+            "abbreviatedOid": "387ce39"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-03T08:02:34Z",
+          "updatedAt": "2025-07-03T08:02:34Z",
           "comments": []
         }
       ]
