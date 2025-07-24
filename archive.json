@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-06T00:46:45.559490+00:00",
+  "timestamp": "2025-07-24T00:44:08.360850+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -77,6 +77,11 @@
       "name": "discussion-required",
       "description": "",
       "color": "C1F678"
+    },
+    {
+      "name": "acme ml comments",
+      "description": "",
+      "color": "77371c"
     }
   ],
   "issues": [
@@ -1332,6 +1337,114 @@
       "createdAt": "2025-06-06T14:35:17Z",
       "updatedAt": "2025-07-03T08:02:42Z",
       "closedAt": "2025-07-03T08:02:42Z",
+      "comments": []
+    },
+    {
+      "number": 97,
+      "id": "I_kwDOJ6_NW87CCQW_",
+      "title": "This Document extends the ACME IANA registries by registering a new identifier type",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/97",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "acme ml comments"
+      ],
+      "body": "In the last bullet of Section 1, \n\nI wouldn't say that this document \"extends the ACME newOrder resource\" -- if it does, then it equivalently also extends the order and authorization resources, which also contain Identifier subobjects. Instead, I think it is more concise and correct to say that this document extends the ACME IANA registries by registering a new identifier type and a new challenge type which can be used to validate identifiers of that type.",
+      "createdAt": "2025-07-23T08:10:33Z",
+      "updatedAt": "2025-07-23T08:10:55Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 98,
+      "id": "I_kwDOJ6_NW87CCRv7",
+      "title": "Section 5 still usefull?",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/98",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "acme ml comments"
+      ],
+      "body": "About the purpose of Section 5.\n\nIt's not formatted like an introduction or an overview, but it doesn't appear to say anything that isn't better-said by Section 6.\n",
+      "createdAt": "2025-07-23T08:12:21Z",
+      "updatedAt": "2025-07-23T08:12:21Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 99,
+      "id": "I_kwDOJ6_NW87CCSaF",
+      "title": "Rearrange Section 6",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/99",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "acme ml comments"
+      ],
+      "body": "I would rearrange Section 6 to more closely reflect previous RFCs which have introduced new identifier types and corresponding challenges, such as [RFC 8738](https://www.rfc-editor.org/rfc/rfc8738.html). Specifically, I believe the most readable flow here is:\n\n1. Define the new identifier type (currently very vaguely defined in Section 6.5). Describe, as per [RFC 8555, Section 7.4](https://datatracker.ietf.org/doc/html/rfc8555#section-7.4), where in the CSR these identifiers can appear (currently Section 6.7.1)\n2. Define the new challenge type, how the client fulfills the challenge, and how the server validates the challenge (currently Section 6.7). This would also include Section 6.4.2, since the validation protocol requires that the Requestor's Entity Configuration Metadata be correct for validation to succeed.\n3. Then, in a new top-level section, discuss discovery. This is where the Preconditions (currently Section 6.1), Discovery (Section 6.2), and Issuer Metadata (Section 6.4.1) would move to. This is placed lower in the document because, as far as I can tell, it's not actually necessary for the ACME challenge validation to succeed. It's just a mechanism for clients and servers to discover each other in a federation. I almost question whether it belongs in this document, as it is describing extensions to a non-ACME protocol, but this is probably fine.",
+      "createdAt": "2025-07-23T08:13:07Z",
+      "updatedAt": "2025-07-23T08:13:08Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 100,
+      "id": "I_kwDOJ6_NW87CCS28",
+      "title": "Section 6.3 still usefull?",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/100",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "acme ml comments"
+      ],
+      "body": " think that Section 6.3 is unnecessary, as the contents flow described there is identical to the standard RFC 8555 flow, and readers should simply be referred to that document. I believe that Section 6.6 is unnecessary for the same reason: given a definition of a new identifier type, a description of how to create a newOrder request with that identifier contains no new information.",
+      "createdAt": "2025-07-23T08:13:35Z",
+      "updatedAt": "2025-07-23T08:13:35Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 101,
+      "id": "I_kwDOJ6_NW87CCT5t",
+      "title": "Further Normative Guidance about notAfter in the newOrder request",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/101",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "acme ml comments"
+      ],
+      "body": "Section 8 says that \"it is up to the Certificate Issuer to decide the expiration time of the X.509 Certificate\". This directly contradicts RFC 8555, which says that the client can specify a notAfter time, and the server MUST return an error if it cannot fulfill that request as specified. \n\nIf you want to server to be able to adjust the expiration date based on the validity of the Trust Chain presented by the client, you'll need to say that clients MUST NOT include a notAfter in their newOrder request. Or simply say that Servers should consider whether they want to be able to do this adjustment, and if they do, then they should reject all requests which specify a notAfter.",
+      "createdAt": "2025-07-23T08:14:46Z",
+      "updatedAt": "2025-07-23T08:14:46Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 102,
+      "id": "I_kwDOJ6_NW87CCUqp",
+      "title": "Add Aaron Gable within the Acknowledgment Section",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/102",
+      "state": "OPEN",
+      "author": "peppelinux",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [
+        "acme ml comments"
+      ],
+      "body": "for his valauble feedbacks throug hthe ACME mailing list",
+      "createdAt": "2025-07-23T08:15:37Z",
+      "updatedAt": "2025-07-23T08:15:37Z",
+      "closedAt": null,
       "comments": []
     }
   ],
