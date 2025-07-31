@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-24T00:44:08.360850+00:00",
+  "timestamp": "2025-07-31T00:44:35.444343+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1446,6 +1446,76 @@
       "updatedAt": "2025-07-23T08:15:37Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 103,
+      "id": "I_kwDOJ6_NW87DVBzf",
+      "title": "Clarify ACME identifier vs. OpenID Federation identifier",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/103",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "acme ml comments"
+      ],
+      "body": "Mike Ounsworth pointed out on the ACME list that we talk a lot about identifiers and it's not clear what we mean. We can add an entry to the terminology section discussing OpenID Federation Identifiers and pointing to the relevant section of OIDF (https://openid.net/specs/openid-federation-1_0.html#section-1.2-3.4) and audit the use of \"identifier\" in the document to make sure it's clear which we mean.",
+      "createdAt": "2025-07-30T13:25:58Z",
+      "updatedAt": "2025-07-30T13:25:58Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 104,
+      "id": "I_kwDOJ6_NW87DVM8Z",
+      "title": "Provide separate explainer document",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/104",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "acme ml comments"
+      ],
+      "body": "Aaron Gable and others point out that the draft is burdened with material that recaps how ACME works. That's largely for the benefit of readers coming from the OpenID world who aren't familiar with ACME.\n\nWe're also missing some text on use cases that motivate this work. That's largely for the benefit of readers coming from places like the ACME WG.\n\nNeither is really appropriate for this draft, which should focus on telling implementers of ACME CAs how to support the new challenge and operators of OpenID Federation entities what metadata they need to advertise in order to get.\n\nWhat we could do is publish a separate explainer document that provides the context and motivation, akin to how many IETF WGs will publish an architecture doc alongside the nuts-and-bolts specifications. I don't think we'd publish this in the ACME WG, but a Markdown document in this GitHub repository would suffice.",
+      "createdAt": "2025-07-30T13:39:48Z",
+      "updatedAt": "2025-07-30T14:41:59Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This document should provide some concrete examples of *why* we need a bridge from OpenID Federation to X.509. All I've ever heard is vague mentions of \"legacy systems\" and I find that plausible, but concrete examples would help motivate the adoption and development of this draft.",
+          "createdAt": "2025-07-30T14:41:59Z",
+          "updatedAt": "2025-07-30T14:41:59Z"
+        }
+      ]
+    },
+    {
+      "number": 105,
+      "id": "I_kwDOJ6_NW87DVsWH",
+      "title": "Present the requestor Entity Configuration in the new order request",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/105",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "acme ml comments"
+      ],
+      "body": "Mike Ounsworth points out that since trust in the EC isn't derived from TLS, it's not strictly necessary for the issuer to fetch the requestor's EC (just as it's OK for the requestor to provide a valid trust chain in the challenge response instead of making the issuer do trust resolution). It's not obvious to me where in the new order request (https://datatracker.ietf.org/doc/html/rfc8555/#section-7.4) we'd put the EC. Are we allowed to put new fields in the `payload`?\n\nPerhaps what we could do is change the challenge response so that it could contain:\n\n- the full trust chain, in which case the issuer doesn't need to fetch the EC or do trust resolution OR\n- the requestor's EC, in which case the issuer does trust resolution and checks that the EC provided by the issuer matches the leaf ES in the truts chain OR\n- nothing, in which case the issuer fetches the requestor's EC and then does trust resolution.",
+      "createdAt": "2025-07-30T14:10:50Z",
+      "updatedAt": "2025-07-30T14:50:12Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "We should consider what if any are the security or trust implications of the issuer having the requester EC handed to it instead of fetching it from `$requester/.well-known/openid-federation`. Are there problems if the EC the requester sends differs from the it advertises? Would such issues get caught anyway when the issuer resolves trust back to one of its trust anchors?",
+          "createdAt": "2025-07-30T14:50:12Z",
+          "updatedAt": "2025-07-30T14:50:12Z"
+        }
+      ]
     }
   ],
   "pulls": [
