@@ -632,23 +632,22 @@ of the published `x5c` member, including whether it contains a full or
 partial Trust Chain, and if so, to what Trust Anchor, are policy decisions
 out of scope for this document.
 
-# Certificate Lifecycle and Revocation
+# Certificate Lifecycle
 
 The identity of the Requestor is verified through proof of possession of a
-private key corresponding to a public key
-attested within a Trust Chain. It is up to the Certificate Issuer to decide
-the expiration time of the X.509 Certificate. In some cases, and when required,
-it MAY be set to match the expiration of the Trust Chain.
+private key corresponding to a public key attested within a Trust Chain. The
+Trust Chain has an expiration time, and its content MUST NOT be trusted past the
+expiration time ({{Section 10.2 of OPENID-FED}}{: relative="#section-10.2"}).
 
-A Requestor SHOULD request the revocation of its X.509 Certificate when the related
-cryptographic material is revoked. The Requestor SHOULD publish the revoked or
-expired cryptographic keys in the Federation Historical Key Registry.
-
-The X.509 Certificate revocation request is defined in {{Section 7.6 of !RFC8555}}.
+The `notBefore` and `notAfter` fields of issued certificates MUST represent
+dates before the Trust Chain's expiration time. If the Requestor's newOrder
+request ({{Section 7.4 of !RFC8555}}) contains `notAfter` or `notBefore` fields
+that make this impossible, the Certificate Issuer MUST reply with an error of
+type `urn:ietf:params:acme:error:openIDFederationCertificateValidity`.
 
 # Errors {#error-type}
 
-This document defines one new error type URI to be used in problem documents
+This document defines two new error type URIs to be used in problem documents
 {{!RFC9457}}, as described in {{Section 6.7 of !RFC8555}}.
 
 The error type `urn:ietf:params:acme:error:openIDFederationEntity` is used to
@@ -659,6 +658,11 @@ particular OAuth error code that caused the error. The problem document for this
 error type SHOULD include an extension member named `error_code`, which MUST be
 set to the OAuth error code, taken from the error codes defined in
 {{Section 8.9 of OPENID-FED}}{: relative="#section-8.9"}.
+
+The error type `urn:ietf:params:acme:error:openIDFederationCertificateValidity`
+is used to indicate that a Certificate could not be issued because of a mismatch
+between the requested period of validity and the expiration of the OpenID
+Federation Trust Chain.
 
 # Security Considerations
 
@@ -714,6 +718,7 @@ in {{Section 9.7.4 of !RFC8555}}, the entry below, as specified here in
 |Type|Description|Reference|
 |----|-----------|---------|
 |openIDFederationEntity|An error occurred while resolving an OpenID Federation entity|this document|
+|openIDFederationCertificateValidity|A certificate was requested whose validity period is not before the OpenID Federation Trust Chain's expiry|this document|
 
 ## Assign X.509 PKIX Other Name
 
