@@ -198,9 +198,8 @@ The protocol flow consists of the following phases:
   within a federation, inspecting the ACME issuer Entity types. This is
   discussed in {{discovery}}.
 - **Issuance**: the Requestor requests a X.509 Certificate from a Certificate
-  Issuer using the ACME protocol. The necessary extensions to ACME orders and
-  challenges are discussed in {{neworder-request}} and {{challenge-type}},
-  respectively.
+  Issuer using the ACME protocol. The new ACME identifier and challenge type are
+  discussed in {{identifier-type}} and {{challenge-type}}, respectively.
 
 There are two ways the Certificate Issuer is able to check if a Requestor is
 part of the federation:
@@ -462,41 +461,16 @@ the `acme_requestor` metadata from its Entity Configuration.
 
 ## OpenID Federation Identifier {#identifier-type}
 
-This document defines a new ACME identifier type for OpenID Federation entities, `openid-federation`,
-whose value is the `sub` parameter of the requestor's Entity Configuration,
-as defined in {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2"}.
+This document defines a new ACME identifier type for OpenID Federation entities,
+`openid-federation`, whose value is the `sub` parameter of the requestor's
+Entity Configuration, as defined in
+{{Section 1.2 of OPENID-FED}}{: relative="#section-1.2"}.
 
-## newOrder Request
-
-The Requestor begins certificate issuance by sending a HTTP POST request to the
-Issuer's `newOrder` resource, as specified in {{Section 7.4 of !RFC8555}}.
-
-A non-normative example of an ACME newOrder request:
+For example, the ACME identifier corresponding to the example Entity
+Configuration in {{requestor-metadata}} is:
 
 ~~~~
-   POST /acme/new-order HTTP/1.1
-   Host: issuer.example.com
-   Content-Type: application/jose+json
-
-   {
-     "protected": base64url({
-       "alg": "ES256",
-       "kid": "https://issuer.example.com/acme/acct/evOfKhNU60wg",
-       "nonce": "5XJ1L3lEkMG7tR6pA00clA",
-       "url": "https://issuer.example.com/acme/new-order"
-     }),
-     "payload": base64url({
-       "identifiers": [
-         {
-           "type": "openid-federation",
-           "value": "https://requestor.example.com"
-         }
-       ],
-       "notBefore": "2016-01-01T00:04:00+04:00",
-       "notAfter": "2016-01-08T00:04:00+04:00"
-     }),
-     "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
-   }
+{"type": "openid-federation", "value": "https://requestor.example.com"}
 ~~~~
 
 ## OpenID Federation Challenge Type {#challenge-type}
