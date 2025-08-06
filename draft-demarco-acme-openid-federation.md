@@ -87,7 +87,13 @@ normative:
       organization: IANA
 
 informative:
-
+  OPENID-ENTITY-COLLECTION:
+    title: "OpenID Federation Entity Collection 1.0"
+    target: https://github.com/zachmann/openid-federation-entity-collection
+    author:
+      -
+        ins: G. Zachmann
+        name: Gabriel Zachmann
 
 --- abstract
 
@@ -211,9 +217,9 @@ part of the federation:
 
 ~~~ BEGIN EDNOTE ~~~
 
-## End-to-end ACME Issuance Flow
-
 To be removed before publication.
+
+## End-to-end ACME Issuance Flow
 
 This section contains explanatory material that recaps a lot of RFC 8555. It is
 included here for the benefit of readers who are familiar with OpenID Federation
@@ -370,13 +376,14 @@ Requestors that use discovery MAY select any Entity with an Entity type of
 valid Trust Mark with a particular Trust Mark Identifier.
 
 ~~~ BEGIN EDNOTE ~~~
+
 This section is to be removed before publication.
 
 As of draft 43, OpenID Federation 1.0 does not provide a formal specification of
 dynamic discovery of entities, though an example of how it might be done is
-provided in {{OPENID-FED}}{: relative="#Appendix-A"}. The OpenID working group
-is considering adopting an additional specification for what they call "Entity
-Collection": https://github.com/zachmann/openid-federation-entity-collection.
+provided in {{Appendix A of OPENID-FED}}{: relative="#appendix-A"}. The OpenID
+working group is considering adopting an additional specification for what they
+call {{OPENID-ENTITY-COLLECTION}}.
 
 ~~~ END EDNOTE ~~~
 
