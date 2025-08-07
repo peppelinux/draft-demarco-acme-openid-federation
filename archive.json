@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-31T00:44:35.444343+00:00",
+  "timestamp": "2025-08-07T00:45:27.373457+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1353,16 +1353,24 @@
       ],
       "body": "In the last bullet of Section 1, \n\nI wouldn't say that this document \"extends the ACME newOrder resource\" -- if it does, then it equivalently also extends the order and authorization resources, which also contain Identifier subobjects. Instead, I think it is more concise and correct to say that this document extends the ACME IANA registries by registering a new identifier type and a new challenge type which can be used to validate identifiers of that type.",
       "createdAt": "2025-07-23T08:10:33Z",
-      "updatedAt": "2025-07-23T08:10:55Z",
+      "updatedAt": "2025-08-06T20:18:27Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I addressed this in #106 by more crisply enumerating exactly what extensions this draft provides to which documents.",
+          "createdAt": "2025-08-06T20:18:27Z",
+          "updatedAt": "2025-08-06T20:18:27Z"
+        }
+      ]
     },
     {
       "number": 98,
       "id": "I_kwDOJ6_NW87CCRv7",
       "title": "Section 5 still usefull?",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/98",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -1371,9 +1379,17 @@
       ],
       "body": "About the purpose of Section 5.\n\nIt's not formatted like an introduction or an overview, but it doesn't appear to say anything that isn't better-said by Section 6.\n",
       "createdAt": "2025-07-23T08:12:21Z",
-      "updatedAt": "2025-07-23T08:12:21Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-08-06T18:53:28Z",
+      "closedAt": "2025-08-06T18:53:28Z",
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "#88 and #94 together deleted the entire section 5, so I don't think there's anything else to do here.",
+          "createdAt": "2025-08-06T18:53:28Z",
+          "updatedAt": "2025-08-06T18:53:28Z"
+        }
+      ]
     },
     {
       "number": 99,
@@ -1407,9 +1423,17 @@
       ],
       "body": " think that Section 6.3 is unnecessary, as the contents flow described there is identical to the standard RFC 8555 flow, and readers should simply be referred to that document. I believe that Section 6.6 is unnecessary for the same reason: given a definition of a new identifier type, a description of how to create a newOrder request with that identifier contains no new information.",
       "createdAt": "2025-07-23T08:13:35Z",
-      "updatedAt": "2025-07-23T08:13:35Z",
+      "updatedAt": "2025-08-06T18:50:37Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Section 6.3 from draft-demarco-acme-openid-federation-00 already got trimmed and folded into other sections in #94. However we still want to do something about the section discussing `newOrder`, which has become [5.5 in the current editor's copy](https://peppelinux.github.io/draft-demarco-acme-openid-federation/draft-demarco-acme-openid-federation.html#section-5.5).",
+          "createdAt": "2025-08-06T18:50:37Z",
+          "updatedAt": "2025-08-06T18:50:37Z"
+        }
+      ]
     },
     {
       "number": 101,
@@ -1479,7 +1503,7 @@
       ],
       "body": "Aaron Gable and others point out that the draft is burdened with material that recaps how ACME works. That's largely for the benefit of readers coming from the OpenID world who aren't familiar with ACME.\n\nWe're also missing some text on use cases that motivate this work. That's largely for the benefit of readers coming from places like the ACME WG.\n\nNeither is really appropriate for this draft, which should focus on telling implementers of ACME CAs how to support the new challenge and operators of OpenID Federation entities what metadata they need to advertise in order to get.\n\nWhat we could do is publish a separate explainer document that provides the context and motivation, akin to how many IETF WGs will publish an architecture doc alongside the nuts-and-bolts specifications. I don't think we'd publish this in the ACME WG, but a Markdown document in this GitHub repository would suffice.",
       "createdAt": "2025-07-30T13:39:48Z",
-      "updatedAt": "2025-07-30T14:41:59Z",
+      "updatedAt": "2025-08-06T19:22:39Z",
       "closedAt": null,
       "comments": [
         {
@@ -1488,6 +1512,13 @@
           "body": "This document should provide some concrete examples of *why* we need a bridge from OpenID Federation to X.509. All I've ever heard is vague mentions of \"legacy systems\" and I find that plausible, but concrete examples would help motivate the adoption and development of this draft.",
           "createdAt": "2025-07-30T14:41:59Z",
           "updatedAt": "2025-07-30T14:41:59Z"
+        },
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Mike Ounsworth provided another nice suggestion, which was to enclose the explanatory sections that we don't necessarily want in the final document in blocks like:\n\n~~~ BEGIN EDNOTE ~~~\nTo be removed before publication\n\n~~~ END EDNOTE ~~~\n\nThis is nice because now we don't have to provide a separate document.",
+          "createdAt": "2025-08-06T19:22:39Z",
+          "updatedAt": "2025-08-06T19:22:39Z"
         }
       ]
     },
@@ -7310,6 +7341,92 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 106,
+      "id": "PR_kwDOJ6_NW86icnkG",
+      "title": "discuss use cases and motivation",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/106",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "A key piece of feedback we got from the ACME WG was that:\r\n\r\n- it's not clear what kind of certs we're issuing here (TLS?)\r\n- it's not clear what an OpenID Federation Entity might be (persons? servers?)\r\n- it's not clear why those entities want X.509 certs\r\n- There's too much content that restates information from RFC 8555\r\n\r\nThis commit:\r\n\r\n- explains that an OIDF entity could be almost anything\r\n- explains that the certs could be for TLS but also for anything, and that this document doesn't try to restrict the issuance profile of the CAs implementing it\r\n- crisply enumerates how this document extends OIDF, ACME and RFC 5280\r\n- explains how the motivation here is integration with existing systems that only speak X.509\r\n- marks some content as being explanatory material useful during editing of the document but to be removed before publication\r\n\r\nResolves #104",
+      "createdAt": "2025-08-06T19:37:52Z",
+      "updatedAt": "2025-08-06T19:51:27Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "234a0d8c1de94c3acc1c0b223b319880978d8444",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "timg/use-cases",
+      "headRefOid": "8fe21298cf613ac944bf4f7316e2e70325703324",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 107,
+      "id": "PR_kwDOJ6_NW86ic_e8",
+      "title": "delete redundant newOrder section",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/107",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This draft doesn't need to explain anything about a `newOrder` request beyond defining the new identifier type for OIDF. This commit deletes that section. We also add a non-normative example of an `openid-federation` ACME identifier.\r\n\r\nResolves #100",
+      "createdAt": "2025-08-06T20:17:21Z",
+      "updatedAt": "2025-08-06T20:26:07Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "234a0d8c1de94c3acc1c0b223b319880978d8444",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "timg-delete-neworder",
+      "headRefOid": "1a5767aa2418bcbd72f044e6f9eaa3e4a300d03a",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 108,
+      "id": "PR_kwDOJ6_NW86idZFh",
+      "title": "cert lifecycle fixes",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/108",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Don't allow `notAfter` to go past the trust chain's `exp`. Also tidies up the discussion of revocation to avoid stepping on ACME's toes.\r\n\r\nresolves #101",
+      "createdAt": "2025-08-06T20:59:26Z",
+      "updatedAt": "2025-08-06T21:03:59Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "234a0d8c1de94c3acc1c0b223b319880978d8444",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "timg-revocation-and-expiration",
+      "headRefOid": "d8a8d731c6160e91df7e1fd62ee010d87ed139d9",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Once nuance here: we say that the issued cert's `notBefore` and `notAfter` must both be before the Trust Chain's expiration date. For symmetry, it's tempting to say that they should also be after some date determined by the trust chain. but there's no obvious way to do that I can see.\r\n\r\n X.509 certs have `notBefore` and `notAfter`. OIDF entity statements have `exp`, which corresponds neatly to `notAfter`, and `iat` (issuedAt) which does _not_ correspond to `notBefore`. It's perfectly valid for an entity to dynamically generate an EC and insert the current time as `iat`, even if all the information in the JWT has been valid and trustworthy for weeks or years.\r\n\r\nThe JWT spec does define an [`nbf` claim](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.5) that much more naturally aligns with a certificate's `notBefore`, but OpenID Federation [advises against using it](https://openid.net/specs/openid-federation-1_0-43.html#section-5.2.1-2.8.3):\r\n\r\n> More claims are defined in [[RFC7519](https://openid.net/specs/openid-federation-1_0-43.html#RFC7519)]; of these, aud SHOULD NOT be used since the issuer cannot know who the audience is. *nbf and jti are not particularly useful in this context and SHOULD be omitted.*\r\n\r\nSo I think the best we can do is use the trust chain's expiry.\r\n\r\n",
+          "createdAt": "2025-08-06T21:03:42Z",
+          "updatedAt": "2025-08-06T21:03:42Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
