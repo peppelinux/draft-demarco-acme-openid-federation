@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-07T00:45:27.373457+00:00",
+  "timestamp": "2025-08-10T00:49:14.063833+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -7354,7 +7354,7 @@
       "labels": [],
       "body": "A key piece of feedback we got from the ACME WG was that:\r\n\r\n- it's not clear what kind of certs we're issuing here (TLS?)\r\n- it's not clear what an OpenID Federation Entity might be (persons? servers?)\r\n- it's not clear why those entities want X.509 certs\r\n- There's too much content that restates information from RFC 8555\r\n\r\nThis commit:\r\n\r\n- explains that an OIDF entity could be almost anything\r\n- explains that the certs could be for TLS but also for anything, and that this document doesn't try to restrict the issuance profile of the CAs implementing it\r\n- crisply enumerates how this document extends OIDF, ACME and RFC 5280\r\n- explains how the motivation here is integration with existing systems that only speak X.509\r\n- marks some content as being explanatory material useful during editing of the document but to be removed before publication\r\n\r\nResolves #104",
       "createdAt": "2025-08-06T19:37:52Z",
-      "updatedAt": "2025-08-06T19:51:27Z",
+      "updatedAt": "2025-08-08T17:43:27Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "234a0d8c1de94c3acc1c0b223b319880978d8444",
@@ -7366,7 +7366,28 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW86439iq",
+          "commit": {
+            "abbreviatedOid": "8fe2129"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-08-08T17:25:02Z",
+          "updatedAt": "2025-08-08T17:43:27Z",
+          "comments": [
+            {
+              "originalPosition": 68,
+              "body": "These should be turned into references, especially \"RFC 5280\".",
+              "createdAt": "2025-08-08T17:25:02Z",
+              "updatedAt": "2025-08-08T17:43:27Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 107,
@@ -7380,7 +7401,7 @@
       "labels": [],
       "body": "This draft doesn't need to explain anything about a `newOrder` request beyond defining the new identifier type for OIDF. This commit deletes that section. We also add a non-normative example of an `openid-federation` ACME identifier.\r\n\r\nResolves #100",
       "createdAt": "2025-08-06T20:17:21Z",
-      "updatedAt": "2025-08-06T20:26:07Z",
+      "updatedAt": "2025-08-08T17:02:49Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "234a0d8c1de94c3acc1c0b223b319880978d8444",
@@ -7392,7 +7413,34 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW8643gp3",
+          "commit": {
+            "abbreviatedOid": "1a5767a"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-08-08T16:45:15Z",
+          "updatedAt": "2025-08-08T16:45:15Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW8643qu1",
+          "commit": {
+            "abbreviatedOid": "1a5767a"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-08-08T17:02:49Z",
+          "updatedAt": "2025-08-08T17:02:49Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 108,
@@ -7406,7 +7454,7 @@
       "labels": [],
       "body": "Don't allow `notAfter` to go past the trust chain's `exp`. Also tidies up the discussion of revocation to avoid stepping on ACME's toes.\r\n\r\nresolves #101",
       "createdAt": "2025-08-06T20:59:26Z",
-      "updatedAt": "2025-08-06T21:03:59Z",
+      "updatedAt": "2025-08-08T18:07:25Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "234a0d8c1de94c3acc1c0b223b319880978d8444",
@@ -7426,7 +7474,28 @@
           "updatedAt": "2025-08-06T21:03:42Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW8644UY7",
+          "commit": {
+            "abbreviatedOid": "d8a8d73"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-08-08T18:05:17Z",
+          "updatedAt": "2025-08-08T18:07:25Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "rephrasing for clarity:\r\n```suggestion\r\nprivate key corresponding to a public key attested within a Trust Chain. The Trust Chain has\r\nan expiration time, and its content MUST not be trusted past the expiration time\r\n({{Section 10.2 of OPENID-FED}}{: relative=\"#section-10.2\"}).\r\n```",
+              "createdAt": "2025-08-08T18:05:17Z",
+              "updatedAt": "2025-08-08T18:07:25Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
