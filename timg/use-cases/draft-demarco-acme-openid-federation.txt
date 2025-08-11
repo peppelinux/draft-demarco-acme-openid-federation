@@ -5,7 +5,7 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 7 February 2026                                   6 August 2025
+Expires: 12 February 2026                                 11 August 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 February 2026.
+   This Internet-Draft will expire on 12 February 2026.
 
 Copyright Notice
 
@@ -144,8 +144,8 @@ Table of Contents
    X.509 certificates like the Common Names, Subject Alternative Names
    or Key Usages may depend on details of those existing systems.
 
-   This document extends RFC 5280, ACME and OpenID Federation 1.0 in the
-   following ways:
+   This document extends [RFC5280], ACME ([RFC8555]) and OpenID
+   Federation 1.0 ([OPENID-FED]) in the following ways:
 
    *  It defines a new ACME identifier type called openid-federation.
 
