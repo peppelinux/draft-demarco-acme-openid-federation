@@ -144,8 +144,8 @@ this document does not require that CAs conform to any particular issuance
 profile, because fields of the X.509 certificates like the Common Names, Subject
 Alternative Names or Key Usages may depend on details of those existing systems.
 
-This document extends RFC 5280, ACME and OpenID Federation 1.0 in the following
-ways:
+This document extends {{!RFC5280}}, ACME ({{!RFC8555}}) and OpenID Federation
+1.0 ({{OPENID-FED}}) in the following ways:
 
 - It defines a new ACME identifier type called `openid-federation`.
 
