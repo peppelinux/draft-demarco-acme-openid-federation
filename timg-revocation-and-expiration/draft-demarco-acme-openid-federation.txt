@@ -5,7 +5,7 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 7 February 2026                                   6 August 2025
+Expires: 12 February 2026                                 11 August 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 February 2026.
+   This Internet-Draft will expire on 12 February 2026.
 
 Copyright Notice
 
@@ -670,8 +670,9 @@ Table of Contents
 
    The identity of the Requestor is verified through proof of possession
    of a private key corresponding to a public key attested within a
-   Trust Chain, which has an expiration time past which the Trust
-   Chain's content MUST not be trusted (Section 10.2 of [OPENID-FED]).
+   Trust Chain.  The Trust Chain has an expiration time, and its content
+   MUST not be trusted past the expiration time (Section 10.2 of
+   [OPENID-FED]).
 
    The notBefore and notAfter fields of issued certificates MUST
    represent dates before the Trust Chain's expiration time.  If the
