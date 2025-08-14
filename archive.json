@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-12T00:41:25.161246+00:00",
+  "timestamp": "2025-08-14T00:41:47.938688+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -7354,7 +7354,7 @@
       "labels": [],
       "body": "A key piece of feedback we got from the ACME WG was that:\r\n\r\n- it's not clear what kind of certs we're issuing here (TLS?)\r\n- it's not clear what an OpenID Federation Entity might be (persons? servers?)\r\n- it's not clear why those entities want X.509 certs\r\n- There's too much content that restates information from RFC 8555\r\n\r\nThis commit:\r\n\r\n- explains that an OIDF entity could be almost anything\r\n- explains that the certs could be for TLS but also for anything, and that this document doesn't try to restrict the issuance profile of the CAs implementing it\r\n- crisply enumerates how this document extends OIDF, ACME and RFC 5280\r\n- explains how the motivation here is integration with existing systems that only speak X.509\r\n- marks some content as being explanatory material useful during editing of the document but to be removed before publication\r\n\r\nResolves #104",
       "createdAt": "2025-08-06T19:37:52Z",
-      "updatedAt": "2025-08-11T21:45:26Z",
+      "updatedAt": "2025-08-12T18:12:37Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "234a0d8c1de94c3acc1c0b223b319880978d8444",
@@ -7384,6 +7384,32 @@
               "body": "These should be turned into references, especially \"RFC 5280\".",
               "createdAt": "2025-08-08T17:25:02Z",
               "updatedAt": "2025-08-08T17:43:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW865frg4",
+          "commit": {
+            "abbreviatedOid": "89f4f32"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-08-12T18:00:01Z",
+          "updatedAt": "2025-08-12T18:12:37Z",
+          "comments": [
+            {
+              "originalPosition": 58,
+              "body": "I feel like we could get more pushback as to what an existing system is, if not TLS. ",
+              "createdAt": "2025-08-12T18:00:01Z",
+              "updatedAt": "2025-08-12T18:12:37Z"
+            },
+            {
+              "originalPosition": 61,
+              "body": "Using the phrase is inviting RFC 2119 nitpicking. Do we want that, or should we say something like\r\n```suggestion\r\nthis document adds no requirement that CAs conform to any particular issuance\r\n```",
+              "createdAt": "2025-08-12T18:12:10Z",
+              "updatedAt": "2025-08-12T18:12:37Z"
             }
           ]
         }
@@ -7454,7 +7480,7 @@
       "labels": [],
       "body": "Don't allow `notAfter` to go past the trust chain's `exp`. Also tidies up the discussion of revocation to avoid stepping on ACME's toes.\r\n\r\nresolves #101",
       "createdAt": "2025-08-06T20:59:26Z",
-      "updatedAt": "2025-08-11T21:43:14Z",
+      "updatedAt": "2025-08-12T22:41:56Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "234a0d8c1de94c3acc1c0b223b319880978d8444",
@@ -7492,6 +7518,92 @@
               "body": "rephrasing for clarity:\r\n```suggestion\r\nprivate key corresponding to a public key attested within a Trust Chain. The Trust Chain has\r\nan expiration time, and its content MUST not be trusted past the expiration time\r\n({{Section 10.2 of OPENID-FED}}{: relative=\"#section-10.2\"}).\r\n```",
               "createdAt": "2025-08-08T18:05:17Z",
               "updatedAt": "2025-08-08T18:07:25Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW865f7wi",
+          "commit": {
+            "abbreviatedOid": "a00c19a"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-08-12T18:17:16Z",
+          "updatedAt": "2025-08-12T18:21:02Z",
+          "comments": [
+            {
+              "originalPosition": 21,
+              "body": "Seems like we should specify the ACME error here.",
+              "createdAt": "2025-08-12T18:17:16Z",
+              "updatedAt": "2025-08-12T18:21:02Z"
+            },
+            {
+              "originalPosition": 15,
+              "body": "```suggestion\r\nTrust Chain has an expiration time, and its content MUST NOT be trusted past the\r\n```",
+              "createdAt": "2025-08-12T18:20:58Z",
+              "updatedAt": "2025-08-12T18:21:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW865hb8D",
+          "commit": {
+            "abbreviatedOid": "a00c19a"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-08-12T19:53:43Z",
+          "updatedAt": "2025-08-12T19:53:44Z",
+          "comments": [
+            {
+              "originalPosition": 21,
+              "body": "I'm inclined to agree, but interestingly ACME itself does not: https://datatracker.ietf.org/doc/html/rfc8555#section-7.4\r\n\r\n\r\n>    The server MUST return an error if it cannot fulfill the request as\r\n>    specified, and it MUST NOT issue a certificate with contents other\r\n>    than those requested.  If the server requires the request to be\r\n>    modified in a certain way, it should indicate the required changes\r\n>    using an appropriate error type and description.",
+              "createdAt": "2025-08-12T19:53:43Z",
+              "updatedAt": "2025-08-12T19:53:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW865jXRv",
+          "commit": {
+            "abbreviatedOid": "a00c19a"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-08-12T22:23:48Z",
+          "updatedAt": "2025-08-12T22:23:48Z",
+          "comments": [
+            {
+              "originalPosition": 21,
+              "body": "huh, okaayyyy",
+              "createdAt": "2025-08-12T22:23:48Z",
+              "updatedAt": "2025-08-12T22:23:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW865jm8W",
+          "commit": {
+            "abbreviatedOid": "a00c19a"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-08-12T22:41:56Z",
+          "updatedAt": "2025-08-12T22:41:56Z",
+          "comments": [
+            {
+              "originalPosition": 21,
+              "body": "...that said, we could read the second sentence to mean that our draft should provide some guidance here. An error indicating that the X.509 notBefore/notAfter is incompatible with the OIDF exp would do.",
+              "createdAt": "2025-08-12T22:41:56Z",
+              "updatedAt": "2025-08-12T22:41:56Z"
             }
           ]
         }
