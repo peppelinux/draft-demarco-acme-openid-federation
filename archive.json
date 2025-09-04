@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-14T00:41:47.938688+00:00",
+  "timestamp": "2025-09-04T00:36:36.731655+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1414,7 +1414,7 @@
       "id": "I_kwDOJ6_NW87CCS28",
       "title": "Section 6.3 still usefull?",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/100",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -1423,8 +1423,8 @@
       ],
       "body": " think that Section 6.3 is unnecessary, as the contents flow described there is identical to the standard RFC 8555 flow, and readers should simply be referred to that document. I believe that Section 6.6 is unnecessary for the same reason: given a definition of a new identifier type, a description of how to create a newOrder request with that identifier contains no new information.",
       "createdAt": "2025-07-23T08:13:35Z",
-      "updatedAt": "2025-08-06T18:50:37Z",
-      "closedAt": null,
+      "updatedAt": "2025-09-02T14:42:13Z",
+      "closedAt": "2025-09-02T14:42:13Z",
       "comments": [
         {
           "author": "tgeoghegan",
@@ -1545,6 +1545,30 @@
           "body": "We should consider what if any are the security or trust implications of the issuer having the requester EC handed to it instead of fetching it from `$requester/.well-known/openid-federation`. Are there problems if the EC the requester sends differs from the it advertises? Would such issues get caught anyway when the issuer resolves trust back to one of its trust anchors?",
           "createdAt": "2025-07-30T14:50:12Z",
           "updatedAt": "2025-07-30T14:50:12Z"
+        }
+      ]
+    },
+    {
+      "number": 109,
+      "id": "I_kwDOJ6_NW87JTuK1",
+      "title": "Remove \"discovery\" concept from document",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/109",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 5 says that the protocol is split into two phases, discovery and issuance. Its description of the discovery phase says \"the Requestor discovers the available Certificate Issuers within a federation, inspecting the ACME issuer Entity types.\" Then, section 5.2 expands on this with a couple more paragraphs. Here, we say that the client may be configured with \"a particular ACME server\", or it may automatically discover a Certificate Issuer entity in its federation. We then provide a couple ideas about how the client may select between multiple entities.\n\nBased on the discussion in #106, I think that introducing a separate \"discovery\" concept, referring to finding and selecting a certificate issuer knowing only a federation trust anchor, introduces confusion. OpenID Federation already defines \"Federation Entity Discovery\", which covers the process by which a party looks up entity statements starting with a given entity identifier, and assembles a trust chain.\n\nWe do not currently provide a complete procedure for how to find issuers without knowing their identifier first. It would be possible to use the trust anchor's `federation_list_endpoint` to list all entities in the federation, and filter them locally. However, this metadata attribute is optional, and listing all entities may be practically infeasible in large federations. One separate draft introduces a paginated API to list all federation entities, while another separate draft introduces an API to list federation entities that meet specific filter conditions. If a deployment wants to limit discovery to certificate issuers bearing a specific trust mark, it may use the `federation_trust_mark_list_endpoint` to find entities, but this again is optional.\n\nI think that the \"finding a certificate issuer\" sense of discovery is an unnecessary feature for this draft, and I am not aware of a use case that requires it. If there are multiple certificate issuers in the same federation, then deployment-specific knowledge would be required to choose the correct certificate issuer. The multiple certificate issuers may issue certificates that are trusted in entirely different X.509 PKIs, for example, or they could otherwise support different certificate profiles. Given the many different ways one could list federation entities, each with different tradeoffs, and the need for additional deployment-specific information to select among multiple certificate issuers, I think it would be operationally simpler and more robust to have the ACME client be configured with an identifier for its certificate issuer, in addition to the federation trust anchor, etc.",
+      "createdAt": "2025-09-02T20:26:34Z",
+      "updatedAt": "2025-09-03T08:01:47Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "a impl consideration section could exemplify several ways to discover an acme certificate issuer, as discussed in PR #106 ",
+          "createdAt": "2025-09-03T08:01:47Z",
+          "updatedAt": "2025-09-03T08:01:47Z"
         }
       ]
     }
@@ -7354,7 +7378,7 @@
       "labels": [],
       "body": "A key piece of feedback we got from the ACME WG was that:\r\n\r\n- it's not clear what kind of certs we're issuing here (TLS?)\r\n- it's not clear what an OpenID Federation Entity might be (persons? servers?)\r\n- it's not clear why those entities want X.509 certs\r\n- There's too much content that restates information from RFC 8555\r\n\r\nThis commit:\r\n\r\n- explains that an OIDF entity could be almost anything\r\n- explains that the certs could be for TLS but also for anything, and that this document doesn't try to restrict the issuance profile of the CAs implementing it\r\n- crisply enumerates how this document extends OIDF, ACME and RFC 5280\r\n- explains how the motivation here is integration with existing systems that only speak X.509\r\n- marks some content as being explanatory material useful during editing of the document but to be removed before publication\r\n\r\nResolves #104",
       "createdAt": "2025-08-06T19:37:52Z",
-      "updatedAt": "2025-08-12T18:12:37Z",
+      "updatedAt": "2025-09-02T14:37:06Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "234a0d8c1de94c3acc1c0b223b319880978d8444",
@@ -7365,7 +7389,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "body": "@tgeoghegan we could also consider the entity_type filter used in the listing endpoint: https://openid.net/specs/openid-federation-1_0.html#section-8.2.1\r\n\r\nby using the metadata type acme issuer",
+          "createdAt": "2025-09-02T14:37:05Z",
+          "updatedAt": "2025-09-02T14:37:05Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOJ6_NW86439iq",
@@ -7412,6 +7444,74 @@
               "updatedAt": "2025-08-12T18:12:37Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW869WXoe",
+          "commit": {
+            "abbreviatedOid": "89f4f32"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2025-09-02T14:10:33Z",
+          "updatedAt": "2025-09-02T14:33:57Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "openid federation entity cannot be natural persons, see: https://openid.net/specs/openid-federation-wallet-1_0.html#section-5.1",
+              "createdAt": "2025-09-02T14:10:33Z",
+              "updatedAt": "2025-09-02T14:33:57Z"
+            },
+            {
+              "originalPosition": 52,
+              "body": "```suggestion\r\nX.509 Certificates can be provided to one or more such Entities, without having\r\n```",
+              "createdAt": "2025-09-02T14:10:51Z",
+              "updatedAt": "2025-09-02T14:33:57Z"
+            },
+            {
+              "originalPosition": 78,
+              "body": "```suggestion\r\n  facilitates automated issuance of X.509 Certificates to Requestors that can\r\n```",
+              "createdAt": "2025-09-02T14:15:11Z",
+              "updatedAt": "2025-09-02T14:33:57Z"
+            },
+            {
+              "originalPosition": 79,
+              "body": "```suggestion\r\n  prove to a Certificate Issuer that they are trusted OpenID Federation 1.0\r\n```",
+              "createdAt": "2025-09-02T14:15:38Z",
+              "updatedAt": "2025-09-02T14:33:57Z"
+            },
+            {
+              "originalPosition": 80,
+              "body": "```suggestion\r\n  Entities.\r\n```",
+              "createdAt": "2025-09-02T14:15:45Z",
+              "updatedAt": "2025-09-02T14:33:57Z"
+            },
+            {
+              "originalPosition": 90,
+              "body": "```suggestion\r\n  Statements to publish X.509 certificates previously issued with ACME.\r\n```",
+              "createdAt": "2025-09-02T14:16:08Z",
+              "updatedAt": "2025-09-02T14:33:57Z"
+            },
+            {
+              "originalPosition": 144,
+              "body": "```suggestion\r\ndynamic discovery of Entities, though an example of how it might be done is\r\n```",
+              "createdAt": "2025-09-02T14:16:49Z",
+              "updatedAt": "2025-09-02T14:33:57Z"
+            },
+            {
+              "originalPosition": 143,
+              "body": "it defines it here: \r\n\r\nhttps://openid.net/specs/openid-federation-1_0.html#section-4\r\nhttps://openid.net/specs/openid-federation-1_0.html#section-8.3",
+              "createdAt": "2025-09-02T14:27:58Z",
+              "updatedAt": "2025-09-02T14:33:57Z"
+            },
+            {
+              "originalPosition": 147,
+              "body": "openid federation describes three different ways to discover the trust about a subject, these are the following ones:\r\n\r\n1. discovery of the entity configuration, using the leaf's \u00e8well known endpoint (openid-federation) and collection of all the statements up to the trusted trust anchor (core component, basic way, bootom up approach)\r\n2. starting from the listing endpoint of a specified trust anchor, inspection of all the immediate subordinates and subordinates untill that subject to evaluate is found (entity_type urlparameter can be used as well )\r\n3. resolve endpoint, proxied trust\r\n\r\nthe discovery is always, therefore, about a single subject. Federation entity collection provides a smart way to collect trusted immediante subordinates and subordinates, facilitating data collection. It then gives statements about more than a single subject.\r\n\r\nWe need to make our draft working with basic compontents. Unfortunately, both the resolve endpoint and the collection endpoint are optional. We can mention them as discovery impl strategy, not making it a requirement.\r\n",
+              "createdAt": "2025-09-02T14:33:51Z",
+              "updatedAt": "2025-09-03T07:59:35Z"
+            }
+          ]
         }
       ]
     },
@@ -7420,24 +7520,26 @@
       "id": "PR_kwDOJ6_NW86ic_e8",
       "title": "delete redundant newOrder section",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/107",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This draft doesn't need to explain anything about a `newOrder` request beyond defining the new identifier type for OIDF. This commit deletes that section. We also add a non-normative example of an `openid-federation` ACME identifier.\r\n\r\nResolves #100",
       "createdAt": "2025-08-06T20:17:21Z",
-      "updatedAt": "2025-08-08T17:02:49Z",
+      "updatedAt": "2025-09-02T14:42:13Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "234a0d8c1de94c3acc1c0b223b319880978d8444",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg-delete-neworder",
       "headRefOid": "1a5767aa2418bcbd72f044e6f9eaa3e4a300d03a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-09-02T14:42:12Z",
+      "mergedAt": "2025-09-02T14:42:12Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "4b9b0cd3e1ec2b5193f09ac0bd7acc62fc92f9a2"
+      },
       "comments": [],
       "reviews": [
         {
@@ -7464,6 +7566,19 @@
           "body": "",
           "createdAt": "2025-08-08T17:02:49Z",
           "updatedAt": "2025-08-08T17:02:49Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW869W3th",
+          "commit": {
+            "abbreviatedOid": "1a5767a"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-09-02T14:42:04Z",
+          "updatedAt": "2025-09-02T14:42:04Z",
           "comments": []
         }
       ]
