@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-04T00:36:36.731655+00:00",
+  "timestamp": "2025-09-11T00:37:33.468639+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -7595,13 +7595,13 @@
       "labels": [],
       "body": "Don't allow `notAfter` to go past the trust chain's `exp`. Also tidies up the discussion of revocation to avoid stepping on ACME's toes.\r\n\r\nresolves #101",
       "createdAt": "2025-08-06T20:59:26Z",
-      "updatedAt": "2025-08-12T22:41:56Z",
+      "updatedAt": "2025-09-09T10:07:42Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "234a0d8c1de94c3acc1c0b223b319880978d8444",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg-revocation-and-expiration",
-      "headRefOid": "a00c19a60cc154dbaf3a0e44313425ae8e9ff89c",
+      "headRefOid": "a41b8a618ddae5df8672e46e19def01234551a62",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -7719,6 +7719,26 @@
               "body": "...that said, we could read the second sentence to mean that our draft should provide some guidance here. An error indicating that the X.509 notBefore/notAfter is incompatible with the OIDF exp would do.",
               "createdAt": "2025-08-12T22:41:56Z",
               "updatedAt": "2025-08-12T22:41:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW86-xeEl",
+          "commit": {
+            "abbreviatedOid": "a41b8a6"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2025-09-09T10:07:26Z",
+          "updatedAt": "2025-09-09T10:07:42Z",
+          "comments": [
+            {
+              "originalPosition": 23,
+              "body": "it depends.\r\n\r\nonly if the certificate cryptographic material matches with one of the used Federation Entity Keys.\r\n\r\ncertificates and cryptographic material used in specific metadata and application, should not be included in the federation historical keys",
+              "createdAt": "2025-09-09T10:07:26Z",
+              "updatedAt": "2025-09-09T10:07:42Z"
             }
           ]
         }
