@@ -21,12 +21,12 @@ Federation Entity can be issued by an X.509 Certification Authority through the
 ACME protocol to the organizations which are part of a federation built on top
 of OpenID Federation 1.0. 
     " name="description">
-<meta content="xml2rfc 3.30.1" name="generator">
+<meta content="xml2rfc 3.30.2" name="generator">
 <meta content="OpenID Federation" name="keyword">
 <meta content="ACME" name="keyword">
 <meta content="draft-demarco-acme-openid-federation-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.30.1
+  xml2rfc 3.30.2
     Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
@@ -1057,11 +1057,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ACME OpenID Federation</td>
-<td class="right">September 2025</td>
+<td class="right">October 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">De Marco &amp; Pitman</td>
-<td class="center">Expires 13 March 2026</td>
+<td class="center">Expires 4 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1074,12 +1074,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-demarco-acme-openid-federation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-09-09" class="published">9 September 2025</time>
+<time datetime="2025-10-01" class="published">1 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-03-13">13 March 2026</time></dd>
+<dd class="expires"><time datetime="2026-04-04">4 April 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1142,7 +1142,7 @@ of OpenID Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 March 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1207,13 +1207,10 @@ of OpenID Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p
                 <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-openid-federation-identifie" class="internal xref">OpenID Federation Identifier</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5">
-                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-neworder-request" class="internal xref">newOrder Request</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6">
-                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="auto internal xref">5.6</a>.  <a href="#name-openid-federation-challenge" class="internal xref">OpenID Federation Challenge Type</a></p>
+                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-openid-federation-challenge" class="internal xref">OpenID Federation Challenge Type</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6.2.1">
-                    <p id="section-toc.1-1.5.2.6.2.1.1"><a href="#section-5.6.1" class="auto internal xref">5.6.1</a>.  <a href="#name-csr-and-certificate-fields" class="internal xref">CSR and Certificate Fields</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5.2.1">
+                    <p id="section-toc.1-1.5.2.5.2.1.1"><a href="#section-5.5.1" class="auto internal xref">5.5.1</a>.  <a href="#name-csr-and-certificate-fields" class="internal xref">CSR and Certificate Fields</a></p>
 </li>
                 </ul>
 </li>
@@ -1389,9 +1386,8 @@ discussed in <a href="#discovery" class="auto internal xref">Section 5.2</a>.<a 
 </li>
         <li class="normal" id="section-5-2.2">
           <p id="section-5-2.2.1"><strong>Issuance</strong>: the Requestor requests a X.509 Certificate from a Certificate
-Issuer using the ACME protocol. The necessary extensions to ACME orders and
-challenges are discussed in <a href="#neworder-request" class="auto internal xref">Section 5.5</a> and <a href="#challenge-type" class="auto internal xref">Section 5.6</a>,
-respectively.<a href="#section-5-2.2.1" class="pilcrow">¶</a></p>
+Issuer using the ACME protocol. The new ACME identifier and challenge type are
+discussed in <a href="#identifier-type" class="auto internal xref">Section 5.4</a> and <a href="#challenge-type" class="auto internal xref">Section 5.5</a>, respectively.<a href="#section-5-2.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-5-3">There are two ways the Certificate Issuer is able to check if a Requestor is
@@ -1683,71 +1679,42 @@ the <code>acme_requestor</code> metadata from its Entity Configuration.<a href="
         <h3 id="name-openid-federation-identifie">
 <a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-openid-federation-identifie" class="section-name selfRef">OpenID Federation Identifier</a>
         </h3>
-<p id="section-5.4-1">This document defines a new ACME identifier type for OpenID Federation entities, <code>openid-federation</code>,
-whose value is the <code>sub</code> parameter of the requestor's Entity Configuration,
-as defined in <span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="neworder-request">
-<section id="section-5.5">
-        <h3 id="name-neworder-request">
-<a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-neworder-request" class="section-name selfRef">newOrder Request</a>
-        </h3>
-<p id="section-5.5-1">The Requestor begins certificate issuance by sending a HTTP POST request to the
-Issuer's <code>newOrder</code> resource, as specified in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.4" class="relref">Section 7.4</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
-<p id="section-5.5-2">A non-normative example of an ACME newOrder request:<a href="#section-5.5-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.5-3">
+<p id="section-5.4-1">This document defines a new ACME identifier type for OpenID Federation entities,
+<code>openid-federation</code>, whose value is the <code>sub</code> parameter of the requestor's
+Entity Configuration, as defined in
+<span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-1.2" class="relref">Section 1.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.4-2">For example, the ACME identifier corresponding to the example Entity
+Configuration in <a href="#requestor-metadata" class="auto internal xref">Section 5.3.2</a> is:<a href="#section-5.4-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.4-3">
 <pre>
-   POST /acme/new-order HTTP/1.1
-   Host: issuer.example.com
-   Content-Type: application/jose+json
-
-   {
-     "protected": base64url({
-       "alg": "ES256",
-       "kid": "https://issuer.example.com/acme/acct/evOfKhNU60wg",
-       "nonce": "5XJ1L3lEkMG7tR6pA00clA",
-       "url": "https://issuer.example.com/acme/new-order"
-     }),
-     "payload": base64url({
-       "identifiers": [
-         {
-           "type": "openid-federation",
-           "value": "https://requestor.example.com"
-         }
-       ],
-       "notBefore": "2016-01-01T00:04:00+04:00",
-       "notAfter": "2016-01-08T00:04:00+04:00"
-     }),
-     "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
-   }
-</pre><a href="#section-5.5-3" class="pilcrow">¶</a>
+{"type": "openid-federation", "value": "https://requestor.example.com"}
+</pre><a href="#section-5.4-3" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="challenge-type">
-<section id="section-5.6">
+<section id="section-5.5">
         <h3 id="name-openid-federation-challenge">
-<a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-openid-federation-challenge" class="section-name selfRef">OpenID Federation Challenge Type</a>
+<a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-openid-federation-challenge" class="section-name selfRef">OpenID Federation Challenge Type</a>
         </h3>
-<p id="section-5.6-1">The OpenID Federation challenge type allows a Requestor to prove control of a
+<p id="section-5.5-1">The OpenID Federation challenge type allows a Requestor to prove control of a
 Federation Entity using the trust evaluation mechanism provided by
 <span>[<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>. The Requestor demonstrates control of a cryptographic public key
-published in its OpenID Federation Entity Configuration.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
-<p id="section-5.6-2">The openid-federation-01 ACME challenge object has the following format:<a href="#section-5.6-2" class="pilcrow">¶</a></p>
-<p id="section-5.6-3">type (required, string):  The string "openid-federation-01"<a href="#section-5.6-3" class="pilcrow">¶</a></p>
-<p id="section-5.6-4">token (required, string):  A random value that uniquely identifies the
+published in its OpenID Federation Entity Configuration.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
+<p id="section-5.5-2">The openid-federation-01 ACME challenge object has the following format:<a href="#section-5.5-2" class="pilcrow">¶</a></p>
+<p id="section-5.5-3">type (required, string):  The string "openid-federation-01"<a href="#section-5.5-3" class="pilcrow">¶</a></p>
+<p id="section-5.5-4">token (required, string):  A random value that uniquely identifies the
     challenge. This value <span class="bcp14">MUST</span> have at least 128 bits of entropy. It <span class="bcp14">MUST NOT</span>
     contain any characters outside the base64url alphabet as described in
     <span><a href="https://rfc-editor.org/rfc/rfc4648#section-5" class="relref">Section 5</a> of [<a href="#RFC4648" class="cite xref">RFC4648</a>]</span>. Trailing '=' padding characters <span class="bcp14">MUST</span> be stripped.
-    See <span>[<a href="#RFC4086" class="cite xref">RFC4086</a>]</span> for additional information on randomness requirements.<a href="#section-5.6-4" class="pilcrow">¶</a></p>
-<p id="section-5.6-5">trustAnchors (optional, array of string):  An array of strings containing
+    See <span>[<a href="#RFC4086" class="cite xref">RFC4086</a>]</span> for additional information on randomness requirements.<a href="#section-5.5-4" class="pilcrow">¶</a></p>
+<p id="section-5.5-5">trustAnchors (optional, array of string):  An array of strings containing
     Entity Identifiers of the Issuer's Trust Anchors. When solving the
     challenge, the Requestor can construct a Trust Chain from itself to one of
     these Trust Anchors. It is <span class="bcp14">RECOMMENDED</span> that the Issuer includes this field
-    to make it easier for the Requestor to construct a Trust Chain.<a href="#section-5.6-5" class="pilcrow">¶</a></p>
-<p id="section-5.6-6">A non-normative example of a challenge with <code>trustAnchors</code> specified:<a href="#section-5.6-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.6-7">
+    to make it easier for the Requestor to construct a Trust Chain.<a href="#section-5.5-5" class="pilcrow">¶</a></p>
+<p id="section-5.5-6">A non-normative example of a challenge with <code>trustAnchors</code> specified:<a href="#section-5.5-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5-7">
 <pre>
    {
      "type": "openid-federation-01",
@@ -1759,14 +1726,14 @@ published in its OpenID Federation Entity Configuration.<a href="#section-5.6-1"
        "https://trust-anchor-2.example.com"
      ]
    }
-</pre><a href="#section-5.6-7" class="pilcrow">¶</a>
+</pre><a href="#section-5.5-7" class="pilcrow">¶</a>
 </div>
-<p id="section-5.6-8">The <code>openid-federation-01</code> challenge <span class="bcp14">MUST NOT</span> be used to issue X.509 Certificates
-for any identifiers except <code>openid-federation</code> identifiers.<a href="#section-5.6-8" class="pilcrow">¶</a></p>
-<p id="section-5.6-9">The <code>openid-federation</code> identifier <span class="bcp14">MUST NOT</span> be validated except by the
-<code>openid-federation-01</code> challenge.<a href="#section-5.6-9" class="pilcrow">¶</a></p>
-<p id="section-5.6-10">The Requestor responds to the challenge with an object with the following format:<a href="#section-5.6-10" class="pilcrow">¶</a></p>
-<p id="section-5.6-11">sig (required, string):  the compact JSON serialization (as described in
+<p id="section-5.5-8">The <code>openid-federation-01</code> challenge <span class="bcp14">MUST NOT</span> be used to issue X.509 Certificates
+for any identifiers except <code>openid-federation</code> identifiers.<a href="#section-5.5-8" class="pilcrow">¶</a></p>
+<p id="section-5.5-9">The <code>openid-federation</code> identifier <span class="bcp14">MUST NOT</span> be validated except by the
+<code>openid-federation-01</code> challenge.<a href="#section-5.5-9" class="pilcrow">¶</a></p>
+<p id="section-5.5-10">The Requestor responds to the challenge with an object with the following format:<a href="#section-5.5-10" class="pilcrow">¶</a></p>
+<p id="section-5.5-11">sig (required, string):  the compact JSON serialization (as described in
     <span><a href="https://rfc-editor.org/rfc/rfc7515#section-7.1" class="relref">Section 7.1</a> of [<a href="#RFC7515" class="cite xref">RFC7515</a>]</span>) of a JWS, signing the key authorization
     encoded in UTF-8.
     The key authorization is computed from the token in the challenge and the
@@ -1776,8 +1743,8 @@ for any identifiers except <code>openid-federation</code> identifiers.<a href="#
     <a href="#requestor-metadata" class="auto internal xref">Section 5.3.2</a>.
     The JWS <span class="bcp14">MUST</span> include a <code>kid</code> header parameter corresponding to the key used
     to sign the key authorization and a <code>typ</code> header parameter set to
-    "signed-acme-challenge+jwt".<a href="#section-5.6-11" class="pilcrow">¶</a></p>
-<p id="section-5.6-12">trustChain (optional, array of string):  an array of strings containing signed
+    "signed-acme-challenge+jwt".<a href="#section-5.5-11" class="pilcrow">¶</a></p>
+<p id="section-5.5-12">trustChain (optional, array of string):  an array of strings containing signed
     JWTs, representing a Trust Chain from the Requestor to one of the Issuer's
     Trust Anchors (see <span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-4" class="relref">Section 4</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>).
     The Resolved Metadata of the Trust Chain subject <span class="bcp14">MUST</span> contain
@@ -1787,9 +1754,9 @@ for any identifiers except <code>openid-federation</code> identifiers.<a href="#
     indicated by the Issuer, or if no Trust Anchors were indicated, it <span class="bcp14">MAY</span> use
     some other Trust Anchor that it believes the Issuer trusts.
     If the Requestor cannot construct a Trust Chain to any Trust Anchor, it <span class="bcp14">MAY</span>
-    omit the <code>trustChain</code> field from the challenge response.<a href="#section-5.6-12" class="pilcrow">¶</a></p>
-<p id="section-5.6-13">A non-normative example for an authorization with <code>trustChain</code> specified:<a href="#section-5.6-13" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.6-14">
+    omit the <code>trustChain</code> field from the challenge response.<a href="#section-5.5-12" class="pilcrow">¶</a></p>
+<p id="section-5.5-13">A non-normative example for an authorization with <code>trustChain</code> specified:<a href="#section-5.5-13" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5-14">
 <pre>
    POST /acme/chall/prV_B7yEyA4
    Host: issuer.example.com
@@ -1808,38 +1775,38 @@ for any identifiers except <code>openid-federation</code> identifiers.<a href="#
      }),
      "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
    }
-</pre><a href="#section-5.6-14" class="pilcrow">¶</a>
+</pre><a href="#section-5.5-14" class="pilcrow">¶</a>
 </div>
-<p id="section-5.6-15">On receiving a challenge response, the Certificate Issuer verifies that the
+<p id="section-5.5-15">On receiving a challenge response, the Certificate Issuer verifies that the
 Requestor is trusted. If the Requestor did not provide a <code>trustChain</code>, the
 Issuer <span class="bcp14">MUST</span> perform Federation Entity Discovery
 (<span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-10" class="relref">Section 10</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>) to obtain a Trust Chain
-for the Requestor.<a href="#section-5.6-15" class="pilcrow">¶</a></p>
-<p id="section-5.6-16">Once it has obtained a Trust Chain, the Issuer evaluates the entity's Resolved
-Metadata, and verifies:<a href="#section-5.6-16" class="pilcrow">¶</a></p>
+for the Requestor.<a href="#section-5.5-15" class="pilcrow">¶</a></p>
+<p id="section-5.5-16">Once it has obtained a Trust Chain, the Issuer evaluates the entity's Resolved
+Metadata, and verifies:<a href="#section-5.5-16" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.6-17.1">
-            <p id="section-5.6-17.1.1">That the requested <code>openid-federation</code> identifier value matches the <code>sub</code>
-parameter of the Requestor's Entity Configuration.<a href="#section-5.6-17.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-5.5-17.1">
+            <p id="section-5.5-17.1.1">That the requested <code>openid-federation</code> identifier value matches the <code>sub</code>
+parameter of the Requestor's Entity Configuration.<a href="#section-5.5-17.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.6-17.2">
-            <p id="section-5.6-17.2.1">That there is a key in the <code>acme_requestor</code> metadata (<a href="#requestor-metadata" class="auto internal xref">Section 5.3.2</a>)
+          <li class="normal" id="section-5.5-17.2">
+            <p id="section-5.5-17.2.1">That there is a key in the <code>acme_requestor</code> metadata (<a href="#requestor-metadata" class="auto internal xref">Section 5.3.2</a>)
 of the Requestor's Resolved Metadata with a <code>kid</code> matching the <code>kid</code> claim in
-the challenge response.<a href="#section-5.6-17.2.1" class="pilcrow">¶</a></p>
+the challenge response.<a href="#section-5.5-17.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.6-17.3">
-            <p id="section-5.6-17.3.1">That the <code>sig</code> field of the payload is the compact JSON serialization of a
-valid JWS signing the key authorization, using the above public key.<a href="#section-5.6-17.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-5.5-17.3">
+            <p id="section-5.5-17.3.1">That the <code>sig</code> field of the payload is the compact JSON serialization of a
+valid JWS signing the key authorization, using the above public key.<a href="#section-5.5-17.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-5.6-18">If all of the above checks succeed, then the validation is successful.
+<p id="section-5.5-18">If all of the above checks succeed, then the validation is successful.
 Otherwise, it has failed. In either case, the Certificate Issuer responds
 according to <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.5.1" class="relref">Section 7.5.1</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>. If the Issuer fails to verify OpenID
 Federation trust, the problem document <span class="bcp14">SHOULD</span> contain a subproblem of type
 <code>urn:ietf:params:acme:error:openIDFederationEntity</code> constructed as discussed in
-<a href="#error-type" class="auto internal xref">Section 8</a>.<a href="#section-5.6-18" class="pilcrow">¶</a></p>
-<p id="section-5.6-19">A non-normative example for the challenge object post-validation:<a href="#section-5.6-19" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.6-20">
+<a href="#error-type" class="auto internal xref">Section 8</a>.<a href="#section-5.5-18" class="pilcrow">¶</a></p>
+<p id="section-5.5-19">A non-normative example for the challenge object post-validation:<a href="#section-5.5-19" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5-20">
 <pre>
    {
      "type": "openid-federation-01",
@@ -1848,14 +1815,14 @@ Federation trust, the problem document <span class="bcp14">SHOULD</span> contain
      "validated": "2024-10-01T12:05:13.72Z",
      "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
    }
-</pre><a href="#section-5.6-20" class="pilcrow">¶</a>
+</pre><a href="#section-5.5-20" class="pilcrow">¶</a>
 </div>
 <div id="openidfed-othername-id">
-<section id="section-5.6.1">
+<section id="section-5.5.1">
           <h4 id="name-csr-and-certificate-fields">
-<a href="#section-5.6.1" class="section-number selfRef">5.6.1. </a><a href="#name-csr-and-certificate-fields" class="section-name selfRef">CSR and Certificate Fields</a>
+<a href="#section-5.5.1" class="section-number selfRef">5.5.1. </a><a href="#name-csr-and-certificate-fields" class="section-name selfRef">CSR and Certificate Fields</a>
           </h4>
-<p id="section-5.6.1-1">Depending on the Certificate Issuer's X.509 Certificate profile, the CSR and
+<p id="section-5.5.1-1">Depending on the Certificate Issuer's X.509 Certificate profile, the CSR and
 X.509 Certificate <span class="bcp14">MAY</span> associate the X.509 Certificate to the Federation Entity by
 including the Entity ID in the X.509 Certificate.
 To do so, the Issuer includes a Subject Alternative Name extension
@@ -1864,13 +1831,13 @@ a <code>type-id</code> of <code>id-on-OpenIdFederationEntityId</code>.
 The value of the name is an Octet String
 containing the UTF-8 encoding of the Entity ID
 (i.e., the URI in the corresponding <code>openid-federation</code> identifier
-from the <code>newOrder</code> request).<a href="#section-5.6.1-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.6.1-2">
+from the <code>newOrder</code> request).<a href="#section-5.5.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5.1-2">
 <pre>
    id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
 
    OpenIdFederationEntityId ::= UTF8String
-</pre><a href="#section-5.6.1-2" class="pilcrow">¶</a>
+</pre><a href="#section-5.5.1-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1904,11 +1871,8 @@ expiration time (<span><a href="https://openid.net/specs/openid-federation-1_0-4
 <p id="section-7-2">The <code>notBefore</code> and <code>notAfter</code> fields of issued certificates <span class="bcp14">MUST</span> represent
 dates before the Trust Chain's expiration time. If the Requestor's newOrder
 request (<span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.4" class="relref">Section 7.4</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>) contains <code>notAfter</code> or <code>notBefore</code> fields
-that make this impossible, the Certificate Issuer <span class="bcp14">MUST</span> return an error.<a href="#section-7-2" class="pilcrow">¶</a></p>
-<p id="section-7-3">If the Requestor revokes its X.509 Certificate (<span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.6" class="relref">Section 7.6</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>), it
-<span class="bcp14">SHOULD</span> publish the revoked or expired cryptographic keys from its Federation
-Historical Key Endpoint
-(<span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-8.7" class="relref">Section 8.7</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>).<a href="#section-7-3" class="pilcrow">¶</a></p>
+that make this impossible, the Certificate Issuer <span class="bcp14">MUST</span> reply with an error of
+type <code>urn:ietf:params:acme:error:openIDFederationCertificateValidity</code>.<a href="#section-7-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="error-type">
@@ -1916,7 +1880,7 @@ Historical Key Endpoint
       <h2 id="name-errors">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-errors" class="section-name selfRef">Errors</a>
       </h2>
-<p id="section-8-1">This document defines one new error type URI to be used in problem documents
+<p id="section-8-1">This document defines two new error type URIs to be used in problem documents
 <span>[<a href="#RFC9457" class="cite xref">RFC9457</a>]</span>, as described in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-6.7" class="relref">Section 6.7</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">The error type <code>urn:ietf:params:acme:error:openIDFederationEntity</code> is used to
 encapsulate any OAuth error code returned while resolving OpenID Federation
@@ -1926,6 +1890,10 @@ particular OAuth error code that caused the error. The problem document for this
 error type <span class="bcp14">SHOULD</span> include an extension member named <code>error_code</code>, which <span class="bcp14">MUST</span> be
 set to the OAuth error code, taken from the error codes defined in
 <span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-8.9" class="relref">Section 8.9</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-3">The error type <code>urn:ietf:params:acme:error:openIDFederationCertificateValidity</code>
+is used to indicate that a Certificate could not be issued because of a mismatch
+between the requested period of validity and the expiration of the OpenID
+Federation Trust Chain.<a href="#section-8-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
@@ -1933,7 +1901,7 @@ set to the OAuth error code, taken from the error codes defined in
       <h2 id="name-security-considerations">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-9-1">The <code>openid-federation-01</code> challenge defined in <a href="#challenge-type" class="auto internal xref">Section 5.6</a> defends
+<p id="section-9-1">The <code>openid-federation-01</code> challenge defined in <a href="#challenge-type" class="auto internal xref">Section 5.5</a> defends
 against replay attacks by malicious ACME servers because the signature in
 challenge responses is over an ACME key authorization, which binds the ACME
 account key.<a href="#section-9-1" class="pilcrow">¶</a></p>
@@ -1991,7 +1959,7 @@ Management Environment (ACME) Protocol" registry group <span>[<a href="#IANA-ACM
           </h4>
 <p id="section-10.1.2-1">IANA is also asked to add to the "ACME Validation Methods" registry, defined
 in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-9.7.8" class="relref">Section 9.7.8</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>, the entry below, as specified here
-in <a href="#challenge-type" class="auto internal xref">Section 5.6</a>:<a href="#section-10.1.2-1" class="pilcrow">¶</a></p>
+in <a href="#challenge-type" class="auto internal xref">Section 5.5</a>:<a href="#section-10.1.2-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-2">
             <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
 <thead>
@@ -2034,6 +2002,11 @@ in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-9.7.4" class="relre
                 <td class="text-left" rowspan="1" colspan="1">An error occurred while resolving an OpenID Federation entity</td>
                 <td class="text-left" rowspan="1" colspan="1">this document</td>
               </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">openIDFederationCertificateValidity</td>
+                <td class="text-left" rowspan="1" colspan="1">A certificate was requested whose validity period is not before the OpenID Federation Trust Chain's expiry</td>
+                <td class="text-left" rowspan="1" colspan="1">this document</td>
+              </tr>
             </tbody>
           </table>
 </section>
@@ -2047,7 +2020,7 @@ in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-9.7.4" class="relre
         </h3>
 <p id="section-10.2-1">IANA is asked to add to the "PKIX Other Name Forms" registry
 (<a href="https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.8">1.3.6.1.5.5.7.8</a>) the entry below, as
-specified here in <a href="#openidfed-othername-id" class="auto internal xref">Section 5.6.1</a><a href="#section-10.2-1" class="pilcrow">¶</a></p>
+specified here in <a href="#openidfed-othername-id" class="auto internal xref">Section 5.5.1</a><a href="#section-10.2-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-4">
           <caption><a href="#table-4" class="selfRef">Table 4</a></caption>
 <thead>

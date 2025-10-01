@@ -5,7 +5,7 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 13 March 2026                                  9 September 2025
+Expires: 4 April 2026                                     1 October 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 March 2026.
+   This Internet-Draft will expire on 4 April 2026.
 
 Copyright Notice
 
@@ -91,9 +91,8 @@ Table of Contents
        5.3.1.  Issuer Metadata
        5.3.2.  Requestor Metadata
      5.4.  OpenID Federation Identifier
-     5.5.  newOrder Request
-     5.6.  OpenID Federation Challenge Type
-       5.6.1.  CSR and Certificate Fields
+     5.5.  OpenID Federation Challenge Type
+       5.5.1.  CSR and Certificate Fields
    6.  Publication of the Certificates within the Federation
    7.  Certificate Lifecycle and Revocation
    8.  Errors
@@ -209,9 +208,9 @@ Table of Contents
       types.  This is discussed in Section 5.2.
 
    *  *Issuance*: the Requestor requests a X.509 Certificate from a
-      Certificate Issuer using the ACME protocol.  The necessary
-      extensions to ACME orders and challenges are discussed in
-      Section 5.5 and Section 5.6, respectively.
+      Certificate Issuer using the ACME protocol.  The new ACME
+      identifier and challenge type are discussed in Section 5.4 and
+      Section 5.5, respectively.
 
    There are two ways the Certificate Issuer is able to check if a
    Requestor is part of the federation:
@@ -476,39 +475,12 @@ Table of Contents
    parameter of the requestor's Entity Configuration, as defined in
    Section 1.2 of [OPENID-FED].
 
-5.5.  newOrder Request
+   For example, the ACME identifier corresponding to the example Entity
+   Configuration in Section 5.3.2 is:
 
-   The Requestor begins certificate issuance by sending a HTTP POST
-   request to the Issuer's newOrder resource, as specified in
-   Section 7.4 of [RFC8555].
+ {"type": "openid-federation", "value": "https://requestor.example.com"}
 
-   A non-normative example of an ACME newOrder request:
-
-      POST /acme/new-order HTTP/1.1
-      Host: issuer.example.com
-      Content-Type: application/jose+json
-
-      {
-        "protected": base64url({
-          "alg": "ES256",
-          "kid": "https://issuer.example.com/acme/acct/evOfKhNU60wg",
-          "nonce": "5XJ1L3lEkMG7tR6pA00clA",
-          "url": "https://issuer.example.com/acme/new-order"
-        }),
-        "payload": base64url({
-          "identifiers": [
-            {
-              "type": "openid-federation",
-              "value": "https://requestor.example.com"
-            }
-          ],
-          "notBefore": "2016-01-01T00:04:00+04:00",
-          "notAfter": "2016-01-08T00:04:00+04:00"
-        }),
-        "signature": "H6ZXtGjTZyUnPeKn...wEA4TklBdh3e454g"
-      }
-
-5.6.  OpenID Federation Challenge Type
+5.5.  OpenID Federation Challenge Type
 
    The OpenID Federation challenge type allows a Requestor to prove
    control of a Federation Entity using the trust evaluation mechanism
@@ -640,7 +612,7 @@ Table of Contents
         "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
       }
 
-5.6.1.  CSR and Certificate Fields
+5.5.1.  CSR and Certificate Fields
 
    Depending on the Certificate Issuer's X.509 Certificate profile, the
    CSR and X.509 Certificate MAY associate the X.509 Certificate to the
@@ -678,16 +650,12 @@ Table of Contents
    represent dates before the Trust Chain's expiration time.  If the
    Requestor's newOrder request (Section 7.4 of [RFC8555]) contains
    notAfter or notBefore fields that make this impossible, the
-   Certificate Issuer MUST return an error.
-
-   If the Requestor revokes its X.509 Certificate (Section 7.6 of
-   [RFC8555]), it SHOULD publish the revoked or expired cryptographic
-   keys from its Federation Historical Key Endpoint (Section 8.7 of
-   [OPENID-FED]).
+   Certificate Issuer MUST reply with an error of type
+   urn:ietf:params:acme:error:openIDFederationCertificateValidity.
 
 8.  Errors
 
-   This document defines one new error type URI to be used in problem
+   This document defines two new error type URIs to be used in problem
    documents [RFC9457], as described in Section 6.7 of [RFC8555].
 
    The error type urn:ietf:params:acme:error:openIDFederationEntity is
@@ -700,9 +668,15 @@ Table of Contents
    the OAuth error code, taken from the error codes defined in
    Section 8.9 of [OPENID-FED].
 
+   The error type
+   urn:ietf:params:acme:error:openIDFederationCertificateValidity is
+   used to indicate that a Certificate could not be issued because of a
+   mismatch between the requested period of validity and the expiration
+   of the OpenID Federation Trust Chain.
+
 9.  Security Considerations
 
-   The openid-federation-01 challenge defined in Section 5.6 defends
+   The openid-federation-01 challenge defined in Section 5.5 defends
    against replay attacks by malicious ACME servers because the
    signature in challenge responses is over an ACME key authorization,
    which binds the ACME account key.
@@ -744,7 +718,7 @@ Table of Contents
 
    IANA is also asked to add to the "ACME Validation Methods" registry,
    defined in Section 9.7.8 of [RFC8555], the entry below, as specified
-   here in Section 5.6:
+   here in Section 5.5:
 
        +======================+===================+===============+
        | Label                | Identifier Type   | Reference     |
@@ -760,13 +734,26 @@ Table of Contents
    in Section 9.7.4 of [RFC8555], the entry below, as specified here in
    Section 8:
 
-     +========================+=========================+===========+
-     | Type                   | Description             | Reference |
-     +========================+=========================+===========+
-     | openIDFederationEntity | An error occurred while | this      |
-     |                        | resolving an OpenID     | document  |
-     |                        | Federation entity       |           |
-     +------------------------+-------------------------+-----------+
+   +=====================================+================+===========+
+   | Type                                | Description    | Reference |
+   +=====================================+================+===========+
+   | openIDFederationEntity              | An error       | this      |
+   |                                     | occurred while | document  |
+   |                                     | resolving an   |           |
+   |                                     | OpenID         |           |
+   |                                     | Federation     |           |
+   |                                     | entity         |           |
+   +-------------------------------------+----------------+-----------+
+   | openIDFederationCertificateValidity | A certificate  | this      |
+   |                                     | was requested  | document  |
+   |                                     | whose validity |           |
+   |                                     | period is not  |           |
+   |                                     | before the     |           |
+   |                                     | OpenID         |           |
+   |                                     | Federation     |           |
+   |                                     | Trust Chain's  |           |
+   |                                     | expiry         |           |
+   +-------------------------------------+----------------+-----------+
 
                                  Table 3
 
@@ -775,7 +762,7 @@ Table of Contents
    IANA is asked to add to the "PKIX Other Name Forms" registry
    (1.3.6.1.5.5.7.8 (https://www.iana.org/assignments/smi-numbers/smi-
    numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.8)) the entry below, as
-   specified here in Section 5.6.1
+   specified here in Section 5.5.1
 
        +=========+================================+===============+
        | Decimal | Description                    | Reference     |
