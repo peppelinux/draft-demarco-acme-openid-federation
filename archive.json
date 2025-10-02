@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-11T00:37:33.468639+00:00",
+  "timestamp": "2025-10-02T00:36:24.899856+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1571,6 +1571,22 @@
           "updatedAt": "2025-09-03T08:01:47Z"
         }
       ]
+    },
+    {
+      "number": 110,
+      "id": "I_kwDOJ6_NW87PFrsR",
+      "title": "X.509 revocation vs. Federation Historical Key Endpoint",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/110",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "in \"Certificate Lifecycle and Revocation\", we used to have a paragraph:\n\n> A Requestor SHOULD request the revocation of its X.509 Certificate when the related\n> cryptographic material is revoked. The Requestor SHOULD publish the revoked or\n> expired cryptographic keys in the Federation Historical Key Registry.\n\nThis kinda made sense back when we assumed that this would only be issuing certs on Federation Entity Keys, but that's no longer the case.\n\nAdditionally, it's not obvious to me that a JWT is the appropriate place to publish revocation information for X.509 certs. Couldn't the ACME CA have its own CRLs or an OCSP responder?",
+      "createdAt": "2025-10-01T16:58:46Z",
+      "updatedAt": "2025-10-01T16:58:46Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -7378,13 +7394,13 @@
       "labels": [],
       "body": "A key piece of feedback we got from the ACME WG was that:\r\n\r\n- it's not clear what kind of certs we're issuing here (TLS?)\r\n- it's not clear what an OpenID Federation Entity might be (persons? servers?)\r\n- it's not clear why those entities want X.509 certs\r\n- There's too much content that restates information from RFC 8555\r\n\r\nThis commit:\r\n\r\n- explains that an OIDF entity could be almost anything\r\n- explains that the certs could be for TLS but also for anything, and that this document doesn't try to restrict the issuance profile of the CAs implementing it\r\n- crisply enumerates how this document extends OIDF, ACME and RFC 5280\r\n- explains how the motivation here is integration with existing systems that only speak X.509\r\n- marks some content as being explanatory material useful during editing of the document but to be removed before publication\r\n\r\nResolves #104",
       "createdAt": "2025-08-06T19:37:52Z",
-      "updatedAt": "2025-09-02T14:37:06Z",
+      "updatedAt": "2025-10-01T16:23:59Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "234a0d8c1de94c3acc1c0b223b319880978d8444",
+      "baseRefOid": "4b9b0cd3e1ec2b5193f09ac0bd7acc62fc92f9a2",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg/use-cases",
-      "headRefOid": "89f4f3223aac20f5c4ad6a5b7f79646fd31feecd",
+      "headRefOid": "ef6120c5146c1e30b8fbfd33b0eb1b5cf84a1de7",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -7512,6 +7528,32 @@
               "updatedAt": "2025-09-03T07:59:35Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW87EGV3B",
+          "commit": {
+            "abbreviatedOid": "89f4f32"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-01T16:15:02Z",
+          "updatedAt": "2025-10-01T16:21:46Z",
+          "comments": [
+            {
+              "originalPosition": 58,
+              "body": "I rewrote this to include RADIUS as an example, since that protocol in the Eduroam context is the star example we'll use when we (\ud83e\udd1e\ud83c\udffb) present this draft at IETF 124 ",
+              "createdAt": "2025-10-01T16:15:02Z",
+              "updatedAt": "2025-10-01T16:21:46Z"
+            },
+            {
+              "originalPosition": 143,
+              "body": "I deleted this ednote since we are reconsidering whether to discuss discovery in #109 ",
+              "createdAt": "2025-10-01T16:19:32Z",
+              "updatedAt": "2025-10-01T16:21:46Z"
+            }
+          ]
         }
       ]
     },
@@ -7595,13 +7637,13 @@
       "labels": [],
       "body": "Don't allow `notAfter` to go past the trust chain's `exp`. Also tidies up the discussion of revocation to avoid stepping on ACME's toes.\r\n\r\nresolves #101",
       "createdAt": "2025-08-06T20:59:26Z",
-      "updatedAt": "2025-09-09T10:07:42Z",
+      "updatedAt": "2025-10-01T17:00:12Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "234a0d8c1de94c3acc1c0b223b319880978d8444",
+      "baseRefOid": "4b9b0cd3e1ec2b5193f09ac0bd7acc62fc92f9a2",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg-revocation-and-expiration",
-      "headRefOid": "a41b8a618ddae5df8672e46e19def01234551a62",
+      "headRefOid": "04ca66dd0adc91440c454a39c8ae7a0c5225481a",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -7741,8 +7783,86 @@
               "updatedAt": "2025-09-09T10:07:42Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW87EG37z",
+          "commit": {
+            "abbreviatedOid": "a41b8a6"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-01T16:53:42Z",
+          "updatedAt": "2025-10-01T17:00:05Z",
+          "comments": [
+            {
+              "originalPosition": 21,
+              "body": "I defined a new error type `urn:ietf:params:acme:error:openIDFederationCertificateValidity` and we use it now.",
+              "createdAt": "2025-10-01T16:53:42Z",
+              "updatedAt": "2025-10-01T17:00:05Z"
+            },
+            {
+              "originalPosition": 23,
+              "body": "I was rewriting some existing text here, which dated to a time when we assumed we'd only be issuing certs for Federation Entity Keys. Now the key in the X.509 cert could be something different, so this paragraph doesn't apply as well anymore. I think publishing revocation information needs more though so that we avoid retreading web PKI history. I filed #110 to revisit this question and for now, will delete this paragraph.",
+              "createdAt": "2025-10-01T16:59:30Z",
+              "updatedAt": "2025-10-01T17:00:05Z"
+            }
+          ]
         }
       ]
+    },
+    {
+      "number": 111,
+      "id": "PR_kwDOJ6_NW86rn_oW",
+      "title": "add acknowledgments section",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/111",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Resolves #102",
+      "createdAt": "2025-10-01T19:24:11Z",
+      "updatedAt": "2025-10-01T19:40:00Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "4b9b0cd3e1ec2b5193f09ac0bd7acc62fc92f9a2",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "timg-acknowledgments",
+      "headRefOid": "0b3e44b768ee1b58c5442e2cacaf62c1230889eb",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 112,
+      "id": "PR_kwDOJ6_NW86roJXI",
+      "title": "Be explicit about ACME vs. OIDF Entity Identifiers",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/112",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Add terminology section entries for \"ACME Identifier\" and \"Entity\" Identifier\". The latter refers to the definition in the OIDF spec.\r\n\r\nSadly there is no crisp definition of \"identifier\" in ACME (!), so for the former, we just link to RFC 8555.\r\n\r\nAudit all existing usages of \"identifier\" and replace with either \"ACME Identifier\" or \"Entity Identifier\", as appropriate, to make it clear which we're talking about in any given sentence.\r\n\r\nResolves #103",
+      "createdAt": "2025-10-01T19:39:14Z",
+      "updatedAt": "2025-10-01T19:39:54Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "4b9b0cd3e1ec2b5193f09ac0bd7acc62fc92f9a2",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "timg-clarify-identifier",
+      "headRefOid": "e23ab7f91b40fc0e28c6e14e39667a1a1752f197",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
