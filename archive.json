@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-02T00:36:24.899856+00:00",
+  "timestamp": "2025-10-07T00:37:25.252567+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -7824,7 +7824,7 @@
       "labels": [],
       "body": "Resolves #102",
       "createdAt": "2025-10-01T19:24:11Z",
-      "updatedAt": "2025-10-01T19:40:00Z",
+      "updatedAt": "2025-10-06T21:00:35Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "4b9b0cd3e1ec2b5193f09ac0bd7acc62fc92f9a2",
@@ -7836,7 +7836,21 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW87FIify",
+          "commit": {
+            "abbreviatedOid": "0b3e44b"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-06T21:00:35Z",
+          "updatedAt": "2025-10-06T21:00:35Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 112,
@@ -7850,7 +7864,7 @@
       "labels": [],
       "body": "Add terminology section entries for \"ACME Identifier\" and \"Entity\" Identifier\". The latter refers to the definition in the OIDF spec.\r\n\r\nSadly there is no crisp definition of \"identifier\" in ACME (!), so for the former, we just link to RFC 8555.\r\n\r\nAudit all existing usages of \"identifier\" and replace with either \"ACME Identifier\" or \"Entity Identifier\", as appropriate, to make it clear which we're talking about in any given sentence.\r\n\r\nResolves #103",
       "createdAt": "2025-10-01T19:39:14Z",
-      "updatedAt": "2025-10-01T19:39:54Z",
+      "updatedAt": "2025-10-06T21:07:50Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "4b9b0cd3e1ec2b5193f09ac0bd7acc62fc92f9a2",
@@ -7862,7 +7876,28 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW87FIsxO",
+          "commit": {
+            "abbreviatedOid": "e23ab7f"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-06T21:07:44Z",
+          "updatedAt": "2025-10-06T21:07:50Z",
+          "comments": [
+            {
+              "originalPosition": 93,
+              "body": "For consistency:\r\n```suggestion\r\ncontaining the UTF-8 encoding of the Entity Identifier\r\n```",
+              "createdAt": "2025-10-06T21:07:44Z",
+              "updatedAt": "2025-10-06T21:07:50Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
