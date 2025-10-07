@@ -5,7 +5,7 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 6 March 2026                                   2 September 2025
+Expires: 10 April 2026                                    7 October 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 March 2026.
+   This Internet-Draft will expire on 10 April 2026.
 
 Copyright Notice
 
@@ -90,7 +90,7 @@ Table of Contents
      5.3.  Entity Configuration Metadata
        5.3.1.  Issuer Metadata
        5.3.2.  Requestor Metadata
-     5.4.  OpenID Federation Identifier
+     5.4.  OpenID Federation ACME Identifier
      5.5.  OpenID Federation Challenge Type
        5.5.1.  CSR and Certificate Fields
    6.  Publication of the Certificates within the Federation
@@ -146,7 +146,7 @@ Table of Contents
       Entity, that were previously issued with ACME.
 
    *  It extends the ACME newOrder resource, as defined in Section 7.4
-      of [RFC8555], defining a new identifier type called openid-
+      of [RFC8555], defining a new ACME Identifier type called openid-
       federation.
 
 2.  Target Audience and Use Cases
@@ -159,7 +159,7 @@ Table of Contents
 
    *  Federation Entities that join a federation to attest themselves as
       trustworthy, and then retrieve X.509 Certificates for their
-      official HTTPS Federation Entity ID.
+      official HTTPS Federation Entity Identifier.
 
    *  Federation Entities that want to ask for and obtain X.509
       Certificates for use in other protocols.
@@ -180,6 +180,13 @@ Table of Contents
    [RFC8555].
 
    The specification also defines the following terms:
+
+   ACME Identifier:  An identifier in the sense of [RFC8555].  Some
+      identifier that the ACME client proves control of to the ACME
+      server.
+
+   Entity Identifier:  A URL that uniquely identifies an Entity in
+      OpenID Federation, as defined in Section 1.2 of [OPENID-FED].
 
    Requestor:  A Federation Entity which wants to request X.509
       certificates.  It operates a web server for hosting its Entity
@@ -209,7 +216,7 @@ Table of Contents
 
    *  *Issuance*: the Requestor requests a X.509 Certificate from a
       Certificate Issuer using the ACME protocol.  The new ACME
-      identifier and challenge type are discussed in Section 5.4 and
+      Identifier and challenge type are discussed in Section 5.4 and
       Section 5.5, respectively.
 
    There are two ways the Certificate Issuer is able to check if a
@@ -288,7 +295,7 @@ Table of Contents
         |                  |                                 |    | Check                |
         |                  |                                 |    | Entity Configuration |
         |                  |                                 |    | sub matches          |
-        |                  |                                 |    | Entity identifier    |
+        |                  |                                 |    | Entity Identifier    |
         |                  |                                 |<---' in the order         |
         |                  |                                 |                           |
         |                  |                                 |                           |
@@ -468,14 +475,14 @@ Table of Contents
    Requestor MAY remove the acme_requestor metadata from its Entity
    Configuration.
 
-5.4.  OpenID Federation Identifier
+5.4.  OpenID Federation ACME Identifier
 
-   This document defines a new ACME identifier type for OpenID
+   This document defines a new ACME Identifier type for OpenID
    Federation entities, openid-federation, whose value is the sub
    parameter of the requestor's Entity Configuration, as defined in
    Section 1.2 of [OPENID-FED].
 
-   For example, the ACME identifier corresponding to the example Entity
+   For example, the ACME Identifier corresponding to the example Entity
    Configuration in Section 5.3.2 is:
 
  {"type": "openid-federation", "value": "https://requestor.example.com"}
@@ -501,10 +508,10 @@ Table of Contents
    randomness requirements.
 
    trustAnchors (optional, array of string): An array of strings
-   containing Entity Identifiers of the Issuer's Trust Anchors.  When
-   solving the challenge, the Requestor can construct a Trust Chain from
-   itself to one of these Trust Anchors.  It is RECOMMENDED that the
-   Issuer includes this field to make it easier for the Requestor to
+   containing the Entity Identifiers of the Issuer's Trust Anchors.
+   When solving the challenge, the Requestor can construct a Trust Chain
+   from itself to one of these Trust Anchors.  It is RECOMMENDED that
+   the Issuer includes this field to make it easier for the Requestor to
    construct a Trust Chain.
 
    A non-normative example of a challenge with trustAnchors specified:
@@ -521,11 +528,11 @@ Table of Contents
       }
 
    The openid-federation-01 challenge MUST NOT be used to issue X.509
-   Certificates for any identifiers except openid-federation
-   identifiers.
+   Certificates for any ACME Identifiers except openid-federation ACME
+   Identifiers.
 
-   The openid-federation identifier MUST NOT be validated except by the
-   openid-federation-01 challenge.
+   The openid-federation ACME Identifier type MUST NOT be validated
+   except by the openid-federation-01 challenge.
 
    The Requestor responds to the challenge with an object with the
    following format:
@@ -583,8 +590,8 @@ Table of Contents
    Once it has obtained a Trust Chain, the Issuer evaluates the entity's
    Resolved Metadata, and verifies:
 
-   *  That the requested openid-federation identifier value matches the
-      sub parameter of the Requestor's Entity Configuration.
+   *  That the requested openid-federation ACME Identifier value matches
+      the sub parameter of the Requestor's Entity Configuration.
 
    *  That there is a key in the acme_requestor metadata (Section 5.3.2)
       of the Requestor's Resolved Metadata with a kid matching the kid
@@ -616,13 +623,15 @@ Table of Contents
 
    Depending on the Certificate Issuer's X.509 Certificate profile, the
    CSR and X.509 Certificate MAY associate the X.509 Certificate to the
-   Federation Entity by including the Entity ID in the X.509
-   Certificate.  To do so, the Issuer includes a Subject Alternative
-   Name extension containing an otherName with a type-id of id-on-
+   Federation Entity by including the Entity Identifier in the X.509
+   Certificate.
+
+   To do so, the Issuer includes a Subject Alternative Name extension
+   containing an otherName with a type-id of id-on-
    OpenIdFederationEntityId.  The value of the name is an Octet String
-   containing the UTF-8 encoding of the Entity ID (i.e., the URI in the
-   corresponding openid-federation identifier from the newOrder
-   request).
+   containing the UTF-8 encoding of the Entity Identifier (i.e., the URI
+   in the corresponding openid-federation ACME Identifier from the
+   newOrder request).
 
       id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
 
