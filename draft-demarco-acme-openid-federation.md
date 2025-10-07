@@ -156,7 +156,7 @@ This specification can be implemented by:
 
 - Federation Entities that join a federation to attest themselves as
   trustworthy, and then retrieve X.509 Certificates for their official HTTPS
-  Federation Entity ID.
+  Federation Entity Identifier.
 
 - Federation Entities that want to ask for and obtain X.509 Certificates for use
   in other protocols.
@@ -615,14 +615,13 @@ A non-normative example for the challenge object post-validation:
 
 Depending on the Certificate Issuer's X.509 Certificate profile, the CSR and
 X.509 Certificate MAY associate the X.509 Certificate to the Federation Entity by
-including the Entity ID in the X.509 Certificate.
-To do so, the Issuer includes a Subject Alternative Name extension
-containing an `otherName` with
-a `type-id` of `id-on-OpenIdFederationEntityId`.
-The value of the name is an Octet String
-containing the UTF-8 encoding of the Entity ID
-(i.e., the URI in the corresponding `openid-federation` ACME Identifier
-from the `newOrder` request).
+including the Entity Identifier in the X.509 Certificate.
+
+To do so, the Issuer includes a Subject Alternative Name extension containing an
+`otherName` with a `type-id` of `id-on-OpenIdFederationEntityId`. The value of
+the name is an Octet String containing the UTF-8 encoding of the Entity
+Identifier (i.e., the URI in the corresponding `openid-federation` ACME
+Identifier from the `newOrder` request).
 
 ~~~~
    id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
