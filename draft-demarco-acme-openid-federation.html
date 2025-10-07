@@ -1220,7 +1220,7 @@ of OpenID Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-publication-of-the-certific" class="internal xref">Publication of the Certificates within the Federation</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-certificate-lifecycle-and-r" class="internal xref">Certificate Lifecycle and Revocation</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-certificate-lifecycle" class="internal xref">Certificate Lifecycle</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-errors" class="internal xref">Errors</a></p>
@@ -1872,20 +1872,20 @@ partial Trust Chain, and if so, to what Trust Anchor, are policy decisions
 out of scope for this document.<a href="#section-6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="certificate-lifecycle-and-revocation">
+<div id="certificate-lifecycle">
 <section id="section-7">
-      <h2 id="name-certificate-lifecycle-and-r">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-certificate-lifecycle-and-r" class="section-name selfRef">Certificate Lifecycle and Revocation</a>
+      <h2 id="name-certificate-lifecycle">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-certificate-lifecycle" class="section-name selfRef">Certificate Lifecycle</a>
       </h2>
 <p id="section-7-1">The identity of the Requestor is verified through proof of possession of a
-private key corresponding to a public key
-attested within a Trust Chain. It is up to the Certificate Issuer to decide
-the expiration time of the X.509 Certificate. In some cases, and when required,
-it <span class="bcp14">MAY</span> be set to match the expiration of the Trust Chain.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">A Requestor <span class="bcp14">SHOULD</span> request the revocation of its X.509 Certificate when the related
-cryptographic material is revoked. The Requestor <span class="bcp14">SHOULD</span> publish the revoked or
-expired cryptographic keys in the Federation Historical Key Registry.<a href="#section-7-2" class="pilcrow">¶</a></p>
-<p id="section-7-3">The X.509 Certificate revocation request is defined in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.6" class="relref">Section 7.6</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-7-3" class="pilcrow">¶</a></p>
+private key corresponding to a public key attested within a Trust Chain. The
+Trust Chain has an expiration time, and its content <span class="bcp14">MUST NOT</span> be trusted past the
+expiration time (<span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-10.2" class="relref">Section 10.2</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>).<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">The <code>notBefore</code> and <code>notAfter</code> fields of issued certificates <span class="bcp14">MUST</span> represent
+dates before the Trust Chain's expiration time. If the Requestor's newOrder
+request (<span><a href="https://rfc-editor.org/rfc/rfc8555#section-7.4" class="relref">Section 7.4</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>) contains <code>notAfter</code> or <code>notBefore</code> fields
+that make this impossible, the Certificate Issuer <span class="bcp14">MUST</span> reply with an error of
+type <code>urn:ietf:params:acme:error:openIDFederationCertificateValidity</code>.<a href="#section-7-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="error-type">
@@ -1893,7 +1893,7 @@ expired cryptographic keys in the Federation Historical Key Registry.<a href="#s
       <h2 id="name-errors">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-errors" class="section-name selfRef">Errors</a>
       </h2>
-<p id="section-8-1">This document defines one new error type URI to be used in problem documents
+<p id="section-8-1">This document defines two new error type URIs to be used in problem documents
 <span>[<a href="#RFC9457" class="cite xref">RFC9457</a>]</span>, as described in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-6.7" class="relref">Section 6.7</a> of [<a href="#RFC8555" class="cite xref">RFC8555</a>]</span>.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">The error type <code>urn:ietf:params:acme:error:openIDFederationEntity</code> is used to
 encapsulate any OAuth error code returned while resolving OpenID Federation
@@ -1903,6 +1903,10 @@ particular OAuth error code that caused the error. The problem document for this
 error type <span class="bcp14">SHOULD</span> include an extension member named <code>error_code</code>, which <span class="bcp14">MUST</span> be
 set to the OAuth error code, taken from the error codes defined in
 <span><a href="https://openid.net/specs/openid-federation-1_0-43.html#section-8.9" class="relref">Section 8.9</a> of [<a href="#OPENID-FED" class="cite xref">OPENID-FED</a>]</span>.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-3">The error type <code>urn:ietf:params:acme:error:openIDFederationCertificateValidity</code>
+is used to indicate that a Certificate could not be issued because of a mismatch
+between the requested period of validity and the expiration of the OpenID
+Federation Trust Chain.<a href="#section-8-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
@@ -2009,6 +2013,11 @@ in <span><a href="https://rfc-editor.org/rfc/rfc8555#section-9.7.4" class="relre
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">openIDFederationEntity</td>
                 <td class="text-left" rowspan="1" colspan="1">An error occurred while resolving an OpenID Federation entity</td>
+                <td class="text-left" rowspan="1" colspan="1">this document</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">openIDFederationCertificateValidity</td>
+                <td class="text-left" rowspan="1" colspan="1">A certificate was requested whose validity period is not before the OpenID Federation Trust Chain's expiry</td>
                 <td class="text-left" rowspan="1" colspan="1">this document</td>
               </tr>
             </tbody>
