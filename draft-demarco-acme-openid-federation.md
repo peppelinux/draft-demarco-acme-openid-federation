@@ -733,3 +733,8 @@ specified here in {{openidfed-othername-id}}
 |TBA    |id-on-OpenIdFederationEntityId|this document|
 
 --- back
+
+# Acknowledgments
+{:numbered="false"}
+
+Aaron Gable and Mike Ounsworth, for early and thorough reviews of this draft.
