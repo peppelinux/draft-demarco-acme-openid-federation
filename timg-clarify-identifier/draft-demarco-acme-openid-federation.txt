@@ -5,7 +5,7 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 4 April 2026                                     1 October 2025
+Expires: 10 April 2026                                    7 October 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 April 2026.
+   This Internet-Draft will expire on 10 April 2026.
 
 Copyright Notice
 
@@ -159,7 +159,7 @@ Table of Contents
 
    *  Federation Entities that join a federation to attest themselves as
       trustworthy, and then retrieve X.509 Certificates for their
-      official HTTPS Federation Entity ID.
+      official HTTPS Federation Entity Identifier.
 
    *  Federation Entities that want to ask for and obtain X.509
       Certificates for use in other protocols.
@@ -623,13 +623,15 @@ Table of Contents
 
    Depending on the Certificate Issuer's X.509 Certificate profile, the
    CSR and X.509 Certificate MAY associate the X.509 Certificate to the
-   Federation Entity by including the Entity ID in the X.509
-   Certificate.  To do so, the Issuer includes a Subject Alternative
-   Name extension containing an otherName with a type-id of id-on-
+   Federation Entity by including the Entity Identifier in the X.509
+   Certificate.
+
+   To do so, the Issuer includes a Subject Alternative Name extension
+   containing an otherName with a type-id of id-on-
    OpenIdFederationEntityId.  The value of the name is an Octet String
-   containing the UTF-8 encoding of the Entity ID (i.e., the URI in the
-   corresponding openid-federation ACME Identifier from the newOrder
-   request).
+   containing the UTF-8 encoding of the Entity Identifier (i.e., the URI
+   in the corresponding openid-federation ACME Identifier from the
+   newOrder request).
 
       id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
 

@@ -38,7 +38,7 @@ of OpenID Federation 1.0.
     PyYAML 6.0.2
     requests 2.32.5
     setuptools 80.9.0
-    wcwidth 0.2.13
+    wcwidth 0.2.14
 -->
 <link href="draft-demarco-acme-openid-federation.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1061,7 +1061,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">De Marco &amp; Pitman</td>
-<td class="center">Expires 4 April 2026</td>
+<td class="center">Expires 10 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1074,12 +1074,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-demarco-acme-openid-federation-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-10-01" class="published">1 October 2025</time>
+<time datetime="2025-10-07" class="published">7 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-04">4 April 2026</time></dd>
+<dd class="expires"><time datetime="2026-04-10">10 April 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1142,7 +1142,7 @@ of OpenID Federation 1.0.<a href="#section-abstract-3" class="pilcrow">¶</a></p
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 4 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 10 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1319,7 +1319,7 @@ on OpenID Federation 1.0.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <li class="normal" id="section-2-3.1">
           <p id="section-2-3.1.1">Federation Entities that join a federation to attest themselves as
 trustworthy, and then retrieve X.509 Certificates for their official HTTPS
-Federation Entity ID.<a href="#section-2-3.1.1" class="pilcrow">¶</a></p>
+Federation Entity Identifier.<a href="#section-2-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-3.2">
           <p id="section-2-3.2.1">Federation Entities that want to ask for and obtain X.509 Certificates for use
@@ -1836,20 +1836,18 @@ Federation trust, the problem document <span class="bcp14">SHOULD</span> contain
           </h4>
 <p id="section-5.5.1-1">Depending on the Certificate Issuer's X.509 Certificate profile, the CSR and
 X.509 Certificate <span class="bcp14">MAY</span> associate the X.509 Certificate to the Federation Entity by
-including the Entity ID in the X.509 Certificate.
-To do so, the Issuer includes a Subject Alternative Name extension
-containing an <code>otherName</code> with
-a <code>type-id</code> of <code>id-on-OpenIdFederationEntityId</code>.
-The value of the name is an Octet String
-containing the UTF-8 encoding of the Entity ID
-(i.e., the URI in the corresponding <code>openid-federation</code> ACME Identifier
-from the <code>newOrder</code> request).<a href="#section-5.5.1-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.5.1-2">
+including the Entity Identifier in the X.509 Certificate.<a href="#section-5.5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.5.1-2">To do so, the Issuer includes a Subject Alternative Name extension containing an
+<code>otherName</code> with a <code>type-id</code> of <code>id-on-OpenIdFederationEntityId</code>. The value of
+the name is an Octet String containing the UTF-8 encoding of the Entity
+Identifier (i.e., the URI in the corresponding <code>openid-federation</code> ACME
+Identifier from the <code>newOrder</code> request).<a href="#section-5.5.1-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5.1-3">
 <pre>
    id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
 
    OpenIdFederationEntityId ::= UTF8String
-</pre><a href="#section-5.5.1-2" class="pilcrow">¶</a>
+</pre><a href="#section-5.5.1-3" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
