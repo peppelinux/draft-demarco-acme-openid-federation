@@ -143,7 +143,7 @@ extends the ACME protocol in the following ways:
   were previously issued with ACME.
 
 - It extends the ACME newOrder resource, as defined in
-  {{Section 7.4 of !RFC8555}}, defining a new identifier type called
+  {{Section 7.4 of !RFC8555}}, defining a new ACME Identifier type called
   `openid-federation`.
 
 # Target Audience and Use Cases
@@ -156,7 +156,7 @@ This specification can be implemented by:
 
 - Federation Entities that join a federation to attest themselves as
   trustworthy, and then retrieve X.509 Certificates for their official HTTPS
-  Federation Entity ID.
+  Federation Entity Identifier.
 
 - Federation Entities that want to ask for and obtain X.509 Certificates for use
   in other protocols.
@@ -175,6 +175,14 @@ used in this document is defined in {{!RFC5280}}. The terms "ACME Client" and
 "ACME Server" are defined in {{!RFC8555}}.
 
 The specification also defines the following terms:
+
+ACME Identifier:
+: An identifier in the sense of {{!RFC8555}}. Some identifier that the ACME
+  client proves control of to the ACME server.
+
+Entity Identifier:
+: A URL that uniquely identifies an Entity in OpenID Federation, as defined in
+  {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2-3.4"}.
 
 Requestor:
 : A Federation Entity which wants to request X.509 certificates. It operates
@@ -198,7 +206,7 @@ The protocol flow consists of the following phases:
   within a federation, inspecting the ACME issuer Entity types. This is
   discussed in {{discovery}}.
 - **Issuance**: the Requestor requests a X.509 Certificate from a Certificate
-  Issuer using the ACME protocol. The new ACME identifier and challenge type are
+  Issuer using the ACME protocol. The new ACME Identifier and challenge type are
   discussed in {{identifier-type}} and {{challenge-type}}, respectively.
 
 There are two ways the Certificate Issuer is able to check if a Requestor is
@@ -278,7 +286,7 @@ ACME account with the Issuer.
         |                  |                                 |    | Check                |
         |                  |                                 |    | Entity Configuration |
         |                  |                                 |    | sub matches          |
-        |                  |                                 |    | Entity identifier    |
+        |                  |                                 |    | Entity Identifier    |
         |                  |                                 |<---' in the order         |
         |                  |                                 |                           |
         |                  |                                 |                           |
@@ -459,14 +467,14 @@ The Issuer MUST only use the Requestor's `acme_requestor` to validate an ACME
 challenge. Therefore, after completing the challenge, the Requestor MAY remove
 the `acme_requestor` metadata from its Entity Configuration.
 
-## OpenID Federation Identifier {#identifier-type}
+## OpenID Federation ACME Identifier {#identifier-type}
 
-This document defines a new ACME identifier type for OpenID Federation entities,
+This document defines a new ACME Identifier type for OpenID Federation entities,
 `openid-federation`, whose value is the `sub` parameter of the requestor's
 Entity Configuration, as defined in
 {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2"}.
 
-For example, the ACME identifier corresponding to the example Entity
+For example, the ACME Identifier corresponding to the example Entity
 Configuration in {{requestor-metadata}} is:
 
 ~~~~
@@ -490,7 +498,7 @@ token (required, string):  A random value that uniquely identifies the
     {{Section 5 of !RFC4648}}. Trailing '=' padding characters MUST be stripped.
     See {{!RFC4086}} for additional information on randomness requirements.
 
-trustAnchors (optional, array of string):  An array of strings containing
+trustAnchors (optional, array of string):  An array of strings containing the
     Entity Identifiers of the Issuer's Trust Anchors. When solving the
     challenge, the Requestor can construct a Trust Chain from itself to one of
     these Trust Anchors. It is RECOMMENDED that the Issuer includes this field
@@ -512,9 +520,9 @@ A non-normative example of a challenge with `trustAnchors` specified:
 ~~~~
 
 The `openid-federation-01` challenge MUST NOT be used to issue X.509 Certificates
-for any identifiers except `openid-federation` identifiers.
+for any ACME Identifiers except `openid-federation` ACME Identifiers.
 
-The `openid-federation` identifier MUST NOT be validated except by the
+The `openid-federation` ACME Identifier type MUST NOT be validated except by the
 `openid-federation-01` challenge.
 
 The Requestor responds to the challenge with an object with the following format:
@@ -574,7 +582,7 @@ for the Requestor.
 Once it has obtained a Trust Chain, the Issuer evaluates the entity's Resolved
 Metadata, and verifies:
 
-* That the requested `openid-federation` identifier value matches the `sub`
+* That the requested `openid-federation` ACME Identifier value matches the `sub`
   parameter of the Requestor's Entity Configuration.
 
 * That there is a key in the `acme_requestor` metadata ({{requestor-metadata}})
@@ -607,14 +615,13 @@ A non-normative example for the challenge object post-validation:
 
 Depending on the Certificate Issuer's X.509 Certificate profile, the CSR and
 X.509 Certificate MAY associate the X.509 Certificate to the Federation Entity by
-including the Entity ID in the X.509 Certificate.
-To do so, the Issuer includes a Subject Alternative Name extension
-containing an `otherName` with
-a `type-id` of `id-on-OpenIdFederationEntityId`.
-The value of the name is an Octet String
-containing the UTF-8 encoding of the Entity ID
-(i.e., the URI in the corresponding `openid-federation` identifier
-from the `newOrder` request).
+including the Entity Identifier in the X.509 Certificate.
+
+To do so, the Issuer includes a Subject Alternative Name extension containing an
+`otherName` with a `type-id` of `id-on-OpenIdFederationEntityId`. The value of
+the name is an Octet String containing the UTF-8 encoding of the Entity
+Identifier (i.e., the URI in the corresponding `openid-federation` ACME
+Identifier from the `newOrder` request).
 
 ~~~~
    id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
