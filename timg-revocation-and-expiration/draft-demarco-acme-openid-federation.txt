@@ -5,7 +5,7 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 4 April 2026                                     1 October 2025
+Expires: 10 April 2026                                    7 October 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
@@ -62,7 +62,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 April 2026.
+   This Internet-Draft will expire on 10 April 2026.
 
 Copyright Notice
 
@@ -94,7 +94,7 @@ Table of Contents
      5.5.  OpenID Federation Challenge Type
        5.5.1.  CSR and Certificate Fields
    6.  Publication of the Certificates within the Federation
-   7.  Certificate Lifecycle and Revocation
+   7.  Certificate Lifecycle
    8.  Errors
    9.  Security Considerations
    10. IANA Considerations
@@ -638,7 +638,7 @@ Table of Contents
    whether it contains a full or partial Trust Chain, and if so, to what
    Trust Anchor, are policy decisions out of scope for this document.
 
-7.  Certificate Lifecycle and Revocation
+7.  Certificate Lifecycle
 
    The identity of the Requestor is verified through proof of possession
    of a private key corresponding to a public key attested within a
