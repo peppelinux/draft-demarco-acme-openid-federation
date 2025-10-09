@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-07T00:37:25.252567+00:00",
+  "timestamp": "2025-10-09T00:37:29.458573+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1405,9 +1405,17 @@
       ],
       "body": "I would rearrange Section 6 to more closely reflect previous RFCs which have introduced new identifier types and corresponding challenges, such as [RFC 8738](https://www.rfc-editor.org/rfc/rfc8738.html). Specifically, I believe the most readable flow here is:\n\n1. Define the new identifier type (currently very vaguely defined in Section 6.5). Describe, as per [RFC 8555, Section 7.4](https://datatracker.ietf.org/doc/html/rfc8555#section-7.4), where in the CSR these identifiers can appear (currently Section 6.7.1)\n2. Define the new challenge type, how the client fulfills the challenge, and how the server validates the challenge (currently Section 6.7). This would also include Section 6.4.2, since the validation protocol requires that the Requestor's Entity Configuration Metadata be correct for validation to succeed.\n3. Then, in a new top-level section, discuss discovery. This is where the Preconditions (currently Section 6.1), Discovery (Section 6.2), and Issuer Metadata (Section 6.4.1) would move to. This is placed lower in the document because, as far as I can tell, it's not actually necessary for the ACME challenge validation to succeed. It's just a mechanism for clients and servers to discover each other in a federation. I almost question whether it belongs in this document, as it is describing extensions to a non-ACME protocol, but this is probably fine.",
       "createdAt": "2025-07-23T08:13:07Z",
-      "updatedAt": "2025-07-23T08:13:08Z",
+      "updatedAt": "2025-10-07T14:41:47Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Resolving this is blocked on the question of discovery (#109).",
+          "createdAt": "2025-10-07T14:41:47Z",
+          "updatedAt": "2025-10-07T14:41:47Z"
+        }
+      ]
     },
     {
       "number": 100,
@@ -1440,7 +1448,7 @@
       "id": "I_kwDOJ6_NW87CCT5t",
       "title": "Further Normative Guidance about notAfter in the newOrder request",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/101",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -1449,8 +1457,8 @@
       ],
       "body": "Section 8 says that \"it is up to the Certificate Issuer to decide the expiration time of the X.509 Certificate\". This directly contradicts RFC 8555, which says that the client can specify a notAfter time, and the server MUST return an error if it cannot fulfill that request as specified. \n\nIf you want to server to be able to adjust the expiration date based on the validity of the Trust Chain presented by the client, you'll need to say that clients MUST NOT include a notAfter in their newOrder request. Or simply say that Servers should consider whether they want to be able to do this adjustment, and if they do, then they should reject all requests which specify a notAfter.",
       "createdAt": "2025-07-23T08:14:46Z",
-      "updatedAt": "2025-07-23T08:14:46Z",
-      "closedAt": null,
+      "updatedAt": "2025-10-07T14:44:52Z",
+      "closedAt": "2025-10-07T14:44:52Z",
       "comments": []
     },
     {
@@ -1458,7 +1466,7 @@
       "id": "I_kwDOJ6_NW87CCUqp",
       "title": "Add Aaron Gable within the Acknowledgment Section",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/102",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -1467,8 +1475,8 @@
       ],
       "body": "for his valauble feedbacks throug hthe ACME mailing list",
       "createdAt": "2025-07-23T08:15:37Z",
-      "updatedAt": "2025-07-23T08:15:37Z",
-      "closedAt": null,
+      "updatedAt": "2025-10-07T14:26:23Z",
+      "closedAt": "2025-10-07T14:26:23Z",
       "comments": []
     },
     {
@@ -1476,7 +1484,7 @@
       "id": "I_kwDOJ6_NW87DVBzf",
       "title": "Clarify ACME identifier vs. OpenID Federation identifier",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/103",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -1485,8 +1493,8 @@
       ],
       "body": "Mike Ounsworth pointed out on the ACME list that we talk a lot about identifiers and it's not clear what we mean. We can add an entry to the terminology section discussing OpenID Federation Identifiers and pointing to the relevant section of OIDF (https://openid.net/specs/openid-federation-1_0.html#section-1.2-3.4) and audit the use of \"identifier\" in the document to make sure it's clear which we mean.",
       "createdAt": "2025-07-30T13:25:58Z",
-      "updatedAt": "2025-07-30T13:25:58Z",
-      "closedAt": null,
+      "updatedAt": "2025-10-07T14:25:42Z",
+      "closedAt": "2025-10-07T14:25:42Z",
       "comments": []
     },
     {
@@ -1536,7 +1544,7 @@
       ],
       "body": "Mike Ounsworth points out that since trust in the EC isn't derived from TLS, it's not strictly necessary for the issuer to fetch the requestor's EC (just as it's OK for the requestor to provide a valid trust chain in the challenge response instead of making the issuer do trust resolution). It's not obvious to me where in the new order request (https://datatracker.ietf.org/doc/html/rfc8555/#section-7.4) we'd put the EC. Are we allowed to put new fields in the `payload`?\n\nPerhaps what we could do is change the challenge response so that it could contain:\n\n- the full trust chain, in which case the issuer doesn't need to fetch the EC or do trust resolution OR\n- the requestor's EC, in which case the issuer does trust resolution and checks that the EC provided by the issuer matches the leaf ES in the truts chain OR\n- nothing, in which case the issuer fetches the requestor's EC and then does trust resolution.",
       "createdAt": "2025-07-30T14:10:50Z",
-      "updatedAt": "2025-07-30T14:50:12Z",
+      "updatedAt": "2025-10-07T14:38:28Z",
       "closedAt": null,
       "comments": [
         {
@@ -1545,6 +1553,13 @@
           "body": "We should consider what if any are the security or trust implications of the issuer having the requester EC handed to it instead of fetching it from `$requester/.well-known/openid-federation`. Are there problems if the EC the requester sends differs from the it advertises? Would such issues get caught anyway when the issuer resolves trust back to one of its trust anchors?",
           "createdAt": "2025-07-30T14:50:12Z",
           "updatedAt": "2025-07-30T14:50:12Z"
+        },
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "If an issuer is handed a trust chain by a requestor, the issuer would still have to check for revocation, which likely involves a round trip to the issuer's Federation superior anyway. So this may not be worthwhile.\n\nAnother consideration here though is that there may be multiple paths by which an issuer can trust a requestor (e.g. the requestor might be a member of >1 Federations that trust each other). The trust marks on the resolved end entity EC could differ based on how trust was evaluated (because of superior entity policies), and the issuer might require 1 or more trust marks to be present before it issues. So the issuer does need some mechanism to give the issuer a \"hint\" for what trust path to use.\n\nHowever this last problem sounds more like a feature of OpenID Federation discovery (n.b. this is the flavour of discovery where you _already_ know the Entity Identifier you're interested in but want to resolve a trust chain and EC for it) than something that this document should solve.\n\nThis relates to #109 in that if we do anything here, it would likely just be to refer to some (possibly forthcoming) text in the OIDF specification.\n",
+          "createdAt": "2025-10-07T14:21:25Z",
+          "updatedAt": "2025-10-07T14:38:28Z"
         }
       ]
     },
@@ -1560,7 +1575,7 @@
       "labels": [],
       "body": "Section 5 says that the protocol is split into two phases, discovery and issuance. Its description of the discovery phase says \"the Requestor discovers the available Certificate Issuers within a federation, inspecting the ACME issuer Entity types.\" Then, section 5.2 expands on this with a couple more paragraphs. Here, we say that the client may be configured with \"a particular ACME server\", or it may automatically discover a Certificate Issuer entity in its federation. We then provide a couple ideas about how the client may select between multiple entities.\n\nBased on the discussion in #106, I think that introducing a separate \"discovery\" concept, referring to finding and selecting a certificate issuer knowing only a federation trust anchor, introduces confusion. OpenID Federation already defines \"Federation Entity Discovery\", which covers the process by which a party looks up entity statements starting with a given entity identifier, and assembles a trust chain.\n\nWe do not currently provide a complete procedure for how to find issuers without knowing their identifier first. It would be possible to use the trust anchor's `federation_list_endpoint` to list all entities in the federation, and filter them locally. However, this metadata attribute is optional, and listing all entities may be practically infeasible in large federations. One separate draft introduces a paginated API to list all federation entities, while another separate draft introduces an API to list federation entities that meet specific filter conditions. If a deployment wants to limit discovery to certificate issuers bearing a specific trust mark, it may use the `federation_trust_mark_list_endpoint` to find entities, but this again is optional.\n\nI think that the \"finding a certificate issuer\" sense of discovery is an unnecessary feature for this draft, and I am not aware of a use case that requires it. If there are multiple certificate issuers in the same federation, then deployment-specific knowledge would be required to choose the correct certificate issuer. The multiple certificate issuers may issue certificates that are trusted in entirely different X.509 PKIs, for example, or they could otherwise support different certificate profiles. Given the many different ways one could list federation entities, each with different tradeoffs, and the need for additional deployment-specific information to select among multiple certificate issuers, I think it would be operationally simpler and more robust to have the ACME client be configured with an identifier for its certificate issuer, in addition to the federation trust anchor, etc.",
       "createdAt": "2025-09-02T20:26:34Z",
-      "updatedAt": "2025-09-03T08:01:47Z",
+      "updatedAt": "2025-10-07T14:41:38Z",
       "closedAt": null,
       "comments": [
         {
@@ -1569,6 +1584,13 @@
           "body": "a impl consideration section could exemplify several ways to discover an acme certificate issuer, as discussed in PR #106 ",
           "createdAt": "2025-09-03T08:01:47Z",
           "updatedAt": "2025-09-03T08:01:47Z"
+        },
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "From discussion today between Giuseppe, David and myself, we agreed that this draft is not where either type of discovery (whether it's getting an EC+trust chain for an entity whose identifier you already know, or discovering where in your federation an issuer exists) should be defined. Most of the discussion of discovery should be deleted, and replaced with references to the OpenID Federation specification.",
+          "createdAt": "2025-10-07T14:41:38Z",
+          "updatedAt": "2025-10-07T14:41:38Z"
         }
       ]
     },
@@ -1577,16 +1599,24 @@
       "id": "I_kwDOJ6_NW87PFrsR",
       "title": "X.509 revocation vs. Federation Historical Key Endpoint",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/110",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "in \"Certificate Lifecycle and Revocation\", we used to have a paragraph:\n\n> A Requestor SHOULD request the revocation of its X.509 Certificate when the related\n> cryptographic material is revoked. The Requestor SHOULD publish the revoked or\n> expired cryptographic keys in the Federation Historical Key Registry.\n\nThis kinda made sense back when we assumed that this would only be issuing certs on Federation Entity Keys, but that's no longer the case.\n\nAdditionally, it's not obvious to me that a JWT is the appropriate place to publish revocation information for X.509 certs. Couldn't the ACME CA have its own CRLs or an OCSP responder?",
       "createdAt": "2025-10-01T16:58:46Z",
-      "updatedAt": "2025-10-01T16:58:46Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-10-07T14:44:52Z",
+      "closedAt": "2025-10-07T14:44:52Z",
+      "comments": [
+        {
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "From discussion just now: whatever X.509 ecosystem is being bridged into with this ACME-OpenID Federation mechanism likely already has its own mechanisms and rules for X.509 certificate revocation (e.g. the web PKI's RFC 5280, OCSP, CRLs, CRLite, etc.). We (authors of this document) won't do anyone any favours if we add new rules and requirements to cert revocation. Thus the action here is just to delete all mention of \"revocation\" from the draft.",
+          "createdAt": "2025-10-07T14:34:44Z",
+          "updatedAt": "2025-10-07T14:34:44Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -7630,24 +7660,26 @@
       "id": "PR_kwDOJ6_NW86idZFh",
       "title": "cert lifecycle fixes",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/108",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
-      "body": "Don't allow `notAfter` to go past the trust chain's `exp`. Also tidies up the discussion of revocation to avoid stepping on ACME's toes.\r\n\r\nresolves #101",
+      "body": "- Don't allow `notAfter` to go past the trust chain's `exp` (#101)\r\n- Define an ACME error type for certs whose validity period can't be satisfied\r\n- Don't discuss revocation at all (#110)\r\n\r\nresolves #101\r\nresolves #110",
       "createdAt": "2025-08-06T20:59:26Z",
-      "updatedAt": "2025-10-01T17:00:12Z",
+      "updatedAt": "2025-10-07T14:44:51Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "4b9b0cd3e1ec2b5193f09ac0bd7acc62fc92f9a2",
+      "baseRefOid": "cdae817122e4fb5ababccbcdb4ea22183fe006d8",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg-revocation-and-expiration",
-      "headRefOid": "04ca66dd0adc91440c454a39c8ae7a0c5225481a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "5eb55898471b2631d47d07022a5736b170ee1449",
+      "closedAt": "2025-10-07T14:44:51Z",
+      "mergedAt": "2025-10-07T14:44:51Z",
+      "mergedBy": "tgeoghegan",
+      "mergeCommit": {
+        "oid": "002e1f9ec1af36a61b5c24c2498c231e89fc6217"
+      },
       "comments": [
         {
           "author": "tgeoghegan",
@@ -7809,6 +7841,26 @@
               "updatedAt": "2025-10-01T17:00:05Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW87FUO0d",
+          "commit": {
+            "abbreviatedOid": "04ca66d"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-07T14:29:44Z",
+          "updatedAt": "2025-10-07T14:29:51Z",
+          "comments": [
+            {
+              "originalPosition": 1,
+              "body": "We no longer discuss revocation in this section\r\n```suggestion\r\n# Certificate Lifecycle\r\n```",
+              "createdAt": "2025-10-07T14:29:44Z",
+              "updatedAt": "2025-10-07T14:29:51Z"
+            }
+          ]
         }
       ]
     },
@@ -7817,24 +7869,26 @@
       "id": "PR_kwDOJ6_NW86rn_oW",
       "title": "add acknowledgments section",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/111",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Resolves #102",
       "createdAt": "2025-10-01T19:24:11Z",
-      "updatedAt": "2025-10-06T21:00:35Z",
+      "updatedAt": "2025-10-07T14:26:22Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "4b9b0cd3e1ec2b5193f09ac0bd7acc62fc92f9a2",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg-acknowledgments",
       "headRefOid": "0b3e44b768ee1b58c5442e2cacaf62c1230889eb",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-10-07T14:26:22Z",
+      "mergedAt": "2025-10-07T14:26:22Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "cdae817122e4fb5ababccbcdb4ea22183fe006d8"
+      },
       "comments": [],
       "reviews": [
         {
@@ -7849,6 +7903,19 @@
           "createdAt": "2025-10-06T21:00:35Z",
           "updatedAt": "2025-10-06T21:00:35Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOJ6_NW87FUK8O",
+          "commit": {
+            "abbreviatedOid": "0b3e44b"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-07T14:26:10Z",
+          "updatedAt": "2025-10-07T14:26:10Z",
+          "comments": []
         }
       ]
     },
@@ -7857,24 +7924,26 @@
       "id": "PR_kwDOJ6_NW86roJXI",
       "title": "Be explicit about ACME vs. OIDF Entity Identifiers",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/112",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Add terminology section entries for \"ACME Identifier\" and \"Entity\" Identifier\". The latter refers to the definition in the OIDF spec.\r\n\r\nSadly there is no crisp definition of \"identifier\" in ACME (!), so for the former, we just link to RFC 8555.\r\n\r\nAudit all existing usages of \"identifier\" and replace with either \"ACME Identifier\" or \"Entity Identifier\", as appropriate, to make it clear which we're talking about in any given sentence.\r\n\r\nResolves #103",
       "createdAt": "2025-10-01T19:39:14Z",
-      "updatedAt": "2025-10-06T21:07:50Z",
+      "updatedAt": "2025-10-07T14:25:41Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "4b9b0cd3e1ec2b5193f09ac0bd7acc62fc92f9a2",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg-clarify-identifier",
-      "headRefOid": "e23ab7f91b40fc0e28c6e14e39667a1a1752f197",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "6db0950ff5bc3c04573144d01558b8e035aee76d",
+      "closedAt": "2025-10-07T14:25:41Z",
+      "mergedAt": "2025-10-07T14:25:41Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "7b8aa24ba664626158e02362930a84aeacaa2e27"
+      },
       "comments": [],
       "reviews": [
         {
@@ -7896,6 +7965,19 @@
               "updatedAt": "2025-10-06T21:07:50Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW87FUJVJ",
+          "commit": {
+            "abbreviatedOid": "6db0950"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-07T14:24:58Z",
+          "updatedAt": "2025-10-07T14:24:58Z",
+          "comments": []
         }
       ]
     }
