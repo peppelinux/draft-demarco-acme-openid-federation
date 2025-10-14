@@ -86,18 +86,15 @@ normative:
     author:
       organization: IANA
 
-informative:
-
-
 --- abstract
 
-The Automatic Certificate Management Environment (ACME) protocol
-allows server operators to obtain TLS certificates for their websites,
-based on a demonstration of control over the website's domain via a
-fully-automated challenge/response protocol.
+The Automatic Certificate Management Environment (ACME) protocol allows server
+operators to obtain TLS certificates for their websites, based on a
+demonstration of control over the website's domain via a fully-automated
+challenge/response protocol.
 
 OpenID Federation 1.0 defines how to build a trust infrastructure using a
-trusted third-party model. It uses a trust evaluation mechanism to attest the
+trusted third-party model. It uses a trust evaluation mechanism to attest to the
 possession of private keys, protocol specific metadata and miscellaneous
 administrative and technical information related to a specific entity.
 
@@ -112,10 +109,9 @@ of OpenID Federation 1.0.
 
 This document describes extensions to the ACME protocol that integrate with
 OpenID Federation 1.0, allowing an ACME server to issue X.509 Certificates
-associated with a given OpenID Federation Entity.
-
-X.509 Certificates can be provided to one or more organizations,
-without having pre-established any direct relationship or contract.
+associated with a given OpenID Federation entity. An entity can be a school,
+government agency, corporation, automated system, or any participant that
+wishes to join the Federation.
 
 In a multilateral federation, composed of thousands of entities belonging to
 different organizations, all the participants adhere to the same regulation or
@@ -126,40 +122,40 @@ cryptographic materials.
 Federation members declare what kind Entities they are using a basic OpenID
 Federation component called an Entity Configuration, a signed JSON Web Token
 published in a well-known resource. This document defines new OpenID Federation
-Entity Types for certificate requestors and issuers, facilitating automated
+Entity Types for certificate Requestors and Issuers, facilitating automated
 discovery of an issuer's ACME API.
 
-The new ACME challenge type defined in this document facilitates automated
-issuance of X.509 Certificates to requestors that can prove to a certificate
-issuer that they are trusted OpenID Federation 1.0 entities. This document
-extends the ACME protocol in the following ways:
+X.509 Certificates can be provided to one or more such entities, without having
+pre-established any direct relationship or contract.
 
-- It associates a cryptographic key with an OpenID Entity, rather than a domain,
-  since the authentication and authorization of the requestor is asserted with
-  OpenID Federation 1.0.
+These Certificates are useful for integrating with existing systems and
+protocols which require X.509 Certificates. For example, RADIUS ({{?RFC2865}})
+deployments often require Certificates to authenticate clients, or these
+Certificates could also be used for TLS {{?RFC8446}}. In order to accommodate a
+variety of use cases, this document adds no requirement that CAs conform to any
+particular issuance profile, because fields of the X.509 Certificates like the
+Common Names, Subject Alternative Names or Key Usages may depend on details of
+those existing systems.
 
-- It defines how the OpenID Federation Subordinate Statements can be used for the
-  publication of the X.509 Certificates, by a Superior Entity, that
-  were previously issued with ACME.
+This document extends {{!RFC5280}}, ACME ({{!RFC8555}}) and OpenID Federation
+1.0 ({{OPENID-FED}}) in the following ways:
 
-- It extends the ACME newOrder resource, as defined in
-  {{Section 7.4 of !RFC8555}}, defining a new ACME Identifier type called
-  `openid-federation`.
+- It defines a new ACME Identifier type called `openid-federation`.
 
-# Target Audience and Use Cases
+- It defines a new ACME challenge type called `openid-federation-01` which
+  facilitates automated issuance of X.509 Certificates to Requestors that can
+  prove to a Certificate Issuer that they are trusted OpenID Federation 1.0
+  Entities.
 
-The audience of the document are the multilateral federations that require
-automatic issuance of X.509 Certificates using an infrastructure of trust based
-on OpenID Federation 1.0.
+- It defines new OpenID Federation 1.0 Entity Types `acme_issuer` and
+  `acme_requestor`.
 
-This specification can be implemented by:
+- It defines how OpenID Federation 1.0 Superior Entities can use Subordinate
+  Statements to publish X.509 Certificates previously issued with ACME.
 
-- Federation Entities that join a federation to attest themselves as
-  trustworthy, and then retrieve X.509 Certificates for their official HTTPS
-  Federation Entity Identifier.
-
-- Federation Entities that want to ask for and obtain X.509 Certificates for use
-  in other protocols.
+- It defines a new SubjectAlternativeName type `id-on-OpenIdFederationEntityId`
+  and a corresponding OID so that OpenID Federation 1.0 Entity Identifiers can
+  be included in X.509 Certificates if an issuer wishes.
 
 # Terminology
 
@@ -185,12 +181,12 @@ Entity Identifier:
   {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2-3.4"}.
 
 Requestor:
-: A Federation Entity which wants to request X.509 certificates. It operates
+: A Federation Entity which wants to request X.509 Certificates. It operates
   a web server for hosting its Entity Configuration. It also operates an ACME
   client, extended according to this document.
 
 Certificate Issuer (or Issuer):
-: A Federation Entity which issues X.509 certificates. It operates a web server
+: A Federation Entity which issues X.509 Certificates. It operates a web server
   for hosting its Entity Configuration. It also operates an ACME server,
   extended according to this document.
 
@@ -219,6 +215,17 @@ part of the federation:
 - The Requestor doesn't provide a Trust Chain in the challenge solution. The
   Certificate Issuer MUST start Federation Entity Discovery as described in
   {{Section 9 of OPENID-FED}}{: relative="#section-9"}.
+
+~~~ BEGIN EDNOTE ~~~
+
+To be removed before publication.
+
+## End-to-end ACME Issuance Flow
+
+This section contains explanatory material that recaps a lot of RFC 8555. It is
+included here for the benefit of readers who are familiar with OpenID Federation
+but not with ACME, and want to see at a glance how the whole thing fits
+together.
 
 The following diagram illustrates a successful interaction between Issuer and
 Requestor to retrieve an X.509 Certificate. The diagram assumes the Requestor
@@ -342,9 +349,11 @@ ACME account with the Issuer.
 `-----------------'
 ~~~~
 
+~~~ END EDNOTE ~~~
+
 ## Preconditions
 
-The protocol requires the following preconditions are met.
+The protocol requires the following preconditions to be met.
 
 1. The Requestor and the Issuer MUST publish their Entity Configuration as
    defined in {{Section 9 of OPENID-FED}}{: relative="#section-9"}.
@@ -364,7 +373,7 @@ server, or to automatically discover a Certificate Issuer through the
 federation.
 
 Requestors that use discovery MAY select any Entity with an Entity type of
-`acme_issuer`, or they may additionally require that such entities have a
+`acme_issuer`, or they may additionally require that such Entities have a
 valid Trust Mark with a particular Trust Mark Identifier.
 
 ## Entity Configuration Metadata
@@ -470,9 +479,9 @@ the `acme_requestor` metadata from its Entity Configuration.
 ## OpenID Federation ACME Identifier {#identifier-type}
 
 This document defines a new ACME Identifier type for OpenID Federation entities,
-`openid-federation`, whose value is the `sub` parameter of the requestor's
-Entity Configuration, as defined in
-{{Section 1.2 of OPENID-FED}}{: relative="#section-1.2"}.
+`openid-federation`, whose value is the `sub` parameter of the Requestor's
+Entity Configuration, as defined in {{Section 1.2 of
+OPENID-FED}}{: relative="#section-1.2"}.
 
 For example, the ACME Identifier corresponding to the example Entity
 Configuration in {{requestor-metadata}} is:
