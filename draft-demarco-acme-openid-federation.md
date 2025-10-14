@@ -140,22 +140,23 @@ those existing systems.
 This document extends {{!RFC5280}}, ACME ({{!RFC8555}}) and OpenID Federation
 1.0 ({{OPENID-FED}}) in the following ways:
 
-- It defines a new ACME Identifier type called `openid-federation`.
+- It defines a new ACME Identifier type called `openid-federation`
+  ({{identifier-type}}).
 
-- It defines a new ACME challenge type called `openid-federation-01` which
-  facilitates automated issuance of X.509 Certificates to Requestors that can
-  prove to a Certificate Issuer that they are trusted OpenID Federation 1.0
-  Entities.
+- It defines a new ACME challenge type called `openid-federation-01`
+  ({{challenge-type}}).
 
-- It defines new OpenID Federation 1.0 Entity Types `acme_issuer` and
-  `acme_requestor`.
+- It defines new OpenID Federation 1.0 Entity Types `acme_issuer`
+  ({{issuer-metadata}}) and `acme_requestor` ({{requestor-metadata}}).
 
 - It defines how OpenID Federation 1.0 Superior Entities can use Subordinate
-  Statements to publish X.509 Certificates previously issued with ACME.
+  Statements to publish X.509 Certificates previously issued with ACME
+  ({{publish-cert}}).
 
 - It defines a new SubjectAlternativeName type `id-on-OpenIdFederationEntityId`
   and a corresponding OID so that OpenID Federation 1.0 Entity Identifiers can
-  be included in X.509 Certificates if an issuer wishes.
+  be included in X.509 Certificates if an Issuer wishes
+  ({{openidfed-othername-id}}).
 
 # Terminology
 
@@ -194,16 +195,29 @@ Certificate Issuer (or Issuer):
 
 {::boilerplate bcp14-tagged}
 
-# Protocol Flow
+# OpenID Federation ACME Identifier {#identifier-type}
 
-The protocol flow consists of the following phases:
+This document defines a new ACME Identifier type for OpenID Federation Entities,
+`openid-federation`, whose value is the `sub` parameter of the Requestor's
+Entity Configuration, as defined in {{Section 1.2 of OPENID-FED}}{:
+relative="#section-1.2"}.
 
-- **Discovery**: the Requestor discovers the available Certificate Issuers
-  within a federation, inspecting the ACME issuer Entity types. This is
-  discussed in {{discovery}}.
-- **Issuance**: the Requestor requests a X.509 Certificate from a Certificate
-  Issuer using the ACME protocol. The new ACME Identifier and challenge type are
-  discussed in {{identifier-type}} and {{challenge-type}}, respectively.
+For example, the ACME Identifier corresponding to the example Entity
+Configuration in {{requestor-metadata}} is:
+
+~~~~
+{"type": "openid-federation", "value": "https://requestor.example.com"}
+~~~~
+
+The `openid-federation` ACME Identifier type MUST NOT be validated except by the
+`openid-federation-01` challenge.
+
+# OpenID Federation Challenge Type {#challenge-type}
+
+The OpenID Federation challenge type allows a Requestor to prove control of a
+Federation Entity using the trust evaluation mechanism provided by
+{{OPENID-FED}}. The Requestor demonstrates control of a cryptographic public key
+published in its OpenID Federation Entity Configuration.
 
 There are two ways the Certificate Issuer is able to check if a Requestor is
 part of the federation:
@@ -212,215 +226,130 @@ part of the federation:
   RECOMMENDED since it reduces the effort of the Certificate Issuer in
   evaluating the trust to the Requestor.
 
-- The Requestor doesn't provide a Trust Chain in the challenge solution. The
-  Certificate Issuer MUST start Federation Entity Discovery as described in
-  {{Section 9 of OPENID-FED}}{: relative="#section-9"}.
+- The Requestor doesn't provide a Trust Chain in the challenge solution.
 
-~~~ BEGIN EDNOTE ~~~
+The openid-federation-01 ACME challenge object has the following format:
 
-To be removed before publication.
+type (required, string):  The string "openid-federation-01"
 
-## End-to-end ACME Issuance Flow
+token (required, string):  A random value that uniquely identifies the
+    challenge. This value MUST have at least 128 bits of entropy. It MUST NOT
+    contain any characters outside the base64url alphabet as described in
+    {{Section 5 of !RFC4648}}. Trailing '=' padding characters MUST be stripped.
+    See {{!RFC4086}} for additional information on randomness requirements.
 
-This section contains explanatory material that recaps a lot of RFC 8555. It is
-included here for the benefit of readers who are familiar with OpenID Federation
-but not with ACME, and want to see at a glance how the whole thing fits
-together.
+trustAnchors (optional, array of string):  An array of strings containing the
+    Entity Identifiers of the Issuer's Trust Anchors. When solving the
+    challenge, the Requestor can construct a Trust Chain from itself to one of
+    these Trust Anchors. It is RECOMMENDED that the Issuer includes this field
+    to make it easier for the Requestor to construct a Trust Chain.
 
-The following diagram illustrates a successful interaction between Issuer and
-Requestor to retrieve an X.509 Certificate. The diagram assumes the Requestor
-has already discovered the Issuer, and the Requestor has already created an
-ACME account with the Issuer.
-
-~~~~ ascii-art
-,-----------------.
-|Requestor's      |  ,-----------.
-|OpenID Federation|  |Requestor's|               ,------------------------.  ,-----------------------.
-| Web Server      |  |ACME Client|               |X.509 Certificate Issuer|  |Federation Trust Anchor|
-`--------+--------'  `-----+-----'               `-----------+------------'  `-----------+-----------'
-        |                  |           POST /acme/new-order  |                           |
-        |                  |--------------------------------->                           |
-        |                  |                                 |                           |
-        |                  |Authorization at                 |                           |
-        |                  |/acme/authz/[authz-id]           |                           |
-        |                  |Finalize at                      |                           |
-        |                  | /acme/order/[order-id]/finalize |                           |
-        |                  |<- - - - - - - - - - - - - - - - -                           |
-        |                  |                                 |                           |
-        |                  | POST /acme/authz/[authz-id]     |                           |
-        |                  |--------------------------------->                           |
-        |                  |                                 |                           |
-        |                  |  openid-federation-01 Challenge |                           |
-        |                  |  at /acme/chall/[chall-id]      |                           |
-        |                  |<- - - - - - - - - - - - - - - - -                           |
-        |                  |                                 |                           |
-        |                  ----.                             |                           |
-        |                  |   | Sign challenge token        |                           |
-        |                  |   | with private key            |                           |
-        |                  <---'                             |                           |
-        |                  |                                 |                           |
-        |                  | POST /acme/chall/[chall-id]     |                           |
-        |                  | with signed                     |                           |
-        |                  | token and entity ID             |                           |
-        |                  | set to Requestor's ID           |                           |
-        |                  |--------------------------------->                           |
-        |                  |                                 |                           |
-        |                  |      Challenge validation       |                           |
-        |                  |      beginning                  |                           |
-        |                  |<- - - - - - - - - - - - - - - - -                           |
-        |                  |                                 |                           |
-        |          GET /.well-known/openid-federation        |                           |
-        |<----------------------------------------------------                           |
-        |                  |                                 |                           |
-        |           Requestor's Entity Configuration         |                           |
-        | - - -  - - - - - - - - - - - - - - - - - - - - - - >                           |
-        |                  |                                 |                           |
-        |                  |           ______________________________________________________
-        |                  |           ! OPT  /  If requestor didn't provide Trust Chain |  !
-        |                  |           !_____/               |                           |  !
-        |                  |           !                     |  Determine Trust Chain    |  !
-        |                  |           !                     |  from Issuer's            |  !
-        |                  |           !                     |  Trust Anchor to Requestor|  !
-        |                  |           !                     |  (Federation Discovery)   |  !
-        |                  |           !                     | <------------------------>|  !
-        |                  |           !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!
-        |                  |                                 |                           |
-        |                  |                                 |----.                      |
-        |                  |                                 |    | Evaluate Trust Chain |
-        |                  |                                 |<---'                      |
-        |                  |                                 |                           |
-        |                  |                                 |----.                      |
-        |                  |                                 |    | Check                |
-        |                  |                                 |    | Entity Configuration |
-        |                  |                                 |    | sub matches          |
-        |                  |                                 |    | Entity Identifier    |
-        |                  |                                 |<---' in the order         |
-        |                  |                                 |                           |
-        |                  |                                 |                           |
-        |                  |                                 |----.                      |
-        |                  |                                 |    | Check challenge      |
-        |                  |                                 |    | sig is signed        |
-        |                  |                                 |    | with key in          |
-        |                  |                                 |<---' Entity Configuration |
-        |                  |                                 |                           |
-        |  _________________________________________________________________________     |
-        |  ! LOOP  /  Poll until authz status                |                      !    |
-        |  !      /  is "valid" or "invalid"                 |                      !    |
-        |  !_____/         |                                 |                      !    |
-        |  !               |    POST-as-GET                  |                      !    |
-        |  !               |    /acme/authz/[authz-id]       |                      !    |
-        |  !               |--------------------------------->                      !    |
-        |  !               |                                 |                      !    |
-        |  !               |           Current authz status  |                      !    |
-        |  !               |<---------------------------------                      !    |
-        |  !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!    |
-        |                  |                                 |                           |
-        |                  |                                 |                           |
-        |  ___________________________________________________________________________   |
-        |  ! OPT  /  If the authz status is "valid"          |                        !  |
-        |  !_____/         |                                 |                        !  |
-        |  !               | POST                            |                        !  |
-        |  !               | /acme/orders/[order-id]/finalize|                        !  |
-        |  !               | with CSR                        |                        !  |
-        |  !               |--------------------------------->                        !  |
-        |  !               |                                 |                        !  |
-        |  !               |                                 |----.                   !  |
-        |  !               |                                 |    | Check CSR         !  |
-        |  !               |                                 |    | validity          !  |
-        |  !               |                                 |    | according to      !  |
-        |  !               |                                 |    | protocol          !  |
-        |  !               |                                 |<---' and CA policy     !  |
-        |  !               |                                 |                        !  |
-        |  !               |                                 |                        !  |
-        |  !               |  Order object with certificate  |                        !  |
-        |  !               |  at /acme/cert/[cert-id]        |                        !  |
-        |  !               |<- - - - - - - - - - - - - - - - -                        !  |
-        |  !               |                                 |                        !  |
-        |  !               |       POST /acme/cert/[cert-id] |                        !  |
-        |  !               |--------------------------------->                        !  |
-        |  !               |                                 |                        !  |
-        |  !               |  Newly issued X.509 Certificate |                        !  |
-        |  !               |<- - - - - - - - - - - - - - - - -                        !  |
-        |  !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!  |
-,--------+--------.  ,-----+-----.               ,-----------+------------.  ,-----------+-----------.
-|Requestor's      |  |Requestor's|               |X.509 Certificate Issuer|  |Federation Trust Anchor|
-|OpenID Federation|  |ACME Client|               `------------------------'  `-----------------------'
-| Web Server      |  `-----------'
-`-----------------'
-~~~~
-
-~~~ END EDNOTE ~~~
-
-## Preconditions
-
-The protocol requires the following preconditions to be met.
-
-1. The Requestor and the Issuer MUST publish their Entity Configuration as
-   defined in {{Section 9 of OPENID-FED}}{: relative="#section-9"}.
-
-2. The Issuer MUST implement an ACME server, extended according to this document.
-
-3. The Requestor MUST publish the entity type `acme_requestor` in its Entity
-   Configuration, according to {{requestor-metadata}}.
-
-4. The Issuer MUST publish the entity type `acme_issuer` in its Entity
-   Configuration, according to {{issuer-metadata}}.
-
-## Discovery
-
-The Requestor's ACME client may either be configured to use a particular ACME
-server, or to automatically discover a Certificate Issuer through the
-federation.
-
-Requestors that use discovery MAY select any Entity with an Entity type of
-`acme_issuer`, or they may additionally require that such Entities have a
-valid Trust Mark with a particular Trust Mark Identifier.
-
-## Entity Configuration Metadata
-
-This section describes the metadata a Requestor and Issuer MUST publish in their
-respective Entity Configurations.
-
-### Issuer Metadata
-
-The Issuer MUST publish its Entity Configuration including the `acme_issuer`
-Entity Type metadata within it. The `acme_issuer` metadata contains one parameter,
-`directory_url`, which is the URL of the ACME Directory, as defined in
-{{Section 7.1.1 of !RFC8555}}.
-
-Requestors MUST use the ACME Directory provided in the Issuer's Entity
-Configuration for client configuration of ACME endpoints.
-
-The following is a non-normative example of an Entity Configuration including
-the `acme_issuer` metadata:
+A non-normative example of a challenge with `trustAnchors` specified:
 
 ~~~~
-{
-  "iss": "https://issuer.example.com",
-  "sub": "https://issuer.example.com",
-  "iat": 1516239022,
-  "exp": 1516298022,
-  "jwks": {
-    "keys": [
-      {
-        "kty": "RSA",
-        "alg": "RS256",
-        "use": "sig",
-        "kid": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs",
-        "n": "pnXBOusEANuug6ewezb9J_...",
-        "e": "AQAB"
-      }
-    ]
-  },
-  "metadata": {
-    "acme_issuer": {
-      "directory_url": "https://issuer.example.com/acme/directory"
-    }
-  }
-}
+   {
+     "type": "openid-federation-01",
+     "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
+     "status": "pending",
+     "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0",
+     "trustAnchors": [
+       "https://trust-anchor-1.example.com",
+       "https://trust-anchor-2.example.com"
+     ]
+   }
 ~~~~
 
-### Requestor Metadata
+The `openid-federation-01` challenge MUST NOT be used to issue X.509
+Certificates for any ACME Identifiers except `openid-federation` ACME
+Identifiers.
+
+The Requestor responds to the challenge with an object with the following
+format:
+
+sig (required, string):  the compact JSON serialization (as described in
+    {{Section 7.1 of !RFC7515}}) of a JWS, signing the key authorization
+    encoded in UTF-8.
+    The key authorization is computed from the token in the challenge and the
+    Requestor's ACME account key, as defined in {{Section 8.1 of !RFC8555}}.
+    The signature must be made by one of the keys published in the Requestor's
+    `acme_requestor` metadata in its Entity Configuration, as specified in
+    {{requestor-metadata}}.
+    The JWS MUST include a `kid` header parameter corresponding to the key used
+    to sign the key authorization and a `typ` header parameter set to
+    "signed-acme-challenge+jwt".
+
+trustChain (optional, array of string):  an array of strings containing signed
+    JWTs, representing a Trust Chain from the Requestor to one of the Issuer's
+    Trust Anchors (see {{Section 4 of OPENID-FED}}{: relative="#section-4"}).
+    The Resolved Metadata of the Trust Chain subject MUST contain
+    `acme_requestor` metadata that contains the key used to compute `sig`.
+    It is RECOMMENDED that the Requestor includes this field.
+    If the Requestor cannot construct a Trust Chain to one of the Trust Anchors
+    indicated by the Issuer, or if no Trust Anchors were indicated, it MAY use
+    some other Trust Anchor that it believes the Issuer trusts.
+    If the Requestor cannot construct a Trust Chain to any Trust Anchor, it MAY
+    omit the `trustChain` field from the challenge response.
+
+A non-normative example for an authorization with `trustChain` specified:
+
+~~~~
+   POST /acme/chall/prV_B7yEyA4
+   Host: issuer.example.com
+   Content-Type: application/jose+json
+
+   {
+     "protected": base64url({
+       "alg": "ES256",
+       "kid": "https://issuer.example.com/acme/acct/evOfKhNU60wg",
+       "nonce": "UQI1PoRi5OuXzxuX7V7wL0",
+       "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4"
+     }),
+     "payload": base64url({
+      "sig": "wQAvHlPV1tVxRW0vZUa4BQ...",
+      "trustChain": ["eyJhbGciOiJFU...", "eyJhbGci..."]
+     }),
+     "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
+   }
+~~~~
+
+On receiving a challenge response, the Certificate Issuer verifies that the
+Requestor is trusted. If the Requestor did not provide a `trustChain`, the
+Issuer MUST perform Federation Entity Discovery ({{Section 10 of OPENID-FED}}{:
+relative="#section-10"}) to obtain a Trust Chain for the Requestor.
+
+Once it has obtained a Trust Chain, the Issuer evaluates the entity's Resolved
+Metadata, and verifies:
+
+* That the requested `openid-federation` ACME Identifier value matches the `sub`
+  parameter of the Requestor's Entity Configuration.
+
+* That there is a key in the `acme_requestor` metadata ({{requestor-metadata}})
+  of the Requestor's Resolved Metadata with a `kid` matching the `kid` claim in
+  the challenge response.
+
+* That the `sig` field of the payload is the compact JSON serialization of a
+  valid JWS signing the key authorization, using the above public key.
+
+If all of the above checks succeed, then the validation is successful.
+Otherwise, it has failed. In either case, the Certificate Issuer responds
+according to {{Section 7.5.1 of !RFC8555}}. If the Issuer fails to verify OpenID
+Federation trust, the problem document SHOULD contain a subproblem of type
+`urn:ietf:params:acme:error:openIDFederationEntity` constructed as discussed in
+{{error-type}}.
+
+A non-normative example for the challenge object post-validation:
+
+~~~~
+   {
+     "type": "openid-federation-01",
+     "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
+     "status": "valid",
+     "validated": "2024-10-01T12:05:13.72Z",
+     "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
+   }
+~~~~
+
+## Requestor Entity Configuration Metadata {#requestor-metadata}
 
 The Requestor MUST publish in its Entity Configuration an `acme_requestor`
 metadata containing a JWK set, according to
@@ -476,151 +405,7 @@ The Issuer MUST only use the Requestor's `acme_requestor` to validate an ACME
 challenge. Therefore, after completing the challenge, the Requestor MAY remove
 the `acme_requestor` metadata from its Entity Configuration.
 
-## OpenID Federation ACME Identifier {#identifier-type}
-
-This document defines a new ACME Identifier type for OpenID Federation entities,
-`openid-federation`, whose value is the `sub` parameter of the Requestor's
-Entity Configuration, as defined in {{Section 1.2 of
-OPENID-FED}}{: relative="#section-1.2"}.
-
-For example, the ACME Identifier corresponding to the example Entity
-Configuration in {{requestor-metadata}} is:
-
-~~~~
-{"type": "openid-federation", "value": "https://requestor.example.com"}
-~~~~
-
-## OpenID Federation Challenge Type {#challenge-type}
-
-The OpenID Federation challenge type allows a Requestor to prove control of a
-Federation Entity using the trust evaluation mechanism provided by
-{{OPENID-FED}}. The Requestor demonstrates control of a cryptographic public key
-published in its OpenID Federation Entity Configuration.
-
-The openid-federation-01 ACME challenge object has the following format:
-
-type (required, string):  The string "openid-federation-01"
-
-token (required, string):  A random value that uniquely identifies the
-    challenge. This value MUST have at least 128 bits of entropy. It MUST NOT
-    contain any characters outside the base64url alphabet as described in
-    {{Section 5 of !RFC4648}}. Trailing '=' padding characters MUST be stripped.
-    See {{!RFC4086}} for additional information on randomness requirements.
-
-trustAnchors (optional, array of string):  An array of strings containing the
-    Entity Identifiers of the Issuer's Trust Anchors. When solving the
-    challenge, the Requestor can construct a Trust Chain from itself to one of
-    these Trust Anchors. It is RECOMMENDED that the Issuer includes this field
-    to make it easier for the Requestor to construct a Trust Chain.
-
-A non-normative example of a challenge with `trustAnchors` specified:
-
-~~~~
-   {
-     "type": "openid-federation-01",
-     "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
-     "status": "pending",
-     "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0",
-     "trustAnchors": [
-       "https://trust-anchor-1.example.com",
-       "https://trust-anchor-2.example.com"
-     ]
-   }
-~~~~
-
-The `openid-federation-01` challenge MUST NOT be used to issue X.509 Certificates
-for any ACME Identifiers except `openid-federation` ACME Identifiers.
-
-The `openid-federation` ACME Identifier type MUST NOT be validated except by the
-`openid-federation-01` challenge.
-
-The Requestor responds to the challenge with an object with the following format:
-
-sig (required, string):  the compact JSON serialization (as described in
-    {{Section 7.1 of !RFC7515}}) of a JWS, signing the key authorization
-    encoded in UTF-8.
-    The key authorization is computed from the token in the challenge and the
-    Requestor's ACME account key, as defined in {{Section 8.1 of !RFC8555}}.
-    The signature must be made by one of the keys published in the Requestor's
-    `acme_requestor` metadata in its Entity Configuration, as specified in
-    {{requestor-metadata}}.
-    The JWS MUST include a `kid` header parameter corresponding to the key used
-    to sign the key authorization and a `typ` header parameter set to
-    "signed-acme-challenge+jwt".
-
-trustChain (optional, array of string):  an array of strings containing signed
-    JWTs, representing a Trust Chain from the Requestor to one of the Issuer's
-    Trust Anchors (see {{Section 4 of OPENID-FED}}{: relative="#section-4"}).
-    The Resolved Metadata of the Trust Chain subject MUST contain
-    `acme_requestor` metadata that contains the key used to compute `sig`.
-    It is RECOMMENDED that the Requestor includes this field.
-    If the Requestor cannot construct a Trust Chain to one of the Trust Anchors
-    indicated by the Issuer, or if no Trust Anchors were indicated, it MAY use
-    some other Trust Anchor that it believes the Issuer trusts.
-    If the Requestor cannot construct a Trust Chain to any Trust Anchor, it MAY
-    omit the `trustChain` field from the challenge response.
-
-A non-normative example for an authorization with `trustChain` specified:
-
-~~~~
-   POST /acme/chall/prV_B7yEyA4
-   Host: issuer.example.com
-   Content-Type: application/jose+json
-
-   {
-     "protected": base64url({
-       "alg": "ES256",
-       "kid": "https://issuer.example.com/acme/acct/evOfKhNU60wg",
-       "nonce": "UQI1PoRi5OuXzxuX7V7wL0",
-       "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4"
-     }),
-     "payload": base64url({
-      "sig": "wQAvHlPV1tVxRW0vZUa4BQ...",
-      "trustChain": ["eyJhbGciOiJFU...", "eyJhbGci..."]
-     }),
-     "signature": "Q1bURgJoEslbD1c5...3pYdSMLio57mQNN4"
-   }
-~~~~
-
-On receiving a challenge response, the Certificate Issuer verifies that the
-Requestor is trusted. If the Requestor did not provide a `trustChain`, the
-Issuer MUST perform Federation Entity Discovery
-({{Section 10 of OPENID-FED}}{: relative="#section-10"}) to obtain a Trust Chain
-for the Requestor.
-
-Once it has obtained a Trust Chain, the Issuer evaluates the entity's Resolved
-Metadata, and verifies:
-
-* That the requested `openid-federation` ACME Identifier value matches the `sub`
-  parameter of the Requestor's Entity Configuration.
-
-* That there is a key in the `acme_requestor` metadata ({{requestor-metadata}})
-  of the Requestor's Resolved Metadata with a `kid` matching the `kid` claim in
-  the challenge response.
-
-* That the `sig` field of the payload is the compact JSON serialization of a
-  valid JWS signing the key authorization, using the above public key.
-
-If all of the above checks succeed, then the validation is successful.
-Otherwise, it has failed. In either case, the Certificate Issuer responds
-according to {{Section 7.5.1 of !RFC8555}}. If the Issuer fails to verify OpenID
-Federation trust, the problem document SHOULD contain a subproblem of type
-`urn:ietf:params:acme:error:openIDFederationEntity` constructed as discussed in
-{{error-type}}.
-
-A non-normative example for the challenge object post-validation:
-
-~~~~
-   {
-     "type": "openid-federation-01",
-     "url": "https://issuer.example.com/acme/chall/prV_B7yEyA4",
-     "status": "valid",
-     "validated": "2024-10-01T12:05:13.72Z",
-     "token": "LoqXcYV8q5ONbJQxbmR7SCTNo3tiAXDfowyjxAjEuX0"
-   }
-~~~~
-
-### CSR and Certificate Fields {#openidfed-othername-id}
+## CSR and Certificate Fields {#openidfed-othername-id}
 
 Depending on the Certificate Issuer's X.509 Certificate profile, the CSR and
 X.509 Certificate MAY associate the X.509 Certificate to the Federation Entity by
@@ -638,7 +423,73 @@ Identifier from the `newOrder` request).
    OpenIdFederationEntityId ::= UTF8String
 ~~~~
 
-# Publication of the Certificates within the Federation
+# Issuer Discovery
+
+The Requestor's ACME client may either be configured to use a particular ACME
+server, or to automatically discover a Certificate Issuer through the OpenID
+Federation.
+
+{{OPENID-FED}} describes a variety of patterns and generic mechanisms for
+discovering Federation Entities. This section describes how Issuers may make
+themselves discoverable in a Federation by Requestors.
+
+TODO: include a specific section reference once
+https://github.com/openid/federation/pull/265 lands in OPENID-FED
+
+The protocol requires the following preconditions to be met.
+
+1. The Requestor and the Issuer MUST publish their Entity Configuration as
+   defined in {{Section 9 of OPENID-FED}}{: relative="#section-9"}.
+
+2. The Issuer MUST implement an ACME server, extended according to this
+   document.
+
+3. The Requestor MUST publish the entity type `acme_requestor` in its Entity
+   Configuration, according to {{requestor-metadata}}.
+
+4. The Issuer MUST publish the entity type `acme_issuer` in its Entity
+   Configuration, according to {{issuer-metadata}}.
+
+## Issuer Metadata
+
+The Issuer MUST publish its Entity Configuration including the `acme_issuer`
+Entity Type metadata within it. The `acme_issuer` metadata contains one
+parameter, `directory_url`, which is the URL of the ACME Directory, as defined
+in {{Section 7.1.1 of !RFC8555}}.
+
+Requestors MUST use the ACME Directory provided in the Issuer's Entity
+Configuration for client configuration of ACME endpoints.
+
+The following is a non-normative example of an Entity Configuration including
+the `acme_issuer` metadata:
+
+~~~~
+{
+  "iss": "https://issuer.example.com",
+  "sub": "https://issuer.example.com",
+  "iat": 1516239022,
+  "exp": 1516298022,
+  "jwks": {
+    "keys": [
+      {
+        "kty": "RSA",
+        "alg": "RS256",
+        "use": "sig",
+        "kid": "NzbLsXh8uDCcd-6MNwXF4W_7noWXFZAfHkxZsRGC9Xs",
+        "n": "pnXBOusEANuug6ewezb9J_...",
+        "e": "AQAB"
+      }
+    ]
+  },
+  "metadata": {
+    "acme_issuer": {
+      "directory_url": "https://issuer.example.com/acme/directory"
+    }
+  }
+}
+~~~~
+
+# Publication of the Certificates within the Federation {#publish-cert}
 
 The X.509 Certificates issued by federation Immediate Superior Entities
 pertaining to one or more Federation Entity Keys in control of their
@@ -747,6 +598,145 @@ specified here in {{openidfed-othername-id}}
 |TBA    |id-on-OpenIdFederationEntityId|this document|
 
 --- back
+
+# End-to-end Issuance Flow
+
+~~~ BEGIN EDNOTE ~~~
+
+This appendix is to be removed before publication.
+
+This section contains explanatory material that recaps a lot of RFC 8555. It is
+included here for the benefit of readers who are familiar with OpenID Federation
+but not with ACME, and want to see at a glance how the whole thing fits
+together.
+
+The following diagram illustrates a successful interaction between Issuer and
+Requestor to retrieve an X.509 Certificate. The diagram assumes the Requestor
+has already discovered the Issuer, and the Requestor has already created an
+ACME account with the Issuer.
+
+This section is informational and non-normative. The remainder of this document,
+{{!RFC8555}} and {{OPENID-FED}} should be considered correct should this
+appendix disagree with any of them.
+
+~~~~ ascii-art
+,-----------------.
+|Requestor's      |  ,-----------.
+|OpenID Federation|  |Requestor's|               ,------------------------.  ,-----------------------.
+| Web Server      |  |ACME Client|               |X.509 Certificate Issuer|  |Federation Trust Anchor|
+`--------+--------'  `-----+-----'               `-----------+------------'  `-----------+-----------'
+        |                  |           POST /acme/new-order  |                           |
+        |                  |--------------------------------->                           |
+        |                  |                                 |                           |
+        |                  |Authorization at                 |                           |
+        |                  |/acme/authz/[authz-id]           |                           |
+        |                  |Finalize at                      |                           |
+        |                  | /acme/order/[order-id]/finalize |                           |
+        |                  |<- - - - - - - - - - - - - - - - -                           |
+        |                  |                                 |                           |
+        |                  | POST /acme/authz/[authz-id]     |                           |
+        |                  |--------------------------------->                           |
+        |                  |                                 |                           |
+        |                  |  openid-federation-01 Challenge |                           |
+        |                  |  at /acme/chall/[chall-id]      |                           |
+        |                  |<- - - - - - - - - - - - - - - - -                           |
+        |                  |                                 |                           |
+        |                  ----.                             |                           |
+        |                  |   | Sign challenge token        |                           |
+        |                  |   | with private key            |                           |
+        |                  <---'                             |                           |
+        |                  |                                 |                           |
+        |                  | POST /acme/chall/[chall-id]     |                           |
+        |                  | with signed                     |                           |
+        |                  | token and entity ID             |                           |
+        |                  | set to Requestor's ID           |                           |
+        |                  |--------------------------------->                           |
+        |                  |                                 |                           |
+        |                  |      Challenge validation       |                           |
+        |                  |      beginning                  |                           |
+        |                  |<- - - - - - - - - - - - - - - - -                           |
+        |                  |                                 |                           |
+        |          GET /.well-known/openid-federation        |                           |
+        |<----------------------------------------------------                           |
+        |                  |                                 |                           |
+        |           Requestor's Entity Configuration         |                           |
+        | - - -  - - - - - - - - - - - - - - - - - - - - - - >                           |
+        |                  |                                 |                           |
+        |                  |           ______________________________________________________
+        |                  |           ! OPT  /  If Requestor didn't provide Trust Chain |  !
+        |                  |           !_____/               |                           |  !
+        |                  |           !                     |  Determine Trust Chain    |  !
+        |                  |           !                     |  from Issuer's            |  !
+        |                  |           !                     |  Trust Anchor to Requestor|  !
+        |                  |           !                     |  (Federation Discovery)   |  !
+        |                  |           !                     | <------------------------>|  !
+        |                  |           !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!
+        |                  |                                 |                           |
+        |                  |                                 |----.                      |
+        |                  |                                 |    | Evaluate Trust Chain |
+        |                  |                                 |<---'                      |
+        |                  |                                 |                           |
+        |                  |                                 |----.                      |
+        |                  |                                 |    | Check                |
+        |                  |                                 |    | Entity Configuration |
+        |                  |                                 |    | sub matches          |
+        |                  |                                 |    | Entity Identifier    |
+        |                  |                                 |<---' in the order         |
+        |                  |                                 |                           |
+        |                  |                                 |                           |
+        |                  |                                 |----.                      |
+        |                  |                                 |    | Check challenge      |
+        |                  |                                 |    | sig is signed        |
+        |                  |                                 |    | with key in          |
+        |                  |                                 |<---' Entity Configuration |
+        |                  |                                 |                           |
+        |  _________________________________________________________________________     |
+        |  ! LOOP  /  Poll until authz status                |                      !    |
+        |  !      /  is "valid" or "invalid"                 |                      !    |
+        |  !_____/         |                                 |                      !    |
+        |  !               |    POST-as-GET                  |                      !    |
+        |  !               |    /acme/authz/[authz-id]       |                      !    |
+        |  !               |--------------------------------->                      !    |
+        |  !               |                                 |                      !    |
+        |  !               |           Current authz status  |                      !    |
+        |  !               |<---------------------------------                      !    |
+        |  !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!    |
+        |                  |                                 |                           |
+        |                  |                                 |                           |
+        |  ___________________________________________________________________________   |
+        |  ! OPT  /  If the authz status is "valid"          |                        !  |
+        |  !_____/         |                                 |                        !  |
+        |  !               | POST                            |                        !  |
+        |  !               | /acme/orders/[order-id]/finalize|                        !  |
+        |  !               | with CSR                        |                        !  |
+        |  !               |--------------------------------->                        !  |
+        |  !               |                                 |                        !  |
+        |  !               |                                 |----.                   !  |
+        |  !               |                                 |    | Check CSR         !  |
+        |  !               |                                 |    | validity          !  |
+        |  !               |                                 |    | according to      !  |
+        |  !               |                                 |    | protocol          !  |
+        |  !               |                                 |<---' and CA policy     !  |
+        |  !               |                                 |                        !  |
+        |  !               |                                 |                        !  |
+        |  !               |  Order object with certificate  |                        !  |
+        |  !               |  at /acme/cert/[cert-id]        |                        !  |
+        |  !               |<- - - - - - - - - - - - - - - - -                        !  |
+        |  !               |                                 |                        !  |
+        |  !               |       POST /acme/cert/[cert-id] |                        !  |
+        |  !               |--------------------------------->                        !  |
+        |  !               |                                 |                        !  |
+        |  !               |  Newly issued X.509 Certificate |                        !  |
+        |  !               |<- - - - - - - - - - - - - - - - -                        !  |
+        |  !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!  |
+,--------+--------.  ,-----+-----.               ,-----------+------------.  ,-----------+-----------.
+|Requestor's      |  |Requestor's|               |X.509 Certificate Issuer|  |Federation Trust Anchor|
+|OpenID Federation|  |ACME Client|               `------------------------'  `-----------------------'
+| Web Server      |  `-----------'
+`-----------------'
+~~~~
+
+~~~ END EDNOTE ~~~
 
 # Acknowledgments
 {:numbered="false"}
