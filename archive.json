@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-12T00:39:50.088101+00:00",
+  "timestamp": "2025-10-16T00:38:37.640043+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1344,7 +1344,7 @@
       "id": "I_kwDOJ6_NW87CCQW_",
       "title": "This Document extends the ACME IANA registries by registering a new identifier type",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/97",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -1353,8 +1353,8 @@
       ],
       "body": "In the last bullet of Section 1, \n\nI wouldn't say that this document \"extends the ACME newOrder resource\" -- if it does, then it equivalently also extends the order and authorization resources, which also contain Identifier subobjects. Instead, I think it is more concise and correct to say that this document extends the ACME IANA registries by registering a new identifier type and a new challenge type which can be used to validate identifiers of that type.",
       "createdAt": "2025-07-23T08:10:33Z",
-      "updatedAt": "2025-08-06T20:18:27Z",
-      "closedAt": null,
+      "updatedAt": "2025-10-14T14:00:42Z",
+      "closedAt": "2025-10-14T14:00:42Z",
       "comments": [
         {
           "author": "tgeoghegan",
@@ -1502,7 +1502,7 @@
       "id": "I_kwDOJ6_NW87DVM8Z",
       "title": "Provide separate explainer document",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/104",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -1511,8 +1511,8 @@
       ],
       "body": "Aaron Gable and others point out that the draft is burdened with material that recaps how ACME works. That's largely for the benefit of readers coming from the OpenID world who aren't familiar with ACME.\n\nWe're also missing some text on use cases that motivate this work. That's largely for the benefit of readers coming from places like the ACME WG.\n\nNeither is really appropriate for this draft, which should focus on telling implementers of ACME CAs how to support the new challenge and operators of OpenID Federation entities what metadata they need to advertise in order to get.\n\nWhat we could do is publish a separate explainer document that provides the context and motivation, akin to how many IETF WGs will publish an architecture doc alongside the nuts-and-bolts specifications. I don't think we'd publish this in the ACME WG, but a Markdown document in this GitHub repository would suffice.",
       "createdAt": "2025-07-30T13:39:48Z",
-      "updatedAt": "2025-08-06T19:22:39Z",
-      "closedAt": null,
+      "updatedAt": "2025-10-14T14:00:42Z",
+      "closedAt": "2025-10-14T14:00:42Z",
       "comments": [
         {
           "author": "tgeoghegan",
@@ -7417,24 +7417,26 @@
       "id": "PR_kwDOJ6_NW86icnkG",
       "title": "discuss use cases and motivation",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/106",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "A key piece of feedback we got from the ACME WG was that:\r\n\r\n- it's not clear what kind of certs we're issuing here (TLS?)\r\n- it's not clear what an OpenID Federation Entity might be (persons? servers?)\r\n- it's not clear why those entities want X.509 certs\r\n- There's too much content that restates information from RFC 8555\r\n\r\nThis commit:\r\n\r\n- explains that an OIDF entity could be almost anything\r\n- explains that the certs could be for TLS but also for anything, and that this document doesn't try to restrict the issuance profile of the CAs implementing it\r\n- crisply enumerates how this document extends OIDF, ACME and RFC 5280\r\n- explains how the motivation here is integration with existing systems that only speak X.509\r\n- marks some content as being explanatory material useful during editing of the document but to be removed before publication\r\n\r\nResolves #104\r\nResolves #97",
       "createdAt": "2025-08-06T19:37:52Z",
-      "updatedAt": "2025-10-10T14:46:51Z",
+      "updatedAt": "2025-10-14T14:00:41Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
-      "baseRefOid": "4b9b0cd3e1ec2b5193f09ac0bd7acc62fc92f9a2",
+      "baseRefOid": "002e1f9ec1af36a61b5c24c2498c231e89fc6217",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg/use-cases",
-      "headRefOid": "ef6120c5146c1e30b8fbfd33b0eb1b5cf84a1de7",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "edcdd798d3d4eaf22805b5448747e3fc7e72f04c",
+      "closedAt": "2025-10-14T14:00:41Z",
+      "mergedAt": "2025-10-14T14:00:40Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "3536bf48baeada26788d9711c8eb21c268f0cb74"
+      },
       "comments": [
         {
           "author": "peppelinux",
@@ -7534,12 +7536,6 @@
               "updatedAt": "2025-09-02T14:33:57Z"
             },
             {
-              "originalPosition": 90,
-              "body": "```suggestion\r\n  Statements to publish X.509 certificates previously issued with ACME.\r\n```",
-              "createdAt": "2025-09-02T14:16:08Z",
-              "updatedAt": "2025-09-02T14:33:57Z"
-            },
-            {
               "originalPosition": 144,
               "body": "```suggestion\r\ndynamic discovery of Entities, though an example of how it might be done is\r\n```",
               "createdAt": "2025-09-02T14:16:49Z",
@@ -7584,6 +7580,59 @@
               "updatedAt": "2025-10-01T16:21:46Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW87G1AlB",
+          "commit": {
+            "abbreviatedOid": "ef6120c"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-14T13:44:46Z",
+          "updatedAt": "2025-10-14T13:44:47Z",
+          "comments": [
+            {
+              "originalPosition": 11,
+              "body": "```suggestion\r\n```\r\n\r\nwe do not include references we do not use in the text",
+              "createdAt": "2025-10-14T13:44:47Z",
+              "updatedAt": "2025-10-14T13:44:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW87G1FtB",
+          "commit": {
+            "abbreviatedOid": "ef6120c"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-14T13:48:08Z",
+          "updatedAt": "2025-10-14T13:48:09Z",
+          "comments": [
+            {
+              "originalPosition": 40,
+              "body": "```suggestion\r\nassociated with a given OpenID Federation entity. An entity can be a school, \r\ngovernment agency, corporation, automated system, or any participant that\r\nwishes to join the Federation.\r\n```",
+              "createdAt": "2025-10-14T13:48:08Z",
+              "updatedAt": "2025-10-14T13:48:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW87G1VZU",
+          "commit": {
+            "abbreviatedOid": "edcdd79"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-14T14:00:24Z",
+          "updatedAt": "2025-10-14T14:00:24Z",
+          "comments": []
         }
       ]
     },
@@ -7980,6 +8029,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 113,
+      "id": "PR_kwDOJ6_NW86ttSWZ",
+      "title": "de-emphasize discussion of discovery",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/113",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- Re-organizes the document to better match other ACME RFCs like [1] (#99)\r\n- Moves the end-to-end flow diagram to an appendix\r\n\r\n[1]: https://www.rfc-editor.org/rfc/rfc8737.html\r\n\r\nResolves #105\r\nResolves #109\r\nResolves #99",
+      "createdAt": "2025-10-14T16:29:22Z",
+      "updatedAt": "2025-10-14T16:30:05Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "3536bf48baeada26788d9711c8eb21c268f0cb74",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "timg/discovery",
+      "headRefOid": "8fdc6bbba5f620dceb7364f679d24eda74362fb6",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
