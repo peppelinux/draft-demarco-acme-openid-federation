@@ -259,9 +259,8 @@ A non-normative example of a challenge with `trustAnchors` specified:
    }
 ~~~~
 
-The `openid-federation-01` challenge MUST NOT be used to issue X.509
-Certificates for any ACME Identifiers except `openid-federation` ACME
-Identifiers.
+The `openid-federation-01` challenge MUST NOT be used to validate possession of
+any ACME Identifiers except `openid-federation` ACME Identifiers.
 
 The Requestor responds to the challenge with an object with the following
 format:
@@ -349,12 +348,12 @@ A non-normative example for the challenge object post-validation:
    }
 ~~~~
 
-## Requestor Entity Configuration Metadata {#requestor-metadata}
+# Requestor Entity Configuration Metadata {#requestor-metadata}
 
 The Requestor MUST publish in its Entity Configuration an `acme_requestor`
-metadata containing a JWK set, according to
-{{Section 5.2.1 of OPENID-FED}}{: relative="#section-5.2.1"}.
-The keys in the set are used to respond to ACME challenges.
+metadata containing a JWK set, according to {{Section 5.2.1 of
+OPENID-FED}}{: relative="#section-5.2.1"}. The keys in the set are used to
+respond to ACME challenges.
 
 The following is a non-normative example of an Entity Configuration including
 the `acme_requestor` metadata and using the `jwks` metadata parameter.
@@ -405,29 +404,14 @@ The Issuer MUST only use the Requestor's `acme_requestor` to validate an ACME
 challenge. Therefore, after completing the challenge, the Requestor MAY remove
 the `acme_requestor` metadata from its Entity Configuration.
 
-## CSR and Certificate Fields {#openidfed-othername-id}
-
-Depending on the Certificate Issuer's X.509 Certificate profile, the CSR and
-X.509 Certificate MAY associate the X.509 Certificate to the Federation Entity by
-including the Entity Identifier in the X.509 Certificate.
-
-To do so, the Issuer includes a Subject Alternative Name extension containing an
-`otherName` with a `type-id` of `id-on-OpenIdFederationEntityId`. The value of
-the name is an Octet String containing the UTF-8 encoding of the Entity
-Identifier (i.e., the URI in the corresponding `openid-federation` ACME
-Identifier from the `newOrder` request).
-
-~~~~
-   id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
-
-   OpenIdFederationEntityId ::= UTF8String
-~~~~
-
 # Issuer Discovery
 
 The Requestor's ACME client may either be configured to use a particular ACME
 server, or to automatically discover a Certificate Issuer through the OpenID
 Federation.
+
+In order to be discoverable, the Issuer MUST publish the entity type
+`acme_issuer` in its Entity Configuration, according to {{issuer-metadata}}.
 
 {{OPENID-FED}} describes a variety of patterns and generic mechanisms for
 discovering Federation Entities. This section describes how Issuers may make
@@ -435,20 +419,6 @@ themselves discoverable in a Federation by Requestors.
 
 TODO: include a specific section reference once
 https://github.com/openid/federation/pull/265 lands in OPENID-FED
-
-The protocol requires the following preconditions to be met.
-
-1. The Requestor and the Issuer MUST publish their Entity Configuration as
-   defined in {{Section 9 of OPENID-FED}}{: relative="#section-9"}.
-
-2. The Issuer MUST implement an ACME server, extended according to this
-   document.
-
-3. The Requestor MUST publish the entity type `acme_requestor` in its Entity
-   Configuration, according to {{requestor-metadata}}.
-
-4. The Issuer MUST publish the entity type `acme_issuer` in its Entity
-   Configuration, according to {{issuer-metadata}}.
 
 ## Issuer Metadata
 
@@ -498,6 +468,24 @@ in each JWK contained within the matching Subordinate Statement. The contents
 of the published `x5c` member, including whether it contains a full or
 partial Trust Chain, and if so, to what Trust Anchor, are policy decisions
 out of scope for this document.
+
+# CSR and Certificate Fields {#openidfed-othername-id}
+
+Depending on the Certificate Issuer's X.509 Certificate profile, the CSR and
+X.509 Certificate MAY associate the X.509 Certificate to the Federation Entity
+by including the Entity Identifier in the X.509 Certificate.
+
+To do so, the Issuer includes a Subject Alternative Name extension containing an
+`otherName` with a `type-id` of `id-on-OpenIdFederationEntityId`. The value of
+the name is an Octet String containing the UTF-8 encoding of the Entity
+Identifier (i.e., the URI in the corresponding `openid-federation` ACME
+Identifier from the `newOrder` request).
+
+~~~~
+   id-on-OpenIdFederationEntityId OBJECT IDENTIFIER ::= { id-on XXX }
+
+   OpenIdFederationEntityId ::= UTF8String
+~~~~
 
 # Certificate Lifecycle
 
