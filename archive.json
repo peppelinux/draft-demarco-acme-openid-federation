@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-16T00:38:37.640043+00:00",
+  "timestamp": "2025-10-19T00:43:23.164079+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -8042,19 +8042,98 @@
       "labels": [],
       "body": "- Re-organizes the document to better match other ACME RFCs like [1] (#99)\r\n- Moves the end-to-end flow diagram to an appendix\r\n\r\n[1]: https://www.rfc-editor.org/rfc/rfc8737.html\r\n\r\nResolves #105\r\nResolves #109\r\nResolves #99",
       "createdAt": "2025-10-14T16:29:22Z",
-      "updatedAt": "2025-10-14T16:30:05Z",
+      "updatedAt": "2025-10-17T13:13:30Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "3536bf48baeada26788d9711c8eb21c268f0cb74",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg/discovery",
-      "headRefOid": "8fdc6bbba5f620dceb7364f679d24eda74362fb6",
+      "headRefOid": "44edec400e14a1ded2da70ba0d4c0be9287b3824",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW87Hdjgj",
+          "commit": {
+            "abbreviatedOid": "8fdc6bb"
+          },
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-16T18:29:52Z",
+          "updatedAt": "2025-10-16T18:46:50Z",
+          "comments": [
+            {
+              "originalPosition": 370,
+              "body": "Should we say \"MUST NOT be used to validate possession of any ACME Identifiers except `openid-federation` ACME Identifiers\" instead, to stay focused on the ACME protocol instead of the certificate it issues?",
+              "createdAt": "2025-10-16T18:29:52Z",
+              "updatedAt": "2025-10-16T18:46:50Z"
+            },
+            {
+              "originalPosition": 451,
+              "body": "This is currently a subsection of \"OpenID Federation Challenge Type\" as well. I think it would be better suited as a subsection of \"OpenID Federation ACME Identifier\", or a top-level section of its own.",
+              "createdAt": "2025-10-16T18:37:05Z",
+              "updatedAt": "2025-10-16T18:46:50Z"
+            },
+            {
+              "originalPosition": 395,
+              "body": "This is currently a subsection of \"OpenID Federation Challenge Type\". While this metadata is used during challenge solving, we also discuss the definition of the two new OpenID Federation entity types in a separate bullet point in the introduction. What do you think about making this a top-level section?",
+              "createdAt": "2025-10-16T18:39:33Z",
+              "updatedAt": "2025-10-16T18:46:50Z"
+            },
+            {
+              "originalPosition": 485,
+              "body": "I think we could probably cut this list, as these MUSTs are either already present in other sections, or trivially necessary. Alternately, since this section is focused on issuer discovery, we could just say that the issuer MUST publish an `acme_issuer` entity type for issuer discovery to work, and drop the first three list items here.",
+              "createdAt": "2025-10-16T18:44:20Z",
+              "updatedAt": "2025-10-16T18:46:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW87HoNBD",
+          "commit": {
+            "abbreviatedOid": "8fdc6bb"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-17T10:00:16Z",
+          "updatedAt": "2025-10-17T10:00:16Z",
+          "comments": [
+            {
+              "originalPosition": 370,
+              "body": "the challenge is about the flow using openid federation and about the certificate issuance fase only",
+              "createdAt": "2025-10-17T10:00:16Z",
+              "updatedAt": "2025-10-17T10:00:16Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW87HsZWV",
+          "commit": {
+            "abbreviatedOid": "8fdc6bb"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-10-17T13:07:59Z",
+          "updatedAt": "2025-10-17T13:07:59Z",
+          "comments": [
+            {
+              "originalPosition": 451,
+              "body": "I nestled it in between \"Publication of the Certificates within the Federation\" and \"Certificate Lifecycle\" as a top-level section, since all three of these sections discuss certificates.",
+              "createdAt": "2025-10-17T13:07:59Z",
+              "updatedAt": "2025-10-17T13:07:59Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
