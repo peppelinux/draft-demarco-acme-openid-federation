@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-19T00:43:23.164079+00:00",
+  "timestamp": "2025-10-21T00:39:15.078224+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1396,7 +1396,7 @@
       "id": "I_kwDOJ6_NW87CCSaF",
       "title": "Rearrange Section 6",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/99",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "peppelinux",
       "authorAssociation": "OWNER",
       "assignees": [],
@@ -1405,8 +1405,8 @@
       ],
       "body": "I would rearrange Section 6 to more closely reflect previous RFCs which have introduced new identifier types and corresponding challenges, such as [RFC 8738](https://www.rfc-editor.org/rfc/rfc8738.html). Specifically, I believe the most readable flow here is:\n\n1. Define the new identifier type (currently very vaguely defined in Section 6.5). Describe, as per [RFC 8555, Section 7.4](https://datatracker.ietf.org/doc/html/rfc8555#section-7.4), where in the CSR these identifiers can appear (currently Section 6.7.1)\n2. Define the new challenge type, how the client fulfills the challenge, and how the server validates the challenge (currently Section 6.7). This would also include Section 6.4.2, since the validation protocol requires that the Requestor's Entity Configuration Metadata be correct for validation to succeed.\n3. Then, in a new top-level section, discuss discovery. This is where the Preconditions (currently Section 6.1), Discovery (Section 6.2), and Issuer Metadata (Section 6.4.1) would move to. This is placed lower in the document because, as far as I can tell, it's not actually necessary for the ACME challenge validation to succeed. It's just a mechanism for clients and servers to discover each other in a federation. I almost question whether it belongs in this document, as it is describing extensions to a non-ACME protocol, but this is probably fine.",
       "createdAt": "2025-07-23T08:13:07Z",
-      "updatedAt": "2025-10-07T14:41:47Z",
-      "closedAt": null,
+      "updatedAt": "2025-10-19T21:53:25Z",
+      "closedAt": "2025-10-19T21:53:25Z",
       "comments": [
         {
           "author": "tgeoghegan",
@@ -1535,7 +1535,7 @@
       "id": "I_kwDOJ6_NW87DVsWH",
       "title": "Present the requestor Entity Configuration in the new order request",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/105",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -1544,8 +1544,8 @@
       ],
       "body": "Mike Ounsworth points out that since trust in the EC isn't derived from TLS, it's not strictly necessary for the issuer to fetch the requestor's EC (just as it's OK for the requestor to provide a valid trust chain in the challenge response instead of making the issuer do trust resolution). It's not obvious to me where in the new order request (https://datatracker.ietf.org/doc/html/rfc8555/#section-7.4) we'd put the EC. Are we allowed to put new fields in the `payload`?\n\nPerhaps what we could do is change the challenge response so that it could contain:\n\n- the full trust chain, in which case the issuer doesn't need to fetch the EC or do trust resolution OR\n- the requestor's EC, in which case the issuer does trust resolution and checks that the EC provided by the issuer matches the leaf ES in the truts chain OR\n- nothing, in which case the issuer fetches the requestor's EC and then does trust resolution.",
       "createdAt": "2025-07-30T14:10:50Z",
-      "updatedAt": "2025-10-07T14:38:28Z",
-      "closedAt": null,
+      "updatedAt": "2025-10-19T21:53:25Z",
+      "closedAt": "2025-10-19T21:53:25Z",
       "comments": [
         {
           "author": "tgeoghegan",
@@ -1568,15 +1568,15 @@
       "id": "I_kwDOJ6_NW87JTuK1",
       "title": "Remove \"discovery\" concept from document",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/109",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "divergentdave",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Section 5 says that the protocol is split into two phases, discovery and issuance. Its description of the discovery phase says \"the Requestor discovers the available Certificate Issuers within a federation, inspecting the ACME issuer Entity types.\" Then, section 5.2 expands on this with a couple more paragraphs. Here, we say that the client may be configured with \"a particular ACME server\", or it may automatically discover a Certificate Issuer entity in its federation. We then provide a couple ideas about how the client may select between multiple entities.\n\nBased on the discussion in #106, I think that introducing a separate \"discovery\" concept, referring to finding and selecting a certificate issuer knowing only a federation trust anchor, introduces confusion. OpenID Federation already defines \"Federation Entity Discovery\", which covers the process by which a party looks up entity statements starting with a given entity identifier, and assembles a trust chain.\n\nWe do not currently provide a complete procedure for how to find issuers without knowing their identifier first. It would be possible to use the trust anchor's `federation_list_endpoint` to list all entities in the federation, and filter them locally. However, this metadata attribute is optional, and listing all entities may be practically infeasible in large federations. One separate draft introduces a paginated API to list all federation entities, while another separate draft introduces an API to list federation entities that meet specific filter conditions. If a deployment wants to limit discovery to certificate issuers bearing a specific trust mark, it may use the `federation_trust_mark_list_endpoint` to find entities, but this again is optional.\n\nI think that the \"finding a certificate issuer\" sense of discovery is an unnecessary feature for this draft, and I am not aware of a use case that requires it. If there are multiple certificate issuers in the same federation, then deployment-specific knowledge would be required to choose the correct certificate issuer. The multiple certificate issuers may issue certificates that are trusted in entirely different X.509 PKIs, for example, or they could otherwise support different certificate profiles. Given the many different ways one could list federation entities, each with different tradeoffs, and the need for additional deployment-specific information to select among multiple certificate issuers, I think it would be operationally simpler and more robust to have the ACME client be configured with an identifier for its certificate issuer, in addition to the federation trust anchor, etc.",
       "createdAt": "2025-09-02T20:26:34Z",
-      "updatedAt": "2025-10-07T14:41:38Z",
-      "closedAt": null,
+      "updatedAt": "2025-10-19T21:53:25Z",
+      "closedAt": "2025-10-19T21:53:25Z",
       "comments": [
         {
           "author": "peppelinux",
@@ -1617,6 +1617,22 @@
           "updatedAt": "2025-10-07T14:34:44Z"
         }
       ]
+    },
+    {
+      "number": 114,
+      "id": "I_kwDOJ6_NW87Sk5xM",
+      "title": "Will requestors be required to publish OpenID Federation Entity Configurations?",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/issues/114",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "@peppelinux says that we might not be able to require requestors to publish an OpenID Federation Entity Configuration, which means we'd need another way for the issuer to find `acme_requestor` keys.",
+      "createdAt": "2025-10-20T15:27:12Z",
+      "updatedAt": "2025-10-20T15:27:12Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -8035,24 +8051,26 @@
       "id": "PR_kwDOJ6_NW86ttSWZ",
       "title": "de-emphasize discussion of discovery",
       "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/113",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "- Re-organizes the document to better match other ACME RFCs like [1] (#99)\r\n- Moves the end-to-end flow diagram to an appendix\r\n\r\n[1]: https://www.rfc-editor.org/rfc/rfc8737.html\r\n\r\nResolves #105\r\nResolves #109\r\nResolves #99",
       "createdAt": "2025-10-14T16:29:22Z",
-      "updatedAt": "2025-10-17T13:13:30Z",
+      "updatedAt": "2025-10-19T21:53:24Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "3536bf48baeada26788d9711c8eb21c268f0cb74",
       "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "headRefName": "timg/discovery",
       "headRefOid": "44edec400e14a1ded2da70ba0d4c0be9287b3824",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-10-19T21:53:24Z",
+      "mergedAt": "2025-10-19T21:53:24Z",
+      "mergedBy": "peppelinux",
+      "mergeCommit": {
+        "oid": "d266f58a8178d55e3d48ec4b878ef186e67a7cca"
+      },
       "comments": [],
       "reviews": [
         {
@@ -8132,6 +8150,19 @@
               "updatedAt": "2025-10-17T13:07:59Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJ6_NW87H9HQX",
+          "commit": {
+            "abbreviatedOid": "44edec4"
+          },
+          "author": "peppelinux",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-19T21:53:00Z",
+          "updatedAt": "2025-10-19T21:53:00Z",
+          "comments": []
         }
       ]
     }
