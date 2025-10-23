@@ -178,7 +178,8 @@ ACME Identifier:
   client proves control of to the ACME server.
 
 Entity Identifier:
-: A URL that uniquely identifies an Entity in OpenID Federation, as defined in
+: A globally unique string that uniquely identifies an Entity in OpenID
+  Federation, as defined in
   {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2-3.4"}.
 
 Requestor:
