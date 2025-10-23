@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-21T00:39:15.078224+00:00",
+  "timestamp": "2025-10-23T00:38:48.227399+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1630,9 +1630,17 @@
       "labels": [],
       "body": "@peppelinux says that we might not be able to require requestors to publish an OpenID Federation Entity Configuration, which means we'd need another way for the issuer to find `acme_requestor` keys.",
       "createdAt": "2025-10-20T15:27:12Z",
-      "updatedAt": "2025-10-20T15:27:12Z",
+      "updatedAt": "2025-10-21T13:39:33Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This changed in draft 44: https://openid.github.io/federation/main.html#name-document-history",
+          "createdAt": "2025-10-21T13:39:33Z",
+          "updatedAt": "2025-10-21T13:39:33Z"
+        }
+      ]
     }
   ],
   "pulls": [
