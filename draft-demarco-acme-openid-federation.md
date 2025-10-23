@@ -119,9 +119,9 @@ trust framework. OpenID Federation 1.0 allows each participant to recognize
 other participants using a trust evaluation mechanism, with RESTful services and
 cryptographic materials.
 
-Federation members declare what kind Entities they are using a basic OpenID
-Federation component called an Entity Configuration, a signed JSON Web Token
-published in a well-known resource. This document defines new OpenID Federation
+Federation members declare what kind of Entities they are using a basic OpenID
+Federation component called an Entity Configuration, a signed JSON Web Token.
+This document defines new OpenID Federation
 Entity Types for certificate Requestors and Issuers, facilitating automated
 discovery of an issuer's ACME API.
 
@@ -182,14 +182,12 @@ Entity Identifier:
   {{Section 1.2 of OPENID-FED}}{: relative="#section-1.2-3.4"}.
 
 Requestor:
-: A Federation Entity which wants to request X.509 Certificates. It operates
-  a web server for hosting its Entity Configuration. It also operates an ACME
-  client, extended according to this document.
+: A Federation Entity which wants to request X.509 Certificates. It operates an
+  ACME client, extended according to this document.
 
 Certificate Issuer (or Issuer):
-: A Federation Entity which issues X.509 Certificates. It operates a web server
-  for hosting its Entity Configuration. It also operates an ACME server,
-  extended according to this document.
+: A Federation Entity which issues X.509 Certificates. It operates an ACME
+  server, extended according to this document.
 
 # Conventions and Definitions
 
