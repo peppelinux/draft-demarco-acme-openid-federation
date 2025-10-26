@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-23T00:38:48.227399+00:00",
+  "timestamp": "2025-10-26T00:42:04.568979+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -6210,7 +6210,7 @@
       "labels": [],
       "body": "This updates the authors list per discussions with Ameer and Bran, ahead of our first submission to the IETF Datatracker.\r\n\r\ncc @inahga @branlwyd",
       "createdAt": "2025-04-29T17:29:47Z",
-      "updatedAt": "2025-05-27T14:04:44Z",
+      "updatedAt": "2025-10-23T19:13:12Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "0573f04f6a1fe50b01358abc3288dfff32a33c6c",
@@ -7380,7 +7380,7 @@
       "labels": [],
       "body": "This firstly updates the OpenID Federation 1.0 reference to draft-43. None of the section deep links needed renumbering.\r\n\r\nI also rewrote the validation procedure to refer to the Resolved Metadata of an entity, rather than talking about validating the Entity Configuration against metadata policies. This term was added to the terminology section in draft-43. I think the existing language was misleading because the Resolved Metadata could be different than the metadata in the Entity Configuration itself. Since policies can both modify metadata and produce errors, checking if the \"metadata is valid under the Trust Chain's resolved metadata policy\" is incomplete and inconsistent. For example, the \"value\" and \"add\" metadata policy operators both modify metadata.\r\n\r\nCloses #93.",
       "createdAt": "2025-06-30T20:58:49Z",
-      "updatedAt": "2025-07-03T08:02:40Z",
+      "updatedAt": "2025-10-23T19:13:06Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "04148c5da1a9a66126760edab219fe708a2fa878",
@@ -8173,6 +8173,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 115,
+      "id": "PR_kwDOJ6_NW86vXNx_",
+      "title": "Update OpenID Federation reference to draft 44",
+      "url": "https://github.com/peppelinux/draft-demarco-acme-openid-federation/pull/115",
+      "state": "OPEN",
+      "author": "divergentdave",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This updates our reference to OpenID Federation 1.0 to the latest draft, and makes some related updates. \"Entity Identifier\" is now defined to be a globally unique string, not necessarily a URL. The Entity Configuration is no longer guaranteed to be served via HTTPS at the URL obtained from concatenating the Entity Identifier with a well-known path component, so I removed a few references to the Entity Configuration being published in this manner for generality. Related to #114.",
+      "createdAt": "2025-10-23T20:53:24Z",
+      "updatedAt": "2025-10-23T20:53:25Z",
+      "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "baseRefName": "main",
+      "baseRefOid": "d266f58a8178d55e3d48ec4b878ef186e67a7cca",
+      "headRepository": "peppelinux/draft-demarco-acme-openid-federation",
+      "headRefName": "david/update-oidf-draft-44",
+      "headRefOid": "d518abe0e96199d9ca631dfd21488978f7d4814b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
