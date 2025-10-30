@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-26T00:42:04.568979+00:00",
+  "timestamp": "2025-10-30T00:40:56.289889+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -8186,7 +8186,7 @@
       "labels": [],
       "body": "This updates our reference to OpenID Federation 1.0 to the latest draft, and makes some related updates. \"Entity Identifier\" is now defined to be a globally unique string, not necessarily a URL. The Entity Configuration is no longer guaranteed to be served via HTTPS at the URL obtained from concatenating the Entity Identifier with a well-known path component, so I removed a few references to the Entity Configuration being published in this manner for generality. Related to #114.",
       "createdAt": "2025-10-23T20:53:24Z",
-      "updatedAt": "2025-10-23T20:53:25Z",
+      "updatedAt": "2025-10-29T15:24:53Z",
       "baseRepository": "peppelinux/draft-demarco-acme-openid-federation",
       "baseRefName": "main",
       "baseRefOid": "d266f58a8178d55e3d48ec4b878ef186e67a7cca",
@@ -8198,7 +8198,21 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJ6_NW87KUJyX",
+          "commit": {
+            "abbreviatedOid": "d518abe"
+          },
+          "author": "jcjones",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-29T15:24:53Z",
+          "updatedAt": "2025-10-29T15:24:53Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
