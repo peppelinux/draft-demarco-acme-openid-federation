@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-11-27T00:40:13.459384+00:00",
+  "timestamp": "2025-12-07T00:46:54.652620+00:00",
   "repo": "peppelinux/draft-demarco-acme-openid-federation",
   "labels": [
     {
@@ -1654,9 +1654,17 @@
       "labels": [],
       "body": "Following #115, we can update to draft 45 of the OpenID Federation 1.0 document. The following items from the [changes](https://openid.net/specs/openid-federation-1_0-45.html#name-document-history) look like they'll be useful for us.\n\n- There is a new `trust_anchor_hints` claim defined for Entity Configurations. We could reference this when describing the `trustAnchors` field of challenges.\n- There is a new section on federation discovery/trust chain resolution patterns, we can reference this to resolve a TODO.",
       "createdAt": "2025-11-25T16:05:53Z",
-      "updatedAt": "2025-11-25T16:05:53Z",
+      "updatedAt": "2025-12-05T15:33:34Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "divergentdave",
+          "authorAssociation": "COLLABORATOR",
+          "body": "[Draft 46](https://openid.net/specs/openid-federation-1_0-46.html#name-document-history) is now out as well, for the foundation's 60-day review.",
+          "createdAt": "2025-12-05T15:33:34Z",
+          "updatedAt": "2025-12-05T15:33:34Z"
+        }
+      ]
     }
   ],
   "pulls": [
