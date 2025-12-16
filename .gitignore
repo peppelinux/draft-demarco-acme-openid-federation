@@ -1,10 +1,11 @@
 *~
 /*-[0-9][0-9].xml
 archive.json
-draft-demarco-acme-openid-federation.xml
+draft-ietf-acme-openid-federation.xml
 Gemfile.lock
 /.gems/
 *.html
+/.idea/
 /lib
 /.*.mk
 /node_modules/
@@ -15,7 +16,6 @@ package-lock.json
 report.xml
 *.swp
 .tags
-/.targets.mk
 *.txt
 *.upload
 /.venv/
