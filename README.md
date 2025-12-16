@@ -1,21 +1,22 @@
+<!-- regenerate: on (set to off if you edit this file) -->
+
 # Automatic Certificate Management Environment (ACME) with OpenID Federation 1.0
 
-This is the working area for the individual Internet-Draft, "Automatic Certificate Management Environment (ACME) with OpenID Federation 1.0".
+This is the working area for the IETF [ACME Working Group](https://datatracker.ietf.org/group/acme/documents/) Internet-Draft, "Automatic Certificate Management Environment (ACME) with OpenID Federation 1.0".
 
-* [Editor's Copy](https://peppelinux.github.io/draft-demarco-acme-openid-federation/#go.draft-demarco-acme-openid-federation.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-demarco-acme-openid-federation)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-demarco-acme-openid-federation)
-* [Compare Editor's Copy to Individual Draft](https://peppelinux.github.io/draft-demarco-acme-openid-federation/#go.draft-demarco-acme-openid-federation.diff)
+* [Editor's Copy](https://tgeoghegan.github.io/draft-demarco-acme-openid-federation/#go.draft-ietf-acme-openid-federation.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-ietf-acme-openid-federation)
+* [Working Group Draft](https://datatracker.ietf.org/doc/html/draft-ietf-acme-openid-federation)
+* [Compare Editor's Copy to Working Group Draft](https://tgeoghegan.github.io/draft-demarco-acme-openid-federation/#go.draft-ietf-acme-openid-federation.diff)
 
 
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/peppelinux/draft-demarco-acme-openid-federation/blob/main/CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/tgeoghegan/draft-demarco-acme-openid-federation/blob/main/CONTRIBUTING.md).
 
-Contributions can be made by creating pull requests.
-The GitHub interface supports creating pull requests using the Edit (✏) button.
-
+The contributing file also has tips on how to make contributions, if you
+don't already know how to do that.
 
 ## Command Line Usage
 

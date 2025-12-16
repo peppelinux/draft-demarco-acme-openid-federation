@@ -3,7 +3,7 @@ title: "Automatic Certificate Management Environment (ACME) with OpenID Federati
 abbrev: "ACME OpenID Federation"
 category: std
 
-docname: draft-demarco-acme-openid-federation-latest
+docname: draft-ietf-acme-openid-federation-latest
 submissiontype: IETF
 number:
 date:
@@ -19,7 +19,7 @@ venue:
   type: "Working Group"
   mail: "acme@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/acme/"
-  github: "peppelinux/draft-demarco-acme-openid-federation"
+  github: "ietf-wg-acme/draft-ietf-acme-openid-federation"
 
 author:
  -
@@ -30,24 +30,24 @@ author:
  -
     name: Brandon Pitman
     email: bran@bran.land
-
-contributor:
+ -
+    name: Tim Geoghegan
+    org: ISRG
+    email: timgeog+ietf@gmail.com
  -
     name: David Cook
     org: ISRG
     email: divergentdave@gmail.com
  -
-    name: Ameer Ghani
-    org: ISRG
-    email: inahga@letsencrypt.org
- -
     name: J.C. Jones
     org: ISRG
     email: ietf@insufficient.coffee
+
+contributor:
  -
-    name: Tim Geoghegan
+    name: Ameer Ghani
     org: ISRG
-    email: timgeog+ietf@gmail.com
+    email: inahga@letsencrypt.org
 
 normative:
   OPENID-FED:
