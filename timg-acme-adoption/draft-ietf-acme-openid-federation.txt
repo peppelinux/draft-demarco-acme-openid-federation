@@ -5,12 +5,17 @@
 Automated Certificate Management Environment                 G. De Marco
 Internet-Draft                                               independent
 Intended status: Standards Track                               B. Pitman
-Expires: 23 April 2026                                   20 October 2025
+Expires: 19 June 2026                                                   
+                                                            T. Geoghegan
+                                                                 D. Cook
+                                                              J.C. Jones
+                                                                    ISRG
+                                                        16 December 2025
 
 
     Automatic Certificate Management Environment (ACME) with OpenID
                              Federation 1.0
-              draft-demarco-acme-openid-federation-latest
+                draft-ietf-acme-openid-federation-latest
 
 Abstract
 
@@ -35,8 +40,7 @@ About This Document
    This note is to be removed before publishing as an RFC.
 
    Status information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-demarco-acme-openid-
-   federation/.
+   https://datatracker.ietf.org/doc/draft-ietf-acme-openid-federation/.
 
    Discussion of this document takes place on the Automated Certificate
    Management Environment Working Group mailing list
@@ -45,7 +49,7 @@ About This Document
    https://www.ietf.org/mailman/listinfo/acme/.
 
    Source for this draft and an issue tracker can be found at
-   https://github.com/peppelinux/draft-demarco-acme-openid-federation.
+   https://github.com/ietf-wg-acme/draft-ietf-acme-openid-federation.
 
 Status of This Memo
 
@@ -62,7 +66,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 April 2026.
+   This Internet-Draft will expire on 19 June 2026.
 
 Copyright Notice
 
@@ -847,24 +851,9 @@ Acknowledgments
 
 Contributors
 
-   David Cook
-   ISRG
-   Email: divergentdave@gmail.com
-
-
    Ameer Ghani
    ISRG
    Email: inahga@letsencrypt.org
-
-
-   J.C. Jones
-   ISRG
-   Email: ietf@insufficient.coffee
-
-
-   Tim Geoghegan
-   ISRG
-   Email: timgeog+ietf@gmail.com
 
 
 Authors' Addresses
@@ -876,3 +865,18 @@ Authors' Addresses
 
    Brandon Pitman
    Email: bran@bran.land
+
+
+   Tim Geoghegan
+   ISRG
+   Email: timgeog+ietf@gmail.com
+
+
+   David Cook
+   ISRG
+   Email: divergentdave@gmail.com
+
+
+   J.C. Jones
+   ISRG
+   Email: ietf@insufficient.coffee
